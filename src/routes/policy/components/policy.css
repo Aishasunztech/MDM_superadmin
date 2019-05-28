@@ -1,0 +1,133 @@
+.policy_steps .steps-content {
+    margin: 4px 0 10px;
+}
+
+.policy_steps .ant-table-body {
+    height: 200px;
+    overflow: overlay;
+}
+
+.policy_steps .ant-table-tbody>tr>td {
+    font-size: 12px;
+    text-align: center;
+    padding: 8px 8px !important;
+    font-weight: 300;
+    width: 25%;
+}
+
+.policy_steps .ant-table-thead>tr>th {
+    background: #fafafa;
+    color: #535353;
+    border-bottom: 1px solid #e8e8e8;
+    text-align: center;
+}
+
+.policy_steps .ant-table-content {
+    border: 1px solid #e8e8e8;
+}
+
+.policy_steps .steps-action {
+    text-align: center;
+}
+
+/*
+.policy_steps .line_break {
+    width: 100%;
+}
+
+ .policy_popup {
+    width: 700px !important;
+} */
+
+.line_break2 {
+    width: 100px;
+    margin: 0 0 0 12px;
+    display: inline-block;
+    text-align: left;
+    font-weight: 300;
+}
+
+.exp_policy .ant-table-tbody>tr>td {
+    font-size: 13px;
+    text-align: center;
+    padding: 8px 8px !important;
+    font-weight: 500;
+}
+
+.policy_popup .ant-modal-body {
+    padding: 16px 16px 10px;
+}
+
+.policy_popup .ant-steps-item-title {
+    padding-right: 0px;
+    white-space: normal;
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.policy_steps .ant-steps-item {
+    margin-right: 0 !important;
+}
+
+.exp_txt {
+    font-size: 12px;
+    font-weight: 300;
+    vertical-align: top;
+    margin-left: 2px;
+}
+
+.ant-steps-item-content {
+    margin-top: 4px !important;
+    margin-bottom: 4px;
+}
+
+.login-form {
+    justify-content: center;
+    display: grid;
+}
+
+.login-form .h3 {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.ant-steps-item-process .step_counting {
+    color: #fafafa;
+    font-size: 18px;
+    vertical-align: top;
+}
+
+.step_counting {
+    font-size: 20px;
+}
+
+.ant-steps-item-process .ant-steps-item-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.list_p_down1 {
+    font-size: 26px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    position: relative;
+    right: 0;
+}
+
+.pol_inp {
+    margin: 0;
+}
+
+.lst_stp label {
+    line-height: 20px;
+    margin-top: 8px;
+    float: right;
+}
+
+.lst_stp {
+    margin-top: 24px;
+}
+
+.lst_stp textarea {
+    min-height: 70px;
+}
