@@ -106,6 +106,7 @@ class Login extends React.Component {
                 </FormItem>
 
               </Form>
+            
             </div>
 
             {loader ?

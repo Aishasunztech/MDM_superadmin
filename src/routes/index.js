@@ -16,8 +16,22 @@ const AppRoutes = ({ match, whiteLabels }) => {
         // component={Labels}
         />
         {
-          whiteLabels.map((whiteLabel) => {
-            return (<Route exact path={`${whiteLabel.route_uri}`} component={WhiteLabels} />);
+          whiteLabels.map((whiteLabel, index) => {
+            return (
+              <Route
+                exact
+                path={`${whiteLabel.route_uri}`}
+                key={index}
+                // id={whiteLabel.id} 
+                render={
+                  (routeProps) => (
+                    <WhiteLabels
+                      {...routeProps}
+                      id={whiteLabel.id}
+                    />
+                  )
+                }
+              />);
           })
         }
         <Route exact path={`${match.url}account`} component={Account} />

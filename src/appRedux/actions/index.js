@@ -9,3 +9,4 @@ export * from './Account';
 // export * from './Socket';
 
 export * from './SidebarMenu';
+export * from './WhiteLabels';

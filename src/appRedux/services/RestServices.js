@@ -132,7 +132,9 @@ const RestService = {
         //     }
         // ]
     },
-
+    getWhiteLabelInfo: (id) => {
+        return axios.get(USER_URL + 'white-labels/' + id , RestService.getHeader());
+    },
     // ======================================== Account ===========================================
     getSimIDs: () => {
         return axios.get(BASE_URL + 'users/get_sim_ids', RestService.getHeader());
