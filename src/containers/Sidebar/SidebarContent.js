@@ -51,9 +51,7 @@ class SidebarContent extends Component {
     const { themeType, navStyle, pathname } = this.props;
 
     const selectedKeys = pathname.substr(1);
-    console.log("selectedKeys", selectedKeys);
     const defaultOpenKeys = selectedKeys.split('/')[1];
-    console.log("defaultOpenKeys", defaultOpenKeys);
 
     return (
       <Auxiliary>
@@ -89,7 +87,6 @@ class SidebarContent extends Component {
             >
               {
                 this.props.whiteLabels.map((whiteLabel) => {
-                  console.log("whitelabels", whiteLabel);
                   return (
                     <Menu.Item key={whiteLabel.name}>
                       <Link to={whiteLabel.route_uri}>
@@ -103,7 +100,7 @@ class SidebarContent extends Component {
               }
 
             </Menu.SubMenu>
-            <Menu.Item key="account">
+            <Menu.Item key="account" disabled>
               <Link to="/account">
                 <i className="icon icon-crypto" />
                 Account

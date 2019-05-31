@@ -45,7 +45,7 @@ class Login extends React.Component {
     if (
       authUser.id != null &&
       authUser.email != null &&
-      authUser.token != null 
+      authUser.token != null
       // && authUser.type != null
     ) {
       this.props.history.push('/');
@@ -81,7 +81,10 @@ class Login extends React.Component {
                       message: "Doesn't seem to be a valid Email ID",
                     }],
                   })(
-                    <Input placeholder="Email" />
+                    <Input
+                      placeholder="Email"
+                      autoComplete={false}
+                    />
                   )}
                 </FormItem>
                 <FormItem>

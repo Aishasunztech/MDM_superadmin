@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { BASE_URL } from '../../constants/Application';
 import io from "socket.io-client";
-
+const USER_URL = BASE_URL + 'users/'
 const RestService = {
     //============================================= Auth =================================================
     connectSocket: (token) => {
@@ -120,16 +120,17 @@ const RestService = {
 
     // =========================================Sidebar Menus =====================================
     getWhiteLabels: () => {
-        return [
-            {
-                route_uri: '/titanlocker',
-                name: 'TitanLocker'
-            },
-            {
-                route_uri: '/lockmesh',
-                name: 'LockMesh'
-            }
-        ]
+        return axios.get(USER_URL + 'white-labels', RestService.getHeader() );
+        // return [
+        //     {
+        //         route_uri: '/titanlocker',
+        //         name: 'TitanLocker'
+        //     },
+        //     {
+        //         route_uri: '/lockmesh',
+        //         name: 'LockMesh'
+        //     }
+        // ]
     },
 
     // ======================================== Account ===========================================
