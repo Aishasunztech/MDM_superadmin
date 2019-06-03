@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Card, Button, Row, Col, Icon, Modal, Form, Input, Upload, message, Table, Select, Divider } from "antd";
 
 import { getWhiteLabelInfo } from '../../appRedux/actions';
+import EditWhiteLabel from "./components/EditWhiteLabel";
 
 class WhiteLabels extends Component {
     constructor(props) {
@@ -32,7 +33,7 @@ class WhiteLabels extends Component {
     }
 
     render() {
-
+        
         return (
             <div>
                 <Row justify='center' style={{ backgroundColor: '#012346', height: 110, paddingTop: 20 }}>
@@ -42,24 +43,15 @@ class WhiteLabels extends Component {
                         <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                             <div>
                                 <div className="contenar">
-                                <a href="javascript:void(0)" onClick={(e) => { this.showInfoModal(e, true) }} >
+                                    <a href="javascript:void(0)" onClick={(e) => { this.showInfoModal(e, true) }} >
                                         <Card className="manage_sec" style={{ borderRadius: 12 }}>
                                             <div>
                                                 <h2 style={{ textAlign: "center" }}>Model ID</h2>
                                                 <Divider className="mb-0" />
-                                                <Row style={{ padding: '12px 0 0px' }}>
-                                                    <Col span={8} className="" style={{ textAlign: "center" }}>
-                                                        <Icon type="android" className="policy_icon" />
-                                                    </Col>
-                                                    <Col span={16} style={{ padding: 0 }}>
-                                                        <h5><span className="diamond_icon">&#9670;</span>Manage apk's</h5>
-                                                        <h5><span className="diamond_icon">&#9670;</span>Add permssion</h5>
 
-                                                    </Col>
-                                                </Row>
                                             </div>
+                                            <Button type="primary" size="small" className="open_btn">Open</Button>
                                         </Card>
-                                        <Button type="primary" size="small" className="open_btn">Open</Button>
                                     </a>
 
                                     <Modal
@@ -108,52 +100,22 @@ class WhiteLabels extends Component {
                                                     key: 1,
                                                     name: (<b>Model ID</b>),
                                                     // value: '',
-                                                    value: this.props.whiteLableInfo.model_id,
+                                                    value: this.props.whiteLabelInfo.model_id,
                                                 },
                                                 {
                                                     key: 2,
                                                     name: (<b>APK</b>),
-                                                    value: this.props.whiteLableInfo.apk_file,
+                                                    value: this.props.whiteLabelInfo.apk_file,
                                                 },
                                             ]}
                                         />
 
                                     </Modal>
-                                    <Modal
-                                        maskClosable={false}
-                                        // title="WhiteLabel Info"
-                                        visible={this.state.edit_modal}
-                                        // onOk={this.InsertNewData}
-                                        onCancel={(e) => {
-                                            this.editInfoModal(e, false);
-                                        }}
-                                        okText='Save'
-                                    // okButtonProps={{
-                                    //     disabled: this.state.newData.length ? false : true
-                                    // }}
-                                    >
-                                        <Form onSubmit={this.handleSubmit} >
-
-                                            <Form.Item>
-                                                {this.props.form.getFieldDecorator('email', {
-                                                    initialValue: "",
-                                                    rules: [{
-                                                        required: true,
-                                                        type: 'email',
-                                                        message: "Doesn't seem to be a valid Email ID",
-                                                    }],
-                                                })(
-                                                    <Input
-                                                        placeholder="Email"
-                                                        autoComplete={false}
-                                                    />
-                                                )}
-                                            </Form.Item>
-
-
-                                        </Form>
-
-                                    </Modal>
+                                    <EditWhiteLabel
+                                        whiteLabelInfo = {this.props.whiteLabelInfo}
+                                        editInfoModal = {this.editInfoModal}
+                                        edit_modal = {this.state.edit_modal}
+                                    />
                                 </div>
                             </div>
                         </Col>
@@ -323,12 +285,11 @@ function mapDispatchToProps(dispatch) {
     }, dispatch);
 }
 
-var mapStateToProps = ({whiteLabels}, otherProps) => {
+var mapStateToProps = ({ whiteLabels }, otherProps) => {
     return {
-        whiteLableInfo : whiteLabels.whiteLabel
+        whiteLabelInfo: whiteLabels.whiteLabel
     };
 }
 
-WhiteLabels = Form.create()(WhiteLabels);
 
 export default connect(mapStateToProps, mapDispatchToProps)(WhiteLabels);
