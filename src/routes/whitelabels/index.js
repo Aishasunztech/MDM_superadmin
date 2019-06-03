@@ -111,7 +111,7 @@ class WhiteLabels extends Component {
                                                 },
                                                 {
                                                     key: 2,
-                                                    name: (<b>Command Name</b>),
+                                                    name: (<b>Command</b>),
                                                     // value: '',
                                                     value: this.props.whiteLabelInfo.command_name,
                                                 },

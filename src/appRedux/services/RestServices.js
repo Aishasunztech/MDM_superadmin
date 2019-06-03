@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { BASE_URL } from '../../constants/Application';
+import { BASE_URL, USER_URL } from '../../constants/Application';
 import io from "socket.io-client";
-const USER_URL = BASE_URL + 'users/'
+
 const RestService = {
     //============================================= Auth =================================================
     connectSocket: (token) => {

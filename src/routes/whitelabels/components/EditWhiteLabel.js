@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Card, Button, Row, Col, Icon, Modal, Form, Input, Upload, message, Table, Select, Divider } from "antd";
-import renderEmpty from 'antd/lib/config-provider/renderEmpty';
+
+import { USER_URL } from "../../../constants/Application";
+
 const success = Modal.success;
 const error = Modal.error;
 // var EditWhiteLabel = (props) => {
@@ -37,13 +39,14 @@ class EditWhiteLabel extends Component {
             },
         };
 
+        let token = localStorage.getItem('token');
 
         let _this = this;
         const uploadApkProps = {
             name: 'apk',
             multiple: false,
-            // action: BASE_URL + 'users/upload',
-            // headers: { 'authorization': token },
+            action: USER_URL + 'upload',
+            headers: { 'authorization': token },
             accept: '.apk',
             // disabled: this.state.disableApk,
             // fileList: this.state.fileList2,
