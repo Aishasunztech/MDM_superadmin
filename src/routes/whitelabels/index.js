@@ -19,7 +19,8 @@ class WhiteLabels extends Component {
 
     showInfoModal = (e, visible) => {
         this.setState({
-            info_modal: visible
+            info_modal: visible,
+            
         })
     }
     editInfoModal = (e, visible) => {
@@ -56,6 +57,7 @@ class WhiteLabels extends Component {
 
                                     <Modal
                                         maskClosable={false}
+                                        destroyOnClose={true}
                                         title="WhiteLabel Info"
                                         visible={this.state.info_modal}
                                         // onOk={this.InsertNewData}
@@ -85,6 +87,11 @@ class WhiteLabels extends Component {
                                                     key: 'name',
                                                 },
                                                 {
+                                                    // title: 'Name',
+                                                    dataIndex: 'command',
+                                                    key: 'command',
+                                                },
+                                                {
                                                     // title: 'Value',
                                                     dataIndex: 'value',
                                                     key: 'value',
@@ -104,6 +111,12 @@ class WhiteLabels extends Component {
                                                 },
                                                 {
                                                     key: 2,
+                                                    name: (<b>Command Name</b>),
+                                                    // value: '',
+                                                    value: this.props.whiteLabelInfo.command_name,
+                                                },
+                                                {
+                                                    key: 3,
                                                     name: (<b>APK</b>),
                                                     value: this.props.whiteLabelInfo.apk_file,
                                                 },
