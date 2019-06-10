@@ -129,6 +129,12 @@ class WhiteLabels extends Component {
                                                 },
                                                 {
                                                     key: 3,
+                                                    name: (<b>Version Name</b>),
+                                                    // value: '',
+                                                    value: this.props.whiteLabelInfo.version_name,
+                                                },
+                                                {
+                                                    key: 4,
                                                     name: (<b>APK</b>),
                                                     value: this.props.whiteLabelInfo.apk_file,
                                                 },

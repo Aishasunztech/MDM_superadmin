@@ -117,28 +117,31 @@ class Account extends Component {
         }
     }
     componentWillReceiveProps(nextProps) {
-        if (this.props.sim_ids.length !== nextProps.sim_ids.length || this.props.pgp_emails.length !== nextProps.pgp_emails.length || this.props.chat_ids.length !== nextProps.chat_ids.length || this.props.used_pgp_emails.length !== nextProps.used_pgp_emails.length || this.props.used_chat_ids.length !== nextProps.used_chat_ids.length || this.props.used_sim_ids.length !== nextProps.used_sim_ids.length) {
-            // if (this.props.sim_ids.length !== nextProps.sim_ids.length || this.props.pgp_emails.length !== nextProps.pgp_emails.length || this.props.chat_ids.length !== nextProps.chat_ids.length) {
-            this.setState({
-                sim_ids: nextProps.sim_ids,
-                chat_ids: nextProps.chat_ids,
-                pgp_emails: nextProps.pgp_emails,
-                used_pgp_emails: nextProps.used_pgp_emails,
-                used_chat_ids: nextProps.used_chat_ids,
-                used_sim_ids: nextProps.used_sim_ids,
-                duplicate_modal_show: nextProps.duplicate_modal_show,
-                duplicate_ids: nextProps.duplicate_ids,
-                duplicate_data_type: nextProps.duplicate_data_type,
-                newData: nextProps.newData
-            });
-        } else if (this.props.duplicate_modal_show !== nextProps.duplicate_modal_show) {
-            this.setState({
-                duplicate_modal_show: nextProps.duplicate_modal_show,
-                duplicate_ids: nextProps.duplicate_ids,
-                duplicate_data_type: nextProps.duplicate_data_type,
-                newData: nextProps.newData
-            })
+        if(this.props.sim_ids){
+            if (this.props.sim_ids.length !== nextProps.sim_ids.length || this.props.pgp_emails.length !== nextProps.pgp_emails.length || this.props.chat_ids.length !== nextProps.chat_ids.length || this.props.used_pgp_emails.length !== nextProps.used_pgp_emails.length || this.props.used_chat_ids.length !== nextProps.used_chat_ids.length || this.props.used_sim_ids.length !== nextProps.used_sim_ids.length) {
+                // if (this.props.sim_ids.length !== nextProps.sim_ids.length || this.props.pgp_emails.length !== nextProps.pgp_emails.length || this.props.chat_ids.length !== nextProps.chat_ids.length) {
+                this.setState({
+                    sim_ids: nextProps.sim_ids,
+                    chat_ids: nextProps.chat_ids,
+                    pgp_emails: nextProps.pgp_emails,
+                    used_pgp_emails: nextProps.used_pgp_emails,
+                    used_chat_ids: nextProps.used_chat_ids,
+                    used_sim_ids: nextProps.used_sim_ids,
+                    duplicate_modal_show: nextProps.duplicate_modal_show,
+                    duplicate_ids: nextProps.duplicate_ids,
+                    duplicate_data_type: nextProps.duplicate_data_type,
+                    newData: nextProps.newData
+                });
+            } else if (this.props.duplicate_modal_show !== nextProps.duplicate_modal_show) {
+                this.setState({
+                    duplicate_modal_show: nextProps.duplicate_modal_show,
+                    duplicate_ids: nextProps.duplicate_ids,
+                    duplicate_data_type: nextProps.duplicate_data_type,
+                    newData: nextProps.newData
+                })
+            }
         }
+       
     }
     uploadFile = (file) => {
         this.setState({
@@ -160,7 +163,7 @@ class Account extends Component {
                 formData.append('pgp_emails', this.state.file);
             }
             // formData.append('fieldName', this.state.fieldName);
-            // console.log(formData);
+            console.log(formData);
             this.state.file = null
             this.props.importCSV(formData, this.state.fieldName);
             this.showImportModal(false);
@@ -353,8 +356,8 @@ class Account extends Component {
         const props = {
             name: 'file',
             multiple: false,
-            // accept: [".xls", ".csv", ".xlsx"],
-            accept: ".xls; *.csv; *.xlsx;",
+            accept: [".xls", ".csv", ".xlsx"],
+            // accept: ".xls; *.csv; *.xlsx;",
             // accept: ".xls",
             // processData: false,
             beforeUpload: (file) => {
@@ -863,7 +866,7 @@ class Account extends Component {
                                                                                 return {
                                                                                     key: email.id,
                                                                                     used_pgp_email: email.pgp_email,
-                                                                                    action: <Button type="danger" size="small" onClick={() => { this.showConfirm("Do you really want to Release this pgp email.", this, "pgp_email", email.id) }}>Release</Button>
+                                                                                   // action: <Button type="danger" size="small" onClick={() => { this.showConfirm("Do you really want to Release this pgp email.", this, "pgp_email", email.id) }}>Release</Button>
 
                                                                                 }
                                                                             })
@@ -920,7 +923,7 @@ class Account extends Component {
                                                                                     return {
                                                                                         key: email.id,
                                                                                         used_sim_ids: email.sim_id,
-                                                                                        action: <Button type="danger" size="small" onClick={() => { this.showConfirm("Do you really want to Release this sim id.", this, "sim_id", email.id) }}>Release</Button>
+                                                                                        // action: <Button type="danger" size="small" onClick={() => { this.showConfirm("Do you really want to Release this sim id.", this, "sim_id", email.id) }}>Release</Button>
 
                                                                                     }
                                                                                 })
@@ -976,7 +979,7 @@ class Account extends Component {
                                                                                         return {
                                                                                             key: email.id,
                                                                                             used_chat_ids: email.chat_id,
-                                                                                            action: <Button type="danger" size="small" onClick={() => { this.showConfirm("Do you really want to Release this Chat id.", this, "chat_id", email.id) }}>Release</Button>
+                                                                                            // action: <Button type="danger" size="small" onClick={() => { this.showConfirm("Do you really want to Release this Chat id.", this, "chat_id", email.id) }}>Release</Button>
 
                                                                                         }
                                                                                     })
@@ -996,47 +999,46 @@ class Account extends Component {
                                                             <Row style={{ padding: '16px' }}>
                                                                 <div className="inline_b">
                                                                     <span className="headings">PGP Emails</span>
-                                                                    <Button onClick={() => { this.showViewmodal(true, 'used_pgp_emails', 'USED PGP EMAILS') }} size='small' className="pull-right  exp_btn" type="dashed">Release</Button>
+                                                                    {/* <Button onClick={() => { this.showViewmodal(true, 'used_pgp_emails', 'USED PGP EMAILS') }} size='small' className="pull-right  exp_btn" type="dashed">Release</Button> */}
                                                                     <Button onClick={() => { this.showViewmodal(true, 'pgp_emails', 'PGP Emails') }} size='small' className="pull-right imp_btn">View</Button>
-                                                                    <Button size='small' className="pull-right imp_btn" type="primary" onClick={() => {
+                                                                    <Button disabled size='small' className="pull-right imp_btn" type="primary" onClick={() => {
                                                                         this.exportCSV('pgp_emails');
                                                                     }} >Export</Button>
                                                                     <Button size='small' className="pull-right imp_btn" type="primary" onClick={() => {
                                                                         this.showImportModal(true, "pgp_emails", "PGP Emails")
                                                                     }}>Import</Button>
-                                                                    <a href={`${BASE_URL}users/getFile/import_pgp_emails.xlsx`}>
+                                                                    <a href={`${BASE_URL}users/getFile/import_pgp_emails.xlsx`} disabled>
                                                                         <Button size='small' className="pull-right imp_btn" type="dashed">Sample</Button>
                                                                     </a>
-
 
                                                                 </div>
                                                                 <div className="inline_b">
                                                                     <span className="headings">Chat IDs</span>
-                                                                    <Button onClick={() => { this.showViewmodal(true, 'used_chat_ids', 'USED CHAT IDS') }} size='small' className="pull-right  exp_btn" type="dashed">Release</Button>
+                                                                    {/* <Button onClick={() => { this.showViewmodal(true, 'used_chat_ids', 'USED CHAT IDS') }} size='small' className="pull-right  exp_btn" type="dashed">Release</Button> */}
                                                                     <Button onClick={() => { this.showViewmodal(true, 'chat_ids', 'Chat IDs') }} size='small' className="pull-right imp_btn">View</Button>
-                                                                    <Button size='small' className="pull-right imp_btn" type="primary" onClick={() => {
+                                                                    <Button disabled size='small' className="pull-right imp_btn" type="primary" onClick={() => {
                                                                         this.exportCSV('chat_ids');
                                                                     }} >Export</Button>
                                                                     <Button size='small' className="pull-right imp_btn" type="primary" onClick={() => {
                                                                         this.showImportModal(true, "chat_ids", "Chat IDs")
                                                                     }}>Import</Button>
-                                                                    <a href={`${BASE_URL}users/getFile/import_chat_ids.xlsx`}>
+                                                                    <a href={`${BASE_URL}users/getFile/import_chat_ids.xlsx`} disabled>
                                                                         <Button size='small' className="pull-right imp_btn" type="dashed" >Sample</Button>
                                                                     </a>
 
                                                                 </div>
                                                                 <div className="inline_b">
                                                                     <span className="headings">SIM IDs</span>
-                                                                    <Button onClick={() => { this.showViewmodal(true, 'used_sim_ids', 'USED SIM IDS') }} size='small' className="pull-right  exp_btn" type="dashed">Release</Button>
+                                                                    {/* <Button onClick={() => { this.showViewmodal(true, 'used_sim_ids', 'USED SIM IDS') }} size='small' className="pull-right  exp_btn" type="dashed">Release</Button> */}
                                                                     <Button onClick={() => { this.showViewmodal(true, 'sim_ids', 'Sim IDs') }} size='small' className="pull-right imp_btn mb-0">View</Button>
-                                                                    <Button size='small' className="pull-right imp_btn mb-0" type="primary" onClick={() => {
+                                                                    <Button disabled size='small' className="pull-right imp_btn mb-0" type="primary" onClick={() => {
                                                                         this.exportCSV('sim_ids');
                                                                     }} >Export</Button>
                                                                     <Button size='small' className="pull-right imp_btn mb-0" type="primary" onClick={() => {
                                                                         this.showImportModal(true, "sim_ids", "Sim IDs")
                                                                     }}>Import</Button>
 
-                                                                    <a href={`${BASE_URL}users/getFile/import_sim_ids.xlsx`}>
+                                                                    <a href={`${BASE_URL}users/getFile/import_sim_ids.xlsx`} disabled>
                                                                         <Button size='small' className="pull-right imp_btn mb-0" type="dashed">Sample</Button>
                                                                     </a>
 
@@ -1139,9 +1141,20 @@ function mapDispatchToProps(dispatch) {
     }, dispatch);
 }
 var mapStateToProps = ({ account, devices }) => {
-    // console.log("sim_ids", devices.sim_ids);
-
+    console.log(account,"sim_ids");
     return {
+        msg: account.msg,
+        showMsg: account.showMsg,
+        sim_ids: account.sim_ids,
+        chat_ids: account.chat_ids,
+        pgp_emails: account.pgp_emails,
+        used_pgp_emails: account.used_pgp_emails,
+        used_chat_ids: account.used_chat_ids,
+        used_sim_ids: account.used_sim_ids,
+        duplicate_data_type: account.duplicate_data_type,
+        duplicate_ids: account.duplicate_ids,
+        duplicate_modal_show: account.duplicate_modal_show,
+        newData: account.newData
     };
 }
 

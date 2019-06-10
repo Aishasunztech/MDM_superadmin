@@ -24,7 +24,7 @@ export function importCSV(formData, fieldName) {
         // });
         RestService.importCSV(formData, fieldName).then((response) => {
             if (RestService.checkAuth(response.data)) {
-                // console.log('duplicated data', response.data)
+                console.log('duplicated data', response.data)
                 if (response.data.duplicateData.length) {
                     // console.log('duplicated data', response.data);
                     dispatch({

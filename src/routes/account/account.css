@@ -16,6 +16,13 @@
     padding: 0 16px;
 }
 
+.upload_file .ant-form-item {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .ac_card .exp_btn {
     margin-right: 0;
     margin-bottom: 0;
