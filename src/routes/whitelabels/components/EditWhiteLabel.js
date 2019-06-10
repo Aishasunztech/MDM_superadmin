@@ -21,15 +21,15 @@ class EditWhiteLabel extends Component {
 
     makeCommand = (value) => {
 
-        this.props.form.setFieldsValue({['command_name'] : '#' + value.replace(/ /g, '_')})
+        this.props.form.setFieldsValue({ ['command_name']: '#' + value.replace(/ /g, '_') })
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('values',values, apk)
-               let form_data = {
+                console.log('values', values, apk)
+                let form_data = {
                     'id': this.props.whiteLabelInfo.id,
                     'model_id': values.model_id,
                     'command_name': values.command_name,
@@ -41,7 +41,7 @@ class EditWhiteLabel extends Component {
                 this.props.getWhiteLabelInfo(this.props.whiteLabelInfo.id);
                 this.props.editInfoModal(false);
                 this.props.showInfoModal(false);
-              
+
                 this.setState({
                     disableApk: false,
                 })
@@ -139,8 +139,8 @@ class EditWhiteLabel extends Component {
                 // title="WhiteLabel Info"
                 visible={this.props.edit_modal}
                 // onOk={this.InsertNewData}
-                onCancel={()=> this.props.editInfoModal(false)}
-              footer={null}
+                onCancel={() => this.props.editInfoModal(false)}
+                footer={null}
             // okButtonProps={{
             //     disabled: this.state.newData.length ? false : true
             // }}
@@ -210,9 +210,9 @@ class EditWhiteLabel extends Component {
                         </div>
                     </Form.Item> */}
                     <Row className='modal_footer'>
-                        <div>
-                            <Button key="back" className='submitButton' onClick={()=> this.props.editInfoModal(false)}>Cancel</Button>
-                            <Button className='submitButton' type="primary" htmlType="submit" >Update</Button>
+                        <div> 
+                            <Button key="back" style={{ marginBottom: 0, marginTop: 16 }} className='submitButton' onClick={() => this.props.editInfoModal(false)}>Cancel</Button>
+                            <Button className='submitButton' style={{ marginBottom: 0, marginTop: 16 }} type="primary" htmlType="submit" >Update</Button>
                         </div>
                     </Row>
                 </Form>

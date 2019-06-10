@@ -5,6 +5,8 @@ import { bindActionCreators } from "redux";
 import { Link } from 'react-router-dom';
 import { Card, Button, Row, Col, Icon, Modal, Form, Input, Upload, message, Table, Select, Divider } from "antd";
 
+import style from "./whitelabels.css"
+
 import { getWhiteLabelInfo, editWhiteLabelInfo } from '../../appRedux/actions';
 import EditWhiteLabel from "./components/EditWhiteLabel";
 
@@ -20,7 +22,7 @@ class WhiteLabels extends Component {
     showInfoModal = (e, visible) => {
         this.setState({
             info_modal: visible,
-            
+
         })
     }
     editInfoModal = (e, visible) => {
@@ -29,15 +31,15 @@ class WhiteLabels extends Component {
         })
     }
 
-    getWhiteLabelInfo= (id)=> {
+    getWhiteLabelInfo = (id) => {
         console.log(id, 'ds');
         let _this = this;
 
         setTimeout(function () {
             _this.props.getWhiteLabelInfo(id)
-          }, 1000);
+        }, 1000);
 
-        
+
     }
 
     componentDidMount() {
@@ -45,11 +47,10 @@ class WhiteLabels extends Component {
     }
 
     render() {
-        
+
         return (
             <div>
-                <Row justify='center' style={{ backgroundColor: '#012346', height: 110, paddingTop: 20 }}>
-                </Row>
+                <Row justify='center' style={{ backgroundColor: '#012346', height: 110, paddingTop: 20 }}></Row>
                 <div style={{ marginTop: -40 }}>
                     <Row>
                         <Col xs={24} sm={24} md={8} lg={8} xl={8}>
@@ -62,14 +63,25 @@ class WhiteLabels extends Component {
                                                 <Divider className="mb-0" />
 
                                             </div>
-                                            <Button type="primary" size="small" className="open_btn">Open</Button>
                                         </Card>
+                                        <Button type="primary" size="small" className="open_btn">Open</Button>
                                     </a>
-
                                     <Modal
                                         maskClosable={false}
                                         destroyOnClose={true}
-                                        title="WhiteLabel Info"
+                                        title={
+                                            <div>
+                                                <span>WhiteLabel Info</span>
+                                                <Button
+                                                    type="primary"
+                                                    size="small"
+                                                    style={{ float: "right", marginRight: 32 }}
+                                                    onClick={(e) => {
+                                                        this.editInfoModal(e, true)
+                                                    }}
+                                                >Edit</Button>
+                                            </div>
+                                        }
                                         visible={this.state.info_modal}
                                         // onOk={this.InsertNewData}
                                         onCancel={(e) => {
@@ -80,16 +92,9 @@ class WhiteLabels extends Component {
                                     //     disabled: this.state.newData.length ? false : true
                                     // }}
                                     >
-                                        <Button
-                                            type="primary"
-                                            size="small"
-                                            onClick={(e) => {
-                                                this.editInfoModal(e, true)
-                                            }}
-                                        >
-                                            Edit
-                                        </Button>
+
                                         <Table
+                                            showHeader={false}
                                             size='small'
                                             columns={[
                                                 {
@@ -136,9 +141,9 @@ class WhiteLabels extends Component {
 
                                     </Modal>
                                     <EditWhiteLabel
-                                        whiteLabelInfo = {this.props.whiteLabelInfo}
-                                        editInfoModal = {this.editInfoModal}
-                                        edit_modal = {this.state.edit_modal}
+                                        whiteLabelInfo={this.props.whiteLabelInfo}
+                                        editInfoModal={this.editInfoModal}
+                                        edit_modal={this.state.edit_modal}
                                         editWhiteLabelInfo={this.props.editWhiteLabelInfo}
                                         getWhiteLabelInfo={this.getWhiteLabelInfo}
                                         showInfoModal={this.showInfoModal}
@@ -150,24 +155,14 @@ class WhiteLabels extends Component {
                             <div>
                                 <div className="contenar">
                                     <a href="javascript:void(0)" >
-                                        <Card style={{ borderRadius: 12 }} className="manage_ac">
-                                            <div className="profile_table image_1">
-                                                <Fragment>
-                                                    <Row>
-                                                        <div className="col-md-12 ac_card">
-                                                            <h2 style={{ textAlign: "center" }}> <Icon type="branches" />  Credit</h2>
-                                                            <Divider className="mb-0" />
-                                                            <div className="crd_txt">
-                                                                <p><span className="diamond_icon">&#9670;</span>Distribute tokens</p>
-                                                                <p><span className="diamond_icon">&#9670;</span>Set prices and delay for each token</p>
-                                                                <p><span className="diamond_icon">&#9670;</span>Set permissions for Tokens</p>
-                                                                <p className="more_txt">and more...</p>
-                                                            </div>
-                                                        </div>
-                                                    </Row>
-                                                </Fragment>
+                                        <Card className="manage_sec" style={{ borderRadius: 12 }}>
+                                            <div>
+                                                <h2 style={{ textAlign: "center" }}>Credit</h2>
+                                                <Divider className="mb-0" />
+
                                             </div>
                                         </Card>
+                                        <Button type="primary" size="small" className="open_btn">Open</Button>
                                     </a>
                                     <div className="middle">
                                         <div className="text">Coming Soon</div>
@@ -179,24 +174,14 @@ class WhiteLabels extends Component {
                             <div>
                                 <div className="contenar">
                                     <a href="javascript:void(0)">
-                                        <Card style={{ borderRadius: 12 }} className="manage_ac">
-                                            <div className="profile_table image_1">
-                                                <Fragment>
-                                                    <Row>
-                                                        <div className="col-md-12 ac_card">
-                                                            <h2 style={{ textAlign: "center" }}> <Icon type="credit-card" /> FailSaif APK</h2>
-                                                            <Divider className="mb-0" />
-                                                            <div className="crd_txt">
-                                                                <p><span className="diamond_icon">&#9670;</span>Add/edit payment gateway</p>
-                                                                <p><span className="diamond_icon">&#9670;</span>Set permissions</p>
-                                                                <p><span className="diamond_icon">&#9670;</span>Customize prices and packages</p>
-                                                                <p className="more_txt">and more...</p>
-                                                            </div>
-                                                        </div>
-                                                    </Row>
-                                                </Fragment>
+                                        <Card className="manage_sec" style={{ borderRadius: 12 }}>
+                                            <div>
+                                                <h2 style={{ textAlign: "center" }}>FailSaif APK</h2>
+                                                <Divider className="mb-0" />
+
                                             </div>
                                         </Card>
+                                        <Button type="primary" size="small" className="open_btn">Open</Button>
                                     </a>
                                     <div className="middle">
                                         <div className="text">Coming Soon</div>
@@ -210,24 +195,14 @@ class WhiteLabels extends Component {
                             <div>
                                 <div className="contenar">
                                     <a href="javascript:void(0)" >
-                                        <Card style={{ borderRadius: 12 }} className="manage_ac">
-                                            <div className="profile_table image_1">
-                                                <Fragment>
-                                                    <Row>
-                                                        <div className="col-md-12 ac_card">
-                                                            <h2 style={{ textAlign: "center" }}> <Icon type="branches" />  PGP Emails</h2>
-                                                            <Divider className="mb-0" />
-                                                            <div className="crd_txt">
-                                                                <p><span className="diamond_icon">&#9670;</span>Distribute tokens</p>
-                                                                <p><span className="diamond_icon">&#9670;</span>Set prices and delay for each token</p>
-                                                                <p><span className="diamond_icon">&#9670;</span>Set permissions for Tokens</p>
-                                                                <p className="more_txt">and more...</p>
-                                                            </div>
-                                                        </div>
-                                                    </Row>
-                                                </Fragment>
+                                        <Card className="manage_sec" style={{ borderRadius: 12 }}>
+                                            <div>
+                                                <h2 style={{ textAlign: "center" }}>PGP Emails</h2>
+                                                <Divider className="mb-0" />
+
                                             </div>
                                         </Card>
+                                        <Button type="primary" size="small" className="open_btn">Open</Button>
                                     </a>
                                     <div className="middle">
                                         <div className="text">Coming Soon</div>
@@ -239,24 +214,14 @@ class WhiteLabels extends Component {
                             <div>
                                 <div className="contenar">
                                     <a href="javascript:void(0)" >
-                                        <Card style={{ borderRadius: 12 }} className="manage_ac">
-                                            <div className="profile_table image_1">
-                                                <Fragment>
-                                                    <Row>
-                                                        <div className="col-md-12 ac_card">
-                                                            <h2 style={{ textAlign: "center" }}> <Icon type="branches" />  SIM IDs</h2>
-                                                            <Divider className="mb-0" />
-                                                            <div className="crd_txt">
-                                                                <p><span className="diamond_icon">&#9670;</span>Distribute tokens</p>
-                                                                <p><span className="diamond_icon">&#9670;</span>Set prices and delay for each token</p>
-                                                                <p><span className="diamond_icon">&#9670;</span>Set permissions for Tokens</p>
-                                                                <p className="more_txt">and more...</p>
-                                                            </div>
-                                                        </div>
-                                                    </Row>
-                                                </Fragment>
+                                        <Card className="manage_sec" style={{ borderRadius: 12 }}>
+                                            <div>
+                                                <h2 style={{ textAlign: "center" }}>SIM IDs</h2>
+                                                <Divider className="mb-0" />
+
                                             </div>
                                         </Card>
+                                        <Button type="primary" size="small" className="open_btn">Open</Button>
                                     </a>
                                     <div className="middle">
                                         <div className="text">Coming Soon</div>
@@ -268,24 +233,14 @@ class WhiteLabels extends Component {
                             <div>
                                 <div className="contenar">
                                     <a href="javascript:void(0)">
-                                        <Card style={{ borderRadius: 12 }} className="manage_ac">
-                                            <div className="profile_table image_1">
-                                                <Fragment>
-                                                    <Row>
-                                                        <div className="col-md-12 ac_card">
-                                                            <h2 style={{ textAlign: "center" }}> <Icon type="credit-card" /> Chat IDs</h2>
-                                                            <Divider className="mb-0" />
-                                                            <div className="crd_txt">
-                                                                <p><span className="diamond_icon">&#9670;</span>Add/edit payment gateway</p>
-                                                                <p><span className="diamond_icon">&#9670;</span>Set permissions</p>
-                                                                <p><span className="diamond_icon">&#9670;</span>Customize prices and packages</p>
-                                                                <p className="more_txt">and more...</p>
-                                                            </div>
-                                                        </div>
-                                                    </Row>
-                                                </Fragment>
+                                        <Card className="manage_sec" style={{ borderRadius: 12 }}>
+                                            <div>
+                                                <h2 style={{ textAlign: "center" }}>Chat IDs</h2>
+                                                <Divider className="mb-0" />
+
                                             </div>
                                         </Card>
+                                        <Button type="primary" size="small" className="open_btn">Open</Button>
                                     </a>
                                     <div className="middle">
                                         <div className="text">Coming Soon</div>
@@ -297,7 +252,7 @@ class WhiteLabels extends Component {
 
                 </div>
 
-            </div >
+            </div>
 
         );
 
