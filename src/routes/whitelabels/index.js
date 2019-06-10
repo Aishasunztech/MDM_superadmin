@@ -94,18 +94,15 @@ class WhiteLabels extends Component {
                                     >
 
                                         <Table
+                                            bordered
                                             showHeader={false}
                                             size='small'
+                                            className="model_id_table"
                                             columns={[
                                                 {
                                                     // title: 'Name',
                                                     dataIndex: 'name',
                                                     key: 'name',
-                                                },
-                                                {
-                                                    // title: 'Name',
-                                                    dataIndex: 'command',
-                                                    key: 'command',
                                                 },
                                                 {
                                                     // title: 'Value',
