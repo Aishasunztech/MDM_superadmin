@@ -125,11 +125,12 @@ const RestService = {
     getWhiteLabelInfo: (id) => {
         return axios.get(USER_URL + 'white-labels/' + id , RestService.getHeader());
     },
-    
-    updateWhiteLabelInfo: (id) => {
 
+    editWhiteLabelInfo: (data) => {
+        return axios.put(USER_URL + 'update-white-label', data , RestService.getHeader());
     },
 
+    
     // ======================================== Account ===========================================
     getSimIDs: () => {
         return axios.get(BASE_URL + 'users/get_sim_ids', RestService.getHeader());
@@ -171,9 +172,6 @@ const RestService = {
         return axios.post(BASE_URL + 'users/dealer/dropdown', { selected_items: items, pageName: pageName }, RestService.getHeader());
 
     },
-
-
-
 
 }
 export default RestService;

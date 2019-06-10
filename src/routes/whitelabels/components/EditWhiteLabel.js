@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 import { Card, Button, Row, Col, Icon, Modal, Form, Input, Upload, message, Table, Select, Divider } from "antd";
 
 import { USER_URL } from "../../../constants/Application";
+import styles from '../whitelabels.css';
 
 const success = Modal.success;
 const error = Modal.error;
+let apk = '';
 // var EditWhiteLabel = (props) => {
 class EditWhiteLabel extends Component {
 
@@ -15,13 +17,40 @@ class EditWhiteLabel extends Component {
             command_name: this.props.whiteLabelInfo.command_name,
         }
     }
+    apk = this.props.whiteLabelInfo.apk_file;
 
-    makeCommand = (value)=> {
-        console.log(value,'value');
+    makeCommand = (value) => {
 
-        this.setState({
-            command_name: '#'+value.replace(/ /g, '_')
-        })
+        this.props.form.setFieldsValue({['command_name'] : '#' + value.replace(/ /g, '_')})
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                console.log('values',values, apk)
+               let form_data = {
+                    'id': this.props.whiteLabelInfo.id,
+                    'model_id': values.model_id,
+                    'command_name': values.command_name,
+                    'apk': apk
+                }
+                // console.log(form_data);
+                // this.props.editApk(form_data);
+                this.props.editWhiteLabelInfo(form_data);
+                this.props.getWhiteLabelInfo(this.props.whiteLabelInfo.id);
+                this.props.editInfoModal(false);
+                this.props.showInfoModal(false);
+              
+                this.setState({
+                    disableApk: false,
+                })
+                //  console.log(values);
+            }
+            else {
+                console.log('error', err, values)
+            }
+        });
     }
 
     render() {
@@ -48,15 +77,11 @@ class EditWhiteLabel extends Component {
             action: USER_URL + 'upload',
             headers: { 'authorization': token },
             accept: '.apk',
-
-            className: 'upload-list-inline',
-            listType: 'picture',
-            onRemove(info) {
-                // document.getElementById('apkSize').style.display = 'none'
-                // _this.setState({ disableApk: false });
+            // fileList: this.state.fileList2,
+                _this.setState({ disableApk: false });
             },
             beforeUpload(file) {
-                // _this.setState({ disableApk: true });
+                _this.setState({ disableApk: true });
             },
             onChange(info) {
                 const status = info.file.status;
@@ -70,8 +95,8 @@ class EditWhiteLabel extends Component {
                         // console.log(info.file.response);
 
                         if (info.file.response.fileName !== '') {
-                            // apk = info.file.response.fileName;
-                            // console.log('apk name', apk);
+                            apk = info.file.response.fileName;
+                            console.log(info, 'apk name', apk);
                             // packageName = info.file.response.packageName;
                             // size = info.file.response.size
                             // versionCode = info.file.response.versionCode;
@@ -95,12 +120,12 @@ class EditWhiteLabel extends Component {
                     }
 
                 } else if (status === 'error') {
-                     message.error(`${info.file.name} file upload failed.`);
+                    message.error(`${info.file.name} file upload failed.`);
                 }
                 _this.setState({ fileList2 });
             },
         };
-        console.log('apk', this.props.whiteLabelInfo)
+        console.log(this.state.command_name, 'apk', this.props.whiteLabelInfo)
 
         return (
             <Modal
@@ -109,17 +134,15 @@ class EditWhiteLabel extends Component {
                 // title="WhiteLabel Info"
                 visible={this.props.edit_modal}
                 // onOk={this.InsertNewData}
-                onCancel={(e) => {
-                    this.props.editInfoModal(e, false);
-                }}
-                okText='Save'
+                onCancel={()=> this.props.editInfoModal(false)}
+              footer={null}
             // okButtonProps={{
             //     disabled: this.state.newData.length ? false : true
             // }}
             >
                 <p>(*)- Required Fields</p>
                 <Form
-                // onSubmit={this.handleSubmit} 
+                    onSubmit={this.handleSubmit}
                 >
 
                     <Form.Item
@@ -136,7 +159,7 @@ class EditWhiteLabel extends Component {
                                     },
                                 ],
                             })(
-                                <Input onChange={(e)=> this.makeCommand(e.target.value)} />
+                                <Input onChange={(e) => this.makeCommand(e.target.value)} />
                             )}
                     </Form.Item>
 
@@ -147,10 +170,10 @@ class EditWhiteLabel extends Component {
                     >
                         {this.props.form.getFieldDecorator('command_name',
                             {
-                                initialValue: this.state.command_name,
-                                
+                                initialValue: this.props.whiteLabelInfo.command_name,
+
                             })(
-                                <Input disabled  value={this.state.command_name}   />
+                                <Input disabled />
                             )}
                     </Form.Item>
 
@@ -165,7 +188,6 @@ class EditWhiteLabel extends Component {
                                     {
                                         required: true, message: 'File is required',
                                     },
-
                                 ],
 
                             })(
@@ -182,7 +204,12 @@ class EditWhiteLabel extends Component {
                             <h5 className="apk_size">{size}</h5>
                         </div>
                     </Form.Item> */}
-
+                    <Row className='modal_footer'>
+                        <div>
+                            <Button key="back" className='submitButton' onClick={()=> this.props.editInfoModal(false)}>Cancel</Button>
+                            <Button className='submitButton' type="primary" htmlType="submit" >Update</Button>
+                        </div>
+                    </Row>
                 </Form>
             </Modal>
 

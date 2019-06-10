@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import { Link } from 'react-router-dom';
 import { Card, Button, Row, Col, Icon, Modal, Form, Input, Upload, message, Table, Select, Divider } from "antd";
 
-import { getWhiteLabelInfo } from '../../appRedux/actions';
+import { getWhiteLabelInfo, editWhiteLabelInfo } from '../../appRedux/actions';
 import EditWhiteLabel from "./components/EditWhiteLabel";
 
 class WhiteLabels extends Component {
@@ -27,6 +27,17 @@ class WhiteLabels extends Component {
         this.setState({
             edit_modal: visible
         })
+    }
+
+    getWhiteLabelInfo= (id)=> {
+        console.log(id, 'ds');
+        let _this = this;
+
+        setTimeout(function () {
+            _this.props.getWhiteLabelInfo(id)
+          }, 1000);
+
+        
     }
 
     componentDidMount() {
@@ -128,6 +139,9 @@ class WhiteLabels extends Component {
                                         whiteLabelInfo = {this.props.whiteLabelInfo}
                                         editInfoModal = {this.editInfoModal}
                                         edit_modal = {this.state.edit_modal}
+                                        editWhiteLabelInfo={this.props.editWhiteLabelInfo}
+                                        getWhiteLabelInfo={this.getWhiteLabelInfo}
+                                        showInfoModal={this.showInfoModal}
                                     />
                                 </div>
                             </div>
@@ -294,7 +308,8 @@ class WhiteLabels extends Component {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        getWhiteLabelInfo: getWhiteLabelInfo
+        getWhiteLabelInfo: getWhiteLabelInfo,
+        editWhiteLabelInfo: editWhiteLabelInfo
     }, dispatch);
 }
 
