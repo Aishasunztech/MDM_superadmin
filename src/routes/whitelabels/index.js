@@ -53,7 +53,7 @@ class WhiteLabels extends Component {
                 <Row justify='center' style={{ backgroundColor: '#012346', height: 110, paddingTop: 20 }}></Row>
                 <div style={{ marginTop: -40 }}>
                     <Row>
-                        <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+                        <Col xs={24} sm={24} md={6} lg={6} xl={6}>
                             <div>
                                 <div className="contenar">
                                     <a href="javascript:void(0)" onClick={(e) => { this.showInfoModal(e, true) }} >
@@ -63,8 +63,8 @@ class WhiteLabels extends Component {
                                                 <Divider className="mb-0" />
 
                                             </div>
+                                            <Button type="primary" size="small" className="open_btn">Open</Button>
                                         </Card>
-                                        <Button type="primary" size="small" className="open_btn">Open</Button>
                                     </a>
                                     <Modal
                                         maskClosable={false}
@@ -92,7 +92,6 @@ class WhiteLabels extends Component {
                                     //     disabled: this.state.newData.length ? false : true
                                     // }}
                                     >
-
                                         <Table
                                             bordered
                                             showHeader={false}
@@ -148,7 +147,7 @@ class WhiteLabels extends Component {
                                 </div>
                             </div>
                         </Col>
-                        <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+                        <Col xs={24} sm={24} md={6} lg={6} xl={6}>
                             <div>
                                 <div className="contenar">
                                     <a href="javascript:void(0)" >
@@ -158,8 +157,8 @@ class WhiteLabels extends Component {
                                                 <Divider className="mb-0" />
 
                                             </div>
+                                            <Button type="primary" size="small" className="open_btn">Open</Button>
                                         </Card>
-                                        <Button type="primary" size="small" className="open_btn">Open</Button>
                                     </a>
                                     <div className="middle">
                                         <div className="text">Coming Soon</div>
@@ -167,7 +166,7 @@ class WhiteLabels extends Component {
                                 </div>
                             </div>
                         </Col>
-                        <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+                        <Col xs={24} sm={24} md={6} lg={6} xl={6}>
                             <div>
                                 <div className="contenar">
                                     <a href="javascript:void(0)">
@@ -177,8 +176,8 @@ class WhiteLabels extends Component {
                                                 <Divider className="mb-0" />
 
                                             </div>
+                                            <Button type="primary" size="small" className="open_btn">Open</Button>
                                         </Card>
-                                        <Button type="primary" size="small" className="open_btn">Open</Button>
                                     </a>
                                     <div className="middle">
                                         <div className="text">Coming Soon</div>
@@ -186,9 +185,7 @@ class WhiteLabels extends Component {
                                 </div>
                             </div>
                         </Col>
-                    </Row>
-                    <Row>
-                        <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+                        <Col xs={24} sm={24} md={6} lg={6} xl={6}>
                             <div>
                                 <div className="contenar">
                                     <a href="javascript:void(0)" >
@@ -198,8 +195,8 @@ class WhiteLabels extends Component {
                                                 <Divider className="mb-0" />
 
                                             </div>
+                                            <Button type="primary" size="small" className="open_btn">Open</Button>
                                         </Card>
-                                        <Button type="primary" size="small" className="open_btn">Open</Button>
                                     </a>
                                     <div className="middle">
                                         <div className="text">Coming Soon</div>
@@ -207,7 +204,9 @@ class WhiteLabels extends Component {
                                 </div>
                             </div>
                         </Col>
-                        <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+                    </Row>
+                    <Row>
+                        <Col xs={24} sm={24} md={6} lg={6} xl={6}>
                             <div>
                                 <div className="contenar">
                                     <a href="javascript:void(0)" >
@@ -217,8 +216,8 @@ class WhiteLabels extends Component {
                                                 <Divider className="mb-0" />
 
                                             </div>
+                                            <Button type="primary" size="small" className="open_btn">Open</Button>
                                         </Card>
-                                        <Button type="primary" size="small" className="open_btn">Open</Button>
                                     </a>
                                     <div className="middle">
                                         <div className="text">Coming Soon</div>
@@ -226,7 +225,7 @@ class WhiteLabels extends Component {
                                 </div>
                             </div>
                         </Col>
-                        <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+                        <Col xs={24} sm={24} md={6} lg={6} xl={6}>
                             <div>
                                 <div className="contenar">
                                     <a href="javascript:void(0)">
@@ -236,8 +235,8 @@ class WhiteLabels extends Component {
                                                 <Divider className="mb-0" />
 
                                             </div>
+                                            <Button type="primary" size="small" className="open_btn">Open</Button>
                                         </Card>
-                                        <Button type="primary" size="small" className="open_btn">Open</Button>
                                     </a>
                                     <div className="middle">
                                         <div className="text">Coming Soon</div>

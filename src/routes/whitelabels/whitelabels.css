@@ -1,3 +1,7 @@
+.gx-main-content-wrapper {
+    padding: 16px 16px 0;
+} 
+
 .modal_footer {
     display: flex;
     border-top: 1px solid #e8e8e8;
@@ -5,15 +9,14 @@
     padding-right: 16px;
 }
 
-.contenar .ant-card {
-    padding-bottom: 25px;
+.manage_sec .ant-card-body {
+    padding: 16px;
+    text-align: center;
 }
 
 .open_btn {
-    width: 40%;
-    position: absolute;
-    bottom: 5px;
-    left: 33%;
+    width: 60%;
+    margin-bottom: 0;
 }
 
 .model_id_table td {
