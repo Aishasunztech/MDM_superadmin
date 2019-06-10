@@ -10,7 +10,7 @@ import RestService from '../services/RestServices';
 
 
 export const getWhiteLabelInfo = (id) => {
-    console.log('id',id)
+    // console.log('id',id)
     return (dispatch) => {
         RestService.getWhiteLabelInfo(id).then((response) => {
             if(RestService.checkAuth(response.data)){
