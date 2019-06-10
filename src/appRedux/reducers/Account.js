@@ -3,6 +3,9 @@ import {
     GET_USED_PGP_EMAILS,
     GET_USED_CHAT_IDS,
     GET_USED_SIM_IDS,
+    GET_PGP_EMAILS,
+    GET_CHAT_IDS,
+    GET_SIM_IDS,
     RELEASE_CSV,
     DUPLICATE_SIM_IDS,
     NEW_DATA_INSERTED
@@ -18,6 +21,9 @@ const initialState = {
     used_pgp_emails: [],
     used_sim_ids: [],
     used_chat_ids: [],
+    sim_ids: [],
+    chat_ids: [],
+    pgp_emails: [],
     duplicate_ids: [],
     duplicate_modal_show: false,
     duplicate_data_type: '',
@@ -39,6 +45,29 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 used_pgp_emails: action.payload
+            }
+        }
+        case GET_SIM_IDS: {
+            // console.log(GET_SIM_IDS);
+            // console.log(
+            //     action.payload
+            // )
+            return {
+                ...state,
+                sim_ids: action.payload
+            }
+        }
+        case GET_CHAT_IDS: {
+            return {
+                ...state,
+                chat_ids: action.payload
+            }
+        }
+        case GET_PGP_EMAILS: {
+            // alert("hello");
+            return {
+                ...state,
+                pgp_emails: action.payload
             }
         }
         case GET_USED_CHAT_IDS: {

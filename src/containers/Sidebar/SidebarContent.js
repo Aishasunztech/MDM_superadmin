@@ -100,7 +100,7 @@ class SidebarContent extends Component {
               }
 
             </Menu.SubMenu>
-            <Menu.Item key="account" disabled>
+            <Menu.Item key="account">
               <Link to="/account">
                 <i className="icon icon-crypto" />
                 Account
