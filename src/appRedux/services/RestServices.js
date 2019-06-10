@@ -121,20 +121,15 @@ const RestService = {
     // =========================================Sidebar Menus =====================================
     getWhiteLabels: () => {
         return axios.get(USER_URL + 'white-labels', RestService.getHeader() );
-        // return [
-        //     {
-        //         route_uri: '/titanlocker',
-        //         name: 'TitanLocker'
-        //     },
-        //     {
-        //         route_uri: '/lockmesh',
-        //         name: 'LockMesh'
-        //     }
-        // ]
     },
     getWhiteLabelInfo: (id) => {
         return axios.get(USER_URL + 'white-labels/' + id , RestService.getHeader());
     },
+    
+    updateWhiteLabelInfo: (id) => {
+
+    },
+
     // ======================================== Account ===========================================
     getSimIDs: () => {
         return axios.get(BASE_URL + 'users/get_sim_ids', RestService.getHeader());

@@ -48,8 +48,7 @@ class EditWhiteLabel extends Component {
             action: USER_URL + 'upload',
             headers: { 'authorization': token },
             accept: '.apk',
-            // disabled: this.state.disableApk,
-            // fileList: this.state.fileList2,
+
             className: 'upload-list-inline',
             listType: 'picture',
             onRemove(info) {
