@@ -138,14 +138,37 @@ class WhiteLabels extends Component {
                                                 },
                                                 {
                                                     key: 3,
+                                                    name: (<b>Launcher (APK)</b>),
+                                                    value: this.props.whiteLabelInfo.apk_file,
+                                                },
+                                                {
+                                                    key: 4,
                                                     name: (<b>Version Name</b>),
                                                     // value: '',
                                                     value: this.props.whiteLabelInfo.version_name,
                                                 },
                                                 {
-                                                    key: 4,
-                                                    name: (<b>APK</b>),
+                                                    key: 5,
+                                                    name: (<b>Size</b>),
+                                                    // value: '',
+                                                    value: this.props.whiteLabelInfo.version_name,
+                                                },
+                                                {
+                                                    key: 6,
+                                                    name: (<b>SC (APK)</b>),
                                                     value: this.props.whiteLabelInfo.apk_file,
+                                                },
+                                                {
+                                                    key: 7,
+                                                    name: (<b>Version Name</b>),
+                                                    // value: '',
+                                                    value: this.props.whiteLabelInfo.version_name,
+                                                },
+                                                {
+                                                    key: 8,
+                                                    name: (<b>Size</b>),
+                                                    // value: '',
+                                                    value: this.props.whiteLabelInfo.version_name,
                                                 },
                                             ]}
                                         />
