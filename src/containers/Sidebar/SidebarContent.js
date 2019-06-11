@@ -17,6 +17,7 @@ import {
 import IntlMessages from "../../util/IntlMessages";
 import { connect } from "react-redux";
 import {
+  logout,
   getWhiteLabels
 } from '../../appRedux/actions/';
 
@@ -59,6 +60,7 @@ class SidebarContent extends Component {
         <div className="gx-sidebar-content ">
           <div className={`gx-sidebar-notifications ${this.getNoHeaderClass(navStyle)} `}>
             <UserProfile
+              logout = {this.props.logout}
             />
             {/* <AppsNavigation/> */}
           </div>
@@ -100,7 +102,7 @@ class SidebarContent extends Component {
               }
 
             </Menu.SubMenu>
-            <Menu.Item key="account" disabled>
+            <Menu.Item key="account">
               <Link to="/account">
                 <i className="icon icon-crypto" />
                 Account
@@ -122,7 +124,8 @@ const mapStateToProps = ({ settings, sidebarMenu }) => {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    getWhiteLabels: getWhiteLabels
+    getWhiteLabels: getWhiteLabels,
+    logout: logout
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SidebarContent);

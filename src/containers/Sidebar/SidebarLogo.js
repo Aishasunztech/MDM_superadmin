@@ -48,10 +48,10 @@ class SidebarLogo extends Component {
 
         <Link to="/" className="gx-site-logo">
           {navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR && width >= TAB_SIZE ?
-            <p className="mb-0" style={{ fontSize: 18 }}>LockMesh</p> :
+            <p className="mb-0" style={{ fontSize: 18 }}>SuperAdmin</p> :
             themeType === THEME_TYPE_LITE ?
-              <p className="mb-0" style={{ fontSize: 18 }}>LockMesh</p>  :
-              <p className="mb-0" style={{ fontSize: 18 }}>LockMesh</p>}
+              <p className="mb-0" style={{ fontSize: 18 }}>SuperAdmin</p>  :
+              <p className="mb-0" style={{ fontSize: 18 }}>SuperAdmin</p>}
 
         </Link>
 

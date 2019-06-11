@@ -3,7 +3,10 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Link } from 'react-router-dom';
-import { Card, Button, Row, Col, Icon, Modal, Form, Input, Upload, message, Table, Select, Divider } from "antd";
+import {
+    Card,
+    Button, Row, Col, Icon, Modal, Form, Input, Upload, message, Table, Select, Divider
+} from "antd";
 
 import style from "./whitelabels.css"
 
@@ -50,7 +53,13 @@ class WhiteLabels extends Component {
 
         return (
             <div>
-                <Row justify='center' style={{ backgroundColor: '#012346', height: 110, paddingTop: 20 }}></Row>
+
+                <Row
+                    justify='center'
+                    style={{ backgroundColor: '#012346', height: 110, paddingTop: 20 }}
+                >
+                    <h1 style={{color:'white'}}>{this.props.whiteLabelInfo.name}</h1>
+                </Row>
                 <div style={{ marginTop: -40 }}>
                     <Row>
                         <Col xs={24} sm={24} md={6} lg={6} xl={6}>
@@ -129,8 +138,37 @@ class WhiteLabels extends Component {
                                                 },
                                                 {
                                                     key: 3,
-                                                    name: (<b>APK</b>),
+                                                    name: (<b>Launcher (APK)</b>),
                                                     value: this.props.whiteLabelInfo.apk_file,
+                                                },
+                                                {
+                                                    key: 4,
+                                                    name: (<b>Version Name</b>),
+                                                    // value: '',
+                                                    value: this.props.whiteLabelInfo.version_name,
+                                                },
+                                                {
+                                                    key: 5,
+                                                    name: (<b>Size</b>),
+                                                    // value: '',
+                                                    value: this.props.whiteLabelInfo.version_name,
+                                                },
+                                                {
+                                                    key: 6,
+                                                    name: (<b>SC (APK)</b>),
+                                                    value: this.props.whiteLabelInfo.apk_file,
+                                                },
+                                                {
+                                                    key: 7,
+                                                    name: (<b>Version Name</b>),
+                                                    // value: '',
+                                                    value: this.props.whiteLabelInfo.version_name,
+                                                },
+                                                {
+                                                    key: 8,
+                                                    name: (<b>Size</b>),
+                                                    // value: '',
+                                                    value: this.props.whiteLabelInfo.version_name,
                                                 },
                                             ]}
                                         />

@@ -210,9 +210,9 @@ class EditWhiteLabel extends Component {
                         </div>
                     </Form.Item> */}
                     <Row className='modal_footer'>
-                        <div> 
-                            <Button key="back" style={{ marginBottom: 0, marginTop: 16 }} className='submitButton' onClick={() => this.props.editInfoModal(false)}>Cancel</Button>
-                            <Button className='submitButton' style={{ marginBottom: 0, marginTop: 16 }} type="primary" htmlType="submit" >Update</Button>
+                        <div className='modal_footer'> 
+                            <Button key="back" className='submitButton' onClick={()=> this.props.editInfoModal(false)}>Cancel</Button>
+                            <Button className='submitButton' type="primary" htmlType="submit" >Update</Button>
                         </div>
                     </Row>
                 </Form>

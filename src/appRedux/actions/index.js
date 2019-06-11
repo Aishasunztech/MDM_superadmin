@@ -1,5 +1,5 @@
 export * from './Setting';
-// export * from './Auth';
+export * from './Auth';
 // export * from './Devices';
 // export * from './Dealers';
 // export * from './Apk';
