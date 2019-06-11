@@ -74,7 +74,7 @@ class WhiteLabels extends Component {
                                             </div>
                                             <Button type="primary" size="small" className="open_btn">Open</Button>
                                         </Card>
-                                    </a>
+                                    </a> 
                                     <Modal
                                         maskClosable={false}
                                         destroyOnClose={true}
