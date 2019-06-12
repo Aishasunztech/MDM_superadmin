@@ -72,7 +72,7 @@ class SidebarContent extends Component {
             mode="inline"
           >
 
-            <Menu.Item key="labels">
+            <Menu.Item key="labels" disabled>
 
               <Link to="/labels">
                 <span>
