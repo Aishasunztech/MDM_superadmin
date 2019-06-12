@@ -2,8 +2,8 @@ import React, { Component, Fragment } from "react";
 // import {Route, Switch} from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import {SECURE_LAUNCHER, SC } from '../../constants/Constants';
-import {checkValue } from '../utils/commonUtils'
+import { SECURE_LAUNCHER, SC } from '../../constants/Constants';
+import { checkValue } from '../utils/commonUtils'
 import { Link } from 'react-router-dom';
 import {
     Card,
@@ -27,34 +27,34 @@ class WhiteLabels extends Component {
     }
 
     showInfoModal = (e, visible) => {
-        if(this.props.whiteLabelInfo.apks.length && visible){
-           let index = this.props.whiteLabelInfo.apks.findIndex(apk => apk.package_name === SECURE_LAUNCHER)
-           if(index > -1){
-               this.setState({
-                   secureLouncer: this.props.whiteLabelInfo.apks[index],
-                   info_modal: visible
-               })
-           }
+        if (this.props.whiteLabelInfo.apks.length && visible) {
+            let index = this.props.whiteLabelInfo.apks.findIndex(apk => apk.package_name === SECURE_LAUNCHER)
+            if (index > -1) {
+                this.setState({
+                    secureLouncer: this.props.whiteLabelInfo.apks[index],
+                    info_modal: visible
+                })
+            }
 
-           let index2 = this.props.whiteLabelInfo.apks.findIndex(apk => apk.package_name === SC)
-           if(index2 > -1){
-               this.setState({
-                   scApk: this.props.whiteLabelInfo.apks[index2],
-                   info_modal: visible
-               })
-           }
-           else{
-            this.setState({
-                info_modal: visible
-            })
-           }
-        }else{
+            let index2 = this.props.whiteLabelInfo.apks.findIndex(apk => apk.package_name === SC)
+            if (index2 > -1) {
+                this.setState({
+                    scApk: this.props.whiteLabelInfo.apks[index2],
+                    info_modal: visible
+                })
+            }
+            else {
+                this.setState({
+                    info_modal: visible
+                })
+            }
+        } else {
             this.setState({
                 info_modal: visible,
-    
+
             })
         }
-        
+
     }
     editInfoModal = (e, visible) => {
         this.setState({
@@ -78,7 +78,7 @@ class WhiteLabels extends Component {
     }
 
     render() {
-console.log(this.props.whiteLabelInfo, 'whitelables', this.state.secureLouncer)
+        console.log(this.props.whiteLabelInfo, 'whitelables', this.state.secureLouncer)
         return (
             <div>
 
@@ -86,7 +86,7 @@ console.log(this.props.whiteLabelInfo, 'whitelables', this.state.secureLouncer)
                     justify='center'
                     style={{ backgroundColor: '#012346', height: 110, paddingTop: 20 }}
                 >
-                    <h1 style={{color:'white'}}>{this.props.whiteLabelInfo.name}</h1>
+                    <h1 style={{ color: 'white' }} className="ml-16">{this.props.whiteLabelInfo.name}</h1>
                 </Row>
                 <div style={{ marginTop: -40 }}>
                     <Row>
@@ -102,7 +102,7 @@ console.log(this.props.whiteLabelInfo, 'whitelables', this.state.secureLouncer)
                                             </div>
                                             <Button type="primary" size="small" className="open_btn">Open</Button>
                                         </Card>
-                                    </a> 
+                                    </a>
                                     <Modal
                                         maskClosable={false}
                                         destroyOnClose={true}
