@@ -60,7 +60,7 @@ class SidebarContent extends Component {
         <div className="gx-sidebar-content ">
           <div className={`gx-sidebar-notifications ${this.getNoHeaderClass(navStyle)} `}>
             <UserProfile
-              logout = {this.props.logout}
+              logout={this.props.logout}
             />
             {/* <AppsNavigation/> */}
           </div>
@@ -71,6 +71,15 @@ class SidebarContent extends Component {
             theme={themeType === THEME_TYPE_LITE ? 'lite' : 'dark'}
             mode="inline"
           >
+
+            {/* <Menu.Item key="devices">
+              <Link to="/devices">
+                <i className="icon icon-mobile" >
+                  <i className="fa fa-mobile" aria-hidden="true"></i>
+                </i>
+                <IntlMessages id="sidebar.devices" />
+              </Link>
+            </Menu.Item> */}
 
             <Menu.Item key="labels" disabled>
 
