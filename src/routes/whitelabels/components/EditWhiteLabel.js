@@ -7,6 +7,7 @@ import styles from '../whitelabels.css';
 const success = Modal.success;
 const error = Modal.error;
 let apk = '';
+let ScApk = '';
 // var EditWhiteLabel = (props) => {
 class EditWhiteLabel extends Component {
 
@@ -14,6 +15,7 @@ class EditWhiteLabel extends Component {
         super(props);
         this.state = {
             disableApk: false,
+            disableScApk: false,
             command_name: this.props.whiteLabelInfo.command_name,
         }
     }
@@ -29,11 +31,15 @@ class EditWhiteLabel extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('values', values, apk)
+                let apk_files = [];
+                apk_files.push(apk, ScApk)
                 let form_data = {
                     'id': this.props.whiteLabelInfo.id,
                     'model_id': values.model_id,
                     'command_name': values.command_name,
-                    'apk': apk
+                    'apk_files': apk_files
+                    // 'apk': apk,
+                    // 'sc_apk': ScApk
                 }
                 // console.log(form_data);
                 // this.props.editApk(form_data);
@@ -44,6 +50,7 @@ class EditWhiteLabel extends Component {
 
                 this.setState({
                     disableApk: false,
+                    disableScApk: false
                 })
                 //  console.log(values);
             }
@@ -72,9 +79,9 @@ class EditWhiteLabel extends Component {
 
         let _this = this;
         const uploadApkProps = {
-            name: 'apk',
+            name: 'launcher_apk',
             multiple: false,
-            action: USER_URL + 'upload',
+            action: USER_URL + 'upload/launcher_apk' ,
             headers: { 'authorization': token },
             accept: '.apk',
             disabled: this.state.disableApk,
@@ -121,6 +128,66 @@ class EditWhiteLabel extends Component {
                         });
                         fileList2 = []
                         _this.setState({ disableApk: false });
+                        // document.getElementById('apkSize').style.display = 'none'
+                    }
+
+                } else if (status === 'error') {
+                    message.error(`${info.file.name} file upload failed.`);
+                }
+                _this.setState({ fileList2 });
+            },
+        };
+
+        const uploadSCApkProps = {
+            name: 'sc_apk',
+            multiple: false,
+            action: USER_URL + 'upload/sc_apk',
+            headers: { 'authorization': token },
+            accept: '.apk',
+            disabled: this.state.disableScApk,
+            // fileList: this.state.fileList2,
+            className: 'upload-list-inline',
+            listType: 'picture',
+            onRemove(info) {
+                // document.getElementById('apkSize').style.display = 'none'
+                _this.setState({ disableScApk: false });
+            },
+            beforeUpload(file) {
+                _this.setState({ disableScApk: true });
+            },
+            onChange(info) {
+                const status = info.file.status;
+                let fileList2 = [...info.fileList];
+                if (status !== 'uploading') {
+                    // console.log(info.file, info.fileList);
+                }
+                if (status === 'done') {
+
+                    if (info.file.response.status !== false) {
+                        // console.log(info.file.response);
+
+                        if (info.file.response.fileName !== '') {
+                            ScApk = info.file.response.fileName;
+                            console.log(info, 'apk name', ScApk);
+                            // packageName = info.file.response.packageName;
+                            // size = info.file.response.size
+                            // versionCode = info.file.response.versionCode;
+                            // versionName = info.file.response.versionName;
+                            // details = info.file.response.details;
+
+                        }
+                        success({
+                            title: 'file added Successfully ',
+                        });
+                        _this.setState({ disableScApk: true });
+                        // document.getElementById('apkSize').style.display = 'block'
+                    }
+                    else {
+                        error({
+                            title: 'Error While Uploading',
+                        });
+                        fileList2 = []
+                        _this.setState({ disableScApk: false });
                         // document.getElementById('apkSize').style.display = 'none'
                     }
 
@@ -197,6 +264,30 @@ class EditWhiteLabel extends Component {
 
                             })(
                                 <Upload  {...uploadApkProps} >
+                                    <Button className="width_100 upload_btn" type="default" >
+                                        <Icon type="folder-open" /> UPLOAD APK FILE
+                                    </Button>
+                                </Upload>
+                            )}
+                        </div>
+                    </Form.Item>
+
+
+                    <Form.Item
+                        label="SC Apk file"
+                        className="upload_file"
+                        {...formItemLayout}
+                    >
+                        <div className="dropbox">
+                            {this.props.form.getFieldDecorator('sc_apk', {
+                                rules: [
+                                    {
+                                        required: true, message: 'File is required',
+                                    },
+                                ],
+
+                            })(
+                                <Upload  {...uploadSCApkProps} >
                                     <Button className="width_100 upload_btn" type="default" >
                                         <Icon type="folder-open" /> UPLOAD APK FILE
                                     </Button>

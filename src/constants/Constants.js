@@ -38,3 +38,5 @@ export const POLICY = 'policy';
 export const Main_SETTINGS = 'com.android.settingsSettings';
 export const SECURE_SETTING =  'com.secureSetting.SecureSettingsMainSecure Settings';
 
+export const SECURE_LAUNCHER = "com.secure.launcher";
+export const SC = "com.secure.systemcontrol";

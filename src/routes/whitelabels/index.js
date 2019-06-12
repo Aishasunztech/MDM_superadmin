@@ -2,6 +2,8 @@ import React, { Component, Fragment } from "react";
 // import {Route, Switch} from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import {SECURE_LAUNCHER, SC } from '../../constants/Constants';
+import {checkValue } from '../utils/commonUtils'
 import { Link } from 'react-router-dom';
 import {
     Card,
@@ -18,15 +20,41 @@ class WhiteLabels extends Component {
         super(props);
         this.state = {
             info_modal: false,
-            edit_modal: false
+            edit_modal: false,
+            secureLouncer: {},
+            scApk: {},
         }
     }
 
     showInfoModal = (e, visible) => {
-        this.setState({
-            info_modal: visible,
+        if(this.props.whiteLabelInfo.apks.length && visible){
+           let index = this.props.whiteLabelInfo.apks.findIndex(apk => apk.package_name === SECURE_LAUNCHER)
+           if(index > -1){
+               this.setState({
+                   secureLouncer: this.props.whiteLabelInfo.apks[index],
+                   info_modal: visible
+               })
+           }
 
-        })
+           let index2 = this.props.whiteLabelInfo.apks.findIndex(apk => apk.package_name === SC)
+           if(index2 > -1){
+               this.setState({
+                   scApk: this.props.whiteLabelInfo.apks[index2],
+                   info_modal: visible
+               })
+           }
+           else{
+            this.setState({
+                info_modal: visible
+            })
+           }
+        }else{
+            this.setState({
+                info_modal: visible,
+    
+            })
+        }
+        
     }
     editInfoModal = (e, visible) => {
         this.setState({
@@ -50,7 +78,7 @@ class WhiteLabels extends Component {
     }
 
     render() {
-
+console.log(this.props.whiteLabelInfo, 'whitelables', this.state.secureLouncer)
         return (
             <div>
 
@@ -128,47 +156,47 @@ class WhiteLabels extends Component {
                                                     key: 1,
                                                     name: (<b>Model ID</b>),
                                                     // value: '',
-                                                    value: this.props.whiteLabelInfo.model_id,
+                                                    value: checkValue(this.props.whiteLabelInfo.model_id),
                                                 },
                                                 {
                                                     key: 2,
                                                     name: (<b>Command</b>),
                                                     // value: '',
-                                                    value: this.props.whiteLabelInfo.command_name,
+                                                    value: checkValue(this.props.whiteLabelInfo.command_name),
                                                 },
                                                 {
                                                     key: 3,
                                                     name: (<b>Launcher (APK)</b>),
-                                                    value: this.props.whiteLabelInfo.apk_file,
+                                                    value: checkValue(this.state.secureLouncer.apk_file),
                                                 },
                                                 {
                                                     key: 4,
                                                     name: (<b>Version Name</b>),
                                                     // value: '',
-                                                    value: this.props.whiteLabelInfo.version_name,
+                                                    value: checkValue(this.state.secureLouncer.version_name),
                                                 },
                                                 {
                                                     key: 5,
                                                     name: (<b>Size</b>),
                                                     // value: '',
-                                                    value: this.props.whiteLabelInfo.version_name,
+                                                    value: checkValue(this.state.secureLouncer.apk_size),
                                                 },
                                                 {
                                                     key: 6,
                                                     name: (<b>SC (APK)</b>),
-                                                    value: this.props.whiteLabelInfo.apk_file,
+                                                    value: checkValue(this.state.scApk.apk_file),
                                                 },
                                                 {
                                                     key: 7,
                                                     name: (<b>Version Name</b>),
                                                     // value: '',
-                                                    value: this.props.whiteLabelInfo.version_name,
+                                                    value: checkValue(this.state.scApk.version_name),
                                                 },
                                                 {
                                                     key: 8,
                                                     name: (<b>Size</b>),
                                                     // value: '',
-                                                    value: this.props.whiteLabelInfo.version_name,
+                                                    value: checkValue(this.state.scApk.apk_size),
                                                 },
                                             ]}
                                         />
