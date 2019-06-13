@@ -83,6 +83,10 @@ const RestService = {
 
     },
 
+    getFile: (filename) => {
+        window.location = BASE_URL + 'users/getFile/' + filename;
+    },
+
     twoFactorAuth: (isEnable) => {
         return axios.post(BASE_URL + 'users/two_factor_auth', { isEnable: isEnable }, RestService.getHeader())
     },

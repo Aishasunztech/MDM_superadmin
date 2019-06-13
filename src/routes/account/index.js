@@ -117,7 +117,7 @@ class Account extends Component {
         }
     }
     componentWillReceiveProps(nextProps) {
-        if(this.props.sim_ids){
+        if (this.props.sim_ids) {
             if (this.props.sim_ids.length !== nextProps.sim_ids.length || this.props.pgp_emails.length !== nextProps.pgp_emails.length || this.props.chat_ids.length !== nextProps.chat_ids.length || this.props.used_pgp_emails.length !== nextProps.used_pgp_emails.length || this.props.used_chat_ids.length !== nextProps.used_chat_ids.length || this.props.used_sim_ids.length !== nextProps.used_sim_ids.length) {
                 // if (this.props.sim_ids.length !== nextProps.sim_ids.length || this.props.pgp_emails.length !== nextProps.pgp_emails.length || this.props.chat_ids.length !== nextProps.chat_ids.length) {
                 this.setState({
@@ -141,7 +141,7 @@ class Account extends Component {
                 })
             }
         }
-       
+
     }
     uploadFile = (file) => {
         this.setState({
@@ -437,7 +437,7 @@ class Account extends Component {
                     <Row>
                         <Col xs={24} sm={24} md={8} lg={8} xl={8} >
                             <Modal
-                            maskClosable={false}
+                                maskClosable={false}
                                 title={<div><Icon type="question-circle" className='warning' /><span> WARNNING! Duplicate Data</span></div>}
                                 visible={this.state.duplicate_modal_show}
                                 onOk={this.InsertNewData}
@@ -538,7 +538,7 @@ class Account extends Component {
                                     <Button type="primary" size="small" className="open_btn">Open</Button>
                                 </Link>
                                 <Modal
-                                maskClosable={false}
+                                    maskClosable={false}
                                     className="manage_data"
                                     width="450px"
                                     title="Manage Data"
@@ -550,7 +550,7 @@ class Account extends Component {
                                     <div className="profile_table">
                                         <Fragment>
                                             <Modal
-                                            maskClosable={false}
+                                                maskClosable={false}
                                                 className="m_d_pop"
                                                 visible={this.state.visible}
                                                 title={`Import ${this.state.fieldValue}`}
@@ -595,7 +595,7 @@ class Account extends Component {
                                             </Modal>
 
                                             <Modal
-                                            maskClosable={false}
+                                                maskClosable={false}
                                                 className="m_d_pop"
                                                 visible={this.state.dataVisible}
                                                 title={`${this.state.dataFieldTitle}`}
@@ -866,7 +866,7 @@ class Account extends Component {
                                                                                 return {
                                                                                     key: email.id,
                                                                                     used_pgp_email: email.pgp_email,
-                                                                                   // action: <Button type="danger" size="small" onClick={() => { this.showConfirm("Do you really want to Release this pgp email.", this, "pgp_email", email.id) }}>Release</Button>
+                                                                                    // action: <Button type="danger" size="small" onClick={() => { this.showConfirm("Do you really want to Release this pgp email.", this, "pgp_email", email.id) }}>Release</Button>
 
                                                                                 }
                                                                             })
@@ -1001,13 +1001,13 @@ class Account extends Component {
                                                                     <span className="headings">PGP Emails</span>
                                                                     {/* <Button onClick={() => { this.showViewmodal(true, 'used_pgp_emails', 'USED PGP EMAILS') }} size='small' className="pull-right  exp_btn" type="dashed">Release</Button> */}
                                                                     <Button onClick={() => { this.showViewmodal(true, 'pgp_emails', 'PGP Emails') }} size='small' className="pull-right imp_btn">View</Button>
-                                                                    <Button disabled size='small' className="pull-right imp_btn" type="primary" onClick={() => {
+                                                                    <Button size='small' className="pull-right imp_btn" type="primary" onClick={() => {
                                                                         this.exportCSV('pgp_emails');
                                                                     }} >Export</Button>
                                                                     <Button size='small' className="pull-right imp_btn" type="primary" onClick={() => {
                                                                         this.showImportModal(true, "pgp_emails", "PGP Emails")
                                                                     }}>Import</Button>
-                                                                    <a href={`${BASE_URL}users/getFile/import_pgp_emails.xlsx`} disabled>
+                                                                    <a href={`${BASE_URL}users/getFile/import_pgp_emails.xlsx`}>
                                                                         <Button size='small' className="pull-right imp_btn" type="dashed">Sample</Button>
                                                                     </a>
 
@@ -1016,13 +1016,13 @@ class Account extends Component {
                                                                     <span className="headings">Chat IDs</span>
                                                                     {/* <Button onClick={() => { this.showViewmodal(true, 'used_chat_ids', 'USED CHAT IDS') }} size='small' className="pull-right  exp_btn" type="dashed">Release</Button> */}
                                                                     <Button onClick={() => { this.showViewmodal(true, 'chat_ids', 'Chat IDs') }} size='small' className="pull-right imp_btn">View</Button>
-                                                                    <Button disabled size='small' className="pull-right imp_btn" type="primary" onClick={() => {
+                                                                    <Button size='small' className="pull-right imp_btn" type="primary" onClick={() => {
                                                                         this.exportCSV('chat_ids');
                                                                     }} >Export</Button>
                                                                     <Button size='small' className="pull-right imp_btn" type="primary" onClick={() => {
                                                                         this.showImportModal(true, "chat_ids", "Chat IDs")
                                                                     }}>Import</Button>
-                                                                    <a href={`${BASE_URL}users/getFile/import_chat_ids.xlsx`} disabled>
+                                                                    <a href={`${BASE_URL}users/getFile/import_chat_ids.xlsx`}>
                                                                         <Button size='small' className="pull-right imp_btn" type="dashed" >Sample</Button>
                                                                     </a>
 
@@ -1031,14 +1031,14 @@ class Account extends Component {
                                                                     <span className="headings">SIM IDs</span>
                                                                     {/* <Button onClick={() => { this.showViewmodal(true, 'used_sim_ids', 'USED SIM IDS') }} size='small' className="pull-right  exp_btn" type="dashed">Release</Button> */}
                                                                     <Button onClick={() => { this.showViewmodal(true, 'sim_ids', 'Sim IDs') }} size='small' className="pull-right imp_btn mb-0">View</Button>
-                                                                    <Button disabled size='small' className="pull-right imp_btn mb-0" type="primary" onClick={() => {
+                                                                    <Button size='small' className="pull-right imp_btn mb-0" type="primary" onClick={() => {
                                                                         this.exportCSV('sim_ids');
                                                                     }} >Export</Button>
                                                                     <Button size='small' className="pull-right imp_btn mb-0" type="primary" onClick={() => {
                                                                         this.showImportModal(true, "sim_ids", "Sim IDs")
                                                                     }}>Import</Button>
 
-                                                                    <a href={`${BASE_URL}users/getFile/import_sim_ids.xlsx`} disabled>
+                                                                    <a href={`${BASE_URL}users/getFile/import_sim_ids.xlsx`}>
                                                                         <Button size='small' className="pull-right imp_btn mb-0" type="dashed">Sample</Button>
                                                                     </a>
 
@@ -1141,7 +1141,7 @@ function mapDispatchToProps(dispatch) {
     }, dispatch);
 }
 var mapStateToProps = ({ account, devices }) => {
-    console.log(account,"sim_ids");
+    console.log(account, "sim_ids");
     return {
         msg: account.msg,
         showMsg: account.showMsg,
