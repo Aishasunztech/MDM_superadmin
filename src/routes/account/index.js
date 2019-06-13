@@ -117,7 +117,7 @@ class Account extends Component {
         }
     }
     componentWillReceiveProps(nextProps) {
-        if(this.props.sim_ids){
+        if (this.props.sim_ids) {
             if (this.props.sim_ids.length !== nextProps.sim_ids.length || this.props.pgp_emails.length !== nextProps.pgp_emails.length || this.props.chat_ids.length !== nextProps.chat_ids.length || this.props.used_pgp_emails.length !== nextProps.used_pgp_emails.length || this.props.used_chat_ids.length !== nextProps.used_chat_ids.length || this.props.used_sim_ids.length !== nextProps.used_sim_ids.length) {
                 // if (this.props.sim_ids.length !== nextProps.sim_ids.length || this.props.pgp_emails.length !== nextProps.pgp_emails.length || this.props.chat_ids.length !== nextProps.chat_ids.length) {
                 this.setState({
@@ -141,7 +141,7 @@ class Account extends Component {
                 })
             }
         }
-       
+
     }
     uploadFile = (file) => {
         this.setState({
@@ -437,7 +437,7 @@ class Account extends Component {
                     <Row>
                         <Col xs={24} sm={24} md={8} lg={8} xl={8} >
                             <Modal
-                            maskClosable={false}
+                                maskClosable={false}
                                 title={<div><Icon type="question-circle" className='warning' /><span> WARNNING! Duplicate Data</span></div>}
                                 visible={this.state.duplicate_modal_show}
                                 onOk={this.InsertNewData}
@@ -538,7 +538,7 @@ class Account extends Component {
                                     <Button type="primary" size="small" className="open_btn">Open</Button>
                                 </Link>
                                 <Modal
-                                maskClosable={false}
+                                    maskClosable={false}
                                     className="manage_data"
                                     width="450px"
                                     title="Manage Data"
@@ -550,7 +550,7 @@ class Account extends Component {
                                     <div className="profile_table">
                                         <Fragment>
                                             <Modal
-                                            maskClosable={false}
+                                                maskClosable={false}
                                                 className="m_d_pop"
                                                 visible={this.state.visible}
                                                 title={`Import ${this.state.fieldValue}`}
@@ -595,7 +595,7 @@ class Account extends Component {
                                             </Modal>
 
                                             <Modal
-                                            maskClosable={false}
+                                                maskClosable={false}
                                                 className="m_d_pop"
                                                 visible={this.state.dataVisible}
                                                 title={`${this.state.dataFieldTitle}`}
@@ -866,7 +866,7 @@ class Account extends Component {
                                                                                 return {
                                                                                     key: email.id,
                                                                                     used_pgp_email: email.pgp_email,
-                                                                                   // action: <Button type="danger" size="small" onClick={() => { this.showConfirm("Do you really want to Release this pgp email.", this, "pgp_email", email.id) }}>Release</Button>
+                                                                                    // action: <Button type="danger" size="small" onClick={() => { this.showConfirm("Do you really want to Release this pgp email.", this, "pgp_email", email.id) }}>Release</Button>
 
                                                                                 }
                                                                             })
@@ -1079,7 +1079,7 @@ class Account extends Component {
                                         </Card>
                                     </a>
                                     <div className="middle">
-                                        <div className="text">Coming Soon</div>
+                                        <div className="text text2">Coming Soon</div>
                                     </div>
                                 </div>
                             </div>
@@ -1108,7 +1108,7 @@ class Account extends Component {
                                         </Card>
                                     </a>
                                     <div className="middle">
-                                        <div className="text">Coming Soon</div>
+                                        <div className="text text2">Coming Soon</div>
                                     </div>
                                 </div>
                             </div>
@@ -1141,7 +1141,7 @@ function mapDispatchToProps(dispatch) {
     }, dispatch);
 }
 var mapStateToProps = ({ account, devices }) => {
-    console.log(account,"sim_ids");
+    console.log(account, "sim_ids");
     return {
         msg: account.msg,
         showMsg: account.showMsg,
