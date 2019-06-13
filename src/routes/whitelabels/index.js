@@ -238,7 +238,7 @@ class WhiteLabels extends Component {
                                     <a href="javascript:void(0)">
                                         <Card className="manage_sec" style={{ borderRadius: 12 }}>
                                             <div>
-                                                <h2 style={{ textAlign: "center" }}>FailSaif APK</h2>
+                                                <h2 style={{ textAlign: "center" }}>FailSafe APK</h2>
                                                 <Divider className="mb-0" />
 
                                             </div>
