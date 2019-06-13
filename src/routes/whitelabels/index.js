@@ -93,16 +93,16 @@ class WhiteLabels extends Component {
                         <Col xs={24} sm={24} md={6} lg={6} xl={6}>
                             <div>
                                 <div className="contenar">
-                                    <a href="javascript:void(0)" onClick={(e) => { this.showInfoModal(e, true) }} >
+                                    <Link to="#" onClick={(e) => { this.showInfoModal(e, true) }} >
                                         <Card className="manage_sec" style={{ borderRadius: 12 }}>
                                             <div>
                                                 <h2 style={{ textAlign: "center" }}>Model ID</h2>
                                                 <Divider className="mb-0" />
 
                                             </div>
-                                            <Button type="primary" size="small" className="open_btn">Open</Button>
+                                            <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
-                                    </a>
+                                    </Link>
                                     <Modal
                                         maskClosable={false}
                                         destroyOnClose={true}
@@ -223,7 +223,7 @@ class WhiteLabels extends Component {
                                                 <Divider className="mb-0" />
 
                                             </div>
-                                            <Button type="primary" size="small" className="open_btn">Open</Button>
+                                            <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
                                     </a>
                                     <div className="middle">
@@ -242,7 +242,7 @@ class WhiteLabels extends Component {
                                                 <Divider className="mb-0" />
 
                                             </div>
-                                            <Button type="primary" size="small" className="open_btn">Open</Button>
+                                            <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
                                     </a>
                                     <div className="middle">
@@ -261,7 +261,7 @@ class WhiteLabels extends Component {
                                                 <Divider className="mb-0" />
 
                                             </div>
-                                            <Button type="primary" size="small" className="open_btn">Open</Button>
+                                            <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
                                     </a>
                                     <div className="middle">
@@ -282,7 +282,7 @@ class WhiteLabels extends Component {
                                                 <Divider className="mb-0" />
 
                                             </div>
-                                            <Button type="primary" size="small" className="open_btn">Open</Button>
+                                            <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
                                     </a>
                                     <div className="middle">
@@ -301,7 +301,7 @@ class WhiteLabels extends Component {
                                                 <Divider className="mb-0" />
 
                                             </div>
-                                            <Button type="primary" size="small" className="open_btn">Open</Button>
+                                            <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
                                     </a>
                                     <div className="middle">

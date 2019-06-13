@@ -81,16 +81,14 @@ class SidebarContent extends Component {
               </Link>
             </Menu.Item> */}
 
-            <Menu.Item key="labels" disabled>
-
-              <Link to="/labels">
+            <Menu.Item key="labels" disabled style={{ cursor: "auto" }}>
+              <Link to="#">
                 <span>
-                  <i className="icon icon-dasbhoard" />
+                  <i className="icon" />
                   <IntlMessages id="sidebar.labels" />
                 </span>
               </Link>
             </Menu.Item>
-
             <Menu.SubMenu
               key="labelsMenu"
               disabled
@@ -113,7 +111,7 @@ class SidebarContent extends Component {
             </Menu.SubMenu>
             <Menu.Item key="account">
               <Link to="/account">
-                <i className="icon icon-crypto" />
+                <i className="icon icon-profile2" />
                 Account
                 </Link>
             </Menu.Item>
