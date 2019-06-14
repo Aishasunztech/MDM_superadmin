@@ -517,7 +517,8 @@ class Account extends Component {
                                 />
                             </Modal>
                             <div>
-                                <Link to="#" onClick={this.showModal}>
+                                {/* onClick={this.showModal} */}
+                                <Link to="/account/managedata">
                                     <Card className="manage_ac" style={{ borderRadius: 12 }}>
                                         <div>
                                             <h2 style={{ textAlign: "center" }}>Manage Data</h2>

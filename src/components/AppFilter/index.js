@@ -13,6 +13,16 @@ import {
     getUser
 } from "../../appRedux/actions/Auth";
 
+import {
+    // importCSV,
+    exportCSV,
+    // releaseCSV,
+    // getUsedPGPEmails,
+    // getUsedChatIds,
+    // getUsedSimIds,
+    // insertNewData
+} from "../../appRedux/actions/Account";
+
 
 class AppFilter extends Component {
     constructor(props) {
@@ -81,6 +91,10 @@ class AppFilter extends Component {
         this.props.handleComponentSearch(value);
     }
 
+    exportCSV = (fieldName) => {
+        this.props.exportCSV(fieldName);
+    }
+
     render() {
         // console.log(" Current State", this.props)
         let fullScreenClass1 = "";
@@ -101,105 +115,30 @@ class AppFilter extends Component {
             // className="gutter-example"
             <Card >
                 <Row gutter={16} className="filter_top">
-                    <Col className={`${fullScreenClass1} col-sm-6 col-xs-12`}>
+                    <Col className="col-md-3 col-sm-6 col-xs-12">
                         <div className="gutter-box">
-                            {(this.props.options !== undefined && this.props.options !== null) ?
-                                <Fragment>
-                                    <Icon type="down" className="down_icon" />
-                                    <Picky
-                                        options={this.props.options}
-                                        value={this.state.selectedDisplayValues}
-                                        placeholder="Display"
-                                        className="display_"
-                                        multiple={true}
-                                        includeSelectAll={true}
-                                        onChange={values => this.setDropdowns(values)}
-                                        dropdownHeight={300}
-                                        renderSelectAll={({
-                                            filtered,
-                                            tabIndex,
-                                            allSelected,
-                                            toggleSelectAll,
-                                            multiple
-                                        }) => {
-                                            // Don't show if single select or items have been filtered.
-                                            if (multiple && !filtered) {
-                                                return (
-
-                                                    <li
-                                                        tabIndex={tabIndex}
-                                                        role="option"
-                                                        className={allSelected ? 'option selected' : 'option'}
-                                                        onClick={toggleSelectAll}
-                                                        onKeyPress={toggleSelectAll}
-                                                        key={tabIndex}
-                                                    >
-                                                        {/* required to select item */}
-                                                        {/* <input type="checkbox" checked={isSelected} readOnly /> */}
-                                                        <Checkbox
-                                                            checked={allSelected} className="slct_all"
-                                                        >SELECT ALL</Checkbox>
-                                                    </li>
-                                                );
-                                            }
-                                        }
-                                        }
-
-                                        render={({
-                                            style,
-                                            isSelected,
-                                            item,
-                                            selectValue,
-                                            labelKey,
-                                            valueKey,
-                                            multiple
-                                        }) => {
-                                            return (
-                                                <li
-                                                    style={style} // required
-                                                    className={isSelected ? 'selected' : ''} // required to indicate is selected
-                                                    key={item} // required
-                                                    onClick={() => selectValue(item)}
-                                                >
-                                                    {/* required to select item */}
-                                                    {/* <input type="checkbox" checked={isSelected} readOnly /> */}
-                                                    <Checkbox checked={isSelected}>{item}</Checkbox>
-
-                                                </li>
-                                            );
-                                        }
-                                        }
-                                    />
-                                </Fragment>
-                                :
-                                null
-                            }
+                            <h1>Manage Data</h1>
 
                         </div>
                     </Col>
-                    <Col className={`${fullScreenClass1} col-sm-6 col-xs-12`}>
-                        <div className="gutter-box">
-                            {(this.props.handleFilterOptions !== undefined && this.props.handleFilterOptions !== null) ? this.props.handleFilterOptions() : null}
-                        </div>
-                    </Col>
-                    <Col className={`${fullScreenClass2} col-sm-6 col-xs-12`}>
+                    <Col className="col-md-7 col-sm-6 col-xs-12">
                         <div className="gutter-box">
                             <Search
 
-                                placeholder={this.props.searchPlaceholder}
+                                placeholder="Search..."
                                 onChange={e => this.handleComponentSearch(e.target.value)}
                                 style={{ width: '100%' }}
                             />
                         </div>
                     </Col>
-                    <Col className={`${fullScreenClass2} col-sm-6 col-xs-12`}>
+                    {/* <Col className="col-md-2 col-sm-6 col-xs-12">
                         <div className="gutter-box">
                             <Select
-                                value={this.state.DisplayPages}
+                                value="Import"
                                 //  defaultValue={this.state.DisplayPages}
                                 style={{ width: '100%' }}
                                 // onSelect={value => this.setState({DisplayPages:value})}
-                                onChange={value => this.handlePagination(value)}
+                                // onChange={value => this.handlePagination(value)}
                             >
                                 <Select.Option value="10" >10</Select.Option>
                                 <Select.Option value="20">20</Select.Option>
@@ -208,54 +147,41 @@ class AppFilter extends Component {
                                 <Select.Option value="100">100</Select.Option>
                             </Select>
                         </div>
-                    </Col>
-                    <Col className={`${fullScreenClass2} col-sm-12 col-xs-12`}>
+                    </Col> */}
+
+                    <Col className="col-md-2 col-sm-6 col-xs-12">
                         <div className="gutter-box">
-                            {
-                                (this.props.isAddButton === true) ?
-                                    (this.props.toLink !== undefined && this.props.toLink !== '' && this.props.toLink !== null) ?
-
-                                        <Button
-                                            type="primary"
-                                            disabled={(this.props.disableAddButton === true) ? true : false}
-                                            style={{ width: '100%' }}
-                                        >
-                                            <Link to={this.props.toLink}>{this.props.addButtonText}</Link>
-                                        </Button>
-
-                                        :
-                                        (this.props.AddDeviceModal) ?
-                                            <Button
-                                                type="primary"
-                                                disabled={(this.props.disableAddButton === true) ? true : false}
-                                                style={{ width: '100%' }}
-                                                onClick={() => this.props.handleDeviceModal(true)}
-                                            >
-                                                {this.props.addButtonText}
-                                            </Button>
-                                            :
-                                            (this.props.AddPolicyModel) ?
-                                                <Button
-                                                    type="primary"
-                                                    disabled={(this.props.disableAddButton === true) ? true : false}
-                                                    style={{ width: '100%' }}
-                                                    onClick={() => this.props.handlePolicyModal(true)}
-                                                >
-                                                    {this.props.addButtonText}
-                                                </Button>
-                                                :
-                                                <Button
-                                                    type="primary"
-                                                    disabled={(this.props.disableAddButton === true) ? true : false}
-                                                    style={{ width: '100%' }}
-                                                    onClick={() => this.props.handleUserModal()}
-                                                >
-                                                    {this.props.addButtonText}
-                                                </Button>
-                                    : null
-                            }
+                            <Select
+                                value="Export"
+                                //  defaultValue={this.state.DisplayPages}
+                                style={{ width: '100%' }}
+                                // onSelect={value => this.setState({DisplayPages:value})}
+                                // onChange={value => this.handlePagination(value)}
+                            >
+                                <Select.Option value="10" 
+                                 onClick={() => {
+                                    this.exportCSV('sim_ids');
+                                }}
+                                >Export SIM IDs</Select.Option>
+                                <Select.Option value="20"
+                                onClick={() => {
+                                    this.exportCSV('chat_ids');
+                                }}
+                                >Export CHAT IDs</Select.Option>
+                                <Select.Option value="30"
+                                onClick={() => {
+                                    this.exportCSV('pgp_emails');
+                                }}
+                                >Export PGP Emails</Select.Option>
+                                <Select.Option value="50"
+                                // onClick={() => {
+                                //     this.exportCSV('vpn');
+                                // }}
+                                >Export VPNs</Select.Option>
+                            </Select>
                         </div>
                     </Col>
+
 
                 </Row>
             </Card>
@@ -265,6 +191,7 @@ class AppFilter extends Component {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
+        exportCSV: exportCSV,
         // checkComponent: checkComponent,
         // getUser: getUser
     }, dispatch);

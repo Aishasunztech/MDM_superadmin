@@ -140,6 +140,7 @@ const RestService = {
         return axios.get(BASE_URL + 'users/get_sim_ids', RestService.getHeader());
     },
     getChatIDs: () => {
+        console.log('hi')
         return axios.get(BASE_URL + 'users/get_chat_ids', RestService.getHeader());
     },
     getPGPEmails: () => {
