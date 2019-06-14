@@ -3,6 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import Account from "./account/index";
 import WhiteLabels from "./whitelabels/index";
 import Device from "./devices/index";
+import AutoUpdate from './autoUpdate/index'
 
 import FourOFour from "./404/";
 
@@ -45,6 +46,12 @@ const AppRoutes = ({ match, whiteLabels }) => {
           path={`${match.url}devices`}
           component={Device}
         />
+        <Route
+          exact
+          path={`${match.url}apk-list/autoupdate`}
+          component={AutoUpdate}
+        />
+
         <Route
           path="*"
           component={FourOFour}

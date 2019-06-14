@@ -7,6 +7,7 @@ import Account from "./Account"
 import Socket from "./Socket";
 import sidebarMenu from "./SidebarMenu";
 import whiteLabels from './WhiteLabels';
+import Apk_List from "./Apk";
 
 const reducers = combineReducers({
   routing: routerReducer,
@@ -15,7 +16,8 @@ const reducers = combineReducers({
   account: Account,
   Socket: Socket,
   sidebarMenu: sidebarMenu,
-  whiteLabels: whiteLabels
+  whiteLabels: whiteLabels,
+  apk_list: Apk_List,
 });
 
 export default reducers;
