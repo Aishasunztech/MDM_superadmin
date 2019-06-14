@@ -126,6 +126,10 @@ const RestService = {
         return axios.get(USER_URL + 'white-labels/' + id , RestService.getHeader());
     },
 
+    whitelabelBackups: (id)=> {
+        return axios.get(USER_URL + 'whitelabel_backups/'+ id, RestService.getHeader());
+    },
+
     editWhiteLabelInfo: (data) => {
         return axios.put(USER_URL + 'update-white-label', data , RestService.getHeader());
     },
