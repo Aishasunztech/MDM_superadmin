@@ -267,7 +267,7 @@ class EditWhiteLabel extends Component {
                             {this.props.form.getFieldDecorator('apk', {
                                 rules: [
                                     {
-                                        required: true, message: 'File is required',
+                                        required: false, message: 'File is required',
                                     },
                                 ],
 
@@ -291,7 +291,7 @@ class EditWhiteLabel extends Component {
                             {this.props.form.getFieldDecorator('sc_apk', {
                                 rules: [
                                     {
-                                        required: true, message: 'File is required',
+                                        required: false, message: 'File is required',
                                     },
                                 ],
 
