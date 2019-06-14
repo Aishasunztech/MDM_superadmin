@@ -93,16 +93,16 @@ class WhiteLabels extends Component {
                         <Col xs={24} sm={24} md={6} lg={6} xl={6}>
                             <div>
                                 <div className="contenar">
-                                    <a href="javascript:void(0)" onClick={(e) => { this.showInfoModal(e, true) }} >
+                                    <Link to="#" onClick={(e) => { this.showInfoModal(e, true) }} >
                                         <Card className="manage_sec" style={{ borderRadius: 12 }}>
                                             <div>
                                                 <h2 style={{ textAlign: "center" }}>Model ID</h2>
                                                 <Divider className="mb-0" />
 
                                             </div>
-                                            <Button type="primary" size="small" className="open_btn">Open</Button>
+                                            <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
-                                    </a>
+                                    </Link>
                                     <Modal
                                         maskClosable={false}
                                         destroyOnClose={true}
@@ -219,11 +219,11 @@ class WhiteLabels extends Component {
                                     <a href="javascript:void(0)" >
                                         <Card className="manage_sec" style={{ borderRadius: 12 }}>
                                             <div>
-                                                <h2 style={{ textAlign: "center" }}>Credit</h2>
+                                                <h2 style={{ textAlign: "center" }}>BYOD APK</h2>
                                                 <Divider className="mb-0" />
 
                                             </div>
-                                            <Button type="primary" size="small" className="open_btn">Open</Button>
+                                            <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
                                     </a>
                                     <div className="middle">
@@ -238,11 +238,11 @@ class WhiteLabels extends Component {
                                     <a href="javascript:void(0)">
                                         <Card className="manage_sec" style={{ borderRadius: 12 }}>
                                             <div>
-                                                <h2 style={{ textAlign: "center" }}>FailSaif APK</h2>
+                                                <h2 style={{ textAlign: "center" }}>FailSafe APK</h2>
                                                 <Divider className="mb-0" />
 
                                             </div>
-                                            <Button type="primary" size="small" className="open_btn">Open</Button>
+                                            <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
                                     </a>
                                     <div className="middle">
@@ -257,11 +257,11 @@ class WhiteLabels extends Component {
                                     <a href="javascript:void(0)" >
                                         <Card className="manage_sec" style={{ borderRadius: 12 }}>
                                             <div>
-                                                <h2 style={{ textAlign: "center" }}>PGP Emails</h2>
+                                                <h2 style={{ textAlign: "center" }}>Database Backups</h2>
                                                 <Divider className="mb-0" />
 
                                             </div>
-                                            <Button type="primary" size="small" className="open_btn">Open</Button>
+                                            <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
                                     </a>
                                     <div className="middle">
@@ -278,11 +278,11 @@ class WhiteLabels extends Component {
                                     <a href="javascript:void(0)" >
                                         <Card className="manage_sec" style={{ borderRadius: 12 }}>
                                             <div>
-                                                <h2 style={{ textAlign: "center" }}>SIM IDs</h2>
+                                                <h2 style={{ textAlign: "center" }}>Promo</h2>
                                                 <Divider className="mb-0" />
 
                                             </div>
-                                            <Button type="primary" size="small" className="open_btn">Open</Button>
+                                            <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
                                     </a>
                                     <div className="middle">
@@ -297,11 +297,29 @@ class WhiteLabels extends Component {
                                     <a href="javascript:void(0)">
                                         <Card className="manage_sec" style={{ borderRadius: 12 }}>
                                             <div>
-                                                <h2 style={{ textAlign: "center" }}>Chat IDs</h2>
+                                                <h2 style={{ textAlign: "center" }}>Set Prices</h2>
                                                 <Divider className="mb-0" />
 
                                             </div>
-                                            <Button type="primary" size="small" className="open_btn">Open</Button>
+                                            <Button type="primary" size="small" className="open_btn1">Open</Button>
+                                        </Card>
+                                    </a>
+                                    <div className="middle">
+                                        <div className="text">Coming Soon</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </Col>
+                        <Col xs={24} sm={24} md={6} lg={6} xl={6}>
+                            <div>
+                                <div className="contenar">
+                                    <a href="javascript:void(0)">
+                                        <Card className="manage_sec" style={{ borderRadius: 12 }}>
+                                            <div>
+                                                <h2 style={{ textAlign: "center" }}>Load ID's</h2>
+                                                <Divider className="mb-0" />
+                                            </div>
+                                            <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
                                     </a>
                                     <div className="middle">

@@ -1,6 +1,6 @@
 .gx-main-content-wrapper {
     padding: 16px 16px 0;
-} 
+}
 
 .modal_footer {
     display: flex;
@@ -14,9 +14,10 @@
     text-align: center;
 }
 
-.open_btn {
+.manage_sec .open_btn1 {
     width: 60%;
     margin-bottom: 0;
+    margin-top: 12px;
 }
 
 .model_id_table td {
