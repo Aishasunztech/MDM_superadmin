@@ -988,8 +988,7 @@ class Account extends Component {
                                                                                 scroll={{ y: 250 }}
                                                                                 pagination={false}
                                                                             />
-                                                                        </Fragment> : null
-                                                }
+                                                                        </Fragment> : null}
                                             </Modal>
                                             <Row>
                                                 <div className="col-md-12 ac_card">
@@ -1056,7 +1055,7 @@ class Account extends Component {
                                 </Modal>
                             </div>
                         </Col>
-                        <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+                        {/* <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                             <div>
                                 <div className="contenar">
                                     <a href="javascript:void(0)" >
@@ -1080,46 +1079,38 @@ class Account extends Component {
                                         </Card>
                                     </a>
                                     <div className="middle">
-                                        <div className="text">Coming Soon</div>
+                                        <div className="text text2">Coming Soon</div>
                                     </div>
                                 </div>
                             </div>
-                        </Col>
+                        </Col> */}
                         <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                             <div>
-                                <div className="contenar">
-                                    <a href="javascript:void(0)">
+                                <Fragment>
+                                    <Link to="#">
                                         <Card style={{ borderRadius: 12 }} className="manage_ac">
-                                            <div className="profile_table image_1">
-                                                <Fragment>
-                                                    <Row>
-                                                        <div className="col-md-12 ac_card">
-                                                            <h2 style={{ textAlign: "center" }}> <Icon type="credit-card" /> Payment Gateway</h2>
-                                                            <Divider className="mb-0" />
-                                                            <div className="crd_txt">
-                                                                <p><span className="diamond_icon">&#9670;</span>Add/edit payment gateway</p>
-                                                                <p><span className="diamond_icon">&#9670;</span>Set permissions</p>
-                                                                <p><span className="diamond_icon">&#9670;</span>Customize prices and packages</p>
-                                                                <p className="more_txt">and more...</p>
-                                                            </div>
-                                                        </div>
-                                                    </Row>
-                                                </Fragment>
-                                            </div>
+                                            <h2 style={{ textAlign: "center" }}> Billing</h2>
+                                            <Divider className="mb-0" />
+                                            <Row style={{ padding: '12px 0 0px' }}>
+                                                <Col span={7} className="" style={{ textAlign: "center" }}>
+                                                    <Icon type="dollar" className="and_icon" />
+                                                </Col>
+                                                <Col span={16} style={{ padding: 0 }} className="crd_txt">
+                                                    <p><span className="diamond_icon">&#9670;</span>Add/edit payment gateway</p>
+                                                    <p><span className="diamond_icon">&#9670;</span>Set permissions</p>
+                                                    <p><span className="diamond_icon">&#9670;</span>Customize prices and packages</p>
+                                                    <p className="more_txt">and more...</p>
+                                                </Col>
+                                            </Row>
                                         </Card>
-                                    </a>
-                                    <div className="middle">
-                                        <div className="text">Coming Soon</div>
-                                    </div>
-                                </div>
+                                        <Button type="primary" size="small" className="open_btn">Open</Button>
+                                    </Link>
+                                </Fragment>
                             </div>
                         </Col>
                     </Row>
                 </div>
-
-            </div >
-
-
+            </div>
         );
 
     }
