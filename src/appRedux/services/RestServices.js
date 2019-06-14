@@ -83,6 +83,10 @@ const RestService = {
 
     },
 
+    getFile: (filename) => {
+        window.location = BASE_URL + 'users/getFile/' + filename;
+    },
+
     twoFactorAuth: (isEnable) => {
         return axios.post(BASE_URL + 'users/two_factor_auth', { isEnable: isEnable }, RestService.getHeader())
     },
@@ -138,6 +142,7 @@ const RestService = {
         return axios.get(BASE_URL + 'users/get_sim_ids', RestService.getHeader());
     },
     getChatIDs: () => {
+        console.log('hi')
         return axios.get(BASE_URL + 'users/get_chat_ids', RestService.getHeader());
     },
     getPGPEmails: () => {
