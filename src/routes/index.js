@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import Account from "./account/index";
 import WhiteLabels from "./whitelabels/index";
+import Device from "./devices/index";
 
 import FourOFour from "./404/";
 
@@ -34,9 +35,20 @@ const AppRoutes = ({ match, whiteLabels }) => {
               />);
           })
         }
-        <Route exact path={`${match.url}account`} component={Account} />
-
-        <Route path="*" component={FourOFour} />
+        <Route
+          exact
+          path={`${match.url}account`}
+          component={Account}
+        />
+        <Route
+          exact
+          path={`${match.url}devices`}
+          component={Device}
+        />
+        <Route
+          path="*"
+          component={FourOFour}
+        />
       </Switch>
     </div>
   )

@@ -2,8 +2,8 @@ import React, { Component, Fragment } from "react";
 // import {Route, Switch} from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import {SECURE_LAUNCHER, SC } from '../../constants/Constants';
-import {checkValue } from '../utils/commonUtils'
+import { SECURE_LAUNCHER, SC } from '../../constants/Constants';
+import { checkValue } from '../utils/commonUtils'
 import { Link } from 'react-router-dom';
 import {
     Card,
@@ -27,34 +27,34 @@ class WhiteLabels extends Component {
     }
 
     showInfoModal = (e, visible) => {
-        if(this.props.whiteLabelInfo.apks.length && visible){
-           let index = this.props.whiteLabelInfo.apks.findIndex(apk => apk.package_name === SECURE_LAUNCHER)
-           if(index > -1){
-               this.setState({
-                   secureLouncer: this.props.whiteLabelInfo.apks[index],
-                   info_modal: visible
-               })
-           }
+        if (this.props.whiteLabelInfo.apks.length && visible) {
+            let index = this.props.whiteLabelInfo.apks.findIndex(apk => apk.package_name === SECURE_LAUNCHER)
+            if (index > -1) {
+                this.setState({
+                    secureLouncer: this.props.whiteLabelInfo.apks[index],
+                    info_modal: visible
+                })
+            }
 
-           let index2 = this.props.whiteLabelInfo.apks.findIndex(apk => apk.package_name === SC)
-           if(index2 > -1){
-               this.setState({
-                   scApk: this.props.whiteLabelInfo.apks[index2],
-                   info_modal: visible
-               })
-           }
-           else{
-            this.setState({
-                info_modal: visible
-            })
-           }
-        }else{
+            let index2 = this.props.whiteLabelInfo.apks.findIndex(apk => apk.package_name === SC)
+            if (index2 > -1) {
+                this.setState({
+                    scApk: this.props.whiteLabelInfo.apks[index2],
+                    info_modal: visible
+                })
+            }
+            else {
+                this.setState({
+                    info_modal: visible
+                })
+            }
+        } else {
             this.setState({
                 info_modal: visible,
-    
+
             })
         }
-        
+
     }
     editInfoModal = (e, visible) => {
         this.setState({
@@ -86,23 +86,23 @@ class WhiteLabels extends Component {
                     justify='center'
                     style={{ backgroundColor: '#012346', height: 110, paddingTop: 20 }}
                 >
-                    <h1 style={{color:'white'}}>{this.props.whiteLabelInfo.name}</h1>
+                    <h1 style={{ color: 'white' }} className="ml-16">{this.props.whiteLabelInfo.name}</h1>
                 </Row>
                 <div style={{ marginTop: -40 }}>
                     <Row>
                         <Col xs={24} sm={24} md={6} lg={6} xl={6}>
                             <div>
                                 <div className="contenar">
-                                    <a href="javascript:void(0)" onClick={(e) => { this.showInfoModal(e, true) }} >
+                                    <Link to="#" onClick={(e) => { this.showInfoModal(e, true) }} >
                                         <Card className="manage_sec" style={{ borderRadius: 12 }}>
                                             <div>
                                                 <h2 style={{ textAlign: "center" }}>Model ID</h2>
                                                 <Divider className="mb-0" />
 
                                             </div>
-                                            <Button type="primary" size="small" className="open_btn">Open</Button>
+                                            <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
-                                    </a>
+                                    </Link>
                                     <Modal
                                         maskClosable={false}
                                         destroyOnClose={true}
@@ -219,11 +219,11 @@ class WhiteLabels extends Component {
                                     <a href="javascript:void(0)" >
                                         <Card className="manage_sec" style={{ borderRadius: 12 }}>
                                             <div>
-                                                <h2 style={{ textAlign: "center" }}>Credit</h2>
+                                                <h2 style={{ textAlign: "center" }}>BYOD APK</h2>
                                                 <Divider className="mb-0" />
 
                                             </div>
-                                            <Button type="primary" size="small" className="open_btn">Open</Button>
+                                            <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
                                     </a>
                                     <div className="middle">
@@ -238,11 +238,11 @@ class WhiteLabels extends Component {
                                     <a href="javascript:void(0)">
                                         <Card className="manage_sec" style={{ borderRadius: 12 }}>
                                             <div>
-                                                <h2 style={{ textAlign: "center" }}>FailSaif APK</h2>
+                                                <h2 style={{ textAlign: "center" }}>FailSafe APK</h2>
                                                 <Divider className="mb-0" />
 
                                             </div>
-                                            <Button type="primary" size="small" className="open_btn">Open</Button>
+                                            <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
                                     </a>
                                     <div className="middle">
@@ -257,11 +257,11 @@ class WhiteLabels extends Component {
                                     <a href="javascript:void(0)" >
                                         <Card className="manage_sec" style={{ borderRadius: 12 }}>
                                             <div>
-                                                <h2 style={{ textAlign: "center" }}>PGP Emails</h2>
+                                                <h2 style={{ textAlign: "center" }}>Database Backups</h2>
                                                 <Divider className="mb-0" />
 
                                             </div>
-                                            <Button type="primary" size="small" className="open_btn">Open</Button>
+                                            <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
                                     </a>
                                     <div className="middle">
@@ -278,11 +278,11 @@ class WhiteLabels extends Component {
                                     <a href="javascript:void(0)" >
                                         <Card className="manage_sec" style={{ borderRadius: 12 }}>
                                             <div>
-                                                <h2 style={{ textAlign: "center" }}>SIM IDs</h2>
+                                                <h2 style={{ textAlign: "center" }}>Promo</h2>
                                                 <Divider className="mb-0" />
 
                                             </div>
-                                            <Button type="primary" size="small" className="open_btn">Open</Button>
+                                            <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
                                     </a>
                                     <div className="middle">
@@ -297,11 +297,29 @@ class WhiteLabels extends Component {
                                     <a href="javascript:void(0)">
                                         <Card className="manage_sec" style={{ borderRadius: 12 }}>
                                             <div>
-                                                <h2 style={{ textAlign: "center" }}>Chat IDs</h2>
+                                                <h2 style={{ textAlign: "center" }}>Set Prices</h2>
                                                 <Divider className="mb-0" />
 
                                             </div>
-                                            <Button type="primary" size="small" className="open_btn">Open</Button>
+                                            <Button type="primary" size="small" className="open_btn1">Open</Button>
+                                        </Card>
+                                    </a>
+                                    <div className="middle">
+                                        <div className="text">Coming Soon</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </Col>
+                        <Col xs={24} sm={24} md={6} lg={6} xl={6}>
+                            <div>
+                                <div className="contenar">
+                                    <a href="javascript:void(0)">
+                                        <Card className="manage_sec" style={{ borderRadius: 12 }}>
+                                            <div>
+                                                <h2 style={{ textAlign: "center" }}>Load ID's</h2>
+                                                <Divider className="mb-0" />
+                                            </div>
+                                            <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
                                     </a>
                                     <div className="middle">
