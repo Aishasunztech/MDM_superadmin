@@ -78,7 +78,7 @@ class WhiteLabels extends Component {
     }
 
     render() {
-console.log(this.props.whiteLabelInfo, 'whitelables', this.state.secureLouncer)
+// console.log(this.props.whiteLabelInfo, 'whitelables', this.state.secureLouncer)
         return (
             <div>
 
