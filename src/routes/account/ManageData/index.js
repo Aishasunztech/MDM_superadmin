@@ -355,10 +355,16 @@ class ManageData extends Component {
     let index_pgp_email = this.state.columns.findIndex(k => k.dataIndex == 'pgp_email');
     let index_sim_id = this.state.columns.findIndex(k => k.dataIndex == 'sim_id');
     let index_chat_id = this.state.columns.findIndex(k => k.dataIndex == 'chat_id');
+    let index_created_at = this.state.columns.findIndex(k => k.dataIndex == 'created_at');
+    let index_label = this.state.columns.findIndex(k => k.dataIndex == 'label');
+    let index_count = this.state.columns.findIndex(k => k.dataIndex == 'count');
 
     if (value == '2') {
       this.state.columns[index_pgp_email]['className'] = '';
       this.state.columns[index_pgp_email]['children'][0].className = '';
+      this.state.columns[index_created_at]['className'] = '';
+      this.state.columns[index_created_at]['children'][0].className = '';
+      this.state.columns[index_label]['className'] = '';
 
       this.state.columns[index_sim_id]['className'] = 'hide';
       this.state.columns[index_sim_id]['children'][0].className = 'hide';
@@ -368,6 +374,9 @@ class ManageData extends Component {
     else if (value == '3') {
       this.state.columns[index_sim_id]['className'] = '';
       this.state.columns[index_sim_id]['children'][0].className = '';
+      this.state.columns[index_created_at]['className'] = '';
+      this.state.columns[index_created_at]['children'][0].className = '';
+      this.state.columns[index_label]['className'] = '';
 
       this.state.columns[index_chat_id]['className'] = 'hide';
       this.state.columns[index_chat_id]['children'][0].className = 'hide';
@@ -377,11 +386,26 @@ class ManageData extends Component {
     else if (value == '1') {
       this.state.columns[index_chat_id]['className'] = '';
       this.state.columns[index_chat_id]['children'][0].className = '';
+      this.state.columns[index_created_at]['className'] = '';
+      this.state.columns[index_created_at]['children'][0].className = '';
+      this.state.columns[index_label]['className'] = '';
 
       this.state.columns[index_sim_id]['className'] = 'hide';
       this.state.columns[index_sim_id]['children'][0].className = 'hide';
       this.state.columns[index_pgp_email]['className'] = 'hide';
       this.state.columns[index_pgp_email]['children'][0].className = 'hide';
+    } 
+    else {
+      this.state.columns[index_chat_id]['className'] = 'hide';
+      this.state.columns[index_chat_id]['children'][0].className = 'hide';
+
+      this.state.columns[index_sim_id]['className'] = 'hide';
+      this.state.columns[index_sim_id]['children'][0].className = 'hide';
+      this.state.columns[index_pgp_email]['className'] = 'hide';
+      this.state.columns[index_pgp_email]['children'][0].className = 'hide';
+      this.state.columns[index_created_at]['className'] = 'hide';
+      this.state.columns[index_created_at]['children'][0].className = 'hide';
+      this.state.columns[index_label]['className'] = 'hide';
     }
 
     switch (value) {
@@ -413,7 +437,8 @@ class ManageData extends Component {
       case '4':
         this.setState({
           // dealers: this.filterList('suspended', this.props.dealers),
-          column: this.state.columns, 
+          innerContent: [],
+          column: [], 
           innerTabSelect: '4'
         })
         status= true;

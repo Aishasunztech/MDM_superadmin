@@ -126,7 +126,7 @@ class DealerList extends Component {
     // }
 
     render() {
-        console.log('data list at::', this.props.dataList)
+        // console.log('data list at::', this.props.dataList)
         return (
             <Card>
                 <Tabs defaultActiveKey="1" type='card' tabPosition="left" className="dev_tabs" onChange={this.callback}>
