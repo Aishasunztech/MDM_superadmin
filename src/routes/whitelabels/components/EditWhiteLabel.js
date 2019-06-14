@@ -32,7 +32,14 @@ class EditWhiteLabel extends Component {
             if (!err) {
                 console.log('values', values, apk)
                 let apk_files = [];
-                apk_files.push(apk, ScApk)
+                if(apk !== ''){
+                    apk_files.push(apk)
+                }
+
+                if(ScApk !== ''){
+                    apk_files.push(ScApk)
+                }
+              
                 let form_data = {
                     'id': this.props.whiteLabelInfo.id,
                     'model_id': values.model_id,
@@ -91,6 +98,7 @@ class EditWhiteLabel extends Component {
             onRemove(info) {
                 // document.getElementById('apkSize').style.display = 'none'
                 _this.setState({ disableApk: false });
+                apk = '';
             },
             beforeUpload(file) {
                 _this.setState({ disableApk: true });
@@ -151,6 +159,7 @@ class EditWhiteLabel extends Component {
             onRemove(info) {
                 // document.getElementById('apkSize').style.display = 'none'
                 _this.setState({ disableScApk: false });
+                ScApk = ''
             },
             beforeUpload(file) {
                 _this.setState({ disableScApk: true });
@@ -258,7 +267,7 @@ class EditWhiteLabel extends Component {
                             {this.props.form.getFieldDecorator('apk', {
                                 rules: [
                                     {
-                                        required: true, message: 'File is required',
+                                        required: false, message: 'File is required',
                                     },
                                 ],
 
@@ -282,7 +291,7 @@ class EditWhiteLabel extends Component {
                             {this.props.form.getFieldDecorator('sc_apk', {
                                 rules: [
                                     {
-                                        required: true, message: 'File is required',
+                                        required: false, message: 'File is required',
                                     },
                                 ],
 

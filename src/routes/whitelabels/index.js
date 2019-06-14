@@ -7,30 +7,95 @@ import { checkValue } from '../utils/commonUtils'
 import { Link } from 'react-router-dom';
 import {
     Card,
-    Button, Row, Col, Icon, Modal, Form, Input, Upload, message, Table, Select, Divider
+    Button, Row, Col, Icon, Modal, Form, Input, Upload, message, Table, Divider
 } from "antd";
 import { BASE_URL } from "../../constants/Application";
 
 
 import style from "./whitelabels.css"
 
-import { getWhiteLabelInfo, editWhiteLabelInfo } from '../../appRedux/actions';
+import { getWhiteLabelInfo, editWhiteLabelInfo, getWhitelabelBackups } from '../../appRedux/actions';
 import EditWhiteLabel from "./components/EditWhiteLabel";
 
 const confirm = Modal.confirm;
 const success = Modal.success
 const error = Modal.error
+let copiedData = [];
 
 class WhiteLabels extends Component {
     constructor(props) {
         super(props);
+        this.whitelabelBackupColumns = [
+            {
+                title: '#',
+                dataIndex: 'whitelabel_id',
+                key: 'whitelabel_id',
+                textAlign: 'center'
+            },
+            {
+                // title: (
+                //     <Input.Search
+                //         name="db_file"
+                //         key="db_file"
+                //         id="db_file"
+                //         className="search_heading"
+                //         onKeyUp={this.handleSearch}
+                //         autoComplete="new-password"
+                //         placeholder='BACKUP FILE'
+                //     />
+                // ),
+                // dataIndex: 'db_file',
+                // className: '',
+                // children: [
+                //     {
+                        title: 'BACKUP FILE',
+                        align: "center",
+                        className: '',
+                        dataIndex: 'db_file',
+                        key: 'db_file',
+                        // sorter: (a, b) => { return a.db_file.localeCompare(b.db_file) },
+
+                        // sortDirections: ['ascend', 'descend'],
+                //     }
+                // ]
+            },
+            {
+                // title: (
+                //     <Input.Search
+                //         name="created_at"
+                //         key="created_at"
+                //         id="created_at"
+                //         className="search_heading"
+                //         onKeyUp={this.handleSearch}
+                //         autoComplete="new-password"
+                //         placeholder='CREATED AT'
+                //     />
+                // ),
+                // dataIndex: 'created_at',
+                // className: '',
+                // children: [
+                //     {
+                        title: 'CREATED AT',
+                        align: "center",
+                        className: '',
+                        dataIndex: 'created_at',
+                        key: 'created_at',
+                //         sorter: (a, b) => { return a.created_at.localeCompare(b.created_at) },
+
+                //         sortDirections: ['ascend', 'descend'],
+                //     }
+                // ]
+            },
+        ]
         this.state = {
             info_modal: false,
             edit_modal: false,
             secureLouncer: {},
             scApk: {},
             loadIdsModal: false,
-            selectedRowKeys: []
+            selectedRowKeys: [],
+            backupDatabaseModal: false,
+            copy_status: true
         }
     }
 
@@ -99,12 +164,76 @@ class WhiteLabels extends Component {
         setTimeout(function () {
             _this.props.getWhiteLabelInfo(id)
         }, 1000);
+    }
 
-
+    handleSearch = (e) => {
+        let demoData = [];
+        if (this.state.copy_status) {
+            copiedData = this.state.whitelabelBackups;
+            this.state.copy_status = false;
+        }
+        console.log(e.target.value,e.target.name, 'value', copiedData)
+        if (e.target.value.length) {
+            copiedData.forEach((item) => {
+                if (item[e.target.name] !== undefined) {
+                    console.log((typeof item[e.target.name]), 'type')
+                    if ((typeof item[e.target.name]) === 'string') {
+                        if (item[e.target.name].toUpperCase().includes(e.target.value.toUpperCase())) {
+                            demoData.push(item);
+                        }
+                    } else if (item[e.target.name] != null) {
+                        if (item[e.target.name].toString().toUpperCase().includes(e.target.value.toUpperCase())) {
+                            demoData.push(item);
+                        }
+                    } else {
+                    }
+                } else {
+                }
+            });
+            this.setState({
+                devices: demoData
+            })
+        } else {
+            this.setState({
+                devices: copiedData
+            })
+        }
     }
 
     componentDidMount() {
         this.props.getWhiteLabelInfo(this.props.id);
+        this.props.getWhitelabelBackups(this.props.id);
+
+        this.setState({
+            whitelabelBackups: this.props.whitelabelBackups
+        })
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props !== prevProps) {
+            this.setState({
+                whitelabelBackups: this.props.whitelabelBackups,
+            })
+        }
+    }
+
+    handleCancel = () => {
+        this.setState({
+            backupDatabaseModal: false
+        })
+    }
+
+    renderWhitelabelBackups = (data) => {
+        if (data && data.length) {
+            return data.map(item => {
+                return {
+                    rowKey: item.id,
+                    whitelabel_id: item.whitelabel_id,
+                    db_file: item.db_file,
+                    created_at: item.created_at
+                }
+            })
+        }
     }
 
     render() {
@@ -203,6 +332,7 @@ class WhiteLabels extends Component {
             }
         ]
         // end load ids modal
+        console.log(this.props.whitelabelBackups, 'whitelables', this.state.secureLouncer)
         return (
             <div>
 
@@ -249,6 +379,7 @@ class WhiteLabels extends Component {
                                             this.showInfoModal(e, false);
                                         }}
                                     // okText='Submit'
+                                    okText={null}
                                     // okButtonProps={{
                                     //     disabled: this.state.newData.length ? false : true
                                     // }}
@@ -378,19 +509,31 @@ class WhiteLabels extends Component {
                         <Col xs={24} sm={24} md={6} lg={6} xl={6}>
                             <div>
                                 <div className="contenar">
-                                    <a href="javascript:void(0)" >
-                                        <Card className="manage_sec" style={{ borderRadius: 12 }}>
-                                            <div>
-                                                <h2 style={{ textAlign: "center" }}>Database Backups</h2>
-                                                <Divider className="mb-0" />
 
-                                            </div>
-                                            <Button type="primary" size="small" className="open_btn1">Open</Button>
-                                        </Card>
-                                    </a>
-                                    <div className="middle">
-                                        <div className="text">Coming Soon</div>
-                                    </div>
+                                    <Card className="manage_sec" style={{ borderRadius: 12 }}>
+                                        <div>
+                                            <h2 style={{ textAlign: "center" }}>Database Backups</h2>
+                                            <Divider className="mb-0" />
+
+                                        </div>
+                                        <Button type="primary" size="small" onClick={() => this.setState({ backupDatabaseModal: true })} className="open_btn1">Open</Button>
+                                    </Card>
+
+                                    <Modal
+                                        title="Database Backups"
+                                        visible={this.state.backupDatabaseModal}
+                                        onOk={this.handleOk}
+                                        onCancel={this.handleCancel}
+                                    >
+                                        <Table
+                                            bordered
+                                            maskClosable={false}
+                                            pagination={false}
+                                            dataSource={this.renderWhitelabelBackups(this.state.whitelabelBackups)}
+                                            columns={this.whitelabelBackupColumns}>
+                                        </Table>
+                                    </Modal>
+
                                 </div>
                             </div>
                         </Col>
@@ -988,13 +1131,15 @@ class WhiteLabels extends Component {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getWhiteLabelInfo: getWhiteLabelInfo,
-        editWhiteLabelInfo: editWhiteLabelInfo
+        editWhiteLabelInfo: editWhiteLabelInfo,
+        getWhitelabelBackups: getWhitelabelBackups
     }, dispatch);
 }
 
 var mapStateToProps = ({ whiteLabels }, otherProps) => {
     return {
-        whiteLabelInfo: whiteLabels.whiteLabel
+        whiteLabelInfo: whiteLabels.whiteLabel,
+        whitelabelBackups: whiteLabels.whitelabelBackups
     };
 }
 
