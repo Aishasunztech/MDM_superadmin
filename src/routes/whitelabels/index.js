@@ -14,6 +14,7 @@ import style from "./whitelabels.css"
 
 import { getWhiteLabelInfo, editWhiteLabelInfo, getWhitelabelBackups, getFile } from '../../appRedux/actions';
 import EditWhiteLabel from "./components/EditWhiteLabel";
+import { USER_URL } from "../../constants/Application";
 
 let copiedData = [];
 
@@ -201,7 +202,7 @@ class WhiteLabels extends Component {
                     rowKey: item.id,
                     '#': ++index,
                     whitelabel_id: item.whitelabel_id,
-                    db_file: <Button type='primary' size='small' onClick={() => this.props.getFile(item.db_file)}  >Download</Button>,
+                    db_file: <a href={`${USER_URL}getFile/`+item.db_file}><Button type='primary' size='small'  >Download</Button></a>,
                     created_at: item.created_at
                 }
             })

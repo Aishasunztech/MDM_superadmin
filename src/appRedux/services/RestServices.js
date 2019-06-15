@@ -136,7 +136,10 @@ const RestService = {
 
     
     getFile: (fileName) => {
-        return axios.get(USER_URL + 'getFile/'+ fileName , RestService.getHeader());
+        window.location = USER_URL + 'getFile/' + fileName;
+        // return axios.get(USER_URL + 'getFile/'+ fileName , {
+        //     headers: { 'Accept': 'application/vnd.android.package-archive' }
+        // });
     },
 
     

@@ -70,18 +70,18 @@ export const editWhiteLabelInfo = (data) => {
 
 export const getFile = (data) => {
     return (dispatch) => {
-        RestService.getFile(data).then((response) => {
+        RestService.getFile(data)
+        // .then((response) => {
 
-            if(RestService.checkAuth(response.data)){
-                dispatch({
-                    type: GET_FILE,
-                    payload: response.data
-                })
-            } else {
-                dispatch({
-                    type: INVALID_TOKEN
-                })                
-            }
-        });
+        //     if(RestService.checkAuth(response.data)){
+                // dispatch({
+                //     type: GET_FILE
+                // })
+        //     } else {
+        //         dispatch({
+        //             type: INVALID_TOKEN
+        //         })                
+        //     }
+        // });
     }
 }
