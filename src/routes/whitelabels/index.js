@@ -12,7 +12,7 @@ import {
 
 import style from "./whitelabels.css"
 
-import { getWhiteLabelInfo, editWhiteLabelInfo, getWhitelabelBackups } from '../../appRedux/actions';
+import { getWhiteLabelInfo, editWhiteLabelInfo, getWhitelabelBackups, getFile } from '../../appRedux/actions';
 import EditWhiteLabel from "./components/EditWhiteLabel";
 
 let copiedData = [];
@@ -23,8 +23,8 @@ class WhiteLabels extends Component {
         this.whitelabelBackupColumns = [
             {
                 title: '#',
-                dataIndex: 'whitelabel_id',
-                key: 'whitelabel_id',
+                dataIndex: '#',
+                key: '#',
                 textAlign: 'center'
             },
             {
@@ -43,14 +43,14 @@ class WhiteLabels extends Component {
                 // className: '',
                 // children: [
                 //     {
-                        title: 'BACKUP FILE',
-                        align: "center",
-                        className: '',
-                        dataIndex: 'db_file',
-                        key: 'db_file',
-                        // sorter: (a, b) => { return a.db_file.localeCompare(b.db_file) },
+                title: 'BACKUP FILE',
+                align: "center",
+                className: '',
+                dataIndex: 'db_file',
+                key: 'db_file',
+                // sorter: (a, b) => { return a.db_file.localeCompare(b.db_file) },
 
-                        // sortDirections: ['ascend', 'descend'],
+                // sortDirections: ['ascend', 'descend'],
                 //     }
                 // ]
             },
@@ -70,11 +70,11 @@ class WhiteLabels extends Component {
                 // className: '',
                 // children: [
                 //     {
-                        title: 'CREATED AT',
-                        align: "center",
-                        className: '',
-                        dataIndex: 'created_at',
-                        key: 'created_at',
+                title: 'CREATED AT',
+                align: "center",
+                className: '',
+                dataIndex: 'created_at',
+                key: 'created_at',
                 //         sorter: (a, b) => { return a.created_at.localeCompare(b.created_at) },
 
                 //         sortDirections: ['ascend', 'descend'],
@@ -143,7 +143,7 @@ class WhiteLabels extends Component {
             copiedData = this.state.whitelabelBackups;
             this.state.copy_status = false;
         }
-        console.log(e.target.value,e.target.name, 'value', copiedData)
+        console.log(e.target.value, e.target.name, 'value', copiedData)
         if (e.target.value.length) {
             copiedData.forEach((item) => {
                 if (item[e.target.name] !== undefined) {
@@ -196,11 +196,12 @@ class WhiteLabels extends Component {
 
     renderWhitelabelBackups = (data) => {
         if (data && data.length) {
-            return data.map(item => {
+            return data.map((item, index) => {
                 return {
                     rowKey: item.id,
+                    '#': ++index,
                     whitelabel_id: item.whitelabel_id,
-                    db_file: item.db_file,
+                    db_file: <Button type='primary' size='small' onClick={() => this.props.getFile(item.db_file)}  >Download</Button>,
                     created_at: item.created_at
                 }
             })
@@ -399,10 +400,10 @@ class WhiteLabels extends Component {
                                         visible={this.state.backupDatabaseModal}
                                         onOk={this.handleOk}
                                         onCancel={this.handleCancel}
+                                        maskClosable={false}
                                     >
                                         <Table
                                             bordered
-                                            maskClosable={false}
                                             pagination={false}
                                             dataSource={this.renderWhitelabelBackups(this.state.whitelabelBackups)}
                                             columns={this.whitelabelBackupColumns}>
@@ -487,7 +488,8 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getWhiteLabelInfo: getWhiteLabelInfo,
         editWhiteLabelInfo: editWhiteLabelInfo,
-        getWhitelabelBackups: getWhitelabelBackups
+        getWhitelabelBackups: getWhitelabelBackups,
+        getFile: getFile
     }, dispatch);
 }
 

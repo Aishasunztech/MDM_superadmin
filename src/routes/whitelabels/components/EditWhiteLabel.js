@@ -206,7 +206,7 @@ class EditWhiteLabel extends Component {
                 _this.setState({ fileList2 });
             },
         };
-        console.log(this.state.command_name, 'apk', this.props.whiteLabelInfo)
+        // console.log(this.state.command_name, 'apk', this.props.whiteLabelInfo)
 
         return (
             <Modal

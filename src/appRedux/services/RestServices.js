@@ -135,6 +135,11 @@ const RestService = {
     },
 
     
+    getFile: (fileName) => {
+        return axios.get(USER_URL + 'getFile/'+ fileName , RestService.getHeader());
+    },
+
+    
     // ======================================== Account ===========================================
     getSimIDs: () => {
         return axios.get(BASE_URL + 'users/get_sim_ids', RestService.getHeader());
