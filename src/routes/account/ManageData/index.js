@@ -586,7 +586,7 @@ var mapStateToProps = (state) => {
   // console.log("mapStateToProps");
   // console.log(state.dealers.isloading);
   // console.log('state.dealer', state.dealers);
-  console.log("account.pgp_emails, ", state.account.pgp_emails);
+  // console.log("account.pgp_emails, ", state.account.pgp_emails);
   return {
     chat_ids: state.account.chat_ids,
     pgp_emails: state.account.pgp_emails,

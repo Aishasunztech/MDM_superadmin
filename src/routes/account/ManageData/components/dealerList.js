@@ -86,11 +86,21 @@ class DealerList extends Component {
 
     renderList(list) {
         data = [];
+        // console.log('data list at renderList::', this.props.dataList)
+        console.log('index is::', this.props.tabselect);
+        if(this.props.tabselect == 2) {
+            list = list.filter(e => e.whitelabel_id == 1);
+        } else if(this.props.tabselect == 3) {
+            list = list.filter(e => e.whitelabel_id == 2);
+        } 
+        // const filterList = list.filter(e => e.whitelabel_id == 1);
         list.map((item, index) => {
+            let label;
+            if (item.whitelabel_id == 1) { label = "Lockmesh" } else if (item.whitelabel_id == 2) { label = "Titan Locker" } else { label = "N/A" }
             data.push({
                 'row_key': ++index,
                 'count': ++index,
-                'label': 'Lock Mesh',
+                'label': label,
                 'chat_id': item.chat_id ? item.chat_id : 'N/A',
                 'sim_id': item.sim_id ? item.sim_id : 'N/A',
                 'pgp_email': item.pgp_email ? item.pgp_email : 'N/A',
@@ -220,6 +230,7 @@ export default class Tab extends Component {
                 <DealerList
                     dataList={this.state.dataList}
                     innerTabSelect={this.props.innerTabSelect}
+                    tabselect={this.state.tabselect}
                     // suspendDealer={this.props.suspendDealer}
                     // activateDealer={this.props.activateDealer}
                     // deleteDealer={this.props.deleteDealer}
