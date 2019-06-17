@@ -38,6 +38,7 @@ export const GOTO_LOGIN = 'GOTO_LOGIN';
 // WhiteLabels const
 export const GET_WHITE_LABELS = 'GET_WHITE_LABELS';
 export const EDIT_WHITE_LABEL_INFO = 'EDIT_WHITE_LABEL_INFO';
+export const WHITE_LABEL_BACKUPS = 'WHITE_LABEL_BACKUPS';
 
 
 //Device const
@@ -72,6 +73,7 @@ export const ADD_APK = 'ADD_APK';
 export const EDIT_APK = 'EDIT_APK';
 export const APK_STATUS_CHANGED = 'APK_STATUS_CHANGED';
 export const PERMSSION_SAVED = 'PERMSSION_SAVED';
+export const RESET_UPLOAD_FORM = 'RESET_UPLOAD_FORM';
 
 
 // Connect Device 

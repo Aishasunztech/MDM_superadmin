@@ -517,7 +517,8 @@ class Account extends Component {
                                 />
                             </Modal>
                             <div>
-                                <Link to="#" onClick={this.showModal}>
+                                {/* onClick={this.showModal} */}
+                                <Link to="/account/managedata">
                                     <Card className="manage_ac" style={{ borderRadius: 12 }}>
                                         <div>
                                             <h2 style={{ textAlign: "center" }}>Manage Data</h2>
@@ -987,7 +988,8 @@ class Account extends Component {
                                                                                 scroll={{ y: 250 }}
                                                                                 pagination={false}
                                                                             />
-                                                                        </Fragment> : null}
+                                                                        </Fragment> : null
+                                                }
                                             </Modal>
                                             <Row>
                                                 <div className="col-md-12 ac_card">
@@ -1000,13 +1002,13 @@ class Account extends Component {
                                                                     <span className="headings">PGP Emails</span>
                                                                     {/* <Button onClick={() => { this.showViewmodal(true, 'used_pgp_emails', 'USED PGP EMAILS') }} size='small' className="pull-right  exp_btn" type="dashed">Release</Button> */}
                                                                     <Button onClick={() => { this.showViewmodal(true, 'pgp_emails', 'PGP Emails') }} size='small' className="pull-right imp_btn">View</Button>
-                                                                    <Button disabled size='small' className="pull-right imp_btn" type="primary" onClick={() => {
+                                                                    <Button size='small' className="pull-right imp_btn" type="primary" onClick={() => {
                                                                         this.exportCSV('pgp_emails');
                                                                     }} >Export</Button>
                                                                     <Button size='small' className="pull-right imp_btn" type="primary" onClick={() => {
                                                                         this.showImportModal(true, "pgp_emails", "PGP Emails")
                                                                     }}>Import</Button>
-                                                                    <a href={`${BASE_URL}users/getFile/import_pgp_emails.xlsx`} disabled>
+                                                                    <a href={`${BASE_URL}users/getFile/import_pgp_emails.xlsx`}>
                                                                         <Button size='small' className="pull-right imp_btn" type="dashed">Sample</Button>
                                                                     </a>
 
@@ -1015,13 +1017,13 @@ class Account extends Component {
                                                                     <span className="headings">Chat IDs</span>
                                                                     {/* <Button onClick={() => { this.showViewmodal(true, 'used_chat_ids', 'USED CHAT IDS') }} size='small' className="pull-right  exp_btn" type="dashed">Release</Button> */}
                                                                     <Button onClick={() => { this.showViewmodal(true, 'chat_ids', 'Chat IDs') }} size='small' className="pull-right imp_btn">View</Button>
-                                                                    <Button disabled size='small' className="pull-right imp_btn" type="primary" onClick={() => {
+                                                                    <Button size='small' className="pull-right imp_btn" type="primary" onClick={() => {
                                                                         this.exportCSV('chat_ids');
                                                                     }} >Export</Button>
                                                                     <Button size='small' className="pull-right imp_btn" type="primary" onClick={() => {
                                                                         this.showImportModal(true, "chat_ids", "Chat IDs")
                                                                     }}>Import</Button>
-                                                                    <a href={`${BASE_URL}users/getFile/import_chat_ids.xlsx`} disabled>
+                                                                    <a href={`${BASE_URL}users/getFile/import_chat_ids.xlsx`}>
                                                                         <Button size='small' className="pull-right imp_btn" type="dashed" >Sample</Button>
                                                                     </a>
 
@@ -1030,14 +1032,14 @@ class Account extends Component {
                                                                     <span className="headings">SIM IDs</span>
                                                                     {/* <Button onClick={() => { this.showViewmodal(true, 'used_sim_ids', 'USED SIM IDS') }} size='small' className="pull-right  exp_btn" type="dashed">Release</Button> */}
                                                                     <Button onClick={() => { this.showViewmodal(true, 'sim_ids', 'Sim IDs') }} size='small' className="pull-right imp_btn mb-0">View</Button>
-                                                                    <Button disabled size='small' className="pull-right imp_btn mb-0" type="primary" onClick={() => {
+                                                                    <Button size='small' className="pull-right imp_btn mb-0" type="primary" onClick={() => {
                                                                         this.exportCSV('sim_ids');
                                                                     }} >Export</Button>
                                                                     <Button size='small' className="pull-right imp_btn mb-0" type="primary" onClick={() => {
                                                                         this.showImportModal(true, "sim_ids", "Sim IDs")
                                                                     }}>Import</Button>
 
-                                                                    <a href={`${BASE_URL}users/getFile/import_sim_ids.xlsx`} disabled>
+                                                                    <a href={`${BASE_URL}users/getFile/import_sim_ids.xlsx`}>
                                                                         <Button size='small' className="pull-right imp_btn mb-0" type="dashed">Sample</Button>
                                                                     </a>
 
@@ -1054,7 +1056,7 @@ class Account extends Component {
                                 </Modal>
                             </div>
                         </Col>
-                        {/* <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+                        <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                             <div>
                                 <div className="contenar">
                                     <a href="javascript:void(0)" >
@@ -1078,38 +1080,46 @@ class Account extends Component {
                                         </Card>
                                     </a>
                                     <div className="middle">
-                                        <div className="text text2">Coming Soon</div>
+                                        <div className="text">Coming Soon</div>
                                     </div>
                                 </div>
                             </div>
-                        </Col> */}
+                        </Col>
                         <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                             <div>
-                                <Fragment>
-                                    <Link to="#">
+                                <div className="contenar">
+                                    <a href="javascript:void(0)">
                                         <Card style={{ borderRadius: 12 }} className="manage_ac">
-                                            <h2 style={{ textAlign: "center" }}> Billing</h2>
-                                            <Divider className="mb-0" />
-                                            <Row style={{ padding: '12px 0 0px' }}>
-                                                <Col span={7} className="" style={{ textAlign: "center" }}>
-                                                    <Icon type="dollar" className="and_icon" />
-                                                </Col>
-                                                <Col span={16} style={{ padding: 0 }} className="crd_txt">
-                                                    <p><span className="diamond_icon">&#9670;</span>Add/edit payment gateway</p>
-                                                    <p><span className="diamond_icon">&#9670;</span>Set permissions</p>
-                                                    <p><span className="diamond_icon">&#9670;</span>Customize prices and packages</p>
-                                                    <p className="more_txt">and more...</p>
-                                                </Col>
-                                            </Row>
+                                            <div className="profile_table image_1">
+                                                <Fragment>
+                                                    <Row>
+                                                        <div className="col-md-12 ac_card">
+                                                            <h2 style={{ textAlign: "center" }}> <Icon type="credit-card" /> Payment Gateway</h2>
+                                                            <Divider className="mb-0" />
+                                                            <div className="crd_txt">
+                                                                <p><span className="diamond_icon">&#9670;</span>Add/edit payment gateway</p>
+                                                                <p><span className="diamond_icon">&#9670;</span>Set permissions</p>
+                                                                <p><span className="diamond_icon">&#9670;</span>Customize prices and packages</p>
+                                                                <p className="more_txt">and more...</p>
+                                                            </div>
+                                                        </div>
+                                                    </Row>
+                                                </Fragment>
+                                            </div>
                                         </Card>
-                                        <Button type="primary" size="small" className="open_btn">Open</Button>
-                                    </Link>
-                                </Fragment>
+                                    </a>
+                                    <div className="middle">
+                                        <div className="text">Coming Soon</div>
+                                    </div>
+                                </div>
                             </div>
                         </Col>
                     </Row>
                 </div>
-            </div>
+
+            </div >
+
+
         );
 
     }

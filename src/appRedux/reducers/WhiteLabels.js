@@ -1,6 +1,7 @@
 import {
     GET_WHITE_LABEL_INFO,
-    EDIT_WHITE_LABEL_INFO
+    EDIT_WHITE_LABEL_INFO,
+    WHITE_LABEL_BACKUPS
 } from "../../constants/ActionTypes";
 
 import { message, Modal } from 'antd';
@@ -10,7 +11,8 @@ const error = Modal.error
 
 
 const initialState = {
-    whiteLabel: {}
+    whiteLabel: {},
+    whitelabelBackups: [],
 };
 
 export default (state = initialState, action) => {
@@ -22,6 +24,14 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 whiteLabel: action.payload
+            }
+        }
+
+        case WHITE_LABEL_BACKUPS: {
+            console.log('reducer is called', action.payload.data)
+            return {
+                ...state,
+                whitelabelBackups: action.payload.data
             }
         }
 

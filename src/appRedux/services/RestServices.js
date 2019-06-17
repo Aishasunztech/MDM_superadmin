@@ -29,7 +29,7 @@ const RestService = {
             }
         };
     },
-    
+
     // for logout
     authLogOut: () => {
         localStorage.removeItem('email');
@@ -72,7 +72,7 @@ const RestService = {
         localStorage.setItem('two_factor_auth', data.user.two_factor_auth);
 
     },
-    
+
     // checkAuth
     checkAuth: (response) => {
         if (response.success !== undefined && response.success === false) {
@@ -83,6 +83,10 @@ const RestService = {
 
     },
 
+    getFile: (filename) => {
+        window.location = BASE_URL + 'users/getFile/' + filename;
+    },
+
     twoFactorAuth: (isEnable) => {
         return axios.post(BASE_URL + 'users/two_factor_auth', { isEnable: isEnable }, RestService.getHeader())
     },
@@ -91,7 +95,9 @@ const RestService = {
         return axios.post(BASE_URL + 'users/check_component', { ComponentUri: ComponentUri }, RestService.getHeader());
 
     },
-
+    checkApkName: (name, apk_id = '') => {
+        return axios.post(BASE_URL + 'users/checkApkName', { name, apk_id }, RestService.getHeader());
+    },
     // 
     getAllowedComponents: () => {
 
@@ -120,22 +126,27 @@ const RestService = {
 
     // =========================================Sidebar Menus =====================================
     getWhiteLabels: () => {
-        return axios.get(USER_URL + 'white-labels', RestService.getHeader() );
+        return axios.get(USER_URL + 'white-labels', RestService.getHeader());
     },
     getWhiteLabelInfo: (id) => {
-        return axios.get(USER_URL + 'white-labels/' + id , RestService.getHeader());
+        return axios.get(USER_URL + 'white-labels/' + id, RestService.getHeader());
+    },
+
+    whitelabelBackups: (id)=> {
+        return axios.get(USER_URL + 'whitelabel_backups/'+ id, RestService.getHeader());
     },
 
     editWhiteLabelInfo: (data) => {
-        return axios.put(USER_URL + 'update-white-label', data , RestService.getHeader());
+        return axios.put(USER_URL + 'update-white-label', data, RestService.getHeader());
     },
 
-    
+
     // ======================================== Account ===========================================
     getSimIDs: () => {
         return axios.get(BASE_URL + 'users/get_sim_ids', RestService.getHeader());
     },
     getChatIDs: () => {
+        console.log('hi')
         return axios.get(BASE_URL + 'users/get_chat_ids', RestService.getHeader());
     },
     getPGPEmails: () => {
@@ -172,6 +183,19 @@ const RestService = {
         return axios.post(BASE_URL + 'users/dealer/dropdown', { selected_items: items, pageName: pageName }, RestService.getHeader());
 
     },
+    ApkList: () => {
+        return axios.get(BASE_URL + 'users/apklist', RestService.getHeader());
+    },
+    addAPK: (formData) => {
+        return axios.post(BASE_URL + 'users/addApk', formData, RestService.getHeader());
+    },
+    unlinkAPK: (apk_id) => {
+        return axios.post(BASE_URL + 'users/apk/delete', { apk_id: apk_id }, RestService.getHeader());
+    },
+    // For Apk edit(admin dashboard)
+    updateApkDetails: (formData) => {
+        return axios.post(BASE_URL + 'users/edit/apk', formData, RestService.getHeader());
 
+    },
 }
 export default RestService;
