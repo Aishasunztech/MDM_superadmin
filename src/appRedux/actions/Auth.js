@@ -137,7 +137,7 @@ export const checkComponent = (componentUri) => {
           let payload = {
             id: resp.data.user.id,
             connected_dealer: resp.data.user.connected_dealer,
-            connected_devices: resp.data.user.connected_devices[0].total,
+            // connected_devices: resp.data.user.connected_devices[0].total,
             email: resp.data.user.email,
             dealerId: resp.data.user.id,
             firstName: resp.data.user.firstName,

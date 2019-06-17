@@ -62,11 +62,11 @@ const RestService = {
         // console.log("hello12312", data);
         localStorage.setItem('email', data.user.email);
         localStorage.setItem('id', data.user.id);
-        localStorage.setItem('name', data.user.dealer_name);
+        localStorage.setItem('name', data.user.admin_name);
         localStorage.setItem('firstName', data.user.firstName);
         localStorage.setItem('lastName', data.user.lastName);
         localStorage.setItem('connected_dealer', data.user.connected_dealer);
-        localStorage.setItem('connected_devices', data.user.connected_devices[0].total);
+        // localStorage.setItem('connected_devices', data.user.connected_devices[0].total);
         localStorage.setItem('type', data.user.user_type);
         localStorage.setItem('dealer_pin', data.user.link_code);
         localStorage.setItem('two_factor_auth', data.user.two_factor_auth);

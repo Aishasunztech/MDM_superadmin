@@ -219,13 +219,12 @@ export default (state = INIT_STATE, action) => {
       }
     }
     case COMPONENT_ALLOWED: {
-      let socket = RestService.connectSocket(state.authUser.token);
-
+      // let socket = RestService.connectSocket(state.authUser.token);
       return {
         ...state,
         isAllowed: action.payload.ComponentAllowed,
         isRequested: true,
-        socket: socket,
+        // socket: socket,
         authUser: {
           id: action.payload.id,
           connected_dealer: action.payload.connected_dealer,
