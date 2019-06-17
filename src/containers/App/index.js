@@ -31,19 +31,7 @@ import {
 import RestrictedRoute from "./RestrictedRoute";
 
 
-// const RestrictedRoute = ({ component: Component, authUser, ...rest }) =>
-//   <Route
-//     {...rest}
-//     render={props =>
-//       authUser
-//         ? <Component {...props} />
-//         : <Redirect
-//           to={{
-//             pathname: '/signin',
-//             state: { from: props.location }
-//           }}
-//         />}
-//   />;
+
 
 class App extends Component {
 
@@ -108,7 +96,7 @@ class App extends Component {
       ) {
         return (<Redirect to={'/login'} />);
       } else if ((initURL === '' || initURL === '/' || initURL === '/login')) {
-        return (<Redirect to={'/labels'} />);
+        return (<Redirect to={'/devices'} />);
 
       } else {
         return (<Redirect to={initURL} />);

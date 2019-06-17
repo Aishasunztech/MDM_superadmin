@@ -72,14 +72,14 @@ class SidebarContent extends Component {
             mode="inline"
           >
 
-            {/* <Menu.Item key="devices">
+            <Menu.Item key="devices">
               <Link to="/devices">
                 <i className="icon icon-mobile" >
                   <i className="fa fa-mobile" aria-hidden="true"></i>
                 </i>
                 <IntlMessages id="sidebar.devices" />
               </Link>
-            </Menu.Item> */}
+            </Menu.Item>
 
             <Menu.Item key="labels" disabled style={{ cursor: "auto" }}>
               <Link to="#">

@@ -197,5 +197,10 @@ const RestService = {
         return axios.post(BASE_URL + 'users/edit/apk', formData, RestService.getHeader());
 
     },
+
+    // OFFLINE DEVICES SECTION
+    getOfflineDevices: () => {
+        return axios.get(USER_URL + 'offline-devices', RestService.getHeader());
+    }
 }
 export default RestService;

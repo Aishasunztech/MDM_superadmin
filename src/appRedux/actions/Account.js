@@ -146,7 +146,6 @@ export function releaseCSV(fieldName, ids) {
 }
 export function getUsedPGPEmails() {
     return (dispatch) => {
-        // alert("hello");
         RestService.getUsedPGPEmails().then((response) => {
             if (RestService.checkAuth(response.data)) {
                 // console.log('response', response.data);

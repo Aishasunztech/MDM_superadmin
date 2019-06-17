@@ -229,7 +229,6 @@ class AutoUpdate extends React.Component {
                 })
             }
         } catch (error) {
-            alert("hello");
         }
     }
     handleChange = (value) => {

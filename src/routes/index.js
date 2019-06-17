@@ -13,6 +13,11 @@ const AppRoutes = ({ match, whiteLabels }) => {
   return (
     <div className="gx-main-content-wrapper">
       <Switch>
+        <Route 
+          exact
+          path= {`${match.url}devices`}
+          component = {Device}
+        />
         <Route
           exact
           path={`${match.url}labels`}

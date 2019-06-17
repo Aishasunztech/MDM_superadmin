@@ -19,24 +19,20 @@ import RestService from '../services/RestServices';
 
 // action creaters 
 
-export function getDevicesList() {
+export function getOfflineDevices() {
 
     return (dispatch) => {
-        dispatch({
-            type: LOADING,
-            isloading: true
-        });
-        RestService.DeviceList().then((response) => {
-            // console.log("data form server");
-            // console.log(response.data);
+
+        RestService.getOfflineDevices().then((response) => {
+            console.log("data form server");
+            console.log(response.data);
             if (RestService.checkAuth(response.data)) {
                 // console.log(response.data)
                 if (response.data.status) {
 
                     dispatch({
                         type: DEVICES_LIST,
-                        payload: response.data.data,
-                        response: response.data,
+                        payload: response.data.devices,
 
                     });
                 }
@@ -233,65 +229,3 @@ export function getPGPEmails() {
 
 
 
-export function rejectDevice(device) {
-    return (dispatch) => {
-        // console.log(device)
-        RestService.rejectDevice(device).then((response) => {
-            if (RestService.checkAuth(response.data)) {
-                dispatch({
-                    type: REJECT_DEVICE,
-                    response: response.data,
-                    device_id: device,
-                })
-            } else {
-                dispatch({
-                    type: INVALID_TOKEN
-                })
-            }
-        });
-    }
-}
-
-export function addDevice(device) {
-    return (dispatch) => {
-        // alert("hello");
-        RestService.addDevice(device).then((response) => {
-            if (RestService.checkAuth(response.data)) {
-                dispatch({
-                    type: EDIT_DEVICE,
-                    response: response.data,
-                    payload: {
-                        formData: device,
-                    }
-                });
-            } else {
-                dispatch({
-                    type: INVALID_TOKEN
-                })
-            }
-        });
-    }
-}
-
-export function preActiveDevice(device) {
-    // console.log("action called", device);
-    return (dispatch) => {
-        RestService.preActiveDevice(device).then((response) => {
-            if (RestService.checkAuth(response.data)) {
-                // console.log('action done ', response.data);
-                dispatch({
-                    type: PRE_ACTIVATE_DEVICE,
-                    response: response.data,
-                    payload: {
-                        formData: device,
-                    }
-                });
-
-            } else {
-                dispatch({
-                    type: INVALID_TOKEN
-                })
-            }
-        })
-    }
-}
