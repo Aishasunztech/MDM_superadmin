@@ -20,6 +20,9 @@ import {
     getSimIDs,
     getChatIDs,
     getPGPEmails,
+    getSimIDsLabel,
+    getChatIDsLabel,
+    getPGPEmailsLabel,
 } from "../../../appRedux/actions/Devices";
 const confirm = Modal.confirm;
 const success = Modal.success
@@ -29,7 +32,7 @@ class LoadIDsModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            labelID: '',
+            whiteLabelInfo: '',
             visible: false,
             fieldName: '',
             fieldValue: '',
@@ -68,12 +71,14 @@ class LoadIDsModal extends Component {
 
     showViewmodal = (dataVisible, dataFieldName = "", dataFieldTitle = "") => {
         // console.log(dataFieldName);
+        // alert('2')
+        // console.log('lab iiiid:::: ', this.state.whiteLabelInfo.id)
         if (dataFieldName === "sim_ids") {
-            this.props.getSimIDs();
+            this.props.getSimIDsLabel(this.state.whiteLabelInfo.id);
         } else if (dataFieldName === "pgp_emails") {
-            this.props.getPGPEmails();
+            this.props.getPGPEmailsLabel(this.state.whiteLabelInfo.id);
         } else if (dataFieldName === "chat_ids") {
-            this.props.getChatIDs();
+            this.props.getChatIDsLabel(this.state.whiteLabelInfo.id);
         } else if (dataFieldName === "used_pgp_emails") {
             this.props.getUsedPGPEmails();
         } else if (dataFieldName === "used_chat_ids") {
@@ -118,29 +123,36 @@ class LoadIDsModal extends Component {
         }
     }
     componentWillReceiveProps(nextProps) {
-        if (this.props.sim_ids) {
-            if (this.props.sim_ids.length !== nextProps.sim_ids.length || this.props.pgp_emails.length !== nextProps.pgp_emails.length || this.props.chat_ids.length !== nextProps.chat_ids.length || this.props.used_pgp_emails.length !== nextProps.used_pgp_emails.length || this.props.used_chat_ids.length !== nextProps.used_chat_ids.length || this.props.used_sim_ids.length !== nextProps.used_sim_ids.length) {
-                // if (this.props.sim_ids.length !== nextProps.sim_ids.length || this.props.pgp_emails.length !== nextProps.pgp_emails.length || this.props.chat_ids.length !== nextProps.chat_ids.length) {
-                this.setState({
-                    sim_ids: nextProps.sim_ids,
-                    chat_ids: nextProps.chat_ids,
-                    pgp_emails: nextProps.pgp_emails,
-                    used_pgp_emails: nextProps.used_pgp_emails,
-                    used_chat_ids: nextProps.used_chat_ids,
-                    used_sim_ids: nextProps.used_sim_ids,
-                    duplicate_modal_show: nextProps.duplicate_modal_show,
-                    duplicate_ids: nextProps.duplicate_ids,
-                    duplicate_data_type: nextProps.duplicate_data_type,
-                    newData: nextProps.newData
-                });
-            } else if (this.props.duplicate_modal_show !== nextProps.duplicate_modal_show) {
-                this.setState({
-                    duplicate_modal_show: nextProps.duplicate_modal_show,
-                    duplicate_ids: nextProps.duplicate_ids,
-                    duplicate_data_type: nextProps.duplicate_data_type,
-                    newData: nextProps.newData
-                })
-            }
+
+        // if (true) {
+        if (this.props.sim_ids.length !== nextProps.sim_ids.length || this.props.pgp_emails.length !== nextProps.pgp_emails.length || this.props.chat_ids.length !== nextProps.chat_ids.length || this.props.used_pgp_emails.length !== nextProps.used_pgp_emails.length || this.props.used_chat_ids.length !== nextProps.used_chat_ids.length || this.props.used_sim_ids.length !== nextProps.used_sim_ids.length) {
+            // console.log('chat id will : ', nextProps.chat_ids)
+            // if (this.props.sim_ids.length !== nextProps.sim_ids.length || this.props.pgp_emails.length !== nextProps.pgp_emails.length || this.props.chat_ids.length !== nextProps.chat_ids.length) {
+            this.setState({
+                sim_ids: nextProps.sim_ids,
+                chat_ids: nextProps.chat_ids,
+                pgp_emails: nextProps.pgp_emails,
+                used_pgp_emails: nextProps.used_pgp_emails,
+                used_chat_ids: nextProps.used_chat_ids,
+                used_sim_ids: nextProps.used_sim_ids,
+                duplicate_modal_show: nextProps.duplicate_modal_show,
+                duplicate_ids: nextProps.duplicate_ids,
+                duplicate_data_type: nextProps.duplicate_data_type,
+                newData: nextProps.newData
+            });
+        } else if (this.props.duplicate_modal_show !== nextProps.duplicate_modal_show) {
+            this.setState({
+                duplicate_modal_show: nextProps.duplicate_modal_show,
+                duplicate_ids: nextProps.duplicate_ids,
+                duplicate_data_type: nextProps.duplicate_data_type,
+                newData: nextProps.newData
+            })
+        }
+        // }
+        if (this.props.duplicate_ids != nextProps.duplicate_ids) {
+            this.setState({
+                // duplicate_ids: nextProps.duplicate_ids
+            })
         }
 
     }
@@ -151,7 +163,7 @@ class LoadIDsModal extends Component {
     }
     handleSubmit = (e) => {
         // alert('hi')
-        // console.log('label', this.state.labelID);
+        // console.log('label', this.state.whiteLabelInfo);
         if (this.state.file !== null) {
             // console.log(this.state.file);
             const formData = new FormData();
@@ -166,7 +178,7 @@ class LoadIDsModal extends Component {
                 formData.append('pgp_emails', this.state.file);
             }
 
-            formData.append('labelID', this.state.labelID);
+            formData.append('labelID', this.state.whiteLabelInfo.id);
             console.log(formData);
             this.state.file = null
             this.props.importCSV(formData, this.state.fieldName);
@@ -275,12 +287,12 @@ class LoadIDsModal extends Component {
         }
     }
 
-    showModal = (id) => {
+    showModal = (wl) => {
 
         // console.log('hiiiii hmz', id);
         this.setState({
             visible1: true,
-            labelID: id,
+            whiteLabelInfo: wl,
         });
     }
 
@@ -309,10 +321,12 @@ class LoadIDsModal extends Component {
 
 
     InsertNewData = () => {
+        // console.log('checkk label id: ', this.state.whiteLabelInfo.id)
         let data = {
             newData: this.state.newData,
             type: this.state.duplicate_data_type,
-            submit: true
+            submit: true,
+            labelID: this.state.whiteLabelInfo.id
         }
         this.props.insertNewData(data);
         this.handleCancelDuplicate();
@@ -392,6 +406,15 @@ class LoadIDsModal extends Component {
 
         const duplicateModalColumns = [
             {
+                title: 'Label',
+                align: "center",
+                dataIndex: 'label',
+                key: "label",
+                // className: this.state.newData ? 'hide' : '',
+                sortDirections: ['ascend', 'descend'],
+
+            },
+            {
                 title: 'SIM ID',
                 align: "center",
                 dataIndex: 'sim_id',
@@ -435,15 +458,103 @@ class LoadIDsModal extends Component {
             }
         ]
 
+        // console.log('newdata obj is:: ', this.state.newData)
+
         return (
 
             <div>
+                {/* Duplicate modal */}
+                <Modal
+                    maskClosable={false}
+                    title={<div><Icon type="question-circle" className='warning' /><span> WARNNING! Duplicate Data</span></div>}
+                    visible={this.state.duplicate_modal_show}
+                    onOk={this.InsertNewData}
+                    onCancel={this.handleCancelDuplicate}
+                    okText='Submit'
+                    okButtonProps={{
+                        disabled: this.state.newData.length ? false : true
+                    }}
+                >
+
+                    <Table
+                        bordered
+                        columns={JSON.parse(JSON.stringify(duplicateModalColumns))}
+                        dataSource={
+                            this.state.duplicate_ids.map(row => {
+                                // console.log('single row for id:: ', row)
+                                if (this.state.duplicate_data_type == 'chat_id') {
+                                    return {
+                                        key: row.chat_id,
+                                        label: row.name,
+                                        chat_id: row.chat_id
+                                    }
+                                } else if (this.state.duplicate_data_type == 'pgp_email') {
+                                    return {
+                                        key: row.pgp_email,
+                                        label: row.name,
+                                        pgp_email: row.pgp_email
+                                    }
+                                }
+                                else if (this.state.duplicate_data_type == 'sim_id') {
+                                    return {
+                                        key: row.id,
+                                        label: row.name,
+                                        sim_id: row[this.state.duplicate_data_type],
+                                        start_date: row.start_date,
+                                        expiry_date: row.expiry_date
+                                    }
+                                }
+
+                            })
+                        }
+
+                        pagination={{ pageSize: Number(this.state.sim_ids_page), size: "middle" }}
+
+                    />
+                    <span className="warning_hr">
+                        <hr />
+                    </span>
+                    <h2>New Data</h2>
+
+                    <Table
+                        bordered
+                        columns={duplicateModalColumns.splice(1, duplicateModalColumns.length)}
+                        dataSource={
+                            this.state.newData.map(row => {
+
+                                if (this.state.duplicate_data_type == 'chat_id') {
+                                    return {
+                                        key: row.chat_id,
+                                        chat_id: row.chat_id
+                                    }
+                                } else if (this.state.duplicate_data_type == 'pgp_email') {
+                                    return {
+                                        key: row.pgp_email,
+                                        pgp_email: row.pgp_email
+                                    }
+                                }
+                                else if (this.state.duplicate_data_type == 'sim_id') {
+                                    return {
+                                        key: row.id,
+                                        sim_id: row[this.state.duplicate_data_type],
+                                        start_date: row.start_date,
+                                        expiry_date: row.expiry_date
+                                    }
+                                }
+                            })
+                        }
+
+                        pagination={{ pageSize: Number(this.state.sim_ids_page), size: "middle" }}
+
+                    />
+                </Modal>
+                {/* end duplicate modal */}
                 <Modal
                     maskClosable={false}
                     className="manage_data"
                     width="450px"
                     title={<div>
-                        <span>load id's <br /> Label: LockMesh</span>
+                        <span>load id's <br /> Label: <span>{this.state.whiteLabelInfo.name}</span></span>
                         <Link to="/account/managedata"><Button type="primary" size="small" className="open_btn1" >manage data</Button></Link>
                     </div>}
                     visible={this.state.visible1}
@@ -972,6 +1083,9 @@ class LoadIDsModal extends Component {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getSimIDs: getSimIDs,
+        getSimIDsLabel: getSimIDsLabel,
+        getChatIDsLabel: getChatIDsLabel,
+        getPGPEmailsLabel: getPGPEmailsLabel,
         getChatIDs: getChatIDs,
         getPGPEmails: getPGPEmails,
         importCSV: importCSV,
@@ -984,7 +1098,7 @@ function mapDispatchToProps(dispatch) {
     }, dispatch);
 }
 var mapStateToProps = ({ account, devices }) => {
-    console.log(account, "sim_ids");
+    console.log("account store => ", account);
     return {
         msg: account.msg,
         showMsg: account.showMsg,

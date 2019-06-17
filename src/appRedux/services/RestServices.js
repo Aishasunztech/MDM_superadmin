@@ -29,7 +29,7 @@ const RestService = {
             }
         };
     },
-    
+
     // for logout
     authLogOut: () => {
         localStorage.removeItem('email');
@@ -72,7 +72,7 @@ const RestService = {
         localStorage.setItem('two_factor_auth', data.user.two_factor_auth);
 
     },
-    
+
     // checkAuth
     checkAuth: (response) => {
         if (response.success !== undefined && response.success === false) {
@@ -81,6 +81,10 @@ const RestService = {
             return true;
         }
 
+    },
+
+    saveNewData: (data) => {
+        return axios.post(BASE_URL + "users/save_new_data", data, RestService.getHeader());
     },
 
     getFile: (filename) => {
@@ -124,28 +128,43 @@ const RestService = {
 
     // =========================================Sidebar Menus =====================================
     getWhiteLabels: () => {
-        return axios.get(USER_URL + 'white-labels', RestService.getHeader() );
+        return axios.get(USER_URL + 'white-labels', RestService.getHeader());
     },
     getWhiteLabelInfo: (id) => {
-        return axios.get(USER_URL + 'white-labels/' + id , RestService.getHeader());
+        return axios.get(USER_URL + 'white-labels/' + id, RestService.getHeader());
     },
 
     editWhiteLabelInfo: (data) => {
-        return axios.put(USER_URL + 'update-white-label', data , RestService.getHeader());
+        return axios.put(USER_URL + 'update-white-label', data, RestService.getHeader());
     },
 
-    
+
     // ======================================== Account ===========================================
     getSimIDs: () => {
         return axios.get(BASE_URL + 'users/get_sim_ids', RestService.getHeader());
     },
+
     getChatIDs: () => {
-        console.log('hi')
+        // console.log('hi')
         return axios.get(BASE_URL + 'users/get_chat_ids', RestService.getHeader());
     },
     getPGPEmails: () => {
         return axios.get(BASE_URL + 'users/get_pgp_emails', RestService.getHeader());
     },
+
+    // get ids with label 
+    getSimIDsLabel: (labelID) => {
+        // console.log('at serv lab id', labelID);
+        return axios.post(BASE_URL + 'users/get_label_sim_ids', { labelID }, RestService.getHeader());
+    },
+    getChatIDsLabel: (labelID) => {
+        // console.log('hi')
+        return axios.post(BASE_URL + 'users/get_label_chat_ids', { labelID }, RestService.getHeader());
+    },
+    getPGPEmailsLabel: (labelID) => {
+        return axios.post(BASE_URL + 'users/get_label_pgp_emails', { labelID }, RestService.getHeader());
+    },
+    // get used id
     getUsedPGPEmails: () => {
         return axios.get(BASE_URL + 'users/get_used_pgp_emails', RestService.getHeader());
     },

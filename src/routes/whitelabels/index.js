@@ -81,7 +81,7 @@ class WhiteLabels extends Component {
     render() {
         console.log(this.props.whiteLabelInfo, 'whitelables', this.state.secureLouncer)
         console.log('label id is: ', this.props.whiteLabelInfo.id)
-        let label_id = this.props.whiteLabelInfo.id;
+        // let label_id = this.props.whiteLabelInfo.id;
         // console.log('ref func ', this.refs.loadidsofModal)
         return (
             <div>
@@ -314,7 +314,7 @@ class WhiteLabels extends Component {
                                 </div>
                             </div>
                         </Col>
-                        <Col xs={24} sm={24} md={6} lg={6} xl={6} onClick={() => this.refs.loadidsofModal.getWrappedInstance().showModal(label_id)}>
+                        <Col xs={24} sm={24} md={6} lg={6} xl={6} onClick={() => this.refs.loadidsofModal.getWrappedInstance().showModal(this.props.whiteLabelInfo)}>
                             <div>
                                 {/* className="contenar" */}
                                 <div className="">
