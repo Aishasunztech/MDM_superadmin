@@ -158,7 +158,7 @@ function mapDispatchToProps(dispatch) {
     }, dispatch);
 }
 var mapStateToProps = ({ account, devices }) => {
-    console.log(account, "sim_ids");
+    // console.log(account, "sim_ids");
     return {
         msg: account.msg,
         showMsg: account.showMsg,

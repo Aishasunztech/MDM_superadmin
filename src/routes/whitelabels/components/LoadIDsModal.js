@@ -124,11 +124,11 @@ class LoadIDsModal extends Component {
         }
     }
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
+        // console.log(nextProps);
 
         // if (true) {
-        if (this.props.sim_ids.length !== nextProps.sim_ids.length || this.props.pgp_emails.length !== nextProps.pgp_emails.length || this.props.chat_ids.length !== nextProps.chat_ids.length) {
-            // console.log('chat id will : ', nextProps.chat_ids)
+        if (this.props.pathname !== nextProps.pathname || this.props !== nextProps) {
+            // console.log('Sim ID : ', nextProps.sim_ids)
             // if (this.props.sim_ids.length !== nextProps.sim_ids.length || this.props.pgp_emails.length !== nextProps.pgp_emails.length || this.props.chat_ids.length !== nextProps.chat_ids.length) {
             this.setState({
                 sim_ids: nextProps.sim_ids,
@@ -1099,7 +1099,7 @@ function mapDispatchToProps(dispatch) {
         insertNewData: insertNewData
     }, dispatch);
 }
-var mapStateToProps = ({ account, devices }) => {
+var mapStateToProps = ({ account, devices, routing }) => {
     console.log("account store => ", account);
     return {
         msg: account.msg,
@@ -1113,7 +1113,8 @@ var mapStateToProps = ({ account, devices }) => {
         duplicate_data_type: account.duplicate_data_type,
         duplicate_ids: account.duplicate_ids,
         duplicate_modal_show: account.duplicate_modal_show,
-        newData: account.newData
+        newData: account.newData,
+        pathname: routing.location.pathname
     };
 }
 
