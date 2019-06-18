@@ -23,3 +23,13 @@
 .model_id_table td {
     text-align: center;
 }
+
+.priceText {
+    line-height: 35px;
+    min-width: 12px;
+}
+
+.labelTypeText {
+    line-height: 35px;
+    float: right;
+}

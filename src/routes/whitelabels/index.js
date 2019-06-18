@@ -565,6 +565,8 @@ class WhiteLabels extends Component {
                                         <WhiteLabelPricing
                                             showPricingModal = {this.showPricingModal}
                                             pricing_modal = {this.state.pricing_modal}
+                                            LabelName = {this.props.whiteLabelInfo.name}
+
                                         />
                                     </div>
                                 </div>
