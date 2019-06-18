@@ -29,7 +29,7 @@ const RestService = {
             }
         };
     },
-    
+
     // for logout
     authLogOut: () => {
         localStorage.removeItem('email');
@@ -62,17 +62,17 @@ const RestService = {
         // console.log("hello12312", data);
         localStorage.setItem('email', data.user.email);
         localStorage.setItem('id', data.user.id);
-        localStorage.setItem('name', data.user.dealer_name);
+        localStorage.setItem('name', data.user.admin_name);
         localStorage.setItem('firstName', data.user.firstName);
         localStorage.setItem('lastName', data.user.lastName);
         localStorage.setItem('connected_dealer', data.user.connected_dealer);
-        localStorage.setItem('connected_devices', data.user.connected_devices[0].total);
+        // localStorage.setItem('connected_devices', data.user.connected_devices[0].total);
         localStorage.setItem('type', data.user.user_type);
         localStorage.setItem('dealer_pin', data.user.link_code);
         localStorage.setItem('two_factor_auth', data.user.two_factor_auth);
 
     },
-    
+
     // checkAuth
     checkAuth: (response) => {
         if (response.success !== undefined && response.success === false) {
@@ -83,6 +83,14 @@ const RestService = {
 
     },
 
+    saveNewData: (data) => {
+        return axios.post(BASE_URL + "users/save_new_data", data, RestService.getHeader());
+    },
+
+    getFile: (filename) => {
+        window.location = BASE_URL + 'users/getFile/' + filename;
+    },
+
     twoFactorAuth: (isEnable) => {
         return axios.post(BASE_URL + 'users/two_factor_auth', { isEnable: isEnable }, RestService.getHeader())
     },
@@ -91,7 +99,9 @@ const RestService = {
         return axios.post(BASE_URL + 'users/check_component', { ComponentUri: ComponentUri }, RestService.getHeader());
 
     },
-
+    checkApkName: (name, apk_id = '') => {
+        return axios.post(BASE_URL + 'users/checkApkName', { name, apk_id }, RestService.getHeader());
+    },
     // 
     getAllowedComponents: () => {
 
@@ -120,10 +130,10 @@ const RestService = {
 
     // =========================================Sidebar Menus =====================================
     getWhiteLabels: () => {
-        return axios.get(USER_URL + 'white-labels', RestService.getHeader() );
+        return axios.get(USER_URL + 'white-labels', RestService.getHeader());
     },
     getWhiteLabelInfo: (id) => {
-        return axios.get(USER_URL + 'white-labels/' + id , RestService.getHeader());
+        return axios.get(USER_URL + 'white-labels/' + id, RestService.getHeader());
     },
 
     whitelabelBackups: (id)=> {
@@ -131,28 +141,35 @@ const RestService = {
     },
 
     editWhiteLabelInfo: (data) => {
-        return axios.put(USER_URL + 'update-white-label', data , RestService.getHeader());
+        return axios.put(USER_URL + 'update-white-label', data, RestService.getHeader());
     },
 
-    
-    getFile: (fileName) => {
-        window.location = USER_URL + 'getFile/' + fileName;
-        // return axios.get(USER_URL + 'getFile/'+ fileName , {
-        //     headers: { 'Accept': 'application/vnd.android.package-archive' }
-        // });
-    },
-
-    
     // ======================================== Account ===========================================
     getSimIDs: () => {
         return axios.get(BASE_URL + 'users/get_sim_ids', RestService.getHeader());
     },
+
     getChatIDs: () => {
+        // console.log('hi')
         return axios.get(BASE_URL + 'users/get_chat_ids', RestService.getHeader());
     },
     getPGPEmails: () => {
         return axios.get(BASE_URL + 'users/get_pgp_emails', RestService.getHeader());
     },
+
+    // get ids with label 
+    getSimIDsLabel: (labelID) => {
+        // console.log('at serv lab id', labelID);
+        return axios.post(BASE_URL + 'users/get_label_sim_ids', { labelID }, RestService.getHeader());
+    },
+    getChatIDsLabel: (labelID) => {
+        // console.log('hi')
+        return axios.post(BASE_URL + 'users/get_label_chat_ids', { labelID }, RestService.getHeader());
+    },
+    getPGPEmailsLabel: (labelID) => {
+        return axios.post(BASE_URL + 'users/get_label_pgp_emails', { labelID }, RestService.getHeader());
+    },
+    // get used id
     getUsedPGPEmails: () => {
         return axios.get(BASE_URL + 'users/get_used_pgp_emails', RestService.getHeader());
     },
@@ -184,6 +201,24 @@ const RestService = {
         return axios.post(BASE_URL + 'users/dealer/dropdown', { selected_items: items, pageName: pageName }, RestService.getHeader());
 
     },
+    ApkList: () => {
+        return axios.get(BASE_URL + 'users/apklist', RestService.getHeader());
+    },
+    addAPK: (formData) => {
+        return axios.post(BASE_URL + 'users/addApk', formData, RestService.getHeader());
+    },
+    unlinkAPK: (apk_id) => {
+        return axios.post(BASE_URL + 'users/apk/delete', { apk_id: apk_id }, RestService.getHeader());
+    },
+    // For Apk edit(admin dashboard)
+    updateApkDetails: (formData) => {
+        return axios.post(BASE_URL + 'users/edit/apk', formData, RestService.getHeader());
 
+    },
+
+    // OFFLINE DEVICES SECTION
+    getOfflineDevices: () => {
+        return axios.get(USER_URL + 'offline-devices', RestService.getHeader());
+    }
 }
 export default RestService;

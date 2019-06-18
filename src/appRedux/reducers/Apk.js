@@ -9,7 +9,9 @@ import {
 	GET_DROPDOWN,
 	GET_PAGINATION,
 	PERMSSION_SAVED,
-	DEALERS_LIST
+	DEALERS_LIST,
+	RESET_UPLOAD_FORM,
+	// ADD_APK
 } from "../../constants/ActionTypes";
 
 import {
@@ -83,6 +85,7 @@ export default (state = initialState, action) => {
 				success({
 					title: action.response.msg,
 				});
+				state.apk_list.push(action.payload)
 			}
 			else {
 				error({
@@ -181,6 +184,13 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				selectedOptions: action.payload
+			}
+		}
+
+		case RESET_UPLOAD_FORM: {
+			return {
+				...state,
+				resetUploadForm: action.payload
 			}
 		}
 

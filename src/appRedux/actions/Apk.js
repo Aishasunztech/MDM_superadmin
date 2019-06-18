@@ -5,7 +5,8 @@ import {
     UNLINK_APK,
     EDIT_APK,
     LOADING,
-    PERMSSION_SAVED
+    PERMSSION_SAVED,
+    RESET_UPLOAD_FORM
 } from "../../constants/ActionTypes"
 // import AuthFailed from './Auth';
 
@@ -113,7 +114,7 @@ export function addApk(formData) {
                 dispatch({
                     type: ADD_APK,
                     response: response.data,
-                    payload: ''
+                    payload: response.data.data
                 });
 
             } else {
@@ -169,4 +170,12 @@ export function savePermission(apk_id, dealers, action) {
         })
     }
 
+}
+export function resetUploadForm(visible) {
+    return (dispatch) => {
+        dispatch({
+            type: RESET_UPLOAD_FORM,
+            payload: visible
+        });
+    }
 }

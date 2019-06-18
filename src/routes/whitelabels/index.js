@@ -14,8 +14,11 @@ import style from "./whitelabels.css"
 
 import { getWhiteLabelInfo, editWhiteLabelInfo, getWhitelabelBackups, getFile } from '../../appRedux/actions';
 import EditWhiteLabel from "./components/EditWhiteLabel";
-import { USER_URL } from "../../constants/Application";
+import LoadIDsModal from "./components/LoadIDsModal";
 
+const confirm = Modal.confirm;
+const success = Modal.success
+const error = Modal.error
 let copiedData = [];
 
 class WhiteLabels extends Component {
@@ -88,6 +91,8 @@ class WhiteLabels extends Component {
             edit_modal: false,
             secureLouncer: {},
             scApk: {},
+            loadIdsModal: false,
+            selectedRowKeys: [],
             backupDatabaseModal: false,
             copy_status: true
         }
@@ -210,7 +215,106 @@ class WhiteLabels extends Component {
     }
 
     render() {
+        // console.log(this.props.whiteLabelInfo, 'whitelables', this.state.secureLouncer)
+
+        // load ids modal
+        if (this.props.showMsg) {
+            if (this.props.msg === "imported successfully") {
+                success({
+                    title: this.props.msg,
+                });
+            } else {
+                error({
+                    title: this.props.msg,
+                });
+            }
+
+        }
+
+
+        const { file, selectedRowKeys, } = this.state
+        // console.log(this.state.used_chat_ids_page);
+        let self = this;
+        const props = {
+            name: 'file',
+            multiple: false,
+            accept: [".xls", ".csv", ".xlsx"],
+            // accept: ".xls; *.csv; *.xlsx;",
+            // accept: ".xls",
+            // processData: false,
+            beforeUpload: (file) => {
+                // console.log(file);
+                this.setState({
+                    file: file
+                });
+                return false;
+            },
+            // action: '//jsonplaceholder.typicode.com/posts/',
+            onChange(info) {
+                // console.log(info);
+                if (info.fileList.length === 0) {
+                    self.uploadFile(null);
+                }
+            },
+            fileList: (file === null) ? null : [file]
+        };
+
+        const rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange,
+        };
+
+
+        const duplicateModalColumns = [
+            {
+                title: 'SIM ID',
+                align: "center",
+                dataIndex: 'sim_id',
+                key: "sim_id",
+                className: this.state.duplicate_data_type == 'sim_id' ? '' : 'hide',
+                sortDirections: ['ascend', 'descend'],
+
+            },
+            {
+                title: 'START DATE',
+                align: "center",
+                dataIndex: 'start_date',
+                key: "start_date",
+                className: this.state.duplicate_data_type == 'sim_id' ? '' : 'hide',
+                sortDirections: ['ascend', 'descend'],
+
+            },
+            {
+                title: 'EXPIRY DATE',
+                align: "center",
+                dataIndex: 'expiry_date',
+                key: "expiry_date",
+                className: this.state.duplicate_data_type == 'sim_id' ? '' : 'hide',
+                sortDirections: ['ascend', 'descend'],
+            },
+            {
+                title: 'CHAT IDS',
+                align: "center",
+                dataIndex: 'chat_id',
+                key: "chat_id",
+                className: this.state.duplicate_data_type == 'chat_id' ? '' : 'hide',
+                sortDirections: ['ascend', 'descend'],
+            },
+            {
+                title: 'PGP EMAILS',
+                align: "center",
+                dataIndex: 'pgp_email',
+                key: "pgp_email",
+                className: this.state.duplicate_data_type == 'pgp_email' ? '' : 'hide',
+                sortDirections: ['ascend', 'descend'],
+            }
+        ]
+        // end load ids modal
         console.log(this.props.whitelabelBackups, 'whitelables', this.state.secureLouncer)
+        console.log(this.props.whiteLabelInfo, 'whitelables', this.state.secureLouncer)
+        console.log('label id is: ', this.props.whiteLabelInfo.id)
+        // let label_id = this.props.whiteLabelInfo.id;
+        // console.log('ref func ', this.refs.loadidsofModal)
         return (
             <div>
 
@@ -256,7 +360,8 @@ class WhiteLabels extends Component {
                                         onCancel={(e) => {
                                             this.showInfoModal(e, false);
                                         }}
-                                    // okText='Submit'
+                                        // okText='Submit'
+                                        okText={null}
                                     // okButtonProps={{
                                     //     disabled: this.state.newData.length ? false : true
                                     // }}
@@ -454,9 +559,10 @@ class WhiteLabels extends Component {
                                 </div>
                             </div>
                         </Col>
-                        <Col xs={24} sm={24} md={6} lg={6} xl={6}>
+                        <Col xs={24} sm={24} md={6} lg={6} xl={6} onClick={() => this.refs.loadidsofModal.getWrappedInstance().showModal(this.props.whiteLabelInfo)}>
                             <div>
-                                <div className="contenar">
+                                {/* className="contenar" */}
+                                <div className="">
                                     <a href="javascript:void(0)">
                                         <Card className="manage_sec" style={{ borderRadius: 12 }}>
                                             <div>
@@ -473,6 +579,7 @@ class WhiteLabels extends Component {
                             </div>
                         </Col>
                     </Row>
+                    <LoadIDsModal ref="loadidsofModal" />
 
                 </div>
 
