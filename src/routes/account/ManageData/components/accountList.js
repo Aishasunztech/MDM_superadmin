@@ -88,11 +88,15 @@ class AccountList extends Component {
         data = [];
         // console.log('data list at renderList::', this.props.dataList)
         // console.log('index is::', this.props.tabselect);
-        if (this.props.tabselect == 2) {
-            list = list.filter(e => e.whitelabel_id == 1);
-        } else if (this.props.tabselect == 3) {
-            list = list.filter(e => e.whitelabel_id == 2);
+        if (this.props.tabselect != 'all') {
+
+            list = list.filter(e => e.whitelabel_id == this.props.tabselect);
         }
+
+        // if (this.props.tabselect == 2) {
+        // } else if (this.props.tabselect == 3) {
+        //     list = list.filter(e => e.whitelabel_id == 2);
+        // }
         // const filterList = list.filter(e => e.whitelabel_id == 1);
         list.map((item, index) => {
             // let label;
@@ -218,15 +222,19 @@ export default class Tab extends Component {
     }
 
     render() {
+        console.log(this.props.whiteLables);
         return (
             <Fragment>
-                <Tabs defaultActiveKey="1" type='card' className="dev_tabs" activeKey={this.state.tabselect} onChange={this.callback}>
-                    <TabPane tab="All" key="1" >
+                <Tabs defaultActiveKey="all" type='card' className="dev_tabs" activeKey={this.state.tabselect} onChange={this.callback}>
+                    <TabPane tab="All" key="all" >
                     </TabPane>
-                    <TabPane tab="LockMesh" key="2" forceRender={true}>
-                    </TabPane>
-                    <TabPane tab="Titan Locker" key="3" forceRender={true}>
-                    </TabPane>
+
+                    {this.props.whiteLables.map((item, index) => {
+                        // console.log(item);
+                        return (
+                            <TabPane tab={item.name} key={item.id.toString()} forceRender={true} > </TabPane>
+                        )
+                    })}
                 </Tabs>
 
                 <AccountList
