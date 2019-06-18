@@ -222,7 +222,7 @@ export default class Tab extends Component {
     }
 
     render() {
-        console.log(this.props.whiteLables);
+        // console.log(this.props.whiteLables);
         return (
             <Fragment>
                 <Tabs defaultActiveKey="all" type='card' className="dev_tabs" activeKey={this.state.tabselect} onChange={this.callback}>
@@ -240,7 +240,7 @@ export default class Tab extends Component {
                 <AccountList
                     dataList={this.state.dataList}
                     innerTabSelect={this.props.innerTabSelect}
-                    tabselect={this.state.tabselect}
+                    tabselect={this.state.tabselect}y
                     // suspendDealer={this.props.suspendDealer}
                     // activateDealer={this.props.activateDealer}
                     // deleteDealer={this.props.deleteDealer}

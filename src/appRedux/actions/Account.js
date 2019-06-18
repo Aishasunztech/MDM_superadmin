@@ -24,7 +24,7 @@ export function importCSV(formData, fieldName) {
         // });
         RestService.importCSV(formData, fieldName).then((response) => {
             if (RestService.checkAuth(response.data)) {
-                console.log('duplicated data at action file ::', response.data)
+                // console.log('duplicated data at action file ::', response.data)
                 if (response.data.duplicateData.length) {
                     // console.log('duplicated data at action file :: ', response.data);
                     dispatch({
@@ -82,10 +82,10 @@ export function insertNewData(newData) {
     return (dispatch) => {
         if(newData.submit){
             RestService.saveNewData(newData).then((response) => {
-                console.log('response', response)
+                // console.log('response', response)
                 if (RestService.checkAuth(response.data)) {
                    
-                        console.log('success', response.data)
+                        // console.log('success', response.data)
                         dispatch({
                             type: NEW_DATA_INSERTED,
                             payload: response.data,

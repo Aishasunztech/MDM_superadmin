@@ -658,15 +658,15 @@ class ManageData extends Component {
   }
 
   handleSearch = (e) => {
-    console.log('hi search val is: ', e.target.value);
-    console.log('hi inner content val is: ', this.state.innerContent);
+    // console.log('hi search val is: ', e.target.value);
+    // console.log('hi inner content val is: ', this.state.innerContent);
 
     let demoItems = [];
     if (status) {
       copyInnerContent = this.state.innerContent;
       status = false;
     }
-    console.log("devices", copyInnerContent);
+    // console.log("devices", copyInnerContent);
 
     if (e.target.value.length) {
       copyInnerContent.forEach((item) => {
@@ -713,7 +713,7 @@ var mapStateToProps = (state) => {
   // console.log("mapStateToProps");
   // console.log(state.dealers.isloading);
   // console.log('state.dealer', state.dealers);
-  // console.log("account.pgp_emails, ", state.sidebarMenu.whiteLabels);
+  // console.log("state, ", state);
   return {
     chat_ids: state.account.chat_ids,
     pgp_emails: state.account.pgp_emails,
