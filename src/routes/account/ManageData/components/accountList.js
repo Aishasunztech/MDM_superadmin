@@ -3,12 +3,12 @@ import { Table, Avatar, Switch, Button, Icon, Card, Modal } from "antd";
 // import { BASE_URL } from '../../../constants/Application';
 import EditDealer from './editDealer';
 import { Tabs } from 'antd';
-import EditApk from './editDealer';
+// import EditApk from './editDealer';
 const TabPane = Tabs.TabPane;
 
 let data = [];
 const confirm = Modal.confirm;
-class DealerList extends Component {
+class AccountList extends Component {
     constructor(props) {
         super(props);
 
@@ -86,11 +86,21 @@ class DealerList extends Component {
 
     renderList(list) {
         data = [];
+        // console.log('data list at renderList::', this.props.dataList)
+        // console.log('index is::', this.props.tabselect);
+        if (this.props.tabselect == 2) {
+            list = list.filter(e => e.whitelabel_id == 1);
+        } else if (this.props.tabselect == 3) {
+            list = list.filter(e => e.whitelabel_id == 2);
+        }
+        // const filterList = list.filter(e => e.whitelabel_id == 1);
         list.map((item, index) => {
+            // let label;
+            // if (item.whitelabel_id == 1) { label = "Lockmesh" } else if (item.whitelabel_id == 2) { label = "Titan Locker" } else { label = "N/A" }
             data.push({
-                'row_key': ++index,
+                'row_key': `${index}Key`,
                 'count': ++index,
-                'label': 'Lock Mesh',
+                'label': item.name,
                 'chat_id': item.chat_id ? item.chat_id : 'N/A',
                 'sim_id': item.sim_id ? item.sim_id : 'N/A',
                 'pgp_email': item.pgp_email ? item.pgp_email : 'N/A',
@@ -129,7 +139,7 @@ class DealerList extends Component {
         // console.log('data list at::', this.props.dataList)
         return (
             <Card>
-                <Tabs defaultActiveKey="1" type='card' tabPosition="left" className="dev_tabs" onChange={this.callback}>
+                <Tabs defaultActiveKey="1" type='card' tabPosition="left" className="dev_tabs" onChange={this.callback} style={{ width: '10%', float: "left" }}>
                     <TabPane tab="CHAT" key="1" >
                     </TabPane>
                     <TabPane tab="PGP" key="2" forceRender={true}>
@@ -139,17 +149,19 @@ class DealerList extends Component {
                     <TabPane tab="VPN" key="4" forceRender={true}>
                     </TabPane>
 
-                    <Table size="middle"
-                        className="gx-table-responsive devices table"
-                        bordered
-                        scroll={{ x: 500 }}
-                        columns={this.state.columns}
-                        rowKey='row_key'
-                        align='center'
-                        pagination={{ pageSize: this.state.pagination, size: "midddle" }}
-                        dataSource={this.renderList(this.props.dataList)}
-                    />
                 </Tabs>
+                <Table
+                    style={{ width: "90%", float: "right" }}
+                    size="middle"
+                    className="gx-table-responsive devices table"
+                    bordered
+                    scroll={{ x: 500 }}
+                    columns={this.state.columns}
+                    rowKey='row_key'
+                    align='center'
+                    pagination={{ pageSize: this.state.pagination, size: "midddle" }}
+                    dataSource={this.renderList(this.props.dataList)}
+                />
             </Card>
         )
     }
@@ -217,9 +229,10 @@ export default class Tab extends Component {
                     </TabPane>
                 </Tabs>
 
-                <DealerList
+                <AccountList
                     dataList={this.state.dataList}
                     innerTabSelect={this.props.innerTabSelect}
+                    tabselect={this.state.tabselect}
                     // suspendDealer={this.props.suspendDealer}
                     // activateDealer={this.props.activateDealer}
                     // deleteDealer={this.props.deleteDealer}

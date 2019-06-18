@@ -7,7 +7,7 @@ import { getDealerList, suspendDealer, deleteDealer, activateDealer, undoDealer,
 import { getDropdown, postDropdown, postPagination, getPagination } from '../../appRedux/actions/Common';
 // import {getDevicesList} from '../../appRedux/actions/Devices';
 import AppFilter from '../../components/AppFilter';
-import EditDealer from './components/editDealer';
+// import EditDealer from './components/editDealer';
 import CircularProgress from "components/CircularProgress/index";
 import DealerList from "./components/dealerList";
 import styles from './dealers.css'

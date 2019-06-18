@@ -83,6 +83,10 @@ const RestService = {
 
     },
 
+    saveNewData: (data) => {
+        return axios.post(BASE_URL + "users/save_new_data", data, RestService.getHeader());
+    },
+
     getFile: (filename) => {
         window.location = BASE_URL + 'users/getFile/' + filename;
     },
@@ -145,13 +149,28 @@ const RestService = {
     getSimIDs: () => {
         return axios.get(BASE_URL + 'users/get_sim_ids', RestService.getHeader());
     },
+
     getChatIDs: () => {
-        console.log('hi')
+        // console.log('hi')
         return axios.get(BASE_URL + 'users/get_chat_ids', RestService.getHeader());
     },
     getPGPEmails: () => {
         return axios.get(BASE_URL + 'users/get_pgp_emails', RestService.getHeader());
     },
+
+    // get ids with label 
+    getSimIDsLabel: (labelID) => {
+        // console.log('at serv lab id', labelID);
+        return axios.post(BASE_URL + 'users/get_label_sim_ids', { labelID }, RestService.getHeader());
+    },
+    getChatIDsLabel: (labelID) => {
+        // console.log('hi')
+        return axios.post(BASE_URL + 'users/get_label_chat_ids', { labelID }, RestService.getHeader());
+    },
+    getPGPEmailsLabel: (labelID) => {
+        return axios.post(BASE_URL + 'users/get_label_pgp_emails', { labelID }, RestService.getHeader());
+    },
+    // get used id
     getUsedPGPEmails: () => {
         return axios.get(BASE_URL + 'users/get_used_pgp_emails', RestService.getHeader());
     },
