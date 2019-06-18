@@ -4,7 +4,7 @@ import styles from './devices.css'
 import { Link } from "react-router-dom";
 import SuspendDevice from './SuspendDevice';
 import ActivateDevcie from './ActivateDevice';
-import { getStatus, getColor, checkValue, getSortOrder, checkRemainDays } from '../../utils/commonUtils'
+import { getStatus, getColor, checkValue, getSortOrder, checkRemainDays, getFormattedDate } from '../../utils/commonUtils'
 import EditDevice from './editDevice';
 
 import { Tabs, Modal } from 'antd';
@@ -77,7 +77,7 @@ class DevicesList extends Component {
     renderList(list) {
         // console.log('list of dec', list)
         return list.map((device, index) => {
-            // console.log('tab Select is: ', this.props.tabselect)
+            console.log('device is: ', device)
 
             // var remainDays = checkRemainDays(device.created_at, device.validity)
             // console.log('Remain Days are: ', remainDays);   
@@ -88,6 +88,7 @@ class DevicesList extends Component {
 
             var status = device.finalStatus;
             const button_type = (status === DEVICE_ACTIVATED || status === DEVICE_TRIAL) ? "danger" : "dashed";
+
             const flagged = device.flagged;
             // console.log("not avail", status);
             var order = getSortOrder(status)
@@ -103,12 +104,29 @@ class DevicesList extends Component {
                 text = "ACTIVATE";
                 // icon = 'add'
             }
+            let tabSelected = this.props.tabselect;
+            let StatusBtn;
+            // console.log('tabselect ', tabSelected)
 
-            let SuspendBtn = <Button type={button_type} size="small" style={style} > SUSPEND</Button>;
-            let ActiveBtn = <Button type={button_type} size="small" style={style}  >ACTIVE</Button>;
-            let DeleteBtn = <Button type="danger" size="small" style={{ margin: '0 8px 0 8px' }} onClick={() => this.deleteUnlinkedDevice('unlink', device)} >DELETE</Button>
+            let ActiveBtn = <Button type="danger" size="small" > ACTIVE</Button>;
+            let SuspendBtn = <Button type="danger" size="small" onClick={() => this.handleSuspendDevice(device)} > SUSPEND</Button>;
+            let ExtendBtn = <Button type="danger" size="small" onClick={() => this.props.showDateModal(device.id, device.start_date, device.expiry_date)}> EXTEND</Button>;
 
-            let ExtendBtn = <Button type="primary" size="small" style={{ margin: '0 8px 0 8px' }} onClick={() => this.refs.edit_device.showModal(device, this.props.editDevice)} >{text}</Button>
+            if (tabSelected == '7') { // suspend
+                StatusBtn = ActiveBtn;
+            } else if (tabSelected == '6') { // expire
+                StatusBtn = ExtendBtn;
+            } else if (tabSelected == '1' || tabSelected == '4') { //1: All, 4: active 
+                StatusBtn = <Fragment>{SuspendBtn} {ExtendBtn}</Fragment>
+            } else {
+                StatusBtn = "";
+            }
+
+            // let SuspendBtn = <Button type={button_type} size="small" style={style} > SUSPEND</Button>;
+            // let ActiveBtn = <Button type={button_type} size="small" style={style}  >ACTIVE</Button>;
+            // let DeleteBtn = <Button type="danger" size="small" style={{ margin: '0 8px 0 8px' }} onClick={() => this.deleteUnlinkedDevice('unlink', device)} >DELETE</Button>
+
+            // let ExtendBtn = <Button type="primary" size="small" style={{ margin: '0 8px 0 8px' }} onClick={() => this.refs.edit_device.showModal(device, this.props.editDevice)} >{text}</Button>
 
             return {
                 // sortOrder: <span style={{ display: 'none' }}>{order}</span>,
@@ -118,14 +136,10 @@ class DevicesList extends Component {
                 // key: device.device_id ? `${device.device_id}` : device.usr_device_id,
                 key: status == DEVICE_UNLINKED ? `${device.user_acc_id}` : device.id,
                 counter: ++index,
-                action: (
-                    <Fragment>
-                        {/* <ExtendBtn /> */}
-                    </Fragment>
-                ),
+                action: (StatusBtn),
                 status: (<span style={color} > {status}</span >),
                 flagged: (device.flagged !== '') ? device.flagged : 'Not Flagged',
-                device_id: ((status != DEVICE_PRE_ACTIVATION)) ? checkValue(device.device_id) : "N/A",
+                device_id: ((status != DEVICE_PRE_ACTIVATION)) ? checkValue(device.fl_dvc_id) : "N/A",
                 // device_id: ((status != DEVICE_PRE_ACTIVATION)) ? checkValue(device.device_id) : (device.validity) ? (this.props.tabselect == '3') ? `${device.validity}` : "N/A" : "N/A",
                 user_id: <a onClick={() => { this.handleUserId(device.user_id) }}>{checkValue(device.user_id)}</a>,
                 validity: checkValue(device.validity),
@@ -143,7 +157,7 @@ class DevicesList extends Component {
                 sim_1: checkValue(device.simno),
                 imei_2: checkValue(device.imei2),
                 sim_2: checkValue(device.simno2),
-                serial_number: checkValue(device.serial_number),
+                serial_number: checkValue(device.serial_no),
 
                 model: checkValue(device.model),
 
@@ -154,7 +168,7 @@ class DevicesList extends Component {
                 s_dealer: checkValue(device.s_dealer),
                 s_dealer_name: checkValue(device.s_dealer_name),
                 start_date: checkValue(device.start_date),
-                expiry_date: checkValue(device.expiry_date),
+                expiry_date: getFormattedDate(checkValue(device.expiry_date)),
             }
         });
     }
@@ -331,37 +345,37 @@ class DevicesList extends Component {
                             let showRecord = [];
                             let showRecord2 = [];
 
-                            this.props.columns.map((column, index) => {
-                                if (column.className === "row") {
-                                } else if (column.className === "hide") {
-                                    let title = column.children[0].title;
-                                    if (title === "SIM ID" || title === "IMEI 1" || title === "SIM 1" || title === "IMEI 2" || title === "SIM 2") {
-                                        showRecord2.push({
-                                            name: title,
-                                            values: record[column.dataIndex],
-                                            rowKey: title
-                                        });
-                                    } else {
-                                        if (title === "STATUS" || title === "DEALER NAME" || title === "S-DEALER Name") {
-                                            if (record[column.dataIndex][0]) {
-                                                showRecord.push({
-                                                    name: title,
-                                                    values: record[column.dataIndex][0].toUpperCase() + record[column.dataIndex].substring(1, record[column.dataIndex].length).toLowerCase(),
-                                                    rowKey: title
-                                                });
-                                            }
+                            // this.props.columns.map((column, index) => {
+                            //     if (column.className === "row") {
+                            //     } else if (column.className === "hide") {
+                            //         let title = column.children[0].title;
+                            //         if (title === "SIM ID" || title === "IMEI 1" || title === "SIM 1" || title === "IMEI 2" || title === "SIM 2") {
+                            //             showRecord2.push({
+                            //                 name: title,
+                            //                 values: record[column.dataIndex],
+                            //                 rowKey: title
+                            //             });
+                            //         } else {
+                            //             if (title === "STATUS" || title === "DEALER NAME" || title === "S-DEALER Name") {
+                            //                 if (record[column.dataIndex][0]) {
+                            //                     showRecord.push({
+                            //                         name: title,
+                            //                         values: record[column.dataIndex][0].toUpperCase() + record[column.dataIndex].substring(1, record[column.dataIndex].length).toLowerCase(),
+                            //                         rowKey: title
+                            //                     });
+                            //                 }
 
-                                        } else {
+                            //             } else {
 
-                                            showRecord.push({
-                                                name: title,
-                                                values: record[column.dataIndex],
-                                                rowKey: title
-                                            });
-                                        }
-                                    }
-                                }
-                            });
+                            //                 showRecord.push({
+                            //                     name: title,
+                            //                     values: record[column.dataIndex],
+                            //                     rowKey: title
+                            //                 });
+                            //             }
+                            //         }
+                            //     }
+                            // });
                             // console.log("cols",this.props.columns);
                             // console.log("toShow", showRecord);
                             return (

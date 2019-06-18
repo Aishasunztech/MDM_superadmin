@@ -136,8 +136,8 @@ const RestService = {
         return axios.get(USER_URL + 'white-labels/' + id, RestService.getHeader());
     },
 
-    whitelabelBackups: (id)=> {
-        return axios.get(USER_URL + 'whitelabel_backups/'+ id, RestService.getHeader());
+    whitelabelBackups: (id) => {
+        return axios.get(USER_URL + 'whitelabel_backups/' + id, RestService.getHeader());
     },
 
     editWhiteLabelInfo: (data) => {
@@ -220,6 +220,12 @@ const RestService = {
     // OFFLINE DEVICES SECTION
     getOfflineDevices: () => {
         return axios.get(USER_URL + 'offline-devices', RestService.getHeader());
+    },
+    saveOfflineDevice: (data) => {
+        return axios.put(USER_URL + 'save-offline-device', data, RestService.getHeader());
+    },
+    suspendDevice: (data) => {
+        return axios.put(USER_URL + 'device-status', { id: data }, RestService.getHeader());
     }
 }
 export default RestService;
