@@ -1,4 +1,4 @@
-export const OFFLINE_ID = 'OFFLINE_ID';
+export const OFFLINE_ID = 'OFFLINE ID';
 export const DEVICE_ID = 'DEVICE ID';
 export const DEVICE_REMAINING_DAYS = 'REMAINING DAYS';
 export const DEVICE_STATUS = 'STATUS';

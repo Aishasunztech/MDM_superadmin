@@ -79,25 +79,25 @@ class Devices extends Component {
             {
                 title: (
                     <Input.Search
-                        name="validity"
-                        key="validity"
-                        id="validity"
+                        name="offline_id"
+                        key="offline_id"
+                        id="offline_id"
                         className="search_heading"
                         onKeyUp={this.handleSearch}
                         autoComplete="new-password"
-                        placeholder={titleCase(DEVICE_REMAINING_DAYS)}
+                        placeholder={titleCase(OFFLINE_ID)}
                     />
                 ),
-                dataIndex: 'validity',
-                className: 'hide',
+                dataIndex: 'offline_id',
+                className: '',
                 children: [
                     {
-                        title: DEVICE_REMAINING_DAYS,
+                        title: OFFLINE_ID,
                         align: "center",
-                        dataIndex: 'validity',
-                        key: "validity",
-                        className: 'hide',
-                        sorter: (a, b) => { return a.validity.localeCompare(b.validity) },
+                        dataIndex: 'offline_id',
+                        key: "offline_id",
+                        className: '',
+                        sorter: (a, b) => { return a.offline_id.localeCompare(b.offline_id) },
                         sortDirections: ['ascend', 'descend'],
                     }
                 ],
