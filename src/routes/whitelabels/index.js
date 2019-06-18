@@ -6,15 +6,16 @@ import { SECURE_LAUNCHER, SC } from '../../constants/Constants';
 import { checkValue } from '../utils/commonUtils'
 import { Link } from 'react-router-dom';
 import {
-    Card,
-    Button, Row, Col, Icon, Modal, Form, Input, Upload, message, Table, Divider
+    Card, Button, Row, Col, Icon, Modal, Form, Input, Upload, message, Table, Divider
 } from "antd";
 
 import style from "./whitelabels.css"
 
 import { getWhiteLabelInfo, editWhiteLabelInfo, getWhitelabelBackups, getFile } from '../../appRedux/actions';
+
 import EditWhiteLabel from "./components/EditWhiteLabel";
 import LoadIDsModal from "./components/LoadIDsModal";
+import WhiteLabelPricing from './components/WhiteLabelPricing';
 import {USER_URL} from '../../constants/Application'
 
 const confirm = Modal.confirm;
@@ -95,7 +96,8 @@ class WhiteLabels extends Component {
             loadIdsModal: false,
             selectedRowKeys: [],
             backupDatabaseModal: false,
-            copy_status: true
+            copy_status: true,
+            pricing_modal: false,
         }
     }
 
@@ -215,8 +217,13 @@ class WhiteLabels extends Component {
         }
     }
 
+    showPricingModal = (visible) => {
+        this.setState({
+            pricing_modal: visible
+        });
+    }
+
     render() {
-        // console.log(this.props.whiteLabelInfo, 'whitelables', this.state.secureLouncer)
 
         // load ids modal
         if (this.props.showMsg) {
@@ -492,16 +499,16 @@ class WhiteLabels extends Component {
                         <Col xs={24} sm={24} md={6} lg={6} xl={6}>
                             <div>
                                 <div className="contenar">
-
-                                    <Card className="manage_sec" style={{ borderRadius: 12 }}>
-                                        <div>
-                                            <h2 style={{ textAlign: "center" }}>Database Backups</h2>
-                                            <Divider className="mb-0" />
-
-                                        </div>
-                                        <Button type="primary" size="small" onClick={() => this.setState({ backupDatabaseModal: true })} className="open_btn1">Open</Button>
-                                    </Card>
-
+                                    <a href="javascript:void(0)" onClick={() => this.setState({ backupDatabaseModal: true })} >
+                                        <Card className="manage_sec" style={{ borderRadius: 12 }}>
+                                            <div>
+                                                <h2 style={{ textAlign: "center" }}>Database Backups</h2>
+                                                <Divider className="mb-0" />
+                                            </div>
+                                            <Button type="primary" size="small" className="open_btn1">Open</Button>
+                                        </Card>
+                                    </a>
+                                    {/* <WhiteLabelBackups /> */}
                                     <Modal
                                         title="Database Backups"
                                         visible={this.state.backupDatabaseModal}
@@ -544,7 +551,7 @@ class WhiteLabels extends Component {
                         <Col xs={24} sm={24} md={6} lg={6} xl={6}>
                             <div>
                                 <div className="contenar">
-                                    <a href="javascript:void(0)">
+                                    <a href="javascript:void(0)" onClick={(e) => { this.showPricingModal(true) }} >
                                         <Card className="manage_sec" style={{ borderRadius: 12 }}>
                                             <div>
                                                 <h2 style={{ textAlign: "center" }}>Set Prices</h2>
@@ -555,10 +562,14 @@ class WhiteLabels extends Component {
                                         </Card>
                                     </a>
                                     <div className="middle">
-                                        <div className="text">Coming Soon</div>
+                                        <WhiteLabelPricing
+                                            showPricingModal = {this.showPricingModal}
+                                            pricing_modal = {this.state.pricing_modal}
+                                        />
                                     </div>
                                 </div>
                             </div>
+
                         </Col>
                         <Col xs={24} sm={24} md={6} lg={6} xl={6} onClick={() => this.refs.loadidsofModal.getWrappedInstance().showModal(this.props.whiteLabelInfo)}>
                             <div>
