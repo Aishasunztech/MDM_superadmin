@@ -15,6 +15,7 @@ import style from "./whitelabels.css"
 import { getWhiteLabelInfo, editWhiteLabelInfo, getWhitelabelBackups, getFile } from '../../appRedux/actions';
 import EditWhiteLabel from "./components/EditWhiteLabel";
 import LoadIDsModal from "./components/LoadIDsModal";
+import {USER_URL} from '../../constants/Application'
 
 const confirm = Modal.confirm;
 const success = Modal.success
