@@ -185,6 +185,52 @@ export function getSimIDs() {
             }
         });
     }
+
+}
+export function getSimIDsLabel(labelID) {
+
+    console.log('what SimIDsLabel', labelID)
+    // if(labelID) {
+    console.log('action file true label id', labelID)
+
+    return (dispatch) => {
+
+        RestService.getSimIDsLabel(labelID).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                // console.log('response', response.data);
+                dispatch({
+                    type: GET_SIM_IDS,
+                    payload: response.data.data
+                });
+
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                });
+            }
+        });
+    }
+    // }else{
+    console.log('action file false label id', labelID)
+
+    //     return (dispatch) => {
+
+    //         RestService.getSimIDs().then((response) => {
+    //             if (RestService.checkAuth(response.data)) {
+    //                 // console.log('response', response.data);
+    //                 dispatch({
+    //                     type: GET_SIM_IDS,
+    //                     payload: response.data.data
+    //                 });
+
+    //             } else {
+    //                 dispatch({
+    //                     type: INVALID_TOKEN
+    //                 });
+    //             }
+    //         });
+    //     }
+    // }
 }
 
 export function getChatIDs() {
@@ -226,6 +272,48 @@ export function getPGPEmails() {
         });
     }
 }
+
+// get ids with label
+export function getChatIDsLabel(labelID) {
+    return (dispatch) => {
+
+        RestService.getChatIDsLabel(labelID).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                // console.log('response', response.data);
+                dispatch({
+                    type: GET_CHAT_IDS,
+                    payload: response.data.data
+                });
+
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                });
+            }
+        });
+    }
+}
+
+export function getPGPEmailsLabel(labelID) {
+    return (dispatch) => {
+        // alert("hello");
+        RestService.getPGPEmailsLabel(labelID).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                // console.log('response', response.data);
+                dispatch({
+                    type: GET_PGP_EMAILS,
+                    payload: response.data.data
+                });
+
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                });
+            }
+        });
+    }
+}
+
 
 
 

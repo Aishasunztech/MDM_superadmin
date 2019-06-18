@@ -24,9 +24,9 @@ export function importCSV(formData, fieldName) {
         // });
         RestService.importCSV(formData, fieldName).then((response) => {
             if (RestService.checkAuth(response.data)) {
-                console.log('duplicated data', response.data)
+                console.log('duplicated data at action file ::', response.data)
                 if (response.data.duplicateData.length) {
-                    // console.log('duplicated data', response.data);
+                    // console.log('duplicated data at action file :: ', response.data);
                     dispatch({
                         type: DUPLICATE_SIM_IDS,
                         payload: response.data,

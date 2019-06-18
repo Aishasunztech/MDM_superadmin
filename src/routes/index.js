@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import Account from "./account/index";
 import ManageData from "./account/ManageData";
+import Modal from "./whitelabels/components/LoadIDsModal";
 import WhiteLabels from "./whitelabels/index";
 import Device from "./devices/index";
 import AutoUpdate from './autoUpdate/index'
@@ -47,6 +48,11 @@ const AppRoutes = ({ match, whiteLabels }) => {
           path={`${match.url}account`}
           component={Account}
           // component={ManageData}
+        />
+        <Route
+          exact
+          path={`${match.url}account/modal`}
+          component={Modal}
         />
         <Route
           exact

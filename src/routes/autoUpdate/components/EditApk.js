@@ -193,7 +193,7 @@ class EditApkForm extends Component {
         const props = {
             name: 'logo',
             multiple: false,
-            action: BASE_URL + 'users/uploadApk/logo',
+            action: BASE_URL + 'users/upload/logo',
             headers: { 'authorization': token },
             accept: '.png, .jpg',
             disabled: this.state.disableLogo,
@@ -245,7 +245,7 @@ class EditApkForm extends Component {
         const props2 = {
             name: 'apk',
             multiple: false,
-            action: BASE_URL + 'users/uploadApk/apk',
+            action: BASE_URL + 'users/upload/apk',
             headers: { 'authorization': token },
             accept: '.apk',
             disabled: this.state.disableApk,
