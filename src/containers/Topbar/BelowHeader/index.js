@@ -7,7 +7,6 @@ import languageData from "../languageData";
 import SearchBox from "components/SearchBox";
 import UserInfo from "components/UserInfo";
 import AppNotification from "components/AppNotification";
-import MailNotification from "components/MailNotification";
 import {switchLanguage, toggleCollapsedSideNav} from "../../../appRedux/actions/Setting";
 import HorizontalNav from "../HorizontalNav";
 import {Link} from "react-router-dom";
@@ -16,13 +15,7 @@ import {Link} from "react-router-dom";
 const {Header} = Layout;
 
 const Option = Select.Option;
-const menu = (
-  <Menu onClick={handleMenuClick}>
-    <Menu.Item key="1">Products</Menu.Item>
-    <Menu.Item key="2">Apps</Menu.Item>
-    <Menu.Item key="3">Blogs</Menu.Item>
-  </Menu>
-);
+
 
 function handleMenuClick(e) {
   message.info('Click on menu item.');
@@ -128,15 +121,6 @@ class BelowHeader extends Component {
                   </Popover>
                 </li>
 
-                <li className="gx-msg">
-                  <Popover overlayClassName="gx-popover-horizantal" placement="bottomRight"
-                           content={<MailNotification/>} trigger="click">
-                <span className="gx-pointer gx-status-pos gx-d-block">
-                <i className="icon icon-chat-new"/>
-                <span className="gx-status gx-status-rtl gx-small gx-orange"/>
-                </span>
-                  </Popover>
-                </li>
                 <li className="gx-language">
                   <Popover overlayClassName="gx-popover-horizantal" placement="bottomRight"
                            content={this.languageMenu()} trigger="click">
