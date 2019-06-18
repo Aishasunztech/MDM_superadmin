@@ -70,6 +70,7 @@ export default class DevicesTabs extends Component {
                     resetTabSelected={this.resetTabSelected}
                     user={this.props.user}
                     history={this.props.history}
+                    showDateModal={this.props.showDateModal}
                 />
             </Fragment>
         )

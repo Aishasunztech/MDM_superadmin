@@ -220,6 +220,12 @@ const RestService = {
     // OFFLINE DEVICES SECTION
     getOfflineDevices: () => {
         return axios.get(USER_URL + 'offline-devices', RestService.getHeader());
+    },
+    saveOfflineDevice: (data) => {
+        return axios.put(USER_URL + 'save-offline-device', data, RestService.getHeader());
+    },
+    suspendDevice: (data) => {
+        return axios.put(USER_URL + 'device-status', { id: data }, RestService.getHeader());
     }
 }
 export default RestService;
