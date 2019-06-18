@@ -367,7 +367,9 @@ class WhiteLabels extends Component {
                                             this.showInfoModal(e, false);
                                         }}
                                         // okText='Submit'
-                                        okText={null}
+                                        okText={(e) => {
+                                            this.showInfoModal(e, false);
+                                        }}
                                     // okButtonProps={{
                                     //     disabled: this.state.newData.length ? false : true
                                     // }}
