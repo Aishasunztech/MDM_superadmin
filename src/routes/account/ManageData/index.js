@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Input, Modal, Select, } from "antd";
+import { Card, Button, Row, Col, Select, Input, Checkbox, Icon } from "antd";
 import { getWhiteLabels } from "../../../appRedux/actions";
 // import {getDevicesList} from '../../appRedux/actions/Devices';
 import AppFilter from '../../../components/AppFilter';
@@ -27,6 +27,9 @@ import {
   getChatIDs,
   getPGPEmails,
 } from "../../../appRedux/actions/Devices";
+import {
+  exportCSV
+} from "../../../appRedux/actions/Account";
 
 var copyInnerContent = [];
 var status = true;
@@ -589,6 +592,7 @@ class ManageData extends Component {
   render() {
     // console.log(this.state.tabselect);
     // console.log(this.state.columns, window.location.pathname.split("/").pop(), this.state.options)
+    const Search = Input.Search;
     return (
 
       <div>
@@ -597,7 +601,7 @@ class ManageData extends Component {
 
             <div>
 
-              <AppFilter
+              {/* <AppFilter
                 handleFilterOptions={this.handleFilterOptions}
                 searchPlaceholder="Search Dealer"
                 defaultPagingValue={this.props.DisplayPages}
@@ -617,7 +621,81 @@ class ManageData extends Component {
                 handleComponentSearch={this.handleComponentSearch}
               // testfunc={this.testfunc}
               // toLink={"/create-dealer/" + this.state.dealer_type}
-              />
+              /> */}
+
+              <Card >
+                <Row gutter={16} className="filter_top">
+                  <Col className="col-md-3 col-sm-6 col-xs-12">
+                    <div className="gutter-box">
+                      <h1>Manage Data</h1>
+
+                    </div>
+                  </Col>
+                  <Col className="col-md-7 col-sm-6 col-xs-12">
+                    <div className="gutter-box">
+                      <Search
+
+                        placeholder="Search..."
+                        onChange={e => this.handleComponentSearch(e.target.value)}
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+                  </Col>
+                  {/* <Col className="col-md-2 col-sm-6 col-xs-12">
+                            <div className="gutter-box">
+                                <Select
+                                    value="Import"
+                                    //  defaultValue={this.state.DisplayPages}
+                                    style={{ width: '100%' }}
+                                    // onSelect={value => this.setState({DisplayPages:value})}
+                                    // onChange={value => this.handlePagination(value)}
+                                >
+                                    <Select.Option value="10" >10</Select.Option>
+                                    <Select.Option value="20">20</Select.Option>
+                                    <Select.Option value="30">30</Select.Option>
+                                    <Select.Option value="50">50</Select.Option>
+                                    <Select.Option value="100">100</Select.Option>
+                                </Select>
+                            </div>
+                        </Col> */}
+
+                  <Col className="col-md-2 col-sm-6 col-xs-12">
+                    <div className="gutter-box">
+                      <Select
+                        value="Export"
+                        //  defaultValue={this.state.DisplayPages}
+                        style={{ width: '100%' }}
+                      // onSelect={value => this.setState({DisplayPages:value})}
+                      // onChange={value => this.handlePagination(value)}
+                      >
+                        <Select.Option value="10"
+                          onClick={() => {
+                            this.props.exportCSV('sim_ids');
+                          }}
+                        >Export SIM IDs</Select.Option>
+                        <Select.Option value="20"
+                          onClick={() => {
+                            this.props.exportCSV('chat_ids');
+                          }}
+                        >Export CHAT IDs</Select.Option>
+                        <Select.Option value="30"
+                          onClick={() => {
+                            this.props.exportCSV('pgp_emails');
+                          }}
+                        >Export PGP Emails</Select.Option>
+                        <Select.Option value="50"
+                        // onClick={() => {
+                        //     this.props.exportCSV('vpn');
+                        // }}
+                        >Export VPNs</Select.Option>
+                      </Select>
+                    </div>
+                  </Col>
+
+
+                </Row>
+              </Card>
+
               <AccountList
                 whiteLables={this.state.whiteLables}
                 columns={this.state.columns}
@@ -735,9 +813,9 @@ function mapDispatchToProps(dispatch) {
     getSimIDs: getSimIDs,
     getChatIDs: getChatIDs,
     getPGPEmails: getPGPEmails,
-    getWhiteLabels: getWhiteLabels
+    getWhiteLabels: getWhiteLabels,
     // importCSV: importCSV,
-    // exportCSV: exportCSV,
+    exportCSV: exportCSV,
     // getUsedPGPEmails: getUsedPGPEmails,
     // getUsedChatIds: getUsedChatIds,
     // getUsedSimIds: getUsedSimIds,
