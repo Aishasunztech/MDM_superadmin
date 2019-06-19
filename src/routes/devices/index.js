@@ -6,15 +6,11 @@ import { Input, Button, Icon, Select } from "antd";
 import { bindActionCreators } from "redux";
 
 import {
-    getDevicesList,
+    getOfflineDevices,
     suspendDevice,
     activateDevice,
     editDevice,
-    rejectDevice,
-    addDevice,
-    preActiveDevice,
-    deleteUnlinkDevice,
-} from "../../appRedux/actions/Devices";
+} from "../../appRedux/actions";
 
 import {
     DEVICE_ACTIVATED,
@@ -28,33 +24,15 @@ import {
 } from '../../constants/Constants'
 
 import {
+    OFFLINE_ID,
     DEVICE_ID,
     DEVICE_REMAINING_DAYS,
-    DEVICE_FLAGGED,
     DEVICE_STATUS,
-    DEVICE_MODE,
-    DEVICE_NAME,
-    DEVICE_ACTIVATION_CODE,
-    DEVICE_ACCOUNT_EMAIL,
-    DEVICE_PGP_EMAIL,
-    DEVICE_CHAT_ID,
-    DEVICE_CLIENT_ID,
-    DEVICE_DEALER_ID,
-    DEVICE_DEALER_PIN,
     DEVICE_MAC_ADDRESS,
-    DEVICE_SIM_ID,
-    DEVICE_IMEI_1,
-    DEVICE_SIM_1,
-    DEVICE_IMEI_2,
-    DEVICE_SIM_2,
     DEVICE_SERIAL_NUMBER,
-    DEVICE_MODEL,
     DEVICE_START_DATE,
     DEVICE_EXPIRY_DATE,
-    DEVICE_DEALER_NAME,
-    DEVICE_S_DEALER,
-    DEVICE_S_DEALER_NAME,
-    USER_ID
+    WHITE_LABEL,
 } from '../../constants/DeviceConstants';
 
 import {
@@ -64,20 +42,18 @@ import {
     getPagination
 } from '../../appRedux/actions/Common';
 
-import {
-    getNotification
-} from "../../appRedux/actions/Socket";
 
 import AppFilter from '../../components/AppFilter';
-import DevicesList from './components/DevicesList';
+
+import DevicesTabs from './components/DevicesTabs';
+
 import ShowMsg from './components/ShowMsg';
-// import Column from "antd/lib/table/Column";
+
 import { getStatus, componentSearch, titleCase, dealerColsWithSearch } from '../utils/commonUtils';
+
 import CircularProgress from "components/CircularProgress/index";
-import AddDevice from './components/AddDevice';
 
-
-var coppyDevices = [];
+var copyDevices = [];
 var status = true;
 
 class Devices extends Component {
@@ -92,23 +68,11 @@ class Devices extends Component {
                 width: 800,
             },
             {
-                // title: (this.state.tabselect === "5") ? <Button type="danger" size="small" style={{ margin: '0 8px 0 8px' }} onClick={() => this.deleteAllUnlinkedDevice()} >Delete All Selected</Button>:'',
                 dataIndex: 'action',
-                // title: <Button type="danger" size="small" style={{ margin: '0 8px 0 8px' }} onClick={() => this.refs.devcieList.deleteAllUnlinkedDevice('unlink')} >Delete Selected</Button>,
                 align: 'center',
                 className: 'row',
                 width: 800,
             },
-            // {
-            //     // title: 'ACTIONS',
-            //     dataIndex: 'sortOrder',
-            //     align: 'center',
-            //     className: 'row',
-            //     id:"order",
-            //     // hide: true,
-            //     // sortDirections: ['ascend', 'descend'],
-            //     defaultSortOrder: 'ascend'
-            // },
 
             {
                 title: (
@@ -161,31 +125,6 @@ class Devices extends Component {
                         sortDirections: ['ascend', 'descend'],
                     }
                 ],
-            }, {
-                title: (
-                    <Input.Search
-                        name="user_id"
-                        key="user_id"
-                        id="user_id"
-                        className="search_heading"
-                        onKeyUp={this.handleSearch}
-                        autoComplete="new-password"
-                        placeholder={titleCase(USER_ID)}
-                    />
-                ),
-                dataIndex: 'user_id',
-                className: '',
-                children: [
-                    {
-                        title: USER_ID,
-                        align: "center",
-                        dataIndex: 'user_id',
-                        key: "user_id",
-                        className: '',
-                        sorter: (a, b) => { return a.device_id.localeCompare(b.device_id) },
-                        sortDirections: ['ascend', 'descend'],
-                    }
-                ],
             },
             {
                 title: (
@@ -218,299 +157,6 @@ class Devices extends Component {
             {
                 title: (
                     <Input.Search
-                        name="online"
-                        key="online"
-                        id="online"
-                        className="search_heading"
-                        onKeyUp={this.handleSearch}
-                        autoComplete="new-password"
-                        placeholder={titleCase(DEVICE_MODE)}
-                    />
-                ),
-                dataIndex: 'online',
-                className: '',
-                children: [
-                    {
-                        title: DEVICE_MODE,
-                        align: "center",
-                        className: '',
-                        dataIndex: 'online',
-                        key: 'online',
-                        sorter: (a, b) => { return a.online.props.children[1].localeCompare(b.online.props.children[1]) },
-
-                        sortDirections: ['ascend', 'descend'],
-                    }
-                ]
-            },
-            {
-                title: (
-                    <Input.Search
-                        name="flagged"
-                        key="flagged"
-                        id="flagged"
-                        className="search_heading"
-                        onKeyUp={this.handleSearch}
-                        autoComplete="new-password"
-                        placeholder={titleCase(DEVICE_FLAGGED)}
-                    />
-                ),
-                dataIndex: 'flagged',
-                className: '',
-
-                children: [
-                    {
-                        title: DEVICE_FLAGGED,
-                        align: "center",
-                        className: '',
-                        dataIndex: 'flagged',
-                        key: 'flagged',
-                        sorter: (a, b) => { console.log('done', a.status); return a.status.props.children[1].localeCompare(b.status.props.children[1]) },
-
-                        sortDirections: ['ascend', 'descend'],
-                    }
-                ]
-            },
-            {
-                title: (
-                    <Input.Search
-                        name="name"
-                        key="name"
-                        id="name"
-                        className="search_heading"
-                        onKeyUp={this.handleSearch}
-                        autoComplete="new-password"
-                        placeholder={titleCase(DEVICE_NAME)}
-
-                    />
-                ),
-                className: '',
-                dataIndex: 'name',
-                editable: true,
-                children: [
-                    {
-                        title: DEVICE_NAME,
-                        align: "center",
-                        dataIndex: 'name',
-                        key: 'name',
-                        className: '',
-                        sorter: (a, b) => { return a.name.localeCompare(b.name) },
-                        sortDirections: ['ascend', 'descend'],
-                        editable: true,
-
-                    }
-                ]
-            },
-            {
-                title: (
-                    <Input.Search
-                        name="account_email"
-                        key="account_email"
-                        id="account_email"
-                        className="search_heading"
-                        onKeyUp={this.handleSearch}
-                        autoComplete="new-password"
-                        placeholder={titleCase(DEVICE_ACCOUNT_EMAIL)}
-                    />
-                ),
-                dataIndex: 'account_email',
-                className: '',
-                children: [
-                    {
-                        title: DEVICE_ACCOUNT_EMAIL,
-                        align: "center",
-                        dataIndex: 'account_email',
-                        key: 'account_email',
-                        className: '',
-                        sorter: (a, b) => { return a.account_email.localeCompare(b.account_email) },
-                        sortDirections: ['ascend', 'descend'],
-                    }
-                ]
-            },
-
-            {
-                title: (
-                    <Input.Search
-                        name="pgp_email"
-                        key="pgp_email"
-                        id="pgp_email"
-                        className="search_heading"
-                        onKeyUp={this.handleSearch}
-                        autoComplete="new-password"
-                        placeholder={titleCase(DEVICE_PGP_EMAIL)}
-                    />
-                ),
-                dataIndex: 'pgp_email',
-                className: '',
-                children: [
-                    {
-                        title: DEVICE_PGP_EMAIL,
-                        align: "center",
-                        dataIndex: 'pgp_email',
-                        className: '',
-                        sorter: (a, b) => { return a.pgp_email.localeCompare(b.pgp_email) },
-                        sortDirections: ['ascend', 'descend'],
-                    }
-                ]
-            },
-            {
-                title: (
-                    <Input.Search
-                        name="activation_code"
-                        key="activation_code"
-                        id="activation_code"
-                        className="search_heading"
-                        onKeyUp={this.handleSearch}
-                        autoComplete="new-password"
-                        placeholder={titleCase(DEVICE_ACTIVATION_CODE)}
-                    />
-                ),
-                dataIndex: 'activation_code',
-                className: '',
-                children: [
-                    {
-                        title: DEVICE_ACTIVATION_CODE,
-                        align: "center",
-                        dataIndex: 'activation_code',
-                        className: '',
-                        sorter: (a, b) => { return a.activation_code - b.activation_code },
-                        sortDirections: ['ascend', 'descend'],
-                    }
-                ]
-            },
-            {
-                title: (
-                    <Input.Search
-                        name="chat_id"
-                        key="chat_id"
-                        id="chat_id"
-                        className="search_heading"
-                        onKeyUp={this.handleSearch}
-                        autoComplete="new-password"
-                        placeholder={titleCase(DEVICE_CHAT_ID)}
-                    />
-                ),
-                dataIndex: 'chat_id',
-                className: '',
-                children: [
-                    {
-                        title: DEVICE_CHAT_ID,
-                        align: "center",
-                        dataIndex: 'chat_id',
-                        key: 'chat_id',
-                        className: '',
-                        sorter: (a, b) => { return a.chat_id.localeCompare(b.chat_id) },
-
-                        sortDirections: ['ascend', 'descend'],
-                    }
-                ]
-            },
-            {
-                title: (
-                    <Input.Search
-                        name="client_id"
-                        key="client_id"
-                        id="client_id"
-                        className="search_heading"
-                        onKeyUp={this.handleSearch}
-                        autoComplete="new-password"
-                        placeholder={titleCase(DEVICE_CLIENT_ID)}
-                    />
-                ),
-                dataIndex: 'client_id',
-                className: '',
-                children: [
-                    {
-                        title: DEVICE_CLIENT_ID,
-                        align: "center",
-                        dataIndex: 'client_id',
-                        key: 'client_id',
-                        className: '',
-                        sorter: (a, b) => { return a.client_id.localeCompare(b.client_id) },
-                        sortDirections: ['ascend', 'descend'],
-                    }
-                ]
-            },
-            {
-                title: (
-                    <Input.Search
-                        name="dealer_id"
-                        key="dealer_id"
-                        id="dealer_id"
-                        className="search_heading"
-                        onKeyUp={this.handleSearch}
-                        autoComplete="new-password"
-                        placeholder={titleCase(DEVICE_DEALER_ID)}
-                    />
-                ),
-                dataIndex: 'dealer_id',
-                className: '',
-                children: [
-                    {
-                        title: DEVICE_DEALER_ID,
-                        align: "center",
-                        dataIndex: 'dealer_id',
-                        key: 'dealer_id',
-                        className: '',
-                        sorter: (a, b) => { return a.dealer_id - b.dealer_id },
-                        sortDirections: ['ascend', 'descend'],
-                    }
-                ]
-            },
-            {
-                title: (
-                    <Input.Search
-                        name="dealer_name"
-                        key="dealer_name"
-                        id="dealer_name"
-                        className="search_heading"
-                        onKeyUp={this.handleSearch}
-                        autoComplete="new-password"
-                        placeholder={titleCase(DEVICE_DEALER_NAME)}
-                    />
-                ),
-                dataIndex: 'dealer_name',
-                className: '',
-                children: [
-                    {
-                        title: DEVICE_DEALER_NAME,
-                        align: "center",
-                        className: '',
-                        dataIndex: 'dealer_name',
-                        key: 'dealer_name',
-                        sorter: (a, b) => { return a.dealer_name.localeCompare(b.dealer_name) },
-                        sortDirections: ['ascend', 'descend'],
-                    }
-                ]
-            },
-            {
-                title: (
-                    <Input.Search
-                        name="link_code"
-                        key="link_code"
-                        id="link_code"
-                        className="search_heading"
-                        onKeyUp={this.handleSearch}
-                        autoComplete="new-password"
-                        placeholder={titleCase(DEVICE_DEALER_PIN)}
-                    />
-                ),
-                dataIndex: 'dealer_pin',
-                className: '',
-                children: [
-                    {
-                        title: DEVICE_DEALER_PIN,
-                        align: "center",
-                        dataIndex: 'dealer_pin',
-                        key: 'dealer_pin',
-                        className: '',
-                        sorter: (a, b) => { return a.dealer_pin - b.dealer_pin },
-                        sortDirections: ['ascend', 'descend'],
-                    }
-                ]
-            },
-            {
-                title: (
-                    <Input.Search
                         name="mac_address"
                         key="mac_address"
                         id="mac_address"
@@ -530,137 +176,6 @@ class Devices extends Component {
                         dataIndex: 'mac_address',
                         key: 'mac_address',
                         sorter: (a, b) => { return a.mac_address.localeCompare(b.mac_address) },
-                        sortDirections: ['ascend', 'descend'],
-                    }
-                ]
-            },
-            {
-                title: (
-                    <Input.Search
-                        name="sim_id"
-                        key="sim_id"
-                        id="sim_id"
-                        className="search_heading"
-                        onKeyUp={this.handleSearch}
-                        autoComplete="new-password"
-                        placeholder={titleCase(DEVICE_SIM_ID)}
-                    />
-                ),
-                dataIndex: 'sim_id',
-                className: '',
-                children: [
-                    {
-                        title: DEVICE_SIM_ID,
-                        align: "center",
-                        dataIndex: 'sim_id',
-                        key: 'sim_id',
-                        className: '',
-                        sorter: (a, b) => { return a.sim_id.localeCompare(b.sim_id) },
-                        sortDirections: ['ascend', 'descend'],
-                    }
-                ]
-            },
-            {
-                title: (
-                    <Input.Search
-                        name="imei"
-                        key="imei"
-                        id="imei"
-                        className="search_heading"
-                        autoComplete="new-password"
-                        placeholder={titleCase(DEVICE_IMEI_1)}
-                        onKeyUp={this.handleSearch}
-                    />
-                ),
-                dataIndex: 'imei_1',
-                className: '',
-                children: [
-                    {
-                        title: DEVICE_IMEI_1,
-                        align: "center",
-                        className: '',
-                        dataIndex: 'imei_1',
-                        key: 'imei_1',
-                        sorter: (a, b) => { return a.imei_1.localeCompare(b.imei_1) },
-                        sortDirections: ['ascend', 'descend'],
-                    }
-                ]
-            },
-            {
-                title: (
-                    <Input.Search
-                        name="simno"
-                        key="simno"
-                        id="simno"
-                        className="search_heading"
-                        onKeyUp={this.handleSearch}
-                        autoComplete="new-password"
-                        placeholder={titleCase(DEVICE_SIM_1)}
-                    />
-                ),
-                className: '',
-                dataIndex: 'sim_1',
-                children: [
-                    {
-                        title: DEVICE_SIM_1,
-                        align: "center",
-                        className: '',
-                        dataIndex: 'sim_1',
-                        key: 'sim_1',
-                        sorter: (a, b) => { return a.sim_1.localeCompare(b.sim_1) },
-
-                        sortDirections: ['ascend', 'descend'],
-                    }
-                ]
-            },
-            {
-                title: (
-                    <Input.Search
-                        name="imei2"
-                        key="imei2"
-                        id="imei2"
-                        className="search_heading"
-                        autoComplete="new-password"
-                        placeholder={titleCase(DEVICE_IMEI_2)}
-                        onKeyUp={this.handleSearch}
-                    />
-                ),
-                dataIndex: 'imei_2',
-                className: '',
-                children: [
-                    {
-                        title: DEVICE_IMEI_2,
-                        align: "center",
-                        dataIndex: 'imei_2',
-                        key: 'imei_2',
-                        className: '',
-                        sorter: (a, b) => { return a.imei_2.localeCompare(b.imei_2) },
-                        sortDirections: ['ascend', 'descend'],
-                    }
-                ]
-            },
-            {
-                title: (
-                    <Input.Search
-                        name="simno2"
-                        key="simno2"
-                        id="simno2"
-                        className="search_heading"
-                        onKeyUp={this.handleSearch}
-                        autoComplete="new-password"
-                        placeholder={titleCase(DEVICE_SIM_2)}
-                    />
-                ),
-                dataIndex: 'sim_2',
-                className: '',
-                children: [
-                    {
-                        title: DEVICE_SIM_2,
-                        align: "center",
-                        dataIndex: 'sim_2',
-                        key: 'sim_2',
-                        className: '',
-                        sorter: (a, b) => { return a.sim_2.localeCompare(b.sim_2) },
                         sortDirections: ['ascend', 'descend'],
                     }
                 ]
@@ -695,84 +210,6 @@ class Devices extends Component {
             {
                 title: (
                     <Input.Search
-                        name="model"
-                        key="model"
-                        id="model"
-                        className="search_heading"
-                        onKeyUp={this.handleSearch}
-                        autoComplete="new-password"
-                        placeholder={titleCase(DEVICE_MODEL)}
-                    />
-                ),
-                dataIndex: 'model',
-                className: '',
-                children: [
-                    {
-                        title: DEVICE_MODEL,
-                        align: "center",
-                        className: '',
-                        dataIndex: 'model',
-                        key: 'model',
-                        sorter: (a, b) => { return a.model.localeCompare(b.model) },
-                        sortDirections: ['ascend', 'descend'],
-                    }
-                ]
-            },
-
-            {
-                title: (
-                    <Input.Search
-                        name="s_dealer"
-                        key="s_dealer"
-                        id="s_dealer"
-                        className="search_heading"
-                        onKeyUp={this.handleSearch}
-                        autoComplete="new-password"
-                        placeholder={titleCase(DEVICE_S_DEALER)}
-                    />
-                ),
-                dataIndex: 's_dealer',
-                className: '',
-                children: [
-                    {
-                        title: DEVICE_S_DEALER,
-                        align: "center",
-                        className: '',
-                        dataIndex: 's_dealer',
-                        key: 's_dealer',
-                        sorter: (a, b) => { return a.s_dealer.localeCompare(b.s_dealer) },
-                        sortDirections: ['ascend', 'descend'],
-                    }
-                ]
-            },
-            {
-                title: (
-                    <Input.Search
-                        name="s_dealer_name"
-                        key="s_dealer_name"
-                        id="s_dealer_name"
-                        className="search_heading"
-                        onKeyUp={this.handleSearch}
-                        autoComplete="new-password"
-                        placeholder={titleCase(DEVICE_S_DEALER_NAME)}
-                    />
-                ),
-                dataIndex: 's_dealer_name',
-                className: '',
-                children: [
-                    {
-                        title: DEVICE_S_DEALER_NAME,
-                        align: "center",
-                        className: '',
-                        dataIndex: 's_dealer_name',
-                        key: 's_dealer_name',
-                        sorter: (a, b) => { return a.s_dealer_name.localeCompare(b.s_dealer_name) },
-                        sortDirections: ['ascend', 'descend'],
-                    }
-                ]
-            }, {
-                title: (
-                    <Input.Search
                         name="start_date"
                         key="start_date"
                         id="start_date"
@@ -795,7 +232,8 @@ class Devices extends Component {
                         sortDirections: ['ascend', 'descend'],
                     }
                 ]
-            }, {
+            },
+            {
                 title: (
                     <Input.Search
                         name="expiry_date"
@@ -843,9 +281,7 @@ class Devices extends Component {
 
     filterList = (type, devices) => {
         let dumyDevices = [];
-
         devices.filter(function (device) {
-            // let deviceStatus = getStatus(device.status, device.account_status, device.unlink_status, device.device_status, device.activation_status);
             let deviceStatus = device.finalStatus;
             if (deviceStatus === type) {
                 dumyDevices.push(device);
@@ -982,7 +418,7 @@ class Devices extends Component {
 
     handleChangetab = (value) => {
 
-        let indxRemainingDays = this.state.columns.findIndex(k => k.dataIndex == 'validity');
+        // let indxRemainingDays = this.state.columns.findIndex(k => k.dataIndex == 'validity');
         let indxAction = this.state.columns.findIndex(k => k.dataIndex == 'action');
         if (value == '5' && this.props.user.type == ADMIN) {
             //  indx = this.state.columns.findIndex(k => k.dataIndex =='action');
@@ -1204,10 +640,9 @@ class Devices extends Component {
         this.props.postPagination(value, 'devices');
     }
     componentDidMount() {
-        this.props.getDevicesList();
-        this.props.getDropdown('devices');
-        this.props.getPagination('devices');
-        // this.props.getNotification();
+        this.props.getOfflineDevices();
+        // this.props.getDropdown('devices');
+        // this.props.getPagination('devices');
     }
 
 
@@ -1216,10 +651,10 @@ class Devices extends Component {
             if (value.length) {
 
                 if (status) {
-                    coppyDevices = this.state.devices;
+                    copyDevices = this.state.devices;
                     status = false;
                 }
-                let foundDevices = componentSearch(coppyDevices, value);
+                let foundDevices = componentSearch(copyDevices, value);
                 if (foundDevices.length) {
                     this.setState({
                         devices: foundDevices,
@@ -1233,7 +668,7 @@ class Devices extends Component {
                 status = true;
 
                 this.setState({
-                    devices: coppyDevices,
+                    devices: copyDevices,
                 })
             }
         } catch (error) {
@@ -1260,11 +695,8 @@ class Devices extends Component {
                 <Select.Option value="all">All</Select.Option>
                 <Select.Option value={DEVICE_ACTIVATED}>Active</Select.Option>
                 <Select.Option value={DEVICE_EXPIRED}>Expired</Select.Option>
-                <Select.Option value={DEVICE_TRIAL}>Trial</Select.Option>
                 <Select.Option value={DEVICE_SUSPENDED}>Suspended</Select.Option>
-                <Select.Option value={DEVICE_PRE_ACTIVATION}>Pre Activated</Select.Option>
-                <Select.Option value={DEVICE_PENDING_ACTIVATION}>Pending Activation</Select.Option>
-                <Select.Option value={DEVICE_UNLINKED}>Unlinked</Select.Option>
+                <Select.Option value={DEVICE_UNLINKED}>Archived</Select.Option>
 
             </Select>
         );
@@ -1280,66 +712,6 @@ class Devices extends Component {
     refreshComponent = () => {
         this.props.history.push('/devices');
     }
-    render() {
-        // dealerColsWithSearch();
-        return (
-            <Fragment>
-                {/* <Button type="danger" size="small" onClick={() => dealerColsWithSearch()}>Testing</Button> */}
-                {
-                    this.props.isloading ? <CircularProgress /> :
-                        <Fragment>
-                            <AppFilter
-                                handleFilterOptions={this.handleFilterOptions}
-                                selectedOptions={this.props.selectedOptions}
-                                searchPlaceholder="Search Device"
-                                defaultPagingValue={this.state.defaultPagingValue}
-                                addButtonText="Add Device"
-                                options={this.props.options}
-                                isAddButton={this.props.user.type !== ADMIN}
-                                AddDeviceModal={true}
-                                disableAddButton={this.props.user.type === ADMIN}
-                                // toLink="add-device"
-                                handleDeviceModal={this.handleDeviceModal}
-                                handleUserModal={this.handleUserModal}
-                                handleCheckChange={this.handleCheckChange}
-                                handlePagination={this.handlePagination}
-                                handleComponentSearch={this.handleComponentSearch}
-                            />
-
-                            <DevicesList
-                                devices={this.state.devices}
-                                suspendDevice={this.props.suspendDevice}
-                                activateDevice={this.props.activateDevice}
-                                columns={this.state.columns}
-                                rejectDevice={this.rejectDevice}
-                                selectedOptions={this.props.selectedOptions}
-                                ref="devcieList"
-                                pagination={this.props.DisplayPages}
-                                addDevice={this.props.addDevice}
-                                editDevice={this.props.editDevice}
-                                handleChange={this.handleChange}
-                                tabselect={this.state.tabselect}
-                                handleChangetab={this.handleChangetab}
-                                handlePagination={this.handlePagination}
-                                deleteUnlinkDevice={this.props.deleteUnlinkDevice}
-                                user={this.props.user}
-                                refreshComponent={this.refreshComponent}
-                                history={this.props.history}
-                            />
-                            <ShowMsg
-                                msg={this.props.msg}
-                                showMsg={this.props.showMsg}
-                            />
-                            <AddDevice ref="add_device" />
-                        </Fragment>
-
-                }
-            </Fragment>
-        );
-
-    }
-
-
 
     handleSearch = (e) => {
         // console.log('============ check search value ========')
@@ -1347,16 +719,16 @@ class Devices extends Component {
 
         let demoDevices = [];
         if (status) {
-            coppyDevices = this.state.devices;
+            copyDevices = this.state.devices;
             status = false;
         }
-        //   console.log("devices", coppyDevices);
+        //   console.log("devices", copyDevices);
 
         if (e.target.value.length) {
             // console.log("keyname", e.target.name);
             // console.log("value", e.target.value);
             // console.log(this.state.devices);
-            coppyDevices.forEach((device) => {
+            copyDevices.forEach((device) => {
                 //  console.log("device", device[e.target.name] !== undefined);
 
                 if (device[e.target.name] !== undefined) {
@@ -1383,33 +755,78 @@ class Devices extends Component {
             })
         } else {
             this.setState({
-                devices: coppyDevices
+                devices: copyDevices
             })
         }
     }
 
-    // handleReset = (clearFilters) => {
-    //     clearFilters();
-    //     this.setState({ searchText: '' });
-    // }
+    render() {
+        return (
+            <Fragment>
+                {
+                    this.props.isloading ? <CircularProgress /> :
+                        <Fragment>
+
+                            {/* <AppFilter
+                                handleFilterOptions={this.handleFilterOptions}
+                                selectedOptions={this.props.selectedOptions}
+                                searchPlaceholder="Search Device"
+                                defaultPagingValue={this.state.defaultPagingValue}
+                                addButtonText="Add Device"
+                                options={this.props.options}
+                                isAddButton={this.props.user.type !== ADMIN}
+                                AddDeviceModal={true}
+                                disableAddButton={this.props.user.type === ADMIN}
+                                // toLink="add-device"
+                                handleDeviceModal={this.handleDeviceModal}
+                                handleUserModal={this.handleUserModal}
+                                handleCheckChange={this.handleCheckChange}
+                                handlePagination={this.handlePagination}
+                                handleComponentSearch={this.handleComponentSearch}
+                            /> */}
+
+                            <DevicesTabs
+                                devices={this.state.devices}
+                                suspendDevice={this.props.suspendDevice}
+                                activateDevice={this.props.activateDevice}
+                                columns={this.state.columns}
+                                selectedOptions={this.props.selectedOptions}
+                                ref="devcieList"
+                                pagination={this.props.DisplayPages}
+                                editDevice={this.props.editDevice}
+                                handleChange={this.handleChange}
+                                tabselect={this.state.tabselect}
+                                handleChangetab={this.handleChangetab}
+                                handlePagination={this.handlePagination}
+                                deleteUnlinkDevice={this.props.deleteUnlinkDevice}
+                                user={this.props.user}
+                                refreshComponent={this.refreshComponent}
+                                history={this.props.history}
+                            />
+                            <ShowMsg
+                                msg={this.props.msg}
+                                showMsg={this.props.showMsg}
+                            />
+                        </Fragment>
+                }
+            </Fragment>
+        );
+
+    }
+
 
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        getDevicesList: getDevicesList,
+        getOfflineDevices: getOfflineDevices,
         suspendDevice: suspendDevice,
         activateDevice: activateDevice,
         editDevice: editDevice,
         getDropdown: getDropdown,
         postDropdown: postDropdown,
-        rejectDevice: rejectDevice,
-        addDevice: addDevice,
-        preActiveDevice: preActiveDevice,
         postPagination: postPagination,
         getPagination: getPagination,
-        getNotification: getNotification,
-        deleteUnlinkDevice: deleteUnlinkDevice,
     }, dispatch);
 }
 

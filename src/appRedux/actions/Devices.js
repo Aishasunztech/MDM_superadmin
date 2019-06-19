@@ -19,24 +19,20 @@ import RestService from '../services/RestServices';
 
 // action creaters 
 
-export function getDevicesList() {
+export function getOfflineDevices() {
 
     return (dispatch) => {
-        dispatch({
-            type: LOADING,
-            isloading: true
-        });
-        RestService.DeviceList().then((response) => {
-            // console.log("data form server");
-            // console.log(response.data);
+
+        RestService.getOfflineDevices().then((response) => {
+            console.log("data form server");
+            console.log(response.data);
             if (RestService.checkAuth(response.data)) {
                 // console.log(response.data)
                 if (response.data.status) {
 
                     dispatch({
                         type: DEVICES_LIST,
-                        payload: response.data.data,
-                        response: response.data,
+                        payload: response.data.devices,
 
                     });
                 }
@@ -189,6 +185,52 @@ export function getSimIDs() {
             }
         });
     }
+
+}
+export function getSimIDsLabel(labelID) {
+
+    console.log('what SimIDsLabel', labelID)
+    // if(labelID) {
+    console.log('action file true label id', labelID)
+
+    return (dispatch) => {
+
+        RestService.getSimIDsLabel(labelID).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                // console.log('response', response.data);
+                dispatch({
+                    type: GET_SIM_IDS,
+                    payload: response.data.data
+                });
+
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                });
+            }
+        });
+    }
+    // }else{
+    console.log('action file false label id', labelID)
+
+    //     return (dispatch) => {
+
+    //         RestService.getSimIDs().then((response) => {
+    //             if (RestService.checkAuth(response.data)) {
+    //                 // console.log('response', response.data);
+    //                 dispatch({
+    //                     type: GET_SIM_IDS,
+    //                     payload: response.data.data
+    //                 });
+
+    //             } else {
+    //                 dispatch({
+    //                     type: INVALID_TOKEN
+    //                 });
+    //             }
+    //         });
+    //     }
+    // }
 }
 
 export function getChatIDs() {
@@ -231,67 +273,47 @@ export function getPGPEmails() {
     }
 }
 
-
-
-export function rejectDevice(device) {
+// get ids with label
+export function getChatIDsLabel(labelID) {
     return (dispatch) => {
-        // console.log(device)
-        RestService.rejectDevice(device).then((response) => {
+
+        RestService.getChatIDsLabel(labelID).then((response) => {
             if (RestService.checkAuth(response.data)) {
+                // console.log('response', response.data);
                 dispatch({
-                    type: REJECT_DEVICE,
-                    response: response.data,
-                    device_id: device,
-                })
+                    type: GET_CHAT_IDS,
+                    payload: response.data.data
+                });
+
             } else {
                 dispatch({
                     type: INVALID_TOKEN
-                })
+                });
             }
         });
     }
 }
 
-export function addDevice(device) {
+export function getPGPEmailsLabel(labelID) {
     return (dispatch) => {
         // alert("hello");
-        RestService.addDevice(device).then((response) => {
+        RestService.getPGPEmailsLabel(labelID).then((response) => {
             if (RestService.checkAuth(response.data)) {
+                // console.log('response', response.data);
                 dispatch({
-                    type: EDIT_DEVICE,
-                    response: response.data,
-                    payload: {
-                        formData: device,
-                    }
+                    type: GET_PGP_EMAILS,
+                    payload: response.data.data
                 });
+
             } else {
                 dispatch({
                     type: INVALID_TOKEN
-                })
+                });
             }
         });
     }
 }
 
-export function preActiveDevice(device) {
-    // console.log("action called", device);
-    return (dispatch) => {
-        RestService.preActiveDevice(device).then((response) => {
-            if (RestService.checkAuth(response.data)) {
-                // console.log('action done ', response.data);
-                dispatch({
-                    type: PRE_ACTIVATE_DEVICE,
-                    response: response.data,
-                    payload: {
-                        formData: device,
-                    }
-                });
 
-            } else {
-                dispatch({
-                    type: INVALID_TOKEN
-                })
-            }
-        })
-    }
-}
+
+

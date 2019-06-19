@@ -7,9 +7,9 @@ import { getDealerList, suspendDealer, deleteDealer, activateDealer, undoDealer,
 import { getDropdown, postDropdown, postPagination, getPagination } from '../../../appRedux/actions/Common';
 // import {getDevicesList} from '../../appRedux/actions/Devices';
 import AppFilter from '../../../components/AppFilter';
-import EditDealer from './components/editDealer';
+// import EditDealer from './components/editDealer';
 import CircularProgress from "components/CircularProgress/index";
-import DealerList from "./components/dealerList";
+import AccountList from "./components/accountList";
 import styles from './dealers.css'
 
 import { componentSearch, getDealerStatus, titleCase } from '../../utils/commonUtils';
@@ -19,6 +19,7 @@ import {
   LABEL_DATA_CHAT_ID,
   LABEL_DATA_SIM_ID,
   LABEL_DATA_PGP_EMAIL,
+  LABEL_DATA_VPN,
   LABEL_DATA_CREATED_AT,
 } from '../../../constants/LabelConstants';
 
@@ -35,7 +36,77 @@ class ManageData extends Component {
   constructor(props) {
     super(props);
 
-    const columns = [
+    const columnsSimids = [
+      {
+        title: '#',
+        dataIndex: 'count',
+        align: 'center',
+        className: 'row',
+        width: 50,
+      },
+      {
+        title: LABEL,
+        dataIndex: 'label',
+        align: 'center',
+        className: 'row',
+        width: 100,
+      },
+      {
+        title: (
+          <Input.Search
+            name="sim_id"
+            key="sim_id"
+            id="sim_id"
+            className="search_heading"
+            autoComplete="new-password"
+            placeholder={titleCase(LABEL_DATA_SIM_ID)}
+            onKeyUp={this.handleSearch}
+
+          />
+        ),
+        dataIndex: 'sim_id',
+        className: '',
+        children: [
+          {
+            title: LABEL_DATA_SIM_ID,
+            dataIndex: 'sim_id',
+            key: 'sim_id',
+            align: 'center',
+            sorter: (a, b) => a.sim_id - b.sim_id,
+            sortDirections: ['ascend', 'descend'],
+            className: '',
+          }
+        ]
+      },
+      {
+        title: (
+          <Input.Search
+            name="created_at"
+            key="created_at"
+            id="created_at"
+            className="search_heading"
+            autoComplete="new-password"
+            placeholder={titleCase(LABEL_DATA_CREATED_AT)}
+            onKeyUp={this.handleSearch}
+
+          />
+        ),
+        dataIndex: 'created_at',
+        className: '',
+        children: [
+          {
+            title: LABEL_DATA_CREATED_AT,
+            dataIndex: 'created_at',
+            key: 'created_at',
+            align: 'center',
+            sorter: (a, b) => a.created_at - b.created_at,
+            sortDirections: ['ascend', 'descend'],
+            className: '',
+          }
+        ]
+      },
+    ]
+    const columnsChatids = [
       {
         title: '#',
         dataIndex: 'count',
@@ -80,6 +151,122 @@ class ManageData extends Component {
       {
         title: (
           <Input.Search
+            name="created_at"
+            key="created_at"
+            id="created_at"
+            className="search_heading"
+            autoComplete="new-password"
+            placeholder={titleCase(LABEL_DATA_CREATED_AT)}
+            onKeyUp={this.handleSearch}
+
+          />
+        ),
+        dataIndex: 'created_at',
+        className: '',
+        children: [
+          {
+            title: LABEL_DATA_CREATED_AT,
+            dataIndex: 'created_at',
+            key: 'created_at',
+            align: 'center',
+            sorter: (a, b) => a.created_at - b.created_at,
+            sortDirections: ['ascend', 'descend'],
+            className: '',
+          }
+        ]
+      },
+    ]
+
+    const columnsVpn = [
+      {
+        title: '#',
+        dataIndex: 'count',
+        align: 'center',
+        className: 'row',
+        width: 50,
+      },
+      {
+        title: LABEL,
+        dataIndex: 'label',
+        align: 'center',
+        className: 'row',
+        width: 100,
+      },
+      {
+        title: (
+          <Input.Search
+            name="vpn"
+            key="vpn"
+            id="vpn"
+            className="search_heading"
+            autoComplete="new-password"
+            placeholder={titleCase(LABEL_DATA_VPN)}
+            onKeyUp={this.handleSearch}
+
+          />
+        ),
+        dataIndex: 'vpn',
+        className: '',
+        children: [
+          {
+            title: LABEL_DATA_VPN,
+            dataIndex: 'vpn',
+            key: 'vpn',
+            align: 'center',
+            sorter: (a, b) => a.vpn - b.vpn,
+            sortDirections: ['ascend', 'descend'],
+            className: '',
+          }
+        ]
+      },
+      {
+        title: (
+          <Input.Search
+            name="created_at"
+            key="created_at"
+            id="created_at"
+            className="search_heading"
+            autoComplete="new-password"
+            placeholder={titleCase(LABEL_DATA_CREATED_AT)}
+            onKeyUp={this.handleSearch}
+
+          />
+        ),
+        dataIndex: 'created_at',
+        className: '',
+        children: [
+          {
+            title: LABEL_DATA_CREATED_AT,
+            dataIndex: 'created_at',
+            key: 'created_at',
+            align: 'center',
+            sorter: (a, b) => a.created_at - b.created_at,
+            sortDirections: ['ascend', 'descend'],
+            className: '',
+          }
+        ]
+      },
+    ]
+
+    const columnsPgpemails = [
+      {
+        title: '#',
+        dataIndex: 'count',
+        align: 'center',
+        className: 'row',
+        width: 50,
+      },
+      {
+        title: LABEL,
+        dataIndex: 'label',
+        align: 'center',
+        className: 'row',
+        width: 100,
+      },
+
+      {
+        title: (
+          <Input.Search
             name="pgp_email"
             key="pgp_email"
             id="pgp_email"
@@ -91,7 +278,7 @@ class ManageData extends Component {
           />
         ),
         dataIndex: 'pgp_email',
-        className: 'hide',
+        className: '',
         children: [
           {
             title: LABEL_DATA_PGP_EMAIL,
@@ -100,39 +287,10 @@ class ManageData extends Component {
             align: 'center',
             sorter: (a, b) => a.pgp_email - b.pgp_email,
             sortDirections: ['ascend', 'descend'],
-            className: 'hide',
+            className: '',
           }
         ]
       },
-
-      {
-        title: (
-          <Input.Search
-            name="sim_id"
-            key="sim_id"
-            id="sim_id"
-            className="search_heading"
-            autoComplete="new-password"
-            placeholder={titleCase(LABEL_DATA_SIM_ID)}
-            onKeyUp={this.handleSearch}
-
-          />
-        ),
-        dataIndex: 'sim_id',
-        className: 'hide',
-        children: [
-          {
-            title: LABEL_DATA_SIM_ID,
-            dataIndex: 'sim_id',
-            key: 'sim_id',
-            align: 'center',
-            sorter: (a, b) => a.sim_id - b.sim_id,
-            sortDirections: ['ascend', 'descend'],
-            className: 'hide',
-          }
-        ]
-      },
-
       {
         title: (
           <Input.Search
@@ -173,7 +331,11 @@ class ManageData extends Component {
       chat_ids: [],
       pgp_emails: [],
       sim_ids: [],
-      columns: columns,
+      columns: columnsChatids,
+      columnsChatids: columnsChatids,
+      columnsSimids: columnsSimids,
+      columnsPgpemails: columnsPgpemails,
+      columnsVpn: columnsVpn,
       options: this.props.options,
       pagination: 10,
       tabselect: '1',
@@ -265,29 +427,29 @@ class ManageData extends Component {
 
   handleComponentSearch = (value) => {
 
-    // console.log('searched keyword', value);
+    console.log('searched keyword', value);
 
     try {
       if (value.length) {
         if (status) {
-          copyInnerContent = this.state.dealers;
+          copyInnerContent = this.state.innerContent;
           status = false;
         }
         let founddealers = componentSearch(copyInnerContent, value);
         console.log("found dealers", founddealers);
         if (founddealers.length) {
           this.setState({
-            dealers: founddealers,
+            innerContent: founddealers,
           })
         } else {
           this.setState({
-            dealers: []
+            innerContent: []
           })
         }
       } else {
         status = true;
         this.setState({
-          dealers: copyInnerContent,
+          innerContent: copyInnerContent,
         })
       }
     } catch (error) {
@@ -306,15 +468,15 @@ class ManageData extends Component {
     switch (value) {
       case '1':
         this.setState({
-          dealers: this.props.dealers,
-          column: this.state.columns,
+          // dealers: this.props.dealers,
+          // column: this.state.columns,
           tabselect: '1'
         })
         break;
       case '2':
         this.setState({
           // dealers: this.filterList('LockMesh', this.props.dealers),
-          column: this.state.columns,
+          // column: this.state.columns,
           tabselect: '2'
         })
 
@@ -322,14 +484,14 @@ class ManageData extends Component {
       case "3":
         this.setState({
           // dealers: this.filterList('Titan Locker', this.props.dealers),
-          column: this.state.columns,
+          // column: this.state.columns,
           tabselect: '3'
         })
         break;
       case '4':
         this.setState({
           // dealers: this.filterList('suspended', this.props.dealers),
-          column: this.state.columns,
+          // column: this.state.columns,
           tabselect: '4'
         })
         break;
@@ -337,8 +499,8 @@ class ManageData extends Component {
 
       default:
         this.setState({
-          dealers: this.props.dealers,
-          column: this.state.columns,
+          // dealers: this.props.dealers,
+          // column: this.state.columns,
           tabselect: '1'
         })
         break;
@@ -352,106 +514,106 @@ class ManageData extends Component {
     // alert('value');
     // alert(value);
 
-    let index_pgp_email = this.state.columns.findIndex(k => k.dataIndex == 'pgp_email');
-    let index_sim_id = this.state.columns.findIndex(k => k.dataIndex == 'sim_id');
-    let index_chat_id = this.state.columns.findIndex(k => k.dataIndex == 'chat_id');
-    let index_created_at = this.state.columns.findIndex(k => k.dataIndex == 'created_at');
-    let index_label = this.state.columns.findIndex(k => k.dataIndex == 'label');
-    let index_count = this.state.columns.findIndex(k => k.dataIndex == 'count');
+    // let index_pgp_email = this.state.columns.findIndex(k => k.dataIndex == 'pgp_email');
+    // let index_sim_id = this.state.columns.findIndex(k => k.dataIndex == 'sim_id');
+    // let index_chat_id = this.state.columns.findIndex(k => k.dataIndex == 'chat_id');
+    // let index_created_at = this.state.columns.findIndex(k => k.dataIndex == 'created_at');
+    // let index_label = this.state.columns.findIndex(k => k.dataIndex == 'label');
+    // let index_count = this.state.columns.findIndex(k => k.dataIndex == 'count');
 
-    if (value == '2') {
-      this.state.columns[index_pgp_email]['className'] = '';
-      this.state.columns[index_pgp_email]['children'][0].className = '';
-      this.state.columns[index_created_at]['className'] = '';
-      this.state.columns[index_created_at]['children'][0].className = '';
-      this.state.columns[index_label]['className'] = '';
+    // if (value == '2') {
+    //   this.state.columns[index_pgp_email]['className'] = '';
+    //   this.state.columns[index_pgp_email]['children'][0].className = '';
+    //   this.state.columns[index_created_at]['className'] = '';
+    //   this.state.columns[index_created_at]['children'][0].className = '';
+    //   this.state.columns[index_label]['className'] = '';
 
-      this.state.columns[index_sim_id]['className'] = 'hide';
-      this.state.columns[index_sim_id]['children'][0].className = 'hide';
-      this.state.columns[index_chat_id]['className'] = 'hide';
-      this.state.columns[index_chat_id]['children'][0].className = 'hide';
-    }
-    else if (value == '3') {
-      this.state.columns[index_sim_id]['className'] = '';
-      this.state.columns[index_sim_id]['children'][0].className = '';
-      this.state.columns[index_created_at]['className'] = '';
-      this.state.columns[index_created_at]['children'][0].className = '';
-      this.state.columns[index_label]['className'] = '';
+    //   this.state.columns[index_sim_id]['className'] = 'hide';
+    //   this.state.columns[index_sim_id]['children'][0].className = 'hide';
+    //   this.state.columns[index_chat_id]['className'] = 'hide';
+    //   this.state.columns[index_chat_id]['children'][0].className = 'hide';
+    // }
+    // else if (value == '3') {
+    //   this.state.columns[index_sim_id]['className'] = '';
+    //   this.state.columns[index_sim_id]['children'][0].className = '';
+    //   this.state.columns[index_created_at]['className'] = '';
+    //   this.state.columns[index_created_at]['children'][0].className = '';
+    //   this.state.columns[index_label]['className'] = '';
 
-      this.state.columns[index_chat_id]['className'] = 'hide';
-      this.state.columns[index_chat_id]['children'][0].className = 'hide';
-      this.state.columns[index_pgp_email]['className'] = 'hide';
-      this.state.columns[index_pgp_email]['children'][0].className = 'hide';
-    }
-    else if (value == '1') {
-      this.state.columns[index_chat_id]['className'] = '';
-      this.state.columns[index_chat_id]['children'][0].className = '';
-      this.state.columns[index_created_at]['className'] = '';
-      this.state.columns[index_created_at]['children'][0].className = '';
-      this.state.columns[index_label]['className'] = '';
+    //   this.state.columns[index_chat_id]['className'] = 'hide';
+    //   this.state.columns[index_chat_id]['children'][0].className = 'hide';
+    //   this.state.columns[index_pgp_email]['className'] = 'hide';
+    //   this.state.columns[index_pgp_email]['children'][0].className = 'hide';
+    // }
+    // else if (value == '1') {
+    //   this.state.columns[index_chat_id]['className'] = '';
+    //   this.state.columns[index_chat_id]['children'][0].className = '';
+    //   this.state.columns[index_created_at]['className'] = '';
+    //   this.state.columns[index_created_at]['children'][0].className = '';
+    //   this.state.columns[index_label]['className'] = '';
 
-      this.state.columns[index_sim_id]['className'] = 'hide';
-      this.state.columns[index_sim_id]['children'][0].className = 'hide';
-      this.state.columns[index_pgp_email]['className'] = 'hide';
-      this.state.columns[index_pgp_email]['children'][0].className = 'hide';
-    } 
-    else {
-      this.state.columns[index_chat_id]['className'] = 'hide';
-      this.state.columns[index_chat_id]['children'][0].className = 'hide';
+    //   this.state.columns[index_sim_id]['className'] = 'hide';
+    //   this.state.columns[index_sim_id]['children'][0].className = 'hide';
+    //   this.state.columns[index_pgp_email]['className'] = 'hide';
+    //   this.state.columns[index_pgp_email]['children'][0].className = 'hide';
+    // } 
+    // else {
+    //   this.state.columns[index_chat_id]['className'] = 'hide';
+    //   this.state.columns[index_chat_id]['children'][0].className = 'hide';
 
-      this.state.columns[index_sim_id]['className'] = 'hide';
-      this.state.columns[index_sim_id]['children'][0].className = 'hide';
-      this.state.columns[index_pgp_email]['className'] = 'hide';
-      this.state.columns[index_pgp_email]['children'][0].className = 'hide';
-      this.state.columns[index_created_at]['className'] = 'hide';
-      this.state.columns[index_created_at]['children'][0].className = 'hide';
-      this.state.columns[index_label]['className'] = 'hide';
-    }
+    //   this.state.columns[index_sim_id]['className'] = 'hide';
+    //   this.state.columns[index_sim_id]['children'][0].className = 'hide';
+    //   this.state.columns[index_pgp_email]['className'] = 'hide';
+    //   this.state.columns[index_pgp_email]['children'][0].className = 'hide';
+    //   this.state.columns[index_created_at]['className'] = 'hide';
+    //   this.state.columns[index_created_at]['children'][0].className = 'hide';
+    //   this.state.columns[index_label]['className'] = 'hide';
+    // }
 
     switch (value) {
       case '1':
         this.setState({
           innerContent: this.props.chat_ids,
-          column: this.state.columns,
+          columns: this.state.columnsChatids,
           innerTabSelect: '1'
         })
-        status= true;
+        status = true;
         break;
       case '2':
         this.setState({
           innerContent: this.props.pgp_emails,
-          column: this.state.columns,
+          columns: this.state.columnsPgpemails,
           innerTabSelect: '2'
         })
-        status= true;
+        status = true;
 
         break;
       case "3":
         this.setState({
           innerContent: this.props.sim_ids,
-          column: this.state.columns,
+          columns: this.state.columnsSimids,
           innerTabSelect: '3'
         })
-        status= true;
+        status = true;
         break;
       case '4':
         this.setState({
           // dealers: this.filterList('suspended', this.props.dealers),
           innerContent: [],
-          column: [], 
+          columns: this.state.columnsVpn,
           innerTabSelect: '4'
         })
-        status= true;
+        status = true;
         break;
 
 
       default:
         this.setState({
           innerContent: this.props.chat_ids,
-          column: this.state.columns,
+          columns: this.state.columnsChatids,
           innerTabSelect: '1'
         })
-        status= true;
+        status = true;
         break;
     }
 
@@ -488,11 +650,11 @@ class ManageData extends Component {
                 }
                 handleCheckChange={this.handleCheckChange}
                 handlePagination={this.handlePagination}
-              // handleComponentSearch={this.handleComponentSearch}
+                handleComponentSearch={this.handleComponentSearch}
               // testfunc={this.testfunc}
               // toLink={"/create-dealer/" + this.state.dealer_type}
               />
-              <DealerList
+              <AccountList
                 columns={this.state.columns}
                 dataList={this.state.innerContent}
                 // suspendDealer={this.props.suspendDealer}
@@ -586,7 +748,7 @@ var mapStateToProps = (state) => {
   // console.log("mapStateToProps");
   // console.log(state.dealers.isloading);
   // console.log('state.dealer', state.dealers);
-  console.log("account.pgp_emails, ", state.account.pgp_emails);
+  // console.log("account.pgp_emails, ", state.account.pgp_emails);
   return {
     chat_ids: state.account.chat_ids,
     pgp_emails: state.account.pgp_emails,

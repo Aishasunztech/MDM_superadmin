@@ -3,8 +3,7 @@ import { connect } from "react-redux";
 import { Avatar, Popover, Badge } from "antd";
 import { Link } from "react-router-dom";
 import { logout, } from "appRedux/actions/Auth";
-import { getNewDevicesList } from "../../appRedux/actions/Common";
-import NewDevice from '../../components/NewDevices';
+
 import { Icon } from "antd";
 import socketIOClient from "socket.io-client";
 import { BASE_URL } from "../../constants/Application"

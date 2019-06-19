@@ -38,202 +38,166 @@ import {
 const { Content, Footer } = Layout;
 
 
-const RestrictedRoute = (props) => {
-  let resProps = props;
-  let authUser = props.authUser;
-  const Component = props.component;
+class RestrictedRoute extends Component {
+  constructor(props) {
+    super(props);
+  }
+  componentWillMount() {
+    const componentRoute = this.props.pathname;
+    // this.props.getUser();
+    this.props.checkComponent(componentRoute);
 
-  if (
-    authUser.id === null ||
-    authUser.email === null ||
-    authUser.token === null
-    // || authUser.type === null
-  ) {
-    return <Redirect to={{ pathname: '/login', state: { from: resProps.location } }} />
-  } else {
+  }
+
+  componentDidMount() {
+
+    // console.log("restrictions");
+
+  }
+  componentDidUpdate(prevProps) {
+    // console.log("prevProps", prevProps);
+    // console.log("next props", this.props);
+    if (this.props.pathname !== prevProps.pathname && this.pathname !== "/invalid_page") {
+      // alert("hello");
+      const componentRoute = this.props.pathname;
+      // this.props.getUser();
+      // console.log(componentRoute);
+      this.props.checkComponent(componentRoute);
+
+    }
+  }
+
+  getContainerClass = (navStyle) => {
+    switch (navStyle) {
+      case NAV_STYLE_DARK_HORIZONTAL:
+        return "gx-container-wrap";
+      case NAV_STYLE_DEFAULT_HORIZONTAL:
+        return "gx-container-wrap";
+      case NAV_STYLE_INSIDE_HEADER_HORIZONTAL:
+        return "gx-container-wrap";
+      case NAV_STYLE_BELOW_HEADER:
+        return "gx-container-wrap";
+      case NAV_STYLE_ABOVE_HEADER:
+        return "gx-container-wrap";
+      default:
+        return '';
+    }
+  };
+  getNavStyles = (navStyle) => {
+    switch (navStyle) {
+      case NAV_STYLE_DEFAULT_HORIZONTAL:
+        return <HorizontalDefault />;
+      case NAV_STYLE_DARK_HORIZONTAL:
+        return <HorizontalDark />;
+      case NAV_STYLE_INSIDE_HEADER_HORIZONTAL:
+        return <InsideHeader />;
+      case NAV_STYLE_ABOVE_HEADER:
+        return <AboveHeader />;
+      case NAV_STYLE_BELOW_HEADER:
+        return <BelowHeader />;
+      case NAV_STYLE_FIXED:
+        return <Topbar />;
+      case NAV_STYLE_DRAWER:
+        return <Topbar />;
+      case NAV_STYLE_MINI_SIDEBAR:
+        return <Topbar />;
+      case NAV_STYLE_NO_HEADER_MINI_SIDEBAR:
+        return <NoHeaderNotification />;
+      case NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR:
+        return <NoHeaderNotification />;
+      default:
+        return null;
+    }
+  };
+
+  getSidebar = (navStyle, width) => {
+    if (width < TAB_SIZE) {
+      return <Sidebar />;
+    }
+    switch (navStyle) {
+      case NAV_STYLE_FIXED:
+        return <Sidebar />;
+      case NAV_STYLE_DRAWER:
+        return <Sidebar />;
+      case NAV_STYLE_MINI_SIDEBAR:
+        return <Sidebar />;
+      case NAV_STYLE_NO_HEADER_MINI_SIDEBAR:
+        return <Sidebar />;
+      case NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR:
+        return <Sidebar />;
+      default:
+        return null;
+    }
+  };
+
+  render() {
+    const Component = this.props.component;
+    const { width, navStyle, authUser, isAllowed, location, isRequested } = this.props;
+    // console.trace("restricted route allowed", this.props.rest);
 
     return (
       <Route
-        // {...this.props.rest}
+        // {...this.props.rest} 
         render={
-          (props) => <Component {...props} />
-        }
-      />
-    );
-  }
+          (props) => {
 
+            if (authUser.id === null || authUser.email === null || authUser.token === null || authUser.type === null) {
+              return <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
+            } else {
+              if (isRequested) {
+
+                if (isAllowed || location.pathname === "/invalid_page") {
+                  return <Component {...props} />;
+                } else {
+                  return <Redirect to={{ pathname: '/invalid_page', state: { from: props.location } }} />
+                }
+
+              } else {
+
+                return (
+                  <Layout className="gx-app-layout">
+                    {this.getSidebar(navStyle, width)}
+                    <Layout>
+                      {this.getNavStyles(navStyle)}
+                      <Content className={`gx-layout-content ${this.getContainerClass(navStyle)} `}>
+                        <CircularProgress />
+                        <Footer>
+                          <div className="gx-layout-footer-content">
+                            {footerText}
+                          </div>
+                        </Footer>
+                      </Content>
+                    </Layout>
+                    {/* <Customizer/> */}
+                  </Layout>
+                )
+              }
+
+            }
+
+          }
+        } />
+    )
+  }
 }
 
-export default RestrictedRoute;
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    checkComponent: checkComponent
+  }, dispatch);
+}
 
-// class RestrictedRoute extends Component {
-//   constructor(props) {
-//     super(props);
-//   }
-//   componentWillMount() {
-//     const componentRoute = this.props.pathname;
-//     // this.props.getUser();
-//     this.props.checkComponent(componentRoute);
+var mapStateToProps = ({ routing, auth, settings }, otherProps) => {
+  const { width, navStyle } = settings;
+  return {
+    // routing: routing,
+    pathname: routing.location.pathname,
+    authUser: auth.authUser,
+    isAllowed: auth.isAllowed,
+    isRequested: auth.isRequested,
+    width, navStyle
+  };
+}
 
-//   }
-
-//   componentDidMount() {
-
-//     // console.log("restrictions");
-
-//   }
-//   componentDidUpdate(prevProps) {
-//     // console.log("prevProps", prevProps);
-//     // console.log("next props", this.props);
-//     if (this.props.pathname !== prevProps.pathname && this.pathname !== "/invalid_page") {
-//       // alert("hello");
-//       const componentRoute = this.props.pathname;
-//       // this.props.getUser();
-//       // console.log(componentRoute);
-//       this.props.checkComponent(componentRoute);
-
-//     }
-//   }
-
-//   getContainerClass = (navStyle) => {
-//     switch (navStyle) {
-//       case NAV_STYLE_DARK_HORIZONTAL:
-//         return "gx-container-wrap";
-//       case NAV_STYLE_DEFAULT_HORIZONTAL:
-//         return "gx-container-wrap";
-//       case NAV_STYLE_INSIDE_HEADER_HORIZONTAL:
-//         return "gx-container-wrap";
-//       case NAV_STYLE_BELOW_HEADER:
-//         return "gx-container-wrap";
-//       case NAV_STYLE_ABOVE_HEADER:
-//         return "gx-container-wrap";
-//       default:
-//         return '';
-//     }
-//   };
-//   getNavStyles = (navStyle) => {
-//     switch (navStyle) {
-//       case NAV_STYLE_DEFAULT_HORIZONTAL:
-//         return <HorizontalDefault />;
-//       case NAV_STYLE_DARK_HORIZONTAL:
-//         return <HorizontalDark />;
-//       case NAV_STYLE_INSIDE_HEADER_HORIZONTAL:
-//         return <InsideHeader />;
-//       case NAV_STYLE_ABOVE_HEADER:
-//         return <AboveHeader />;
-//       case NAV_STYLE_BELOW_HEADER:
-//         return <BelowHeader />;
-//       case NAV_STYLE_FIXED:
-//         return <Topbar />;
-//       case NAV_STYLE_DRAWER:
-//         return <Topbar />;
-//       case NAV_STYLE_MINI_SIDEBAR:
-//         return <Topbar />;
-//       case NAV_STYLE_NO_HEADER_MINI_SIDEBAR:
-//         return <NoHeaderNotification />;
-//       case NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR:
-//         return <NoHeaderNotification />;
-//       default:
-//         return null;
-//     }
-//   };
-
-//   getSidebar = (navStyle, width) => {
-//     if (width < TAB_SIZE) {
-//       return <Sidebar />;
-//     }
-//     switch (navStyle) {
-//       case NAV_STYLE_FIXED:
-//         return <Sidebar />;
-//       case NAV_STYLE_DRAWER:
-//         return <Sidebar />;
-//       case NAV_STYLE_MINI_SIDEBAR:
-//         return <Sidebar />;
-//       case NAV_STYLE_NO_HEADER_MINI_SIDEBAR:
-//         return <Sidebar />;
-//       case NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR:
-//         return <Sidebar />;
-//       default:
-//         return null;
-//     }
-//   };
-
-//   render() {
-//     const Component = this.props.component;
-//     const { width, navStyle, authUser, isAllowed, location, isRequested } = this.props;
-//     // console.trace("restricted route allowed", this.props.rest);
-
-//     return (
-//       <Route
-//         // {...this.props.rest} 
-//         render={
-//           (props) => {
-
-//             if (
-//               authUser.id === null ||
-//               authUser.email === null ||
-//               authUser.token === null
-//               || authUser.type === null
-//             ) {
-//               return <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
-//             } else {
-
-//               return <Component {...props} />;
-
-//               // if (isRequested) {
-
-//               //   if (isAllowed || location.pathname === "/invalid_page") {
-//               //     return <Component {...props} />;
-//               //   } else {
-//               //     return <Redirect to={{ pathname: '/invalid_page', state: { from: props.location } }} />
-//               //   }
-
-//               // } else {
-
-//               //   return (
-//               //     <Layout className="gx-app-layout">
-//               //       {this.getSidebar(navStyle, width)}
-//               //       <Layout>
-//               //         {this.getNavStyles(navStyle)}
-//               //         <Content className={`gx-layout-content ${this.getContainerClass(navStyle)} `}>
-//               //           <CircularProgress />
-//               //           <Footer>
-//               //             <div className="gx-layout-footer-content">
-//               //               {footerText}
-//               //             </div>
-//               //           </Footer>
-//               //         </Content>
-//               //       </Layout>
-//               //       {/* <Customizer/> */}
-//               //     </Layout>
-//               //   )
-//               // }
-
-//             }
-
-//           }
-//         } />
-//     )
-//   }
-// }
-
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators({
-//     checkComponent: checkComponent
-//   }, dispatch);
-// }
-
-// var mapStateToProps = ({ routing, auth, settings }, otherProps) => {
-//   const { width, navStyle } = settings;
-//   return {
-//     // routing: routing,
-//     pathname: routing.location.pathname,
-//     authUser: auth.authUser,
-//     isAllowed: auth.isAllowed,
-//     isRequested: auth.isRequested,
-//     width, navStyle
-//   };
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(RestrictedRoute);
+export default connect(mapStateToProps, mapDispatchToProps)(RestrictedRoute);
 // export default RestrictedRoute;

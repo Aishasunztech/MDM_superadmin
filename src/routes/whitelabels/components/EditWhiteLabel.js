@@ -88,7 +88,7 @@ class EditWhiteLabel extends Component {
         const uploadApkProps = {
             name: 'launcher_apk',
             multiple: false,
-            action: USER_URL + 'upload/launcher_apk' ,
+            action: USER_URL + 'upload/launcher_apk',
             headers: { 'authorization': token },
             accept: '.apk',
             disabled: this.state.disableApk,
@@ -206,7 +206,7 @@ class EditWhiteLabel extends Component {
                 _this.setState({ fileList2 });
             },
         };
-        console.log(this.state.command_name, 'apk', this.props.whiteLabelInfo)
+        // console.log(this.state.command_name, 'apk', this.props.whiteLabelInfo)
 
         return (
             <Modal
