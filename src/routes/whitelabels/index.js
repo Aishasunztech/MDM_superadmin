@@ -138,7 +138,7 @@ class WhiteLabels extends Component {
     }
 
     getWhiteLabelInfo = (id) => {
-        console.log(id, 'ds');
+        // console.log(id, 'ds');
         let _this = this;
 
         setTimeout(function () {
@@ -152,11 +152,11 @@ class WhiteLabels extends Component {
             copiedData = this.state.whitelabelBackups;
             this.state.copy_status = false;
         }
-        console.log(e.target.value, e.target.name, 'value', copiedData)
+        // console.log(e.target.value, e.target.name, 'value', copiedData)
         if (e.target.value.length) {
             copiedData.forEach((item) => {
                 if (item[e.target.name] !== undefined) {
-                    console.log((typeof item[e.target.name]), 'type')
+                    // console.log((typeof item[e.target.name]), 'type')
                     if ((typeof item[e.target.name]) === 'string') {
                         if (item[e.target.name].toUpperCase().includes(e.target.value.toUpperCase())) {
                             demoData.push(item);
@@ -318,9 +318,9 @@ class WhiteLabels extends Component {
             }
         ]
         // end load ids modal
-        console.log(this.props.whitelabelBackups, 'whitelables', this.state.secureLouncer)
-        console.log(this.props.whiteLabelInfo, 'whitelables', this.state.secureLouncer)
-        console.log('label id is: ', this.props.whiteLabelInfo.id)
+        // console.log(this.props.whitelabelBackups, 'whitelables', this.state.secureLouncer)
+        // console.log(this.props.whiteLabelInfo, 'whitelables', this.state.secureLouncer)
+        // console.log('label id is: ', this.props.whiteLabelInfo.id)
         // let label_id = this.props.whiteLabelInfo.id;
         // console.log('ref func ', this.refs.loadidsofModal)
         return (

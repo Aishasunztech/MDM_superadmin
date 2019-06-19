@@ -2,9 +2,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Input, Modal, Select, } from "antd";
-import { getDealerList, suspendDealer, deleteDealer, activateDealer, undoDealer, updatePassword, editDealer } from "../../../appRedux/actions/Dealers";
-import { getDropdown, postDropdown, postPagination, getPagination } from '../../../appRedux/actions/Common';
+import { Card, Button, Row, Col, Select, Input, Checkbox, Icon } from "antd";
+import { getWhiteLabels } from "../../../appRedux/actions";
 // import {getDevicesList} from '../../appRedux/actions/Devices';
 import AppFilter from '../../../components/AppFilter';
 // import EditDealer from './components/editDealer';
@@ -28,6 +27,9 @@ import {
   getChatIDs,
   getPGPEmails,
 } from "../../../appRedux/actions/Devices";
+import {
+  exportCSV
+} from "../../../appRedux/actions/Account";
 
 var copyInnerContent = [];
 var status = true;
@@ -338,8 +340,9 @@ class ManageData extends Component {
       columnsVpn: columnsVpn,
       options: this.props.options,
       pagination: 10,
-      tabselect: '1',
+      tabselect: 'all',
       innerTabSelect: '1',
+      whiteLables: []
     };
   }
 
@@ -370,6 +373,7 @@ class ManageData extends Component {
     this.props.getSimIDs();
     this.props.getPGPEmails();
     this.props.getChatIDs();
+    this.props.getWhiteLabels();
     // this.props.getUsedPGPEmails();
     // this.props.getUsedChatIds();
     // this.props.getUsedSimIds();
@@ -414,12 +418,18 @@ class ManageData extends Component {
       })
     }
 
+    // console.log(nextProps.whiteLabels);
     if (this.props.chat_ids.length !== nextProps.chat_ids.length || this.props.pgp_emails.length !== nextProps.pgp_emails.length || this.props.sim_ids.length !== nextProps.sim_ids.length) {
       this.setState({
         chat_ids: nextProps.chat_ids,
         pgp_emails: nextProps.pgp_emails,
         sim_ids: nextProps.sim_ids,
-
+      })
+    }
+    if (nextProps.whiteLabels.length) {
+      // console.log(nextProps.whiteLabels);
+      this.setState({
+        whiteLables: nextProps.whiteLabels
       })
     }
 
@@ -427,7 +437,7 @@ class ManageData extends Component {
 
   handleComponentSearch = (value) => {
 
-    console.log('searched keyword', value);
+    // console.log('searched keyword', value);
 
     try {
       if (value.length) {
@@ -436,7 +446,7 @@ class ManageData extends Component {
           status = false;
         }
         let founddealers = componentSearch(copyInnerContent, value);
-        console.log("found dealers", founddealers);
+        // console.log("found dealers", founddealers);
         if (founddealers.length) {
           this.setState({
             innerContent: founddealers,
@@ -465,110 +475,67 @@ class ManageData extends Component {
 
   handleChangetab = (value) => {
 
-    switch (value) {
-      case '1':
-        this.setState({
-          // dealers: this.props.dealers,
-          // column: this.state.columns,
-          tabselect: '1'
-        })
-        break;
-      case '2':
-        this.setState({
-          // dealers: this.filterList('LockMesh', this.props.dealers),
-          // column: this.state.columns,
-          tabselect: '2'
-        })
-
-        break;
-      case "3":
-        this.setState({
-          // dealers: this.filterList('Titan Locker', this.props.dealers),
-          // column: this.state.columns,
-          tabselect: '3'
-        })
-        break;
-      case '4':
-        this.setState({
-          // dealers: this.filterList('suspended', this.props.dealers),
-          // column: this.state.columns,
-          tabselect: '4'
-        })
-        break;
-
-
-      default:
-        this.setState({
-          // dealers: this.props.dealers,
-          // column: this.state.columns,
-          tabselect: '1'
-        })
-        break;
+    if (value === 'all') {
+      this.setState({
+        tabselect: 'all'
+      })
     }
+    else {
+      this.setState({
+        tabselect: value
+      })
+
+    }
+
+
+    // switch (value) {
+
+    //   case 'all':
+    //     this.setState({
+    //       // dealers: this.props.dealers,
+    //       // column: this.state.columns,
+    //       tabselect: 'all'
+    //     })
+    //     break;
+    //   case '2':
+    //     this.setState({
+    //       // dealers: this.filterList('LockMesh', this.props.dealers),
+    //       // column: this.state.columns,
+    //       tabselect: '2'
+    //     })
+
+    //     break;
+    //   case "3":
+    //     this.setState({
+    //       // dealers: this.filterList('Titan Locker', this.props.dealers),
+    //       // column: this.state.columns,
+    //       tabselect: '3'
+    //     })
+    //     break;
+    //   case '4':
+    //     this.setState({
+    //       // dealers: this.filterList('suspended', this.props.dealers),
+    //       // column: this.state.columns,
+    //       tabselect: '4'
+    //     })
+    //     break;
+
+
+    //   default:
+    //     this.setState({
+    //       // dealers: this.props.dealers,
+    //       // column: this.state.columns,
+    //       tabselect: '1'
+    //     })
+    //     break;
+    // }
 
     // this.handleCheckChange(this.props.selectedOptions)
 
   }
 
   handleChangeInnerTab = (value) => {
-    // alert('value');
-    // alert(value);
 
-    // let index_pgp_email = this.state.columns.findIndex(k => k.dataIndex == 'pgp_email');
-    // let index_sim_id = this.state.columns.findIndex(k => k.dataIndex == 'sim_id');
-    // let index_chat_id = this.state.columns.findIndex(k => k.dataIndex == 'chat_id');
-    // let index_created_at = this.state.columns.findIndex(k => k.dataIndex == 'created_at');
-    // let index_label = this.state.columns.findIndex(k => k.dataIndex == 'label');
-    // let index_count = this.state.columns.findIndex(k => k.dataIndex == 'count');
-
-    // if (value == '2') {
-    //   this.state.columns[index_pgp_email]['className'] = '';
-    //   this.state.columns[index_pgp_email]['children'][0].className = '';
-    //   this.state.columns[index_created_at]['className'] = '';
-    //   this.state.columns[index_created_at]['children'][0].className = '';
-    //   this.state.columns[index_label]['className'] = '';
-
-    //   this.state.columns[index_sim_id]['className'] = 'hide';
-    //   this.state.columns[index_sim_id]['children'][0].className = 'hide';
-    //   this.state.columns[index_chat_id]['className'] = 'hide';
-    //   this.state.columns[index_chat_id]['children'][0].className = 'hide';
-    // }
-    // else if (value == '3') {
-    //   this.state.columns[index_sim_id]['className'] = '';
-    //   this.state.columns[index_sim_id]['children'][0].className = '';
-    //   this.state.columns[index_created_at]['className'] = '';
-    //   this.state.columns[index_created_at]['children'][0].className = '';
-    //   this.state.columns[index_label]['className'] = '';
-
-    //   this.state.columns[index_chat_id]['className'] = 'hide';
-    //   this.state.columns[index_chat_id]['children'][0].className = 'hide';
-    //   this.state.columns[index_pgp_email]['className'] = 'hide';
-    //   this.state.columns[index_pgp_email]['children'][0].className = 'hide';
-    // }
-    // else if (value == '1') {
-    //   this.state.columns[index_chat_id]['className'] = '';
-    //   this.state.columns[index_chat_id]['children'][0].className = '';
-    //   this.state.columns[index_created_at]['className'] = '';
-    //   this.state.columns[index_created_at]['children'][0].className = '';
-    //   this.state.columns[index_label]['className'] = '';
-
-    //   this.state.columns[index_sim_id]['className'] = 'hide';
-    //   this.state.columns[index_sim_id]['children'][0].className = 'hide';
-    //   this.state.columns[index_pgp_email]['className'] = 'hide';
-    //   this.state.columns[index_pgp_email]['children'][0].className = 'hide';
-    // } 
-    // else {
-    //   this.state.columns[index_chat_id]['className'] = 'hide';
-    //   this.state.columns[index_chat_id]['children'][0].className = 'hide';
-
-    //   this.state.columns[index_sim_id]['className'] = 'hide';
-    //   this.state.columns[index_sim_id]['children'][0].className = 'hide';
-    //   this.state.columns[index_pgp_email]['className'] = 'hide';
-    //   this.state.columns[index_pgp_email]['children'][0].className = 'hide';
-    //   this.state.columns[index_created_at]['className'] = 'hide';
-    //   this.state.columns[index_created_at]['children'][0].className = 'hide';
-    //   this.state.columns[index_label]['className'] = 'hide';
-    // }
 
     switch (value) {
       case '1':
@@ -623,8 +590,9 @@ class ManageData extends Component {
 
 
   render() {
-
+    // console.log(this.state.tabselect);
     // console.log(this.state.columns, window.location.pathname.split("/").pop(), this.state.options)
+    const Search = Input.Search;
     return (
 
       <div>
@@ -633,7 +601,7 @@ class ManageData extends Component {
 
             <div>
 
-              <AppFilter
+              {/* <AppFilter
                 handleFilterOptions={this.handleFilterOptions}
                 searchPlaceholder="Search Dealer"
                 defaultPagingValue={this.props.DisplayPages}
@@ -653,8 +621,83 @@ class ManageData extends Component {
                 handleComponentSearch={this.handleComponentSearch}
               // testfunc={this.testfunc}
               // toLink={"/create-dealer/" + this.state.dealer_type}
-              />
+              /> */}
+
+              <Card >
+                <Row gutter={16} className="filter_top">
+                  <Col className="col-md-3 col-sm-6 col-xs-12">
+                    <div className="gutter-box">
+                      <h1>Manage Data</h1>
+
+                    </div>
+                  </Col>
+                  <Col className="col-md-7 col-sm-6 col-xs-12">
+                    <div className="gutter-box">
+                      <Search
+
+                        placeholder="Search..."
+                        onChange={e => this.handleComponentSearch(e.target.value)}
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+                  </Col>
+                  {/* <Col className="col-md-2 col-sm-6 col-xs-12">
+                            <div className="gutter-box">
+                                <Select
+                                    value="Import"
+                                    //  defaultValue={this.state.DisplayPages}
+                                    style={{ width: '100%' }}
+                                    // onSelect={value => this.setState({DisplayPages:value})}
+                                    // onChange={value => this.handlePagination(value)}
+                                >
+                                    <Select.Option value="10" >10</Select.Option>
+                                    <Select.Option value="20">20</Select.Option>
+                                    <Select.Option value="30">30</Select.Option>
+                                    <Select.Option value="50">50</Select.Option>
+                                    <Select.Option value="100">100</Select.Option>
+                                </Select>
+                            </div>
+                        </Col> */}
+
+                  <Col className="col-md-2 col-sm-6 col-xs-12">
+                    <div className="gutter-box">
+                      <Select
+                        value="Export"
+                        //  defaultValue={this.state.DisplayPages}
+                        style={{ width: '100%' }}
+                      // onSelect={value => this.setState({DisplayPages:value})}
+                      // onChange={value => this.handlePagination(value)}
+                      >
+                        <Select.Option value="10"
+                          onClick={() => {
+                            this.props.exportCSV('sim_ids');
+                          }}
+                        >Export SIM IDs</Select.Option>
+                        <Select.Option value="20"
+                          onClick={() => {
+                            this.props.exportCSV('chat_ids');
+                          }}
+                        >Export CHAT IDs</Select.Option>
+                        <Select.Option value="30"
+                          onClick={() => {
+                            this.props.exportCSV('pgp_emails');
+                          }}
+                        >Export PGP Emails</Select.Option>
+                        <Select.Option value="50"
+                        // onClick={() => {
+                        //     this.props.exportCSV('vpn');
+                        // }}
+                        >Export VPNs</Select.Option>
+                      </Select>
+                    </div>
+                  </Col>
+
+
+                </Row>
+              </Card>
+
               <AccountList
+                whiteLables={this.state.whiteLables}
                 columns={this.state.columns}
                 dataList={this.state.innerContent}
                 // suspendDealer={this.props.suspendDealer}
@@ -693,15 +736,15 @@ class ManageData extends Component {
   }
 
   handleSearch = (e) => {
-    console.log('hi search val is: ', e.target.value);
-    console.log('hi inner content val is: ', this.state.innerContent);
+    // console.log('hi search val is: ', e.target.value);
+    // console.log('hi inner content val is: ', this.state.innerContent);
 
     let demoItems = [];
     if (status) {
       copyInnerContent = this.state.innerContent;
       status = false;
     }
-    console.log("devices", copyInnerContent);
+    // console.log("devices", copyInnerContent);
 
     if (e.target.value.length) {
       copyInnerContent.forEach((item) => {
@@ -748,11 +791,13 @@ var mapStateToProps = (state) => {
   // console.log("mapStateToProps");
   // console.log(state.dealers.isloading);
   // console.log('state.dealer', state.dealers);
-  // console.log("account.pgp_emails, ", state.account.pgp_emails);
+  // console.log("state, ", state);
   return {
     chat_ids: state.account.chat_ids,
     pgp_emails: state.account.pgp_emails,
     sim_ids: state.account.sim_ids,
+    whiteLabels: state.sidebarMenu.whiteLabels
+
     // isloading: state.dealers.isloading,
     // dealers: state.dealers.dealers,
     // options: state.dealers.options,
@@ -768,8 +813,9 @@ function mapDispatchToProps(dispatch) {
     getSimIDs: getSimIDs,
     getChatIDs: getChatIDs,
     getPGPEmails: getPGPEmails,
+    getWhiteLabels: getWhiteLabels,
     // importCSV: importCSV,
-    // exportCSV: exportCSV,
+    exportCSV: exportCSV,
     // getUsedPGPEmails: getUsedPGPEmails,
     // getUsedChatIds: getUsedChatIds,
     // getUsedSimIds: getUsedSimIds,

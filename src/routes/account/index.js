@@ -73,13 +73,14 @@ class Account extends Component {
             this.props.getPGPEmails();
         } else if (dataFieldName === "chat_ids") {
             this.props.getChatIDs();
-        } else if (dataFieldName === "used_pgp_emails") {
-            this.props.getUsedPGPEmails();
-        } else if (dataFieldName === "used_chat_ids") {
-            this.props.getUsedChatIds();
-        } else if (dataFieldName === "used_sim_ids") {
-            this.props.getUsedSimIds();
         }
+        // else if (dataFieldName === "used_pgp_emails") {
+        //     this.props.getUsedPGPEmails();
+        // } else if (dataFieldName === "used_chat_ids") {
+        //     this.props.getUsedChatIds();
+        // } else if (dataFieldName === "used_sim_ids") {
+        //     this.props.getUsedSimIds();
+        // }
         this.setState({
             dataVisible: dataVisible,
             dataFieldName: dataFieldName,
@@ -91,9 +92,9 @@ class Account extends Component {
         this.props.getSimIDs();
         this.props.getPGPEmails();
         this.props.getChatIDs();
-        this.props.getUsedPGPEmails();
-        this.props.getUsedChatIds();
-        this.props.getUsedSimIds();
+        // this.props.getUsedPGPEmails();
+        // this.props.getUsedChatIds();
+        // this.props.getUsedSimIds();
         // this.props.getUsedSimIDs()
         // console.log("this.props.chat_ids", this.props.chat_ids);
         // this.setState({
@@ -163,7 +164,7 @@ class Account extends Component {
                 formData.append('pgp_emails', this.state.file);
             }
             // formData.append('fieldName', this.state.fieldName);
-            console.log(formData);
+            // console.log(formData);
             this.state.file = null
             this.props.importCSV(formData, this.state.fieldName);
             this.showImportModal(false);
@@ -1142,7 +1143,7 @@ function mapDispatchToProps(dispatch) {
     }, dispatch);
 }
 var mapStateToProps = ({ account, devices }) => {
-    console.log(account, "sim_ids");
+    // console.log(account, "sim_ids");
     return {
         msg: account.msg,
         showMsg: account.showMsg,
