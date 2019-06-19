@@ -19,6 +19,48 @@ import RestService from '../services/RestServices';
 
 // action creaters 
 
+export function saveOfflineDevice(data) {
+
+    return (dispatch) => {
+
+        RestService.saveOfflineDevice(data).then((response) => {
+            // console.log("data form server");
+            // console.log(response.data);
+            console.log('at action file for save-offline-device: ', response.data)
+            if (RestService.checkAuth(response.data)) {
+                if (response.data.status) {
+
+                    // get all updated ofline devices
+                    RestService.getOfflineDevices().then((response) => {
+                        console.log("data form server");
+                        console.log(response.data);
+                        if (RestService.checkAuth(response.data)) {
+                            // console.log(response.data)
+                            if (response.data.status) {
+
+                                dispatch({
+                                    type: DEVICES_LIST,
+                                    payload: response.data.devices,
+
+                                });
+                            }
+                        } else {
+                            dispatch({
+                                type: INVALID_TOKEN
+                            });
+                        }
+                    })
+                }
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                });
+            }
+        })
+
+    };
+}
+
 export function getOfflineDevices() {
 
     return (dispatch) => {
@@ -93,24 +135,32 @@ export function deleteUnlinkDevice(action, devices) {
 export function suspendDevice(device) {
 
     return (dispatch) => {
-        // console.log("suspendDevice action");
+        console.log("suspendDevice action", device);
 
-        RestService.suspendDevice(device.usr_device_id).then((response) => {
+        RestService.suspendDevice(device.id).then((response) => {
 
             if (RestService.checkAuth(response.data)) {
 
-                //   device.account_status = "suspended";
+                // get all updated ofline devices
+                RestService.getOfflineDevices().then((response) => {
+                    console.log("data form server");
+                    console.log(response.data);
+                    if (RestService.checkAuth(response.data)) {
+                        // console.log(response.data)
+                        if (response.data.status) {
 
-                if (response.data.status) {
-                    dispatch({
-                        type: SUSPEND_DEVICE,
-                        response: response.data,
-                        payload: {
-                            // device: device,
-                            msg: response.data.msg,
+                            dispatch({
+                                type: DEVICES_LIST,
+                                payload: response.data.devices,
+
+                            });
                         }
-                    });
-                }
+                    } else {
+                        dispatch({
+                            type: INVALID_TOKEN
+                        });
+                    }
+                })
 
 
             } else {

@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import Highlighter from 'react-highlight-words';
-import { Input, Button, Icon, Select } from "antd";
-
+import { Input, Button, Icon, Select, Modal, DatePicker } from "antd";
+import moment from 'moment';
 import { bindActionCreators } from "redux";
 
 import {
+    saveOfflineDevice,
     getOfflineDevices,
     suspendDevice,
     activateDevice,
@@ -53,6 +54,7 @@ import { getStatus, componentSearch, titleCase, dealerColsWithSearch } from '../
 
 import CircularProgress from "components/CircularProgress/index";
 
+const { RangePicker, MonthPicker } = DatePicker
 var copyDevices = [];
 var status = true;
 
@@ -265,7 +267,12 @@ class Devices extends Component {
             columns: columns,
             searchText: '',
             devices: [],
-            tabselect: '4'
+            tabselect: '4',
+            visible: false,
+            mode: 'time',
+            start_date: '',
+            expiry_date: '',
+            id: '',
         }
         this.copyDevices = [];
 
@@ -274,6 +281,70 @@ class Devices extends Component {
         this.handleChange = this.handleChange.bind(this);
 
     }
+
+    saveExpiryDate = (date) => {
+        let { _d } = date;
+        console.log(this.state.expiry_date, '------------ ', _d);
+        this.setState({
+            expiry_date: _d
+        })
+
+    }
+
+    range(start, end) {
+        const result = [];
+        for (let i = start; i < end; i++) {
+            result.push(i);
+        }
+        return result;
+    }
+
+    disabledDateTime = () => {
+        return {
+            disabledHours: () => this.range(0, 24).splice(4, 20),
+            disabledMinutes: () => this.range(30, 60),
+            disabledSeconds: () => [55, 56],
+        };
+    }
+
+    disabledDate = (current) => {
+        console.log('current is: ', current)
+        // Can not select days before today and today
+        return current && current < moment().endOf('day');
+    }
+
+    onChangeRangeDate = (dates, dateStrings) => {
+        console.log('From: ', dates[0], ', to: ', dates[1]);
+        console.log('From: ', dateStrings[0], ', to: ', dateStrings[1]);
+    }
+
+    showDateModal = (id, start_date, expiry_date) => {
+        this.setState({
+            visible: true,
+            start_date,
+            expiry_date,
+            id
+        });
+    };
+
+    handleOk = e => {
+        // console.log(e);
+        this.setState({
+            visible: false,
+        });
+        this.props.saveOfflineDevice({
+            start_date: this.state.start_date,
+            expiry_date: this.state.expiry_date,
+            id: this.state.id
+        })
+    };
+
+    handleCancel = e => {
+        console.log(e);
+        this.setState({
+            visible: false,
+        });
+    };
 
     deleteAllUnlinked = () => {
         alert('Its working')
@@ -303,7 +374,7 @@ class Devices extends Component {
         } else {
             if (indxAction < 0) {
                 this.state.columns.splice(1, 0, {
-                    title: <Button type="danger" size="small" style={{ margin: '0 8px 0 8px' }} onClick={() => this.refs.devcieList.deleteAllUnlinkedDevice('unlink')} >Delete Selected</Button>,
+                    // title: <Button type="danger" size="small" style={{ margin: '0 8px 0 8px' }} onClick={() => this.refs.devcieList.deleteAllUnlinkedDevice('unlink')} >Delete Selected</Button>,
                     dataIndex: 'action',
                     align: 'center',
                     className: 'row',
@@ -315,13 +386,13 @@ class Devices extends Component {
         let activationCodeIndex = this.state.columns.findIndex(i => i.dataIndex == 'activation_code');
         if (value == DEVICE_UNLINKED && (this.props.user.type != ADMIN)) {
             // console.log('tab 5', this.state.columns);
-            this.state.columns[indxAction]['title'] = <Button type="danger" size="small" style={{ margin: '0 8px 0 8px' }} onClick={() => this.refs.devcieList.deleteAllUnlinkedDevice('unlink')} >Delete Selected</Button>;
+            // this.state.columns[indxAction]['title'] = <Button type="danger" size="small" style={{ margin: '0 8px 0 8px' }} onClick={() => this.refs.devcieList.deleteAllUnlinkedDevice('unlink')} >Delete Selected</Button>;
         }
         else if (value == DEVICE_PRE_ACTIVATION) {
             let indxRemainingDays = this.state.columns.findIndex(k => k.dataIndex == 'validity');
             // console.log('index of 3 tab', indxRemainingDays)
             if (indxAction >= 0) {
-                this.state.columns[indxAction]['title'] = <Button type="danger" size="small" style={{ margin: '0 8px 0 8px' }} onClick={() => this.refs.devcieList.deleteAllPreActivedDevice('pre-active')} >Delete Selected</Button>
+                // this.state.columns[indxAction]['title'] = <Button type="danger" size="small" style={{ margin: '0 8px 0 8px' }} onClick={() => this.refs.devcieList.deleteAllPreActivedDevice('pre-active')} >Delete Selected</Button>
             }
             if (indxRemainingDays >= 0 && indxRemainingDays !== undefined) {
                 this.state.columns[indxRemainingDays].className = '';
@@ -439,9 +510,10 @@ class Devices extends Component {
         }
         let activationCodeIndex = this.state.columns.findIndex(i => i.dataIndex == 'activation_code');
 
+
         if (value == '5' && (this.props.user.type != ADMIN)) {
             // console.log('tab 5', this.state.columns);
-            this.state.columns[indxAction]['title'] = <Button type="danger" size="small" style={{ margin: '0 8px 0 8px' }} onClick={() => this.refs.devcieList.deleteAllUnlinkedDevice('unlink')} >Delete Selected</Button>;
+            // this.state.columns[indxAction]['title'] = <Button type="danger" size="small" style={{ margin: '0 8px 0 8px' }} onClick={() => this.refs.devcieList.deleteAllUnlinkedDevice('unlink')} >Delete Selected</Button>;
         }
         else if (value == '3') {
             let indxRemainingDays = this.state.columns.findIndex(k => k.dataIndex == 'validity');
@@ -469,6 +541,8 @@ class Devices extends Component {
                 this.state.columns.splice(11, 0, this.state.columns.splice(activationCodeIndex, 1)[0]);
             }
         }
+
+
 
         var devices = [];
         switch (value) {
@@ -802,6 +876,7 @@ class Devices extends Component {
                                 user={this.props.user}
                                 refreshComponent={this.refreshComponent}
                                 history={this.props.history}
+                                showDateModal={this.showDateModal}
                             />
                             <ShowMsg
                                 msg={this.props.msg}
@@ -809,6 +884,32 @@ class Devices extends Component {
                             />
                         </Fragment>
                 }
+                <Modal
+                    title="Extend expiry date"
+                    visible={this.state.visible}
+                    onOk={this.handleOk}
+                    okText="Save"
+                    onCancel={this.handleCancel}
+                >
+                    <DatePicker
+                        format="DD-MM-YYYY"
+                        defaultValue={moment(this.state.start_date)}
+                        disabled
+                    />
+                    &nbsp;
+                    <DatePicker
+                        format="DD-MM-YYYY"
+                        defaultValue={moment(this.state.expiry_date)}
+                        onChange={this.saveExpiryDate}
+                    />
+                    {/* <RangePicker
+                        format="YYYY-MM-DD"
+                        defaultValue={[moment(this.state.start_date), moment(this.state.expiry_date)]}
+                        disabledDate={this.disabledDate}
+                        onChange={this.onChangeRangeDate}
+                        // disabledTime={this.disabledRangeTime}
+                    /> */}
+                </Modal>
             </Fragment>
         );
 
@@ -820,6 +921,7 @@ class Devices extends Component {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getOfflineDevices: getOfflineDevices,
+        saveOfflineDevice: saveOfflineDevice,
         suspendDevice: suspendDevice,
         activateDevice: activateDevice,
         editDevice: editDevice,

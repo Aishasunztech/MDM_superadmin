@@ -126,6 +126,7 @@ export function componentSearch(arr, search) {
 }
 
 export function getFormattedDate(value) {
+  console.log('getFormattedDate is ', value)
   function convert(str) {
     var month, day, year, hours, minutes, seconds;
     var date = new Date(str),
