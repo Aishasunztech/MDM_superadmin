@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import SuspendDevice from './SuspendDevice';
 import ActivateDevcie from './ActivateDevice';
 import StatusDevice from './StatusDevice';
-import { getStatus, getColor, checkValue, getSortOrder, checkRemainDays, getFormattedDate } from '../../utils/commonUtils'
+import { getStatus, getColor, checkValue, titleCase, getSortOrder, checkRemainDays, getFormattedDate } from '../../utils/commonUtils'
 import EditDevice from './editDevice';
 
 import { Tabs, Modal } from 'antd';
@@ -17,6 +17,7 @@ import {
     DEVICE_PRE_ACTIVATION,
     DEVICE_SUSPENDED,
     DEVICE_UNLINKED,
+    DEVICE_EXTEND,
     DEVICE_TRIAL,
     ADMIN
 } from '../../../constants/Constants'
@@ -79,14 +80,14 @@ class DevicesList extends Component {
         // console.log('list of dec', list)
         return list.map((device, index) => {
 
-
+// console.log('device is: ', device);
             var status = device.finalStatus;
-            console.log('status is : ', status);
-            const button_type = (status === DEVICE_ACTIVATED || status === DEVICE_TRIAL) ? "danger" : "dashed";
+            // console.log('status is : ', status);
+            // const button_type = (status === DEVICE_ACTIVATED || status === DEVICE_TRIAL) ? "danger" : "dashed";
 
-            const flagged = device.flagged;
+            // const flagged = device.flagged;
             // console.log("not avail", status);
-            var order = getSortOrder(status)
+            // var order = getSortOrder(status)
             let color = getColor(status);
             var style = { margin: '0', width: '60px' }
             var text = "EDIT";
@@ -103,9 +104,9 @@ class DevicesList extends Component {
             let StatusBtn;
             // console.log('tabselect ', tabSelected)
 
-            let ActiveBtn = <Button type="danger" size="small" onClick={() => this.handleStatusDevice(device, DEVICE_ACTIVATED)}> <span style={{color: "green"}}>ACTIVE</span></Button>;
+            let ActiveBtn = <Button size="small" onClick={() => this.handleStatusDevice(device, DEVICE_ACTIVATED)}> <span style={{color: "green"}}>ACTIVE</span></Button>;
             let SuspendBtn = <Button type="danger" size="small" onClick={() => this.handleStatusDevice(device, DEVICE_SUSPENDED)} >SUSPEND</Button>;
-            let ExtendBtn = <Button size="small" onClick={() => this.props.showDateModal(device.id, device.start_date, device.expiry_date)}><span style={{color: "rgb(204, 204, 14)"}}> EXTEND </span> </Button>;
+            let ExtendBtn = <Button size="small" onClick={() => this.props.showDateModal(device, DEVICE_EXTEND)}><span style={{color: "rgb(204, 204, 14)"}}> EXTEND </span> </Button>;
 
             // if (tabSelected == '7') { // suspend
             //     StatusBtn = ActiveBtn;
@@ -117,11 +118,11 @@ class DevicesList extends Component {
             //     StatusBtn = "";
             // }
 
-            if (status == 'suspended') { // 7:suspend
+            if (status == DEVICE_SUSPENDED) { // 7:suspend
                 StatusBtn = ActiveBtn;
-            } else if (status == 'expired') { // 6:expire
+            } else if (status == DEVICE_EXPIRED) { // 6:expire
                 StatusBtn = ExtendBtn;
-            } else if (status == 'active') { //1: All, 4: active 
+            } else if (status == DEVICE_ACTIVATED) { //1: All, 4: active 
                 StatusBtn = <Fragment>{SuspendBtn} {ExtendBtn}</Fragment>
             } else {
                 StatusBtn = "";
@@ -138,8 +139,8 @@ class DevicesList extends Component {
                 key: status == DEVICE_UNLINKED ? `${device.user_acc_id}` : device.id,
                 counter: ++index,
                 action: (StatusBtn),
-                offline_id: device.fl_dvc_id,
-                status: (<span style={color} > {status}</span >),
+                offline_id: device.fl_dvc_id ? device.fl_dvc_id : 'N/A',
+                status: (<span style={color} > {titleCase(status)}</span >),
                 flagged: (device.flagged !== '') ? device.flagged : 'Not Flagged',
                 device_id: checkValue(device.fl_dvc_id),
                 // device_id: ((status != DEVICE_PRE_ACTIVATION)) ? checkValue(device.device_id) : (device.validity) ? (this.props.tabselect == '3') ? `${device.validity}` : "N/A" : "N/A",
@@ -160,7 +161,7 @@ class DevicesList extends Component {
                 imei_2: checkValue(device.imei2),
                 sim_2: checkValue(device.simno2),
                 serial_number: checkValue(device.serial_no),
-
+                label: device.name,
                 model: checkValue(device.model),
 
                 // start_date: device.start_date ? `${new Date(device.start_date).toJSON().slice(0,10).replace(/-/g,'-')}` : "N/A",
@@ -344,93 +345,93 @@ class DevicesList extends Component {
                             // y: 600 
                         }}
 
-                        expandIcon={(props) => this.customExpandIcon(props)}
-                        expandedRowRender={(record) => {
-                            let showRecord = [];
-                            let showRecord2 = [];
+                        // expandIcon={(props) => this.customExpandIcon(props)}
+                        // expandedRowRender={(record) => {
+                        //     let showRecord = [];
+                        //     let showRecord2 = [];
 
-                            // this.props.columns.map((column, index) => {
-                            //     if (column.className === "row") {
-                            //     } else if (column.className === "hide") {
-                            //         let title = column.children[0].title;
-                            //         if (title === "SIM ID" || title === "IMEI 1" || title === "SIM 1" || title === "IMEI 2" || title === "SIM 2") {
-                            //             showRecord2.push({
-                            //                 name: title,
-                            //                 values: record[column.dataIndex],
-                            //                 rowKey: title
-                            //             });
-                            //         } else {
-                            //             if (title === "STATUS" || title === "DEALER NAME" || title === "S-DEALER Name") {
-                            //                 if (record[column.dataIndex][0]) {
-                            //                     showRecord.push({
-                            //                         name: title,
-                            //                         values: record[column.dataIndex][0].toUpperCase() + record[column.dataIndex].substring(1, record[column.dataIndex].length).toLowerCase(),
-                            //                         rowKey: title
-                            //                     });
-                            //                 }
+                        //     // this.props.columns.map((column, index) => {
+                        //     //     if (column.className === "row") {
+                        //     //     } else if (column.className === "hide") {
+                        //     //         let title = column.children[0].title;
+                        //     //         if (title === "SIM ID" || title === "IMEI 1" || title === "SIM 1" || title === "IMEI 2" || title === "SIM 2") {
+                        //     //             showRecord2.push({
+                        //     //                 name: title,
+                        //     //                 values: record[column.dataIndex],
+                        //     //                 rowKey: title
+                        //     //             });
+                        //     //         } else {
+                        //     //             if (title === "STATUS" || title === "DEALER NAME" || title === "S-DEALER Name") {
+                        //     //                 if (record[column.dataIndex][0]) {
+                        //     //                     showRecord.push({
+                        //     //                         name: title,
+                        //     //                         values: record[column.dataIndex][0].toUpperCase() + record[column.dataIndex].substring(1, record[column.dataIndex].length).toLowerCase(),
+                        //     //                         rowKey: title
+                        //     //                     });
+                        //     //                 }
 
-                            //             } else {
+                        //     //             } else {
 
-                            //                 showRecord.push({
-                            //                     name: title,
-                            //                     values: record[column.dataIndex],
-                            //                     rowKey: title
-                            //                 });
-                            //             }
-                            //         }
-                            //     }
-                            // });
-                            // console.log("cols",this.props.columns);
-                            // console.log("toShow", showRecord);
-                            return (
-                                <Fragment>
-                                    <div className="col-md-4 expand_table">
-                                        <Table
-                                            pagination={false}
-                                            columns={
-                                                [
-                                                    {
-                                                        title: "Name",
-                                                        dataIndex: 'name',
-                                                        key: "name",
-                                                        align: "center",
-                                                        className: "bold"
-                                                    }, {
-                                                        title: "Value",
-                                                        dataIndex: "values",
-                                                        key: "value",
-                                                        align: "center"
-                                                    }
-                                                ]
-                                            }
-                                            dataSource={showRecord}
-                                        />
-                                    </div>
-                                    <div className="col-md-4 expand_table">
-                                        <Table
-                                            pagination={false}
-                                            columns={
-                                                [
-                                                    {
-                                                        title: "Name",
-                                                        dataIndex: 'name',
-                                                        key: "name",
-                                                        align: "center",
-                                                        className: "bold"
-                                                    }, {
-                                                        title: "Value",
-                                                        dataIndex: "values",
-                                                        key: "value",
-                                                        align: "center"
-                                                    }
-                                                ]
-                                            }
-                                            dataSource={showRecord2}
-                                        />
-                                    </div>
-                                </Fragment>)
-                        }
-                        }
+                        //     //                 showRecord.push({
+                        //     //                     name: title,
+                        //     //                     values: record[column.dataIndex],
+                        //     //                     rowKey: title
+                        //     //                 });
+                        //     //             }
+                        //     //         }
+                        //     //     }
+                        //     // });
+                        //     // console.log("cols",this.props.columns);
+                        //     // console.log("toShow", showRecord);
+                        //     return (
+                        //         <Fragment>
+                        //             <div className="col-md-4 expand_table">
+                        //                 <Table
+                        //                     pagination={false}
+                        //                     columns={
+                        //                         [
+                        //                             {
+                        //                                 title: "Name",
+                        //                                 dataIndex: 'name',
+                        //                                 key: "name",
+                        //                                 align: "center",
+                        //                                 className: "bold"
+                        //                             }, {
+                        //                                 title: "Value",
+                        //                                 dataIndex: "values",
+                        //                                 key: "value",
+                        //                                 align: "center"
+                        //                             }
+                        //                         ]
+                        //                     }
+                        //                     dataSource={showRecord}
+                        //                 />
+                        //             </div>
+                        //             <div className="col-md-4 expand_table">
+                        //                 <Table
+                        //                     pagination={false}
+                        //                     columns={
+                        //                         [
+                        //                             {
+                        //                                 title: "Name",
+                        //                                 dataIndex: 'name',
+                        //                                 key: "name",
+                        //                                 align: "center",
+                        //                                 className: "bold"
+                        //                             }, {
+                        //                                 title: "Value",
+                        //                                 dataIndex: "values",
+                        //                                 key: "value",
+                        //                                 align: "center"
+                        //                             }
+                        //                         ]
+                        //                     }
+                        //                     dataSource={showRecord2}
+                        //                 />
+                        //             </div>
+                        //         </Fragment>)
+                        // }
+                        // }
                     />
                 </Card>
 

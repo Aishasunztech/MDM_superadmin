@@ -6,10 +6,10 @@ import moment from 'moment';
 import { bindActionCreators } from "redux";
 
 import {
-    saveOfflineDevice,
+    // saveOfflineDevice,
     getOfflineDevices,
-    suspendDevice,
-    activateDevice,
+    // suspendDevice,
+    // activateDevice,
     statusDevice,
     editDevice,
 } from "../../appRedux/actions";
@@ -36,6 +36,7 @@ import {
     DEVICE_EXPIRY_DATE,
     WHITE_LABEL,
 } from '../../constants/DeviceConstants';
+import { LABEL } from '../../constants/LabelConstants';
 
 import {
     getDropdown,
@@ -160,59 +161,6 @@ class Devices extends Component {
             {
                 title: (
                     <Input.Search
-                        name="mac_address"
-                        key="mac_address"
-                        id="mac_address"
-                        className="search_heading"
-                        onKeyUp={this.handleSearch}
-                        autoComplete="new-password"
-                        placeholder={titleCase(DEVICE_MAC_ADDRESS)}
-                    />
-                ),
-                dataIndex: 'mac_address',
-                className: '',
-                children: [
-                    {
-                        title: DEVICE_MAC_ADDRESS,
-                        align: "center",
-                        className: '',
-                        dataIndex: 'mac_address',
-                        key: 'mac_address',
-                        sorter: (a, b) => { return a.mac_address.localeCompare(b.mac_address) },
-                        sortDirections: ['ascend', 'descend'],
-                    }
-                ]
-            },
-            {
-                title: (
-                    <Input.Search
-                        name="serial_number"
-                        key="serial_number"
-                        id="serial_number"
-                        className="search_heading"
-                        onKeyUp={this.handleSearch}
-                        autoComplete="new-password"
-                        placeholder={titleCase(DEVICE_SERIAL_NUMBER)}
-                    />
-                ),
-                dataIndex: 'serial_number',
-                className: '',
-                children: [
-                    {
-                        title: DEVICE_SERIAL_NUMBER,
-                        align: "center",
-                        dataIndex: 'serial_number',
-                        key: 'serial_number',
-                        className: '',
-                        sorter: (a, b) => { return a.serial_number.localeCompare(b.serial_number) },
-                        sortDirections: ['ascend', 'descend'],
-                    }
-                ]
-            },
-
-            {
-                title: (
-                    <Input.Search
                         name="start_date"
                         key="start_date"
                         id="start_date"
@@ -262,6 +210,89 @@ class Devices extends Component {
                     }
                 ]
             },
+            
+            {
+                title: (
+                    <Input.Search
+                        name="mac_address"
+                        key="mac_address"
+                        id="mac_address"
+                        className="search_heading"
+                        onKeyUp={this.handleSearch}
+                        autoComplete="new-password"
+                        placeholder={titleCase(DEVICE_MAC_ADDRESS)}
+                    />
+                ),
+                dataIndex: 'mac_address',
+                className: '',
+                children: [
+                    {
+                        title: DEVICE_MAC_ADDRESS,
+                        align: "center",
+                        className: '',
+                        dataIndex: 'mac_address',
+                        key: 'mac_address',
+                        sorter: (a, b) => { return a.mac_address.localeCompare(b.mac_address) },
+                        sortDirections: ['ascend', 'descend'],
+                    }
+                ]
+            },
+            {
+                title: (
+                    <Input.Search
+                        name="serial_number"
+                        key="serial_number"
+                        id="serial_number"
+                        className="search_heading"
+                        onKeyUp={this.handleSearch}
+                        autoComplete="new-password"
+                        placeholder={titleCase(DEVICE_SERIAL_NUMBER)}
+                    />
+                ),
+                dataIndex: 'serial_number',
+                className: '',
+                children: [
+                    {
+                        title: DEVICE_SERIAL_NUMBER,
+                        align: "center",
+                        dataIndex: 'serial_number',
+                        key: 'serial_number',
+                        className: '',
+                        sorter: (a, b) => { return a.serial_number.localeCompare(b.serial_number) },
+                        sortDirections: ['ascend', 'descend'],
+                    }
+                ]
+            },
+            {
+                title: (
+                    <Input.Search
+                        name="label"
+                        key="label"
+                        id="label"
+                        className="search_heading"
+                        onKeyUp={this.handleSearch}
+                        autoComplete="new-password"
+                        placeholder={titleCase(LABEL)}
+                    />
+                ),
+                dataIndex: 'label',
+                className: '',
+
+                children: [
+                    {
+                        title: LABEL,
+                        align: "center",
+                        className: '',
+                        dataIndex: 'label',
+                        key: 'label',
+                        sorter: (a, b) => { return a.label.props.children[1].localeCompare(b.label.props.children[1]) },
+
+                        sortDirections: ['ascend', 'descend'],
+                    }
+                ]
+            },
+           
+            
         ];
 
         this.state = {
@@ -271,9 +302,8 @@ class Devices extends Component {
             tabselect: '4',
             visible: false,
             mode: 'time',
-            start_date: '',
-            expiry_date: '',
-            id: '',
+            extendExpiryDevice: '',
+            requireStatus: '',
         }
         this.copyDevices = [];
 
@@ -285,59 +315,57 @@ class Devices extends Component {
 
     saveExpiryDate = (date) => {
         let { _d } = date;
-        console.log(this.state.expiry_date, '------------ ', _d);
-        this.setState({
-            expiry_date: _d
-        })
+        // console.log(this.state.expiry_date, '------------ ', _d);
+        this.state.extendExpiryDevice.expiry_date = _d;
+        // this.setState({
+        //     expiry_date: _d
+        // })
 
     }
 
-    range(start, end) {
-        const result = [];
-        for (let i = start; i < end; i++) {
-            result.push(i);
-        }
-        return result;
-    }
+    // range(start, end) {
+    //     const result = [];
+    //     for (let i = start; i < end; i++) {
+    //         result.push(i);
+    //     }
+    //     return result;
+    // }
 
-    disabledDateTime = () => {
-        return {
-            disabledHours: () => this.range(0, 24).splice(4, 20),
-            disabledMinutes: () => this.range(30, 60),
-            disabledSeconds: () => [55, 56],
-        };
-    }
+    // disabledDateTime = () => {
+    //     return {
+    //         disabledHours: () => this.range(0, 24).splice(4, 20),
+    //         disabledMinutes: () => this.range(30, 60),
+    //         disabledSeconds: () => [55, 56],
+    //     };
+    // }
 
     disabledDate = (current) => {
-        console.log('current is: ', current)
+        // console.log('current is: ', current)
         // Can not select days before today and today
         return current && current < moment().endOf('day');
     }
 
     onChangeRangeDate = (dates, dateStrings) => {
-        console.log('From: ', dates[0], ', to: ', dates[1]);
-        console.log('From: ', dateStrings[0], ', to: ', dateStrings[1]);
+        // console.log('From: ', dates[0], ', to: ', dates[1]);
+        // console.log('From: ', dateStrings[0], ', to: ', dateStrings[1]);
     }
 
-    showDateModal = (id, start_date, expiry_date) => {
+    showDateModal = (device, requireStatus) => {
+        console.log('show data modal and required status is', requireStatus)
         this.setState({
             visible: true,
-            start_date,
-            expiry_date,
-            id
+            extendExpiryDevice: device,
+            requireStatus
         });
     };
 
     handleOk = e => {
+        console.log(this.state.extendExpiryDevice ,'handleOk and required status is', this.state.requireStatus)
         // console.log(e);
         this.setState({
             visible: false,
         });
-        this.props.saveOfflineDevice({
-            start_date: this.state.start_date,
-            expiry_date: this.state.expiry_date,
-            id: this.state.id
-        })
+        this.props.statusDevice(this.state.extendExpiryDevice, this.state.requireStatus);
     };
 
     handleCancel = e => {
@@ -862,8 +890,8 @@ class Devices extends Component {
 
                             <DevicesTabs
                                 devices={this.state.devices}
-                                suspendDevice={this.props.suspendDevice}
-                                activateDevice={this.props.activateDevice}
+                                // suspendDevice={this.props.suspendDevice}
+                                // activateDevice={this.props.activateDevice}
                                 statusDevice={this.props.statusDevice}
                                 columns={this.state.columns}
                                 selectedOptions={this.props.selectedOptions}
@@ -895,13 +923,13 @@ class Devices extends Component {
                 >
                     <DatePicker
                         format="DD-MM-YYYY"
-                        defaultValue={moment(this.state.start_date)}
+                        defaultValue={moment(this.state.extendExpiryDevice.start_date)}
                         disabled
                     />
                     &nbsp;
                     <DatePicker
                         format="DD-MM-YYYY"
-                        defaultValue={moment(this.state.expiry_date)}
+                        defaultValue={moment(this.state.extendExpiryDevice.expiry_date)}
                         onChange={this.saveExpiryDate}
                     />
                     {/* <RangePicker
@@ -923,9 +951,9 @@ class Devices extends Component {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getOfflineDevices: getOfflineDevices,
-        saveOfflineDevice: saveOfflineDevice,
-        suspendDevice: suspendDevice,
-        activateDevice: activateDevice,
+        // saveOfflineDevice: saveOfflineDevice,
+        // suspendDevice: suspendDevice,
+        // activateDevice: activateDevice,
         statusDevice: statusDevice,
         editDevice: editDevice,
         getDropdown: getDropdown,

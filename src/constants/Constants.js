@@ -21,6 +21,7 @@ export const DEVICE_PRE_ACTIVATION = "Pre-activated";
 //  export const DEVICE_EXPIRED= "expired";
 //  export const DEVICE_UNLINKED= "Unlinked";
  export const DEVICE_DELETE= "deleted";
+ export const DEVICE_EXTEND = "extended";
 
 export const DEVICE_ONLINE = "On";
 export const DEVICE_OFFLINE = "off";
