@@ -1,7 +1,8 @@
 import {
     GET_WHITE_LABEL_INFO,
     EDIT_WHITE_LABEL_INFO,
-    WHITE_LABEL_BACKUPS
+    WHITE_LABEL_BACKUPS,
+    GET_FILE
 } from "../../constants/ActionTypes";
 
 import { message, Modal } from 'antd';
@@ -24,6 +25,17 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 whiteLabel: action.payload
+            }
+        }
+
+        case GET_FILE: {
+            if(action.payload.status && !action.payload.status){
+                Modal.error({
+                    title: action.payload.msg
+                })
+            }
+            return {
+                ...state,
             }
         }
 

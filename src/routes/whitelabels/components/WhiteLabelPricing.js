@@ -7,6 +7,7 @@ import {
 import ItemsTab from "../../../components/ItemsTab";
 
 import SimTabContent from "./SimTabContent";
+import PackagePricingForm from './PackagePricingForm';
 
 const { TabPane } = Tabs;
 export default class WhiteLabelPricing extends Component {
@@ -19,7 +20,7 @@ export default class WhiteLabelPricing extends Component {
 
     }
 
-    onTabChange= ()=>{
+    onTabChange = () => {
 
     }
 
@@ -28,14 +29,15 @@ export default class WhiteLabelPricing extends Component {
             <Modal
                 maskClosable={false}
                 destroyOnClose={true}
-                title="Pricing"
+                title={<div>Set Prices<br></br><span>Label: {this.props.LabelName}</span></div>}
                 visible={this.props.pricing_modal}
                 // onOk={this.InsertNewData}
                 onCancel={() => this.props.showPricingModal(false)}
                 footer={null}
+                width='610px'
             >
                 <Tabs
-                    // onChange={this.callback} 
+
                     type="card"
                 >
                     <TabPane tab="Set ID Prices" key="1">
@@ -44,7 +46,9 @@ export default class WhiteLabelPricing extends Component {
                         />
                     </TabPane>
                     <TabPane tab="SET Packages Prices" key="2">
-                        Content of Tab Pane 2
+
+                        <PackagePricingForm />
+
                     </TabPane>
                 </Tabs>
             </Modal>

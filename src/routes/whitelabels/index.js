@@ -11,11 +11,12 @@ import {
 
 import style from "./whitelabels.css"
 
-import { getWhiteLabelInfo, editWhiteLabelInfo, getWhitelabelBackups } from '../../appRedux/actions';
+import { getWhiteLabelInfo, editWhiteLabelInfo, getWhitelabelBackups, getFile } from '../../appRedux/actions';
 
 import EditWhiteLabel from "./components/EditWhiteLabel";
 import LoadIDsModal from "./components/LoadIDsModal";
 import WhiteLabelPricing from './components/WhiteLabelPricing';
+import {USER_URL} from '../../constants/Application'
 
 const confirm = Modal.confirm;
 const success = Modal.success
@@ -28,8 +29,8 @@ class WhiteLabels extends Component {
         this.whitelabelBackupColumns = [
             {
                 title: '#',
-                dataIndex: 'whitelabel_id',
-                key: 'whitelabel_id',
+                dataIndex: '#',
+                key: '#',
                 textAlign: 'center'
             },
             {
@@ -204,11 +205,12 @@ class WhiteLabels extends Component {
 
     renderWhitelabelBackups = (data) => {
         if (data && data.length) {
-            return data.map(item => {
+            return data.map((item, index) => {
                 return {
                     rowKey: item.id,
+                    '#': ++index,
                     whitelabel_id: item.whitelabel_id,
-                    db_file: item.db_file,
+                    db_file: <a href={`${USER_URL}getFile/`+item.db_file}><Button type='primary' size='small'  >Download</Button></a>,
                     created_at: item.created_at
                 }
             })
@@ -514,10 +516,10 @@ class WhiteLabels extends Component {
                                         visible={this.state.backupDatabaseModal}
                                         onOk={this.handleOk}
                                         onCancel={this.handleCancel}
+                                        maskClosable={false}
                                     >
                                         <Table
                                             bordered
-                                            maskClosable={false}
                                             pagination={false}
                                             dataSource={this.renderWhitelabelBackups(this.state.whitelabelBackups)}
                                             columns={this.whitelabelBackupColumns}>
@@ -565,6 +567,8 @@ class WhiteLabels extends Component {
                                         <WhiteLabelPricing
                                             showPricingModal = {this.showPricingModal}
                                             pricing_modal = {this.state.pricing_modal}
+                                            LabelName = {this.props.whiteLabelInfo.name}
+
                                         />
                                     </div>
                                 </div>
@@ -608,7 +612,8 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getWhiteLabelInfo: getWhiteLabelInfo,
         editWhiteLabelInfo: editWhiteLabelInfo,
-        getWhitelabelBackups: getWhitelabelBackups
+        getWhitelabelBackups: getWhitelabelBackups,
+        getFile: getFile
     }, dispatch);
 }
 

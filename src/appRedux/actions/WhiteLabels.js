@@ -3,7 +3,8 @@ import {
     GET_WHITE_LABELS,
     GET_WHITE_LABEL_INFO ,
     EDIT_WHITE_LABEL_INFO,
-    WHITE_LABEL_BACKUPS
+    WHITE_LABEL_BACKUPS,
+    GET_FILE
 } from "../../constants/ActionTypes"
 
 import RestService from '../services/RestServices';
@@ -63,5 +64,24 @@ export const editWhiteLabelInfo = (data) => {
             }
         });
 
+    }
+}
+
+
+export const getFile = (data) => {
+    return (dispatch) => {
+        RestService.getFile(data)
+        // .then((response) => {
+
+        //     if(RestService.checkAuth(response.data)){
+                // dispatch({
+                //     type: GET_FILE
+                // })
+        //     } else {
+        //         dispatch({
+        //             type: INVALID_TOKEN
+        //         })                
+        //     }
+        // });
     }
 }

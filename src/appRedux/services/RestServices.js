@@ -144,7 +144,6 @@ const RestService = {
         return axios.put(USER_URL + 'update-white-label', data, RestService.getHeader());
     },
 
-
     // ======================================== Account ===========================================
     getSimIDs: () => {
         return axios.get(BASE_URL + 'users/get_sim_ids', RestService.getHeader());
