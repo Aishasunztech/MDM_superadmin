@@ -10,6 +10,7 @@ import {
     getOfflineDevices,
     suspendDevice,
     activateDevice,
+    statusDevice,
     editDevice,
 } from "../../appRedux/actions";
 
@@ -863,6 +864,7 @@ class Devices extends Component {
                                 devices={this.state.devices}
                                 suspendDevice={this.props.suspendDevice}
                                 activateDevice={this.props.activateDevice}
+                                statusDevice={this.props.statusDevice}
                                 columns={this.state.columns}
                                 selectedOptions={this.props.selectedOptions}
                                 ref="devcieList"
@@ -924,6 +926,7 @@ function mapDispatchToProps(dispatch) {
         saveOfflineDevice: saveOfflineDevice,
         suspendDevice: suspendDevice,
         activateDevice: activateDevice,
+        statusDevice: statusDevice,
         editDevice: editDevice,
         getDropdown: getDropdown,
         postDropdown: postDropdown,

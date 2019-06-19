@@ -204,6 +204,46 @@ export function activateDevice(device) {
 
 }
 
+export function statusDevice(device, requireStatus) {
+
+    return (dispatch) => {
+
+        RestService.statusDevice(device, requireStatus).then((response) => {
+
+            if (RestService.checkAuth(response.data)) {
+
+                // get all updated ofline devices
+                RestService.getOfflineDevices().then((response) => {
+                    // console.log("data form server");
+                    console.log(response.data);
+                    if (RestService.checkAuth(response.data)) {
+                        // console.log(response.data)
+                        if (response.data.status) {
+
+                            dispatch({
+                                type: DEVICES_LIST,
+                                payload: response.data.devices,
+
+                            });
+                        }
+                    } else {
+                        dispatch({
+                            type: INVALID_TOKEN
+                        });
+                    }
+                })
+
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                });
+            }
+
+        });
+    }
+
+}
+
 
 export function connectDevice(device_id) {
 

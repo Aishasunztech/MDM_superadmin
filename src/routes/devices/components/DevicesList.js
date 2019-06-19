@@ -4,6 +4,7 @@ import styles from './devices.css'
 import { Link } from "react-router-dom";
 import SuspendDevice from './SuspendDevice';
 import ActivateDevcie from './ActivateDevice';
+import StatusDevice from './StatusDevice';
 import { getStatus, getColor, checkValue, getSortOrder, checkRemainDays, getFormattedDate } from '../../utils/commonUtils'
 import EditDevice from './editDevice';
 
@@ -80,6 +81,7 @@ class DevicesList extends Component {
 
 
             var status = device.finalStatus;
+            console.log('status is : ', status);
             const button_type = (status === DEVICE_ACTIVATED || status === DEVICE_TRIAL) ? "danger" : "dashed";
 
             const flagged = device.flagged;
@@ -101,19 +103,31 @@ class DevicesList extends Component {
             let StatusBtn;
             // console.log('tabselect ', tabSelected)
 
-            let ActiveBtn = <Button type="danger" size="small" disabled> ACTIVE</Button>;
-            let SuspendBtn = <Button type="danger" size="small" onClick={() => this.handleSuspendDevice(device)} > SUSPEND</Button>;
-            let ExtendBtn = <Button type="danger" size="small" onClick={() => this.props.showDateModal(device.id, device.start_date, device.expiry_date)}> EXTEND</Button>;
+            let ActiveBtn = <Button type="danger" size="small" onClick={() => this.handleStatusDevice(device, DEVICE_ACTIVATED)}> <span style={{color: "green"}}>ACTIVE</span></Button>;
+            let SuspendBtn = <Button type="danger" size="small" onClick={() => this.handleStatusDevice(device, DEVICE_SUSPENDED)} >SUSPEND</Button>;
+            let ExtendBtn = <Button size="small" onClick={() => this.props.showDateModal(device.id, device.start_date, device.expiry_date)}><span style={{color: "rgb(204, 204, 14)"}}> EXTEND </span> </Button>;
 
-            if (tabSelected == '7') { // suspend
+            // if (tabSelected == '7') { // suspend
+            //     StatusBtn = ActiveBtn;
+            // } else if (tabSelected == '6') { // expire
+            //     StatusBtn = ExtendBtn;
+            // } else if (tabSelected == '1' || tabSelected == '4') { //1: All, 4: active 
+            //     StatusBtn = <Fragment>{SuspendBtn} {ExtendBtn}</Fragment>
+            // } else {
+            //     StatusBtn = "";
+            // }
+
+            if (status == 'suspended') { // 7:suspend
                 StatusBtn = ActiveBtn;
-            } else if (tabSelected == '6') { // expire
+            } else if (status == 'expired') { // 6:expire
                 StatusBtn = ExtendBtn;
-            } else if (tabSelected == '1' || tabSelected == '4') { //1: All, 4: active 
+            } else if (status == 'active') { //1: All, 4: active 
                 StatusBtn = <Fragment>{SuspendBtn} {ExtendBtn}</Fragment>
             } else {
                 StatusBtn = "";
             }
+
+
 
             return {
                 // sortOrder: <span style={{ display: 'none' }}>{order}</span>,
@@ -254,7 +268,7 @@ class DevicesList extends Component {
 
         // console.log(this.state.selectedRows, 'selected keys', this.state.selectedRowKeys)
 
-        const { activateDevice, suspendDevice } = this.props;
+        const { activateDevice, suspendDevice, statusDevice } = this.props;
         const { redirect } = this.state
         if (redirect) {
             return <Redirect to={{
@@ -305,6 +319,8 @@ class DevicesList extends Component {
                     activateDevice={activateDevice} />
                 <SuspendDevice ref="suspend"
                     suspendDevice={suspendDevice} />
+                <StatusDevice ref="deviceStatusUpdate"
+                    statusDevice={statusDevice} />
 
                 <Card>
 
@@ -427,12 +443,16 @@ class DevicesList extends Component {
         )
     }
 
-    handleSuspendDevice = (device) => {
-        this.refs.suspend.handleSuspendDevice(device);
+    handleSuspendDevice = (device, requireStatus) => {
+        this.refs.suspend.handleSuspendDevice(device, requireStatus);
     }
 
     handleActivateDevice = (device) => {
         this.refs.activate.handleActivateDevice(device);
+    }
+
+    handleStatusDevice = (device, requireStatus) => {
+        this.refs.deviceStatusUpdate.handleStatusDevice(device, requireStatus);
     }
 
     handleRejectDevice = (device) => {
