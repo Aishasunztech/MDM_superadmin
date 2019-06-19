@@ -304,6 +304,7 @@ class Devices extends Component {
             mode: 'time',
             extendExpiryDevice: '',
             requireStatus: '',
+            expiry_date: ''
         }
         this.copyDevices = [];
 
@@ -316,10 +317,10 @@ class Devices extends Component {
     saveExpiryDate = (date) => {
         let { _d } = date;
         // console.log(this.state.expiry_date, '------------ ', _d);
-        this.state.extendExpiryDevice.expiry_date = _d;
-        // this.setState({
-        //     expiry_date: _d
-        // })
+        
+        this.setState({
+            expiry_date: _d
+        })
 
     }
 
@@ -360,6 +361,7 @@ class Devices extends Component {
     };
 
     handleOk = e => {
+        this.state.extendExpiryDevice.expiry_date = this.state.expiry_date;
         console.log(this.state.extendExpiryDevice ,'handleOk and required status is', this.state.requireStatus)
         // console.log(e);
         this.setState({
