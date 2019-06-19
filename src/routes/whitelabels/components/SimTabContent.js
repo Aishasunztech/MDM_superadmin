@@ -5,7 +5,8 @@ export default class SimTabContent extends Component {
     render() {
         return (
             <div>
-                <PricingFrom 
+                <PricingFrom
+                    showPricingModal={this.props.showPricingModal}
                 />
             </div>
         )
