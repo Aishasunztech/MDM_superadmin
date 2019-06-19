@@ -3,8 +3,9 @@ import React, { Component, Fragment } from 'react'
 import {
     Form, Input, Row, Col, Button
 } from "antd";
+import styles from '../whitelabels.css';
 
-class PricingForm extends Component {
+class PackagePricingForm extends Component {
 
     render() {
 
@@ -20,13 +21,13 @@ class PricingForm extends Component {
         };
         const { getFieldDecorator } = this.props.form;
         return (
-            <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+            <Form onSubmit={this.handleSubmit}>
                 <Row>
                     <Col span={13}>
-                        <Form.Item label="1 MONTH"
-                            labelCol={{ span: 8 }}
-                            wrapperCol={{ span: 15 }}>
-                            {getFieldDecorator('1Month', {
+                        <Form.Item label="Package Name"
+                            labelCol={{ span: 11 }}
+                            wrapperCol={{ span: 13  }}>
+                            {getFieldDecorator('pkgName', {
                                 // rules: [
                                 //     {
                                 //         type: 'email',
@@ -51,9 +52,9 @@ class PricingForm extends Component {
                 </Row>
                 <Row>
                     <Col span={13}>
-                        <Form.Item label="3 MONTH" labelCol={{ span: 8 }}
-                            wrapperCol={{ span: 15 }}>
-                            {getFieldDecorator('3Month', {
+                        <Form.Item label="Package Terms"  labelCol={{ span: 11 }}
+                            wrapperCol={{ span: 13  }}> 
+                            {getFieldDecorator('pkgTerms', {
                                 // rules: [
                                 //     {
                                 //         type: 'email',
@@ -78,9 +79,9 @@ class PricingForm extends Component {
                 </Row>
                 <Row>
                     <Col span={13}>
-                        <Form.Item label="6 MONTH" labelCol={{ span: 8 }}
-                            wrapperCol={{ span: 15 }}>
-                            {getFieldDecorator('6Month', {
+                        <Form.Item label="Package Price"  labelCol={{ span: 11 }}
+                            wrapperCol={{ span: 13  }}>
+                            {getFieldDecorator('pkgPrice', {
                                 // rules: [
                                 //     {
                                 //         type: 'email',
@@ -103,44 +104,65 @@ class PricingForm extends Component {
                         <h4 className='priceText'>Price: 51651</h4>
                     </Col>
                 </Row>
+
                 <Row>
                     <Col span={13}>
-                        <Form.Item label="12 MONTH" labelCol={{ span: 8 }}
-                            wrapperCol={{ span: 15 }}>
-                            {getFieldDecorator('12Month', {
-                                // rules: [
-                                //     {
-                                //         type: 'email',
-                                //         message: 'The input is not valid E-mail!',
-                                //     },
-                                //     {
-                                //         required: true,
-                                //         message: 'Please input your E-mail!',
-                                //     },
-                                // ],
-                            })(<Input />)}
-
-
-                        </Form.Item>
+                       <h4 className="labelTypeText">Sim ID:</h4>
                     </Col>
                     <Col span={4}>
                         <Button size='middle' type="primary" >Set</Button>
                     </Col>
                     <Col span={7}>
-                        <h4 className='priceText'>Price: 51651</h4>
+                        <span className='priceText' >Sim ID: </span><span style={{fontWeight: 'bold'}}>Yes</span>
                     </Col>
                 </Row>
 
-                <div style={{ float: 'right', marginTop: 20 }} >
+                <Row>
+                    <Col span={13}>
+                       <h4 className="labelTypeText">Chat ID:</h4>
+                    </Col>
+                    <Col span={4}>
+                        <Button size='middle' type="primary" >Set</Button>
+                    </Col>
+                    <Col span={7}>
+                        <span className='priceText' > Chat ID: </span><span style={{fontWeight: 'bold'}}>Yes</span>
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col span={13}>
+                       <h4 className="labelTypeText">Pgp ID:</h4>
+                    </Col>
+                    <Col span={4}>
+                        <Button size='middle' type="primary" >Set</Button>
+                    </Col>
+                    <Col span={7}>
+                        <span className='priceText' >Pgp ID: </span><span style={{fontWeight: 'bold'}}>No</span>
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col span={13}>
+                       <h4 className="labelTypeText">VPN ID:</h4>
+                    </Col>
+                    <Col span={4}>
+                        <Button size='middle' type="primary" >Set</Button>
+                    </Col>
+                    <Col span={7}>
+                        <span className='priceText' >VPN ID: </span><span style={{fontWeight: 'bold'}}>Yes</span>
+                    </Col>
+                </Row>
+
+                
+                <div style={{float: 'right', marginTop: 20}} > 
                     <Button onClick={()=> this.props.showPricingModal(false)}>Cancel</Button>
                     <Button type="primary" htmlType="submit" >Submit</Button>
-                </div>
-
+                </div> 
             </Form>
         )
     }
 }
 
-PricingForm = Form.create()(PricingForm);
+PackagePricingForm = Form.create()(PackagePricingForm);
 
-export default PricingForm
+export default PackagePricingForm;

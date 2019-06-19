@@ -42,12 +42,14 @@ export default class WhiteLabelPricing extends Component {
                 >
                     <TabPane tab="Set ID Prices" key="1">
                         <ItemsTab
-                            simTabContent={<SimTabContent />}
+                            simTabContent={<SimTabContent showPricingModal={this.props.showPricingModal} />}
                         />
                     </TabPane>
                     <TabPane tab="SET Packages Prices" key="2">
 
-                        <PackagePricingForm />
+                        <PackagePricingForm 
+                            showPricingModal={this.props.showPricingModal}
+                        />
 
                     </TabPane>
                 </Tabs>
