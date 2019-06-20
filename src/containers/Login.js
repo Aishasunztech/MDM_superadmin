@@ -1,15 +1,18 @@
 import React from "react";
-import { Button, Form, Icon, Input, message } from "antd";
 import { connect } from "react-redux";
 // import {Link} from "react-router-dom";
 
+import { Button, Form, Icon, Input, message } from "antd";
+import IntlMessages from "util/IntlMessages";
+import CircularProgress from "components/CircularProgress/index";
+
+import { APP_TITLE } from "../constants/Application";
 import {
   hideMessage,
   showAuthLoader,
   loginUser
 } from "appRedux/actions/Auth";
-import IntlMessages from "util/IntlMessages";
-import CircularProgress from "components/CircularProgress/index";
+
 
 const FormItem = Form.Item;
 
@@ -66,7 +69,7 @@ class Login extends React.Component {
               <div className="gx-app-logo-wid">
               </div>
               <div className="gx-app-logo">
-                <p className="mb-0" style={{ fontSize: 18 }}><Icon type='lock' /> SuperAdmin</p>
+                <p className="mb-0" style={{ fontSize: 18 }}><Icon type='lock' /> {APP_TITLE}</p>
               </div>
             </div>
             <div className="gx-app-login-content">
@@ -106,7 +109,7 @@ class Login extends React.Component {
                 </FormItem>
 
               </Form>
-            
+
             </div>
 
             {loader ?

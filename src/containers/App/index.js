@@ -16,7 +16,7 @@ import VerifyAuthCode from "../VerifyAuthCode";
 import { setInitUrl } from "appRedux/actions/Auth";
 import { onLayoutTypeChange, onNavStyleChange, setThemeType } from "appRedux/actions/Setting";
 
-// import { checkComponent } from "../../appRedux/actions/Auth";
+import { APP_TITLE } from "../../constants/Application";
 
 import {
   LAYOUT_TYPE_BOXED,
@@ -64,6 +64,10 @@ class App extends Component {
       document.body.classList.remove('horizontal-layout');
     }
   };
+
+  componentDidMount() {
+    document.title = APP_TITLE + ' - Admin Dashboard'
+  }
 
   componentWillMount() {
     // console.log("componentWillMount");

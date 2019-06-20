@@ -1,3 +1,5 @@
+export const VERSION = "2.0";
+
 // ACL
 export const ADMIN = "admin";
 export const DEALER = "dealer";

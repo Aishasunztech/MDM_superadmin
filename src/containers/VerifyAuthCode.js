@@ -12,6 +12,8 @@ import {
     goToLogin
 } from "../appRedux/actions/Auth";
 
+import { APP_TITLE } from "../constants/Application";
+
 class VerifyAuthCode extends Component {
     componentWillReceiveProps(nextProps) {
     }
@@ -42,9 +44,6 @@ class VerifyAuthCode extends Component {
         this.props.goToLogin();
     }
     render() {
-        const { initURL } = this.props;
-
-        
         return (
             <div className="gx-app-login-wrap">
                 <div className="gx-app-login-container">
@@ -57,7 +56,7 @@ class VerifyAuthCode extends Component {
 
                             </div>
                             <div className="gx-app-logo">
-                                <p className="mb-0" style={{ fontSize: 18 }}><Icon type='lock' /> SuperAdmin</p>
+                                <p className="mb-0" style={{ fontSize: 18 }}><Icon type='lock' /> {APP_TITLE}</p>
                                 {/* <img alt="example" src={require("assets/images/logo.png")}/> */}
                             </div>
                         </div>
@@ -88,12 +87,6 @@ class VerifyAuthCode extends Component {
                             </Form>
                         </div>
 
-                        {/* {loader ?
-                            <div className="gx-loader-view">
-                                <CircularProgress />
-                            </div> : null}
-                        {showMessage ?
-                            message.error(alertMessage.toString()) : null} */}
                     </div>
                 </div>
             </div>
