@@ -11,12 +11,15 @@ import {
 
 import style from "./whitelabels.css"
 
-import { getWhiteLabelInfo, editWhiteLabelInfo, getWhitelabelBackups, getFile } from '../../appRedux/actions';
+import {
+    getWhiteLabelInfo, editWhiteLabelInfo,
+    getWhitelabelBackups, getFile, saveIDPrices, setPackage
+} from '../../appRedux/actions';
 
 import EditWhiteLabel from "./components/EditWhiteLabel";
 import LoadIDsModal from "./components/LoadIDsModal";
 import WhiteLabelPricing from './components/WhiteLabelPricing';
-import {USER_URL} from '../../constants/Application'
+import { USER_URL } from '../../constants/Application'
 
 const confirm = Modal.confirm;
 const success = Modal.success
@@ -210,7 +213,7 @@ class WhiteLabels extends Component {
                     rowKey: item.id,
                     '#': ++index,
                     whitelabel_id: item.whitelabel_id,
-                    db_file: <a href={`${USER_URL}getFile/`+item.db_file}><Button type='primary' size='small'  >Download</Button></a>,
+                    db_file: <a href={`${USER_URL}getFile/` + item.db_file}><Button type='primary' size='small'  >Download</Button></a>,
                     created_at: item.created_at
                 }
             })
@@ -563,9 +566,12 @@ class WhiteLabels extends Component {
                                     </a>
                                     <div className="middle">
                                         <WhiteLabelPricing
-                                            showPricingModal = {this.showPricingModal}
-                                            pricing_modal = {this.state.pricing_modal}
-                                            LabelName = {this.props.whiteLabelInfo.name}
+                                            showPricingModal={this.showPricingModal}
+                                            pricing_modal={this.state.pricing_modal}
+                                            LabelName={this.props.whiteLabelInfo.name}
+                                            saveIDPrices={this.props.saveIDPrices}
+                                            whitelabel_id={this.props.whiteLabelInfo.id}
+                                            setPackage={this.props.setPackage}
 
                                         />
                                     </div>
@@ -611,7 +617,9 @@ function mapDispatchToProps(dispatch) {
         getWhiteLabelInfo: getWhiteLabelInfo,
         editWhiteLabelInfo: editWhiteLabelInfo,
         getWhitelabelBackups: getWhitelabelBackups,
-        getFile: getFile
+        getFile: getFile,
+        saveIDPrices: saveIDPrices,
+        setPackage: setPackage
     }, dispatch);
 }
 
