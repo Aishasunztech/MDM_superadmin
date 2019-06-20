@@ -39,7 +39,7 @@ export default class WhiteLabelPricing extends Component {
 
     handleSubmit = () => {
 
-        if(this.state.outerTab === '1'){
+        if (this.state.outerTab === '1') {
             let data = {
                 sim_id: this.state[sim],
                 chat_id: this.state[chat],
@@ -47,7 +47,7 @@ export default class WhiteLabelPricing extends Component {
                 vpn: this.state[vpn],
             };
             // console.log(this.props.whitelabel_id)
-    
+
             this.props.saveIDPrices({ data: data, whitelabel_id: this.props.whitelabel_id })
             this.props.showPricingModal(false);
             this.setState({
@@ -57,12 +57,12 @@ export default class WhiteLabelPricing extends Component {
                 [vpn]: {},
                 innerTab: sim
             })
-        }else if(this.state.outerTab === '2'){
+        } else if (this.state.outerTab === '2') {
             console.log('ref is hte ', this.form);
             this.form.props.form.validateFields((err, values) => {
-                if(!err){
+                if (!err) {
                     console.log('no error found', values);
-                    if(this.state.pkg_features){
+                    if (this.state.pkg_features) {
                         let data = {
                             pkgName: values.pkgName,
                             pkgTerm: values.pkgTerms,
@@ -80,18 +80,18 @@ export default class WhiteLabelPricing extends Component {
                 }
             })
         }
-       
+
         // console.log('submit data is', data)
 
     }
 
-    setPkgDetail = (value, field, is_pkg_feature=false) => {
-        if(is_pkg_feature){
-            console.log(this.state.pkg_features ,'pkg features')
+    setPkgDetail = (value, field, is_pkg_feature = false) => {
+        if (is_pkg_feature) {
+            console.log(this.state.pkg_features, 'pkg features')
             this.state.pkg_features[field] = value
-        }else{
+        } else {
             this.state[field] = value
-        } 
+        }
     }
 
     setPrice = (price, field, price_for) => {
@@ -118,19 +118,22 @@ export default class WhiteLabelPricing extends Component {
                 okText='Submit'
                 onCancel={() => this.props.showPricingModal(false)}
                 // footer={null}
-                width='610px'
+                width='650px'
             >
                 <Tabs
+                    className="set_price"
                     type="card"
-                    onChange={(e)=> this.setState({outerTab: e})}
+                    onChange={(e) => this.setState({ outerTab: e })}
                 >
                     <TabPane tab="Set ID Prices" key="1">
                         <ItemsTab
-                            simTabContent={<SimTabContent
-                                showPricingModal={this.props.showPricingModal}
-                                setPrice={this.setPrice}
-                                innerTab={this.state.innerTab}
-                            />}
+                            simTabContent={
+                                <SimTabContent
+                                    showPricingModal={this.props.showPricingModal}
+                                    setPrice={this.setPrice}
+                                    innerTab={this.state.innerTab}
+                                />
+                            }
                             innerTabChanged={this.innerTabChanged}
                         />
                     </TabPane>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Menu, Icon } from "antd";
+import { Menu, Icon, Modal } from "antd";
 import { Link } from "react-router-dom";
 
 import { bindActionCreators } from "redux";
@@ -31,7 +31,22 @@ class SidebarContent extends Component {
     super(props);
 
   }
+  logout = () => {
+    let _this = this;
+    Modal.confirm({
+      title: 'Are you sure you want to logout?',
+      okText: 'Yes',
+      cancelText: 'No',
 
+      onOk() {
+        _this.props.logout()
+        // console.log('OK');
+      },
+      onCancel() {
+        // console.log('Cancel');
+      },
+    })
+  }
   getNoHeaderClass = (navStyle) => {
     if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR || navStyle === NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR) {
       return "gx-no-header-notifications";
@@ -115,6 +130,18 @@ class SidebarContent extends Component {
                 Account
                 </Link>
             </Menu.Item>
+            <Menu.Item key="logout"
+              onClick={
+                (e) => { this.logout() }
+              }
+            >
+              {/* <Link to="/logout"> */}
+              <i className="icon">
+                <i className="fa fa-sign-out ml-6" aria-hidden="true"></i>
+              </i>
+              Logout
+                {/* </Link> */}
+            </Menu.Item>
           </Menu>
         </div>
       </Auxiliary>
@@ -135,5 +162,6 @@ const mapDispatchToProps = (dispatch) => {
     logout: logout
   }, dispatch);
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(SidebarContent);
 

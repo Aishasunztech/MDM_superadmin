@@ -253,9 +253,22 @@
     }
 }
 
+@media screen and (max-width: 1335px) {
+
+    .text2 {
+        line-height: 338px;
+    }
+}
+
 @media screen and (max-width: 500px) {
     .headings {
         display: block;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .text2 {
+        line-height: 260px;
     }
 }
 
@@ -273,4 +286,6 @@
     .manage_ac .text {
         line-height: 338px;
     }
+
+
 }

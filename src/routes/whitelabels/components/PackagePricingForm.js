@@ -24,11 +24,11 @@ class PackagePricingForm extends Component {
         if (fieldName) {
             if (is_pkg_feature) {
                 if (pkg_feature_value !== '' && fieldName) {
-                     value = pkg_feature_value;
+                    value = pkg_feature_value;
                     this.props.setPkgDetail(pkg_feature_value, fieldName, is_pkg_feature);
                 }
             } else {
-                 value = this.props.form.getFieldValue(fieldName)
+                value = this.props.form.getFieldValue(fieldName)
                 // console.log('fiels name', fieldName, 'value', value)
                 if (value !== '' && fieldName) {
                     this.props.setPkgDetail(value, fieldName, is_pkg_feature);
@@ -75,7 +75,7 @@ class PackagePricingForm extends Component {
                     <Col span={4}>
                         {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}>Set</Button> */}
                     </Col>
-                    <Col span={7}>
+                    <Col span={6}>
                         {/* <h4 className='priceText'>Price: 51651</h4> */}
                     </Col>
                 </Row>
@@ -92,7 +92,7 @@ class PackagePricingForm extends Component {
                                 ],
                             })(<Select
                                 showSearch
-                                style={{ width: 145 }}
+                                style={{ width: "100%" }}
                                 placeholder="Select a Price"
                                 optionFilterProp="children"
                                 // onChange={onChange}

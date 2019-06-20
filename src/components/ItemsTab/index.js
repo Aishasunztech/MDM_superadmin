@@ -25,6 +25,7 @@ export default class ItemTabs extends Component {
        
         return (
             <Tabs
+            className="child_tabs"
                 tabPosition={'left'}
                 type="card"
                 onChange={(e)=> this.tabChaged(e)}

@@ -480,6 +480,9 @@ class LoadIDsModal extends Component {
 
                     <Table
                         bordered
+                        size="middle"
+                        pagination={false}
+                        className="dup_table"
                         columns={JSON.parse(JSON.stringify(duplicateModalColumns))}
                         dataSource={
                             this.state.duplicate_ids.map(row => {
@@ -509,9 +512,6 @@ class LoadIDsModal extends Component {
 
                             })
                         }
-
-                        pagination={{ pageSize: Number(this.state.sim_ids_page), size: "middle" }}
-
                     />
                     <span className="warning_hr">
                         <hr />
@@ -519,7 +519,10 @@ class LoadIDsModal extends Component {
                     <h2>New Data</h2>
 
                     <Table
+                        size="middle"
+                        pagination={false}
                         bordered
+                        className="dup_table"
                         columns={duplicateModalColumns.splice(1, duplicateModalColumns.length)}
                         dataSource={
                             this.state.newData.map(row => {
@@ -545,20 +548,20 @@ class LoadIDsModal extends Component {
                                 }
                             })
                         }
-
-                        pagination={{ pageSize: Number(this.state.sim_ids_page), size: "middle" }}
-
                     />
                 </Modal>
                 {/* end duplicate modal */}
                 <Modal
                     maskClosable={false}
                     className="manage_data"
-
+                    width="420px"
                     title={
                         <div>
+                            <Link to="/account/managedata">
+                                <Button type="primary" size="small" className="mng_d_btn" >manage data</Button>
+                            </Link>
+
                             <span>Load ID's <br /> Label: <span>{this.state.whiteLabelInfo.name}</span></span>
-                            <Link to="/account/managedata"><Button type="primary" size="small" className="open_btn1" >manage data</Button></Link>
                         </div>
                     }
                     visible={this.state.visible1}
@@ -660,7 +663,7 @@ class LoadIDsModal extends Component {
                                                     placeholder="SIM ID"
                                                 />
                                             </div>
-                                            <div className="col-md-6 pr-8">
+                                            <div className="col-md-6 col-sm-6">
                                                 <Input.Search
                                                     name="start_date"
                                                     key="start_date"
@@ -675,7 +678,7 @@ class LoadIDsModal extends Component {
                                                     placeholder="START DATE"
                                                 />
                                             </div>
-                                            <div className="col-md-6 pl-8">
+                                            <div className="col-md-6 col-sm-6">
                                                 <Input.Search
                                                     name="expiry_date"
                                                     key="expiry_date"
