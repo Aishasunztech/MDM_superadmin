@@ -5,7 +5,8 @@ import {
     EDIT_WHITE_LABEL_INFO,
     WHITE_LABEL_BACKUPS,
     GET_FILE,
-    SAVE_ID_PRICES
+    SAVE_ID_PRICES,
+    SAVE_PACKAGE
 } from "../../constants/ActionTypes"
 
 import RestService from '../services/RestServices';
@@ -67,6 +68,28 @@ export const editWhiteLabelInfo = (data) => {
 
     }
 }
+
+
+
+
+export const setPackage = (data) => {
+    return (dispatch) => {
+        RestService.setPackage(data).then((response) => {
+            if(RestService.checkAuth(response.data)){
+                dispatch({
+                    type: SAVE_PACKAGE,
+                    response: response.data
+                })
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })                
+            }
+        });
+
+    }
+}
+
 
 export const saveIDPrices = (data) => {
     return (dispatch) => {

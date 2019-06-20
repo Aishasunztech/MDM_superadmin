@@ -146,7 +146,12 @@ const RestService = {
 
     saveIDPrices: (data) => {
         console.log(data, 'data')
-        return axios.put(USER_URL+ 'save-prices', data, RestService.getHeader());
+        return axios.patch(USER_URL+ 'save-prices', data, RestService.getHeader());
+    },
+
+    setPackage: (data) => {
+        console.log(data, 'data')
+        return axios.patch(USER_URL+ 'save-package', {data}, RestService.getHeader());
     },
 
     // ======================================== Account ===========================================
