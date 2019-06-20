@@ -248,7 +248,7 @@
         padding: 0 16px;
     }
 
-    .text {
+    .manage_ac .text {
         line-height: 200px;
     }
 }
@@ -270,7 +270,7 @@
         padding: 12px !important;
     }
 
-    .text {
+    .manage_ac .text {
         line-height: 338px;
     }
 }
