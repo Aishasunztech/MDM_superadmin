@@ -124,10 +124,10 @@ class DevicesList extends Component {
                 key: status == DEVICE_UNLINKED ? `${device.user_acc_id}` : device.id,
                 counter: ++index,
                 action: (StatusBtn),
-                offline_id: device.fl_dvc_id,
+                offline_id: checkValue(device.fl_dvc_id),
                 status: (<span style={color} > {status}</span >),
                 flagged: (device.flagged !== '') ? device.flagged : 'Not Flagged',
-                device_id: checkValue(device.fl_dvc_id),
+                device_id: checkValue(device.wl_dvc_id),
                 // device_id: ((status != DEVICE_PRE_ACTIVATION)) ? checkValue(device.device_id) : (device.validity) ? (this.props.tabselect == '3') ? `${device.validity}` : "N/A" : "N/A",
                 user_id: <a onClick={() => { this.handleUserId(device.user_id) }}>{checkValue(device.user_id)}</a>,
                 validity: checkValue(device.validity),
@@ -145,7 +145,7 @@ class DevicesList extends Component {
                 sim_1: checkValue(device.simno),
                 imei_2: checkValue(device.imei2),
                 sim_2: checkValue(device.simno2),
-                serial_number: checkValue(device.serial_no),
+                serial_number: checkValue(device.serial_number),
 
                 model: checkValue(device.model),
 
