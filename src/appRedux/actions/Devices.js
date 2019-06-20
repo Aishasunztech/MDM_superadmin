@@ -78,6 +78,13 @@ export function getOfflineDevices() {
 
                     });
                 }
+                else {
+                    dispatch({
+                        type: DEVICES_LIST,
+                        payload: [],
+
+                    });
+                }
             } else {
                 dispatch({
                     type: INVALID_TOKEN
