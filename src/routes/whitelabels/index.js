@@ -13,7 +13,8 @@ import style from "./whitelabels.css"
 
 import {
     getWhiteLabelInfo, editWhiteLabelInfo,
-    getWhitelabelBackups, getFile, saveIDPrices, setPackage
+    getWhitelabelBackups, getFile, saveIDPrices, setPackage,
+    getPrices, setPrice, resetPrice
 } from '../../appRedux/actions';
 
 import EditWhiteLabel from "./components/EditWhiteLabel";
@@ -210,6 +211,7 @@ class WhiteLabels extends Component {
     componentDidMount() {
         this.props.getWhiteLabelInfo(this.props.id);
         this.props.getWhitelabelBackups(this.props.id);
+        this.props.getPrices(this.props.id);
 
         this.setState({
             whitelabelBackups: this.props.whitelabelBackups
@@ -251,7 +253,7 @@ class WhiteLabels extends Component {
     }
 
     render() {
-
+        console.log('prices are', this.props.isPriceChanged)
         // load ids modal
         if (this.props.showMsg) {
             if (this.props.msg === "imported successfully") {
@@ -691,6 +693,10 @@ class WhiteLabels extends Component {
                                             saveIDPrices={this.props.saveIDPrices}
                                             whitelabel_id={this.props.whiteLabelInfo.id}
                                             setPackage={this.props.setPackage}
+                                            prices={this.props.prices}
+                                            setPrice={this.props.setPrice}
+                                            isPriceChanged={this.props.isPriceChanged}
+                                            resetPrice={this.props.resetPrice}
 
                                         />
                                     </div>
@@ -738,14 +744,19 @@ function mapDispatchToProps(dispatch) {
         getWhitelabelBackups: getWhitelabelBackups,
         getFile: getFile,
         saveIDPrices: saveIDPrices,
-        setPackage: setPackage
+        setPackage: setPackage,
+        getPrices: getPrices,
+        setPrice: setPrice,
+        resetPrice: resetPrice
     }, dispatch);
 }
 
 var mapStateToProps = ({ whiteLabels }, otherProps) => {
     return {
         whiteLabelInfo: whiteLabels.whiteLabel,
-        whitelabelBackups: whiteLabels.whitelabelBackups
+        whitelabelBackups: whiteLabels.whitelabelBackups,
+        prices: whiteLabels.prices,
+        isPriceChanged: whiteLabels.isPriceChanged
     };
 }
 

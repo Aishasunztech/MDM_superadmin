@@ -6,7 +6,6 @@ import {
 
 import ItemsTab from "../../../components/ItemsTab";
 
-import SimTabContent from "./SimTabContent";
 import PackagePricingForm from './PackagePricingForm';
 import { sim, chat, pgp, vpn, pkg_features } from '../../../constants/Constants';
 
@@ -40,12 +39,7 @@ export default class WhiteLabelPricing extends Component {
     handleSubmit = () => {
 
         if(this.state.outerTab === '1'){
-            let data = {
-                sim_id: this.state[sim],
-                chat_id: this.state[chat],
-                pgp_email: this.state[pgp],
-                vpn: this.state[vpn],
-            };
+            let data = this.props.prices
             // console.log(this.props.whitelabel_id)
     
             this.props.saveIDPrices({ data: data, whitelabel_id: this.props.whitelabel_id })
@@ -107,6 +101,7 @@ export default class WhiteLabelPricing extends Component {
     }
 
     render() {
+        console.log(this.props.isPriceChanged, 'ischanged price')
         // console.log(sim, this.state[sim], 'sim object ',this.state[chat], 'chat object ',this.state[pgp], 'pgp object',this.state[vpn], 'sim object',)
         return (
             <Modal
@@ -115,8 +110,9 @@ export default class WhiteLabelPricing extends Component {
                 title={<div>Set Prices<br></br><span>Label: {this.props.LabelName}</span></div>}
                 visible={this.props.pricing_modal}
                 onOk={this.handleSubmit}
-                okText='Submit'
-                onCancel={() => this.props.showPricingModal(false)}
+                okText='Save'
+                okButtonProps={{disabled: this.state.outerTab == '1' ? !this.props.isPriceChanged : false}}
+                onCancel={() => {this.props.showPricingModal(false); this.props.resetPrice()}}
                 // footer={null}
                 width='610px'
             >
@@ -126,12 +122,10 @@ export default class WhiteLabelPricing extends Component {
                 >
                     <TabPane tab="Set ID Prices" key="1">
                         <ItemsTab
-                            simTabContent={<SimTabContent
-                                showPricingModal={this.props.showPricingModal}
-                                setPrice={this.setPrice}
-                                innerTab={this.state.innerTab}
-                            />}
                             innerTabChanged={this.innerTabChanged}
+                            setPrice={this.props.setPrice}
+                            prices={this.props.prices}
+
                         />
                     </TabPane>
                     <TabPane tab="SET Packages Prices" key="2">

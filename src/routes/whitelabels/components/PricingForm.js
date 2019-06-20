@@ -23,28 +23,17 @@ class PricingForm extends Component {
         if (fieldName) {
             let value = this.props.form.getFieldValue(fieldName)
             if(value && fieldName && this.props.price_for){
-                this.props.setPrice(value, fieldName, this.props.price_for);
+                this.props.setPrice(fieldName, value, this.props.price_for);
+               
             }
-         
-            this.setState({
-                [fieldName]: value
-            })
+            this.props.form.setFieldsValue({[fieldName]: ''})
         }
 
     }
 
     render() {
-        // console.log(this.props, 'props are')
-        const formItemLayout = {
-            labelCol: {
-                xs: { span: 24, offset: 2 },
-                sm: { span: 10, offset: 2 },
-            },
-            wrapperCol: {
-                xs: { span: 24 },
-                sm: { span: 10 },
-            },
-        };
+        console.log(this.props.innerTabData, 'props are')
+        
         const { getFieldDecorator } = this.props.form;
         return (
             <Form onSubmit={this.handleSubmit}>
@@ -63,7 +52,7 @@ class PricingForm extends Component {
                         <Button   type="primary" onClick={() => this.setPrice(one_month)} >Set</Button>
                     </Col>
                     <Col span={7}>
-                        <h4 className='priceText'>Price: {this.state[one_month] ? this.state[one_month] : 0}</h4>
+                        <h4 className='priceText'>Price: ${this.props.innerTabData ? this.props.innerTabData[one_month] ? this.props.innerTabData[one_month] : 0 : 0 }</h4>
                     </Col>
                 </Row>
 
@@ -82,7 +71,7 @@ class PricingForm extends Component {
                         <Button   type="primary" onClick={() => this.setPrice(three_month)} >Set</Button>
                     </Col>
                     <Col span={7}>
-                        <h4 className='priceText'>Price: {this.state[three_month] ? this.state[three_month] : 0}</h4>
+                        <h4 className='priceText'>Price: ${this.props.innerTabData ? this.props.innerTabData[three_month] ? this.props.innerTabData[three_month] : 0 : 0 }</h4>
                     </Col>
                 </Row>
                 <Row>
@@ -100,7 +89,7 @@ class PricingForm extends Component {
                         <Button   type="primary" onClick={() => this.setPrice(six_month)}>Set</Button>
                     </Col>
                     <Col span={7}>
-                        <h4 className='priceText'>Price: {this.state[six_month] ? this.state[six_month] : 0}</h4>
+                        <h4 className='priceText'>Price: ${this.props.innerTabData ? this.props.innerTabData[six_month] ? this.props.innerTabData[six_month] : 0 : 0 }</h4>
                     </Col>
                 </Row>
                 <Row>
@@ -117,7 +106,7 @@ class PricingForm extends Component {
                         <Button   type="primary" onClick={() => this.setPrice(twelve_month)}>Set</Button>
                     </Col>
                     <Col span={7}>
-                        <h4 className='priceText'>Price: {this.state[twelve_month] ? this.state[twelve_month] : 0}</h4>
+                        <h4 className='priceText'>Price: ${this.props.innerTabData ? this.props.innerTabData[twelve_month] ? this.props.innerTabData[twelve_month] : 0 : 0 }</h4>
                     </Col>
                 </Row>
 
