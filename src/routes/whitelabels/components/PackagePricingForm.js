@@ -154,10 +154,10 @@ class PackagePricingForm extends Component {
                 </Row>
 
                 
-                <div style={{float: 'right', marginTop: 20}} > 
+                {/* <div style={{float: 'right', marginTop: 20}} > 
                     <Button onClick={()=> this.props.showPricingModal(false)}>Cancel</Button>
                     <Button type="primary" htmlType="submit" >Submit</Button>
-                </div> 
+                </div>  */}
             </Form>
         )
     }
