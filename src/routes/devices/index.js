@@ -81,7 +81,7 @@ class Devices extends Component {
             {
                 title: (
                     <Input.Search
-                        name="offline_id"
+                        name="fl_dvc_id"
                         key="offline_id"
                         id="offline_id"
                         className="search_heading"
@@ -107,7 +107,7 @@ class Devices extends Component {
             {
                 title: (
                     <Input.Search
-                        name="device_id"
+                        name="fl_dvc_id"
                         key="device_id"
                         id="device_id"
                         className="search_heading"
@@ -266,7 +266,7 @@ class Devices extends Component {
             {
                 title: (
                     <Input.Search
-                        name="label"
+                        name="name"
                         key="label"
                         id="label"
                         className="search_heading"
@@ -819,8 +819,8 @@ class Devices extends Component {
     }
 
     handleSearch = (e) => {
-        console.log('============ check search value ========')
-        console.log(e.target.name , e.target.value);
+        // console.log('============ check search value ========')
+        // console.log(e.target.name , e.target.value);
 
         let demoDevices = [];
         if (status) {

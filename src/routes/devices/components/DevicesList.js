@@ -7,7 +7,7 @@ import ActivateDevcie from './ActivateDevice';
 import StatusDevice from './StatusDevice';
 import { getStatus, getColor, checkValue, titleCase, getSortOrder, checkRemainDays, getFormattedDate } from '../../utils/commonUtils'
 import EditDevice from './editDevice';
-
+import moment from 'moment';
 import { Tabs, Modal } from 'antd';
 
 import {
@@ -80,7 +80,7 @@ class DevicesList extends Component {
         // console.log('list of dec', list)
         return list.map((device, index) => {
 
-// console.log('device is: ', device);
+            // console.log('device is: ', device);
             var status = device.finalStatus;
             // console.log('status is : ', status);
             // const button_type = (status === DEVICE_ACTIVATED || status === DEVICE_TRIAL) ? "danger" : "dashed";
@@ -104,9 +104,9 @@ class DevicesList extends Component {
             let StatusBtn;
             // console.log('tabselect ', tabSelected)
 
-            let ActiveBtn = <Button size="small" onClick={() => this.handleStatusDevice(device, DEVICE_ACTIVATED)}> <span style={{color: "green"}}>ACTIVE</span></Button>;
+            let ActiveBtn = <Button size="small" onClick={() => this.handleStatusDevice(device, DEVICE_ACTIVATED)}> <span style={{ color: "green" }}>ACTIVE</span></Button>;
             let SuspendBtn = <Button type="danger" size="small" onClick={() => this.handleStatusDevice(device, DEVICE_SUSPENDED)} >SUSPEND</Button>;
-            let ExtendBtn = <Button size="small" onClick={() => this.props.showDateModal(device, DEVICE_EXTEND)}><span style={{color: "rgb(204, 204, 14)"}}> EXTEND </span> </Button>;
+            let ExtendBtn = <Button size="small" onClick={() => this.props.showDateModal(device, DEVICE_EXTEND)}><span style={{ color: "rgb(204, 204, 14)" }}> EXTEND </span> </Button>;
 
             // if (tabSelected == '7') { // suspend
             //     StatusBtn = ActiveBtn;
@@ -170,8 +170,8 @@ class DevicesList extends Component {
                 online: device.online ? (device.online == "On") ? (<span style={{ color: "green" }}>Online</span>) : (<span style={{ color: "red" }}>Offline</span>) : "N/A",
                 s_dealer: checkValue(device.s_dealer),
                 s_dealer_name: checkValue(device.s_dealer_name),
-                start_date: checkValue(device.start_date),
-                expiry_date: getFormattedDate(checkValue(device.expiry_date)),
+                start_date: checkValue(moment(device.start_date).format('DD-MM-YY')),
+                expiry_date: checkValue(moment(device.expiry_date).format('DD-MM-YY')),
             }
         });
     }
@@ -328,7 +328,7 @@ class DevicesList extends Component {
                     <Table
                         ref='tablelist'
                         className="devices"
-                        rowSelection={rowSelection}
+                        // rowSelection={rowSelection}
                         rowClassName={() => 'editable-row'}
                         size="middle"
                         bordered
@@ -345,93 +345,93 @@ class DevicesList extends Component {
                             // y: 600 
                         }}
 
-                        // expandIcon={(props) => this.customExpandIcon(props)}
-                        // expandedRowRender={(record) => {
-                        //     let showRecord = [];
-                        //     let showRecord2 = [];
+                    // expandIcon={(props) => this.customExpandIcon(props)}
+                    // expandedRowRender={(record) => {
+                    //     let showRecord = [];
+                    //     let showRecord2 = [];
 
-                        //     // this.props.columns.map((column, index) => {
-                        //     //     if (column.className === "row") {
-                        //     //     } else if (column.className === "hide") {
-                        //     //         let title = column.children[0].title;
-                        //     //         if (title === "SIM ID" || title === "IMEI 1" || title === "SIM 1" || title === "IMEI 2" || title === "SIM 2") {
-                        //     //             showRecord2.push({
-                        //     //                 name: title,
-                        //     //                 values: record[column.dataIndex],
-                        //     //                 rowKey: title
-                        //     //             });
-                        //     //         } else {
-                        //     //             if (title === "STATUS" || title === "DEALER NAME" || title === "S-DEALER Name") {
-                        //     //                 if (record[column.dataIndex][0]) {
-                        //     //                     showRecord.push({
-                        //     //                         name: title,
-                        //     //                         values: record[column.dataIndex][0].toUpperCase() + record[column.dataIndex].substring(1, record[column.dataIndex].length).toLowerCase(),
-                        //     //                         rowKey: title
-                        //     //                     });
-                        //     //                 }
+                    //     // this.props.columns.map((column, index) => {
+                    //     //     if (column.className === "row") {
+                    //     //     } else if (column.className === "hide") {
+                    //     //         let title = column.children[0].title;
+                    //     //         if (title === "SIM ID" || title === "IMEI 1" || title === "SIM 1" || title === "IMEI 2" || title === "SIM 2") {
+                    //     //             showRecord2.push({
+                    //     //                 name: title,
+                    //     //                 values: record[column.dataIndex],
+                    //     //                 rowKey: title
+                    //     //             });
+                    //     //         } else {
+                    //     //             if (title === "STATUS" || title === "DEALER NAME" || title === "S-DEALER Name") {
+                    //     //                 if (record[column.dataIndex][0]) {
+                    //     //                     showRecord.push({
+                    //     //                         name: title,
+                    //     //                         values: record[column.dataIndex][0].toUpperCase() + record[column.dataIndex].substring(1, record[column.dataIndex].length).toLowerCase(),
+                    //     //                         rowKey: title
+                    //     //                     });
+                    //     //                 }
 
-                        //     //             } else {
+                    //     //             } else {
 
-                        //     //                 showRecord.push({
-                        //     //                     name: title,
-                        //     //                     values: record[column.dataIndex],
-                        //     //                     rowKey: title
-                        //     //                 });
-                        //     //             }
-                        //     //         }
-                        //     //     }
-                        //     // });
-                        //     // console.log("cols",this.props.columns);
-                        //     // console.log("toShow", showRecord);
-                        //     return (
-                        //         <Fragment>
-                        //             <div className="col-md-4 expand_table">
-                        //                 <Table
-                        //                     pagination={false}
-                        //                     columns={
-                        //                         [
-                        //                             {
-                        //                                 title: "Name",
-                        //                                 dataIndex: 'name',
-                        //                                 key: "name",
-                        //                                 align: "center",
-                        //                                 className: "bold"
-                        //                             }, {
-                        //                                 title: "Value",
-                        //                                 dataIndex: "values",
-                        //                                 key: "value",
-                        //                                 align: "center"
-                        //                             }
-                        //                         ]
-                        //                     }
-                        //                     dataSource={showRecord}
-                        //                 />
-                        //             </div>
-                        //             <div className="col-md-4 expand_table">
-                        //                 <Table
-                        //                     pagination={false}
-                        //                     columns={
-                        //                         [
-                        //                             {
-                        //                                 title: "Name",
-                        //                                 dataIndex: 'name',
-                        //                                 key: "name",
-                        //                                 align: "center",
-                        //                                 className: "bold"
-                        //                             }, {
-                        //                                 title: "Value",
-                        //                                 dataIndex: "values",
-                        //                                 key: "value",
-                        //                                 align: "center"
-                        //                             }
-                        //                         ]
-                        //                     }
-                        //                     dataSource={showRecord2}
-                        //                 />
-                        //             </div>
-                        //         </Fragment>)
-                        // }
-                        // }
+                    //     //                 showRecord.push({
+                    //     //                     name: title,
+                    //     //                     values: record[column.dataIndex],
+                    //     //                     rowKey: title
+                    //     //                 });
+                    //     //             }
+                    //     //         }
+                    //     //     }
+                    //     // });
+                    //     // console.log("cols",this.props.columns);
+                    //     // console.log("toShow", showRecord);
+                    //     return (
+                    //         <Fragment>
+                    //             <div className="col-md-4 expand_table">
+                    //                 <Table
+                    //                     pagination={false}
+                    //                     columns={
+                    //                         [
+                    //                             {
+                    //                                 title: "Name",
+                    //                                 dataIndex: 'name',
+                    //                                 key: "name",
+                    //                                 align: "center",
+                    //                                 className: "bold"
+                    //                             }, {
+                    //                                 title: "Value",
+                    //                                 dataIndex: "values",
+                    //                                 key: "value",
+                    //                                 align: "center"
+                    //                             }
+                    //                         ]
+                    //                     }
+                    //                     dataSource={showRecord}
+                    //                 />
+                    //             </div>
+                    //             <div className="col-md-4 expand_table">
+                    //                 <Table
+                    //                     pagination={false}
+                    //                     columns={
+                    //                         [
+                    //                             {
+                    //                                 title: "Name",
+                    //                                 dataIndex: 'name',
+                    //                                 key: "name",
+                    //                                 align: "center",
+                    //                                 className: "bold"
+                    //                             }, {
+                    //                                 title: "Value",
+                    //                                 dataIndex: "values",
+                    //                                 key: "value",
+                    //                                 align: "center"
+                    //                             }
+                    //                         ]
+                    //                     }
+                    //                     dataSource={showRecord2}
+                    //                 />
+                    //             </div>
+                    //         </Fragment>)
+                    // }
+                    // }
                     />
                 </Card>
 
