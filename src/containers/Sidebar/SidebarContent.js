@@ -127,8 +127,8 @@ class SidebarContent extends Component {
             <Menu.Item key="account">
               <Link to="/account">
                 <i className="icon icon-profile2" />
-                Account
-                </Link>
+                <IntlMessages id="sidebar.account" />
+              </Link>
             </Menu.Item>
             <Menu.Item key="logout"
               onClick={
@@ -139,8 +139,8 @@ class SidebarContent extends Component {
               <i className="icon">
                 <i className="fa fa-sign-out ml-6" aria-hidden="true"></i>
               </i>
-              Logout
-                {/* </Link> */}
+              <IntlMessages id="sidebar.logout" />
+              {/* </Link> */}
             </Menu.Item>
           </Menu>
         </div>
