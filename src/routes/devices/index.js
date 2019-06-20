@@ -819,8 +819,8 @@ class Devices extends Component {
     }
 
     handleSearch = (e) => {
-        // console.log('============ check search value ========')
-        // console.log(e.target.name , e.target.value);
+        console.log('============ check search value ========')
+        console.log(e.target.name , e.target.value);
 
         let demoDevices = [];
         if (status) {
