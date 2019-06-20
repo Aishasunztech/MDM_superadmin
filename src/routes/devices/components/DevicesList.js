@@ -106,7 +106,7 @@ class DevicesList extends Component {
 
             let ActiveBtn = <Button size="small" onClick={() => this.handleStatusDevice(device, DEVICE_ACTIVATED)}> <span style={{ color: "green" }}>ACTIVE</span></Button>;
             let SuspendBtn = <Button type="danger" size="small" onClick={() => this.handleStatusDevice(device, DEVICE_SUSPENDED)} >SUSPEND</Button>;
-            let ExtendBtn = <Button size="small" onClick={() => this.props.showDateModal(device, DEVICE_EXTEND)}><span style={{ color: "rgb(204, 204, 14)" }}> EXTEND </span> </Button>;
+            let ExtendBtn = <Button size="small" onClick={() => this.props.showDateModal(device, DEVICE_EXTEND)}><span style={{ color: "orange" }}> EXTEND </span> </Button>;
 
             // if (tabSelected == '7') { // suspend
             //     StatusBtn = ActiveBtn;
