@@ -7,13 +7,21 @@ export const AUTO_UPDATE_ADMIN = "auto_update_admin";
 // Device
 export const DEALER_SUSPENDED = "suspended";
 export const DEALER_UNLINKED = "unlinked";
-export const DEVICE_ACTIVATED = "Active";
+export const DEVICE_ACTIVATED = "active";
 export const DEVICE_TRIAL = "Trial";
-export const DEVICE_SUSPENDED = "Suspended";
-export const DEVICE_EXPIRED = "Expired";
+export const DEVICE_SUSPENDED = "suspended";
+export const DEVICE_EXPIRED = "expired";
 export const DEVICE_UNLINKED = "Unlinked";
 export const DEVICE_PENDING_ACTIVATION = "Pending activation";
 export const DEVICE_PRE_ACTIVATION = "Pre-activated";
+
+ // devices
+//  export const DEVICE_ACTIVATED= "active";
+//  export const DEVICE_SUSPENDED= "suspended";
+//  export const DEVICE_EXPIRED= "expired";
+//  export const DEVICE_UNLINKED= "Unlinked";
+ export const DEVICE_DELETE= "deleted";
+ export const DEVICE_EXTEND = "extended";
 
 export const DEVICE_ONLINE = "On";
 export const DEVICE_OFFLINE = "off";
