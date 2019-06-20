@@ -42,7 +42,7 @@ export default (state = initialState, action) => {
         }
 
         case WHITE_LABEL_BACKUPS: {
-            console.log('reducer is called', action.payload.data)
+            // console.log('reducer is called', action.payload.data)
             return {
                 ...state,
                 whitelabelBackups: action.payload.data
@@ -83,8 +83,9 @@ export default (state = initialState, action) => {
 
 
         case EDIT_WHITE_LABEL_INFO: {
-            console.log('reducer response', action.payload)
-            if (action.payload.status) {
+
+            // console.log('reducer response', action.payload)
+            if(action.payload.status){
                 success({
                     title: action.payload.msg,
                 });
