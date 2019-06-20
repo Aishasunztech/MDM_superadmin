@@ -134,7 +134,7 @@ class Account extends Component {
                                         </Card>
                                     </a>
                                     <div className="middle">
-                                        <div className="text">Coming Soon</div>
+                                        <div className="text text2">Coming Soon</div>
                                     </div>
                                 </div>
                             </div>

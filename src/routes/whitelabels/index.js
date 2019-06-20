@@ -706,8 +706,7 @@ class WhiteLabels extends Component {
                         </Col>
                         <Col xs={24} sm={24} md={6} lg={6} xl={6} onClick={() => this.refs.loadidsofModal.getWrappedInstance().showModal(this.props.whiteLabelInfo)}>
                             <div>
-                                {/* className="contenar" */}
-                                <div className="">
+                                <div>
                                     <a href="javascript:void(0)">
                                         <Card className="manage_sec" style={{ borderRadius: 12 }}>
                                             <div>
@@ -717,17 +716,12 @@ class WhiteLabels extends Component {
                                             <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
                                     </a>
-                                    <div className="middle">
-                                        <div className="text">Coming Soon</div>
-                                    </div>
                                 </div>
                             </div>
                         </Col>
                     </Row>
                     <LoadIDsModal ref="loadidsofModal" />
-
                 </div>
-
             </div>
 
         );

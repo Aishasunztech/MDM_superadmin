@@ -25,7 +25,6 @@ export default class ItemTabs extends Component {
         }
     }
     tabChaged = (e) => {
-        console.log(e, ' value is');
         this.props.innerTabChanged(e)
         this.setState({
             tabSelected: e,
@@ -33,7 +32,6 @@ export default class ItemTabs extends Component {
         })
     }
     render() {
-console.log(this.props.prices ,'prices in itemtab')
         return (
             <div>
                 <Tabs

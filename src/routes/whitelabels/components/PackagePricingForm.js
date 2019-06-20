@@ -101,7 +101,7 @@ console.log('value', value)
                     <Col span={4}>
                         {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}>Set</Button> */}
                     </Col>
-                    <Col span={7}>
+                    <Col span={6}>
                         {/* <h4 className='priceText'>Price: 51651</h4> */}
                     </Col>
                 </Row>
@@ -118,7 +118,7 @@ console.log('value', value)
                                 ],
                             })(<Select
                                 showSearch
-                                style={{ width: 145 }}
+                                style={{ width: "100%" }}
                                 placeholder="Select a Price"
                                 optionFilterProp="children"
                                 // onChange={onChange}

@@ -53,9 +53,7 @@ export const SECURE_LAUNCHER = "com.secure.launcher";
 export const SC = "com.secure.systemcontrol";
 export const BYOD = "com.secure.launcher1"
 
-
 // Prices Constants
-
 export const sim = 'sim_id';
 export const chat = 'chat_id';
 export const pgp = 'pgp_email';
