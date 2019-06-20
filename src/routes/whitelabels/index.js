@@ -11,7 +11,7 @@ import {
 
 import style from "./whitelabels.css"
 
-import { getWhiteLabelInfo, editWhiteLabelInfo, getWhitelabelBackups, getFile } from '../../appRedux/actions';
+import { getWhiteLabelInfo, editWhiteLabelInfo, getWhitelabelBackups, getFile, saveIDPrices } from '../../appRedux/actions';
 
 import EditWhiteLabel from "./components/EditWhiteLabel";
 import LoadIDsModal from "./components/LoadIDsModal";
@@ -568,6 +568,8 @@ class WhiteLabels extends Component {
                                             showPricingModal = {this.showPricingModal}
                                             pricing_modal = {this.state.pricing_modal}
                                             LabelName = {this.props.whiteLabelInfo.name}
+                                            saveIDPrices= {this.props.saveIDPrices}
+                                            whitelabel_id={this.props.whiteLabelInfo.id}
 
                                         />
                                     </div>
@@ -613,7 +615,8 @@ function mapDispatchToProps(dispatch) {
         getWhiteLabelInfo: getWhiteLabelInfo,
         editWhiteLabelInfo: editWhiteLabelInfo,
         getWhitelabelBackups: getWhitelabelBackups,
-        getFile: getFile
+        getFile: getFile,
+        saveIDPrices: saveIDPrices
     }, dispatch);
 }
 

@@ -40,6 +40,7 @@ export const GET_WHITE_LABELS = 'GET_WHITE_LABELS';
 export const EDIT_WHITE_LABEL_INFO = 'EDIT_WHITE_LABEL_INFO';
 export const WHITE_LABEL_BACKUPS = 'WHITE_LABEL_BACKUPS';
 export const GET_FILE = 'GET_FILE';
+export const SAVE_ID_PRICES = 'SAVE_ID_PRICES';
 
 
 //Device const

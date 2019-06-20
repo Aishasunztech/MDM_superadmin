@@ -2,7 +2,8 @@ import {
     GET_WHITE_LABEL_INFO,
     EDIT_WHITE_LABEL_INFO,
     WHITE_LABEL_BACKUPS,
-    GET_FILE
+    GET_FILE,
+    SAVE_ID_PRICES
 } from "../../constants/ActionTypes";
 
 import { message, Modal } from 'antd';
@@ -44,6 +45,22 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 whitelabelBackups: action.payload.data
+            }
+        }
+
+        case SAVE_ID_PRICES: {
+            console.log(action.response, 'response form save id prices')
+            if(action.response.status){
+                success({
+                    title: action.response.msg
+                })
+            }else{
+                error({
+                    title: action.response.msg
+                })
+            }
+            return{
+                ...state
             }
         }
 
