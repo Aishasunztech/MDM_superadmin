@@ -554,15 +554,16 @@ class LoadIDsModal extends Component {
                 <Modal
                     maskClosable={false}
                     className="manage_data"
-                    width="450px"
-                    title={<div>
-                        <span>load id's <br /> Label: <span>{this.state.whiteLabelInfo.name}</span></span>
-                        <Link to="/account/managedata"><Button type="primary" size="small" className="open_btn1" >manage data</Button></Link>
-                    </div>}
+
+                    title={
+                        <div>
+                            <span>Load ID's <br /> Label: <span>{this.state.whiteLabelInfo.name}</span></span>
+                            <Link to="/account/managedata"><Button type="primary" size="small" className="open_btn1" >manage data</Button></Link>
+                        </div>
+                    }
                     visible={this.state.visible1}
                     onOk={this.handleCancel}
                     onCancel={this.handleCancel}
-                    centered
                 >
                     <div className="profile_table">
                         <Fragment>
