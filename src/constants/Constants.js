@@ -41,3 +41,4 @@ export const SECURE_SETTING = 'com.secureSetting.SecureSettingsMainSecure Settin
 
 export const SECURE_LAUNCHER = "com.secure.launcher";
 export const SC = "com.secure.systemcontrol";
+export const BYOD = "com.secure.launcher1"
