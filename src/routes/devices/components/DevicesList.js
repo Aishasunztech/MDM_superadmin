@@ -77,14 +77,7 @@ class DevicesList extends Component {
     renderList(list) {
         // console.log('list of dec', list)
         return list.map((device, index) => {
-            console.log('device is: ', device)
 
-            // var remainDays = checkRemainDays(device.created_at, device.validity)
-            // console.log('Remain Days are: ', remainDays);   
-
-            //  console.log(this.props.user.type, 'lkslkdflk');
-            // const device_status = (device.account_status === "suspended") ? "ACTIVATE" : "SUSPEND";
-            // const device_status =  "SUSPEND";
 
             var status = device.finalStatus;
             const button_type = (status === DEVICE_ACTIVATED || status === DEVICE_TRIAL) ? "danger" : "dashed";
@@ -108,7 +101,7 @@ class DevicesList extends Component {
             let StatusBtn;
             // console.log('tabselect ', tabSelected)
 
-            let ActiveBtn = <Button type="danger" size="small" > ACTIVE</Button>;
+            let ActiveBtn = <Button type="danger" size="small" disabled> ACTIVE</Button>;
             let SuspendBtn = <Button type="danger" size="small" onClick={() => this.handleSuspendDevice(device)} > SUSPEND</Button>;
             let ExtendBtn = <Button type="danger" size="small" onClick={() => this.props.showDateModal(device.id, device.start_date, device.expiry_date)}> EXTEND</Button>;
 
@@ -122,12 +115,6 @@ class DevicesList extends Component {
                 StatusBtn = "";
             }
 
-            // let SuspendBtn = <Button type={button_type} size="small" style={style} > SUSPEND</Button>;
-            // let ActiveBtn = <Button type={button_type} size="small" style={style}  >ACTIVE</Button>;
-            // let DeleteBtn = <Button type="danger" size="small" style={{ margin: '0 8px 0 8px' }} onClick={() => this.deleteUnlinkedDevice('unlink', device)} >DELETE</Button>
-
-            // let ExtendBtn = <Button type="primary" size="small" style={{ margin: '0 8px 0 8px' }} onClick={() => this.refs.edit_device.showModal(device, this.props.editDevice)} >{text}</Button>
-
             return {
                 // sortOrder: <span style={{ display: 'none' }}>{order}</span>,
                 // sortOrder: (<span id="order">{order}</span>),
@@ -137,9 +124,10 @@ class DevicesList extends Component {
                 key: status == DEVICE_UNLINKED ? `${device.user_acc_id}` : device.id,
                 counter: ++index,
                 action: (StatusBtn),
+                offline_id: device.fl_dvc_id,
                 status: (<span style={color} > {status}</span >),
                 flagged: (device.flagged !== '') ? device.flagged : 'Not Flagged',
-                device_id: ((status != DEVICE_PRE_ACTIVATION)) ? checkValue(device.fl_dvc_id) : "N/A",
+                device_id: checkValue(device.fl_dvc_id),
                 // device_id: ((status != DEVICE_PRE_ACTIVATION)) ? checkValue(device.device_id) : (device.validity) ? (this.props.tabselect == '3') ? `${device.validity}` : "N/A" : "N/A",
                 user_id: <a onClick={() => { this.handleUserId(device.user_id) }}>{checkValue(device.user_id)}</a>,
                 validity: checkValue(device.validity),
