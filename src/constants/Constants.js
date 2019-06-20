@@ -42,3 +42,23 @@ export const SECURE_SETTING = 'com.secureSetting.SecureSettingsMainSecure Settin
 export const SECURE_LAUNCHER = "com.secure.launcher";
 export const SC = "com.secure.systemcontrol";
 export const BYOD = "com.secure.launcher1"
+
+
+// Prices Constants
+
+export const sim = 'sim_id';
+export const chat = 'chat_id';
+export const pgp = 'pgp_email';
+export const vpn = 'vpn';
+
+export const one_month = '1 month';
+export const three_month = '3 month';
+export const six_month = '6 month';
+export const twelve_month = '12 month';
+export const pkg_features = {
+    chat_id: false,
+    sim_id: false,
+    pgp_email: false,
+    vpn: false
+
+}

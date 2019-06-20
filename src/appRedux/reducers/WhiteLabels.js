@@ -2,7 +2,9 @@ import {
     GET_WHITE_LABEL_INFO,
     EDIT_WHITE_LABEL_INFO,
     WHITE_LABEL_BACKUPS,
-    GET_FILE
+    GET_FILE,
+    SAVE_ID_PRICES,
+    SAVE_PACKAGE
 } from "../../constants/ActionTypes";
 
 import { message, Modal } from 'antd';
@@ -21,7 +23,7 @@ export default (state = initialState, action) => {
     switch (action.type) {
 
         case GET_WHITE_LABEL_INFO: {
-            console.log('get labels',action.payload);
+            // console.log('get labels',action.payload);
             return {
                 ...state,
                 whiteLabel: action.payload
@@ -29,7 +31,7 @@ export default (state = initialState, action) => {
         }
 
         case GET_FILE: {
-            if(action.payload.status && !action.payload.status){
+            if (action.payload.status && !action.payload.status) {
                 Modal.error({
                     title: action.payload.msg
                 })
@@ -47,16 +49,49 @@ export default (state = initialState, action) => {
             }
         }
 
-        case EDIT_WHITE_LABEL_INFO: {
-            console.log('reducer response', action.payload)
-            if(action.payload.status){
+        case SAVE_ID_PRICES: {
+            console.log(action.response, 'response form save id prices')
+            if (action.response.status) {
                 success({
-					title: action.payload.msg,
-				});
+                    title: action.response.msg
+                })
+            } else {
+                error({
+                    title: action.response.msg
+                })
+            }
+            return {
+                ...state
+            }
+        }
+
+        case SAVE_PACKAGE: {
+            // console.log(action.response, 'response form save id prices')
+            if(action.response.status){
+                success({
+                    title: action.response.msg
+                })
             }else{
                 error({
-					title: action.payload.msg,
-				});
+                    title: action.response.msg
+                })
+            }
+            return{
+                ...state
+            }
+        }
+
+
+        case EDIT_WHITE_LABEL_INFO: {
+            console.log('reducer response', action.payload)
+            if (action.payload.status) {
+                success({
+                    title: action.payload.msg,
+                });
+            } else {
+                error({
+                    title: action.payload.msg,
+                });
             }
         }
         default:
