@@ -132,18 +132,90 @@ export function deleteUnlinkDevice(action, devices) {
 }
 
 
-export function suspendDevice(device) {
+// export function suspendDevice(device) {
+
+//     return (dispatch) => {
+//         console.log("suspendDevice action", device);
+
+//         RestService.suspendDevice(device.id).then((response) => {
+
+//             if (RestService.checkAuth(response.data)) {
+
+//                 // get all updated ofline devices
+//                 RestService.getOfflineDevices().then((response) => {
+//                     console.log("data form server");
+//                     console.log(response.data);
+//                     if (RestService.checkAuth(response.data)) {
+//                         // console.log(response.data)
+//                         if (response.data.status) {
+
+//                             dispatch({
+//                                 type: DEVICES_LIST,
+//                                 payload: response.data.devices,
+
+//                             });
+//                         }
+//                     } else {
+//                         dispatch({
+//                             type: INVALID_TOKEN
+//                         });
+//                     }
+//                 })
+
+
+//             } else {
+//                 dispatch({
+//                     type: INVALID_TOKEN
+//                 });
+//             }
+//         });
+//     }
+
+
+// }
+
+// export function activateDevice(device) {
+
+//     return (dispatch) => {
+
+//         RestService.activateDevice(device.usr_device_id).then((response) => {
+//             if (RestService.checkAuth(response.data)) {
+//                 // console.log('response', response.data);
+//                 device.account_status = '';
+
+//                 if (response.data.status) {
+//                     dispatch({
+//                         type: ACTIVATE_DEVICE,
+//                         response: response.data,
+//                         payload: {
+//                             device: device,
+//                             msg: response.data.msg,
+//                         }
+//                     });
+//                 }
+
+//             } else {
+//                 dispatch({
+//                     type: INVALID_TOKEN
+//                 });
+//             }
+//         });
+//     }
+
+// }
+
+export function statusDevice(device, requireStatus) {
+    // console.log('at action status is: ', requireStatus);
 
     return (dispatch) => {
-        console.log("suspendDevice action", device);
 
-        RestService.suspendDevice(device.id).then((response) => {
+        RestService.statusDevice(device, requireStatus).then((response) => {
 
             if (RestService.checkAuth(response.data)) {
 
                 // get all updated ofline devices
                 RestService.getOfflineDevices().then((response) => {
-                    console.log("data form server");
+                    // console.log("data form server");
                     console.log(response.data);
                     if (RestService.checkAuth(response.data)) {
                         // console.log(response.data)
@@ -162,43 +234,12 @@ export function suspendDevice(device) {
                     }
                 })
 
-
             } else {
                 dispatch({
                     type: INVALID_TOKEN
                 });
             }
-        });
-    }
 
-
-}
-
-export function activateDevice(device) {
-
-    return (dispatch) => {
-
-        RestService.activateDevice(device.usr_device_id).then((response) => {
-            if (RestService.checkAuth(response.data)) {
-                // console.log('response', response.data);
-                device.account_status = '';
-
-                if (response.data.status) {
-                    dispatch({
-                        type: ACTIVATE_DEVICE,
-                        response: response.data,
-                        payload: {
-                            device: device,
-                            msg: response.data.msg,
-                        }
-                    });
-                }
-
-            } else {
-                dispatch({
-                    type: INVALID_TOKEN
-                });
-            }
         });
     }
 

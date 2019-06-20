@@ -233,8 +233,12 @@ const RestService = {
     saveOfflineDevice: (data) => {
         return axios.put(USER_URL + 'save-offline-device', data, RestService.getHeader());
     },
-    suspendDevice: (data) => {
-        return axios.put(USER_URL + 'device-status', { id: data }, RestService.getHeader());
+    // suspendDevice: (data) => {
+    //     return axios.put(USER_URL + 'device-status', { id: data }, RestService.getHeader());
+    // },
+    statusDevice: (data, requireStatus) => {
+        // console.log('at service file status is: ', requireStatus);
+        return axios.put(USER_URL + 'device-status', {data, requireStatus}, RestService.getHeader());
     }
 }
 export default RestService;

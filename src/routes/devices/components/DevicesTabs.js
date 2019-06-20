@@ -59,6 +59,7 @@ export default class DevicesTabs extends Component {
                     devices={this.state.devices}
                     suspendDevice={this.props.suspendDevice}
                     activateDevice={this.props.activateDevice}
+                    statusDevice={this.props.statusDevice}
                     columns={this.props.columns}
                     rejectDevice={this.props.rejectDevice}
                     selectedOptions={this.state.selectedOptions}
