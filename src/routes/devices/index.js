@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import Highlighter from 'react-highlight-words';
-import { Input, Button, Icon, Select, Modal, DatePicker } from "antd";
+import { Input, Button, Icon, Select, Modal, DatePicker, Form } from "antd";
 import moment from 'moment';
 import { bindActionCreators } from "redux";
 
@@ -210,7 +210,7 @@ class Devices extends Component {
                     }
                 ]
             },
-            
+
             {
                 title: (
                     <Input.Search
@@ -291,8 +291,8 @@ class Devices extends Component {
                     }
                 ]
             },
-           
-            
+
+
         ];
 
         this.state = {
@@ -317,7 +317,7 @@ class Devices extends Component {
     saveExpiryDate = (date) => {
         let { _d } = date;
         // console.log(this.state.expiry_date, '------------ ', _d);
-        
+
         this.setState({
             expiry_date: _d
         })
@@ -362,7 +362,7 @@ class Devices extends Component {
 
     handleOk = e => {
         this.state.extendExpiryDevice.expiry_date = this.state.expiry_date;
-        console.log(this.state.extendExpiryDevice ,'handleOk and required status is', this.state.requireStatus)
+        console.log(this.state.extendExpiryDevice, 'handleOk and required status is', this.state.requireStatus)
         // console.log(e);
         this.setState({
             visible: false,
@@ -866,6 +866,17 @@ class Devices extends Component {
     }
 
     render() {
+
+        const formItemLayout = {
+            labelCol: {
+                xs: { span: 24 },
+                sm: { span: 8 },
+            },
+            wrapperCol: {
+                xs: { span: 24 },
+                sm: { span: 16 },
+            },
+        };
         return (
             <Fragment>
                 {
@@ -923,17 +934,27 @@ class Devices extends Component {
                     okText="Save"
                     onCancel={this.handleCancel}
                 >
-                    <DatePicker
-                        format="DD-MM-YYYY"
-                        defaultValue={moment(this.state.extendExpiryDevice.start_date)}
-                        disabled
-                    />
-                    &nbsp;
-                    <DatePicker
-                        format="DD-MM-YYYY"
-                        defaultValue={moment(this.state.extendExpiryDevice.expiry_date)}
-                        onChange={this.saveExpiryDate}
-                    />
+                    <div style={{ maringLeft: 20 }}>
+                        <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+                            <Form.Item label="Start Date">
+                                <DatePicker
+                                    format="DD-MM-YYYY"
+                                    defaultValue={moment(this.state.extendExpiryDevice.start_date)}
+                                    disabled
+                                />
+                            </Form.Item>
+                            <Form.Item label="End Date">
+
+                                <DatePicker
+                                    format="DD-MM-YYYY"
+                                    defaultValue={moment(this.state.extendExpiryDevice.expiry_date)}
+                                    onChange={this.saveExpiryDate}
+                                />
+                            </Form.Item>
+
+                        </Form>
+                    </div>
+
                     {/* <RangePicker
                         format="YYYY-MM-DD"
                         defaultValue={[moment(this.state.start_date), moment(this.state.expiry_date)]}
