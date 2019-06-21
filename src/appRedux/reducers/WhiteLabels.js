@@ -123,7 +123,6 @@ export default (state = initialState, action) => {
 
 
         case EDIT_WHITE_LABEL_INFO: {
-
             // console.log('reducer response', action.payload)
             if(action.payload.status){
                 success({

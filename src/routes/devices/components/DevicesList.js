@@ -140,7 +140,7 @@ class DevicesList extends Component {
                 counter: ++index,
                 action: (StatusBtn),
                 offline_id: checkValue(device.fl_dvc_id),
-                status: (<span style={color} > {status}</span>),
+                status: (<span style={color} > {titleCase(status)}</span>),
                 flagged: (device.flagged !== '') ? device.flagged : 'Not Flagged',
                 device_id: checkValue(device.wl_dvc_id),
                 // device_id: ((status != DEVICE_PRE_ACTIVATION)) ? checkValue(device.device_id) : (device.validity) ? (this.props.tabselect == '3') ? `${device.validity}` : "N/A" : "N/A",
@@ -309,10 +309,10 @@ class DevicesList extends Component {
         // console.log(rowSelection);
         return (
             <div className="dev_table">
-                <ActivateDevcie ref="activate"
+                {/* <ActivateDevcie ref="activate"
                     activateDevice={activateDevice} />
                 <SuspendDevice ref="suspend"
-                    suspendDevice={suspendDevice} />
+                    suspendDevice={suspendDevice} /> */}
                 <StatusDevice ref="deviceStatusUpdate"
                     statusDevice={statusDevice} />
 

@@ -238,7 +238,7 @@ export default class Tab extends Component {
                 <AccountList
                     dataList={this.state.dataList}
                     innerTabSelect={this.props.innerTabSelect}
-                    tabselect={this.state.tabselect} y
+                    tabselect={this.state.tabselect}
                     // suspendDealer={this.props.suspendDealer}
                     // activateDealer={this.props.activateDealer}
                     // deleteDealer={this.props.deleteDealer}

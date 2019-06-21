@@ -6,6 +6,7 @@ import moment from 'moment';
 import { bindActionCreators } from "redux";
 
 import {
+    getWhiteLabels,
     // saveOfflineDevice,
     getOfflineDevices,
     // suspendDevice,
@@ -20,6 +21,7 @@ import {
     DEVICE_PENDING_ACTIVATION,
     DEVICE_PRE_ACTIVATION,
     DEVICE_SUSPENDED,
+    DEVICE_DELETE,
     DEVICE_UNLINKED,
     ADMIN,
     DEVICE_TRIAL
@@ -299,12 +301,18 @@ class Devices extends Component {
             columns: columns,
             searchText: '',
             devices: [],
-            tabselect: '4',
+            tabselect: '1SK',
             visible: false,
             mode: 'time',
             extendExpiryDevice: '',
             requireStatus: '',
-            expiry_date: ''
+            expiry_date: '',
+            totalAllDevices: [],
+            totalActiveDevices: [],
+            totalExpireDevices: [],
+            totalSuspendDevices: [],
+            totalArchiveDevices: [],
+            whiteLables: []
         }
         this.copyDevices = [];
 
@@ -518,7 +526,31 @@ class Devices extends Component {
 
     }
 
+    handleChangeLabelTab = (key) => {
+        console.log('handleChangeLabelTab key is: ', key);
+
+        console.log('first devices will be: ', this.state.totalAllDevices);
+
+        let filteredDevices = this.state.totalAllDevices.filter(e => e.whitelabel_id == key);
+
+        console.log('devices will be: ', filteredDevices);
+        if (filteredDevices.length) {
+            this.setState({
+                devices: filteredDevices,
+                column: this.state.columns,
+                tabselect: key,
+            })
+        } else {
+            this.handleChangetab(key);
+        }
+
+
+
+    }
+
     handleChangetab = (value) => {
+        // console.log('Tab key is: ', value);
+        // console.log('white label are: ', this.state.whiteLables);
 
         // let indxRemainingDays = this.state.columns.findIndex(k => k.dataIndex == 'validity');
         let indxAction = this.state.columns.findIndex(k => k.dataIndex == 'action');
@@ -577,12 +609,12 @@ class Devices extends Component {
 
         var devices = [];
         switch (value) {
-            case '4':
+            case '4SK':
                 devices = this.filterList(DEVICE_ACTIVATED, this.props.devices)
                 this.setState({
                     devices: devices,
                     column: this.state.columns,
-                    tabselect: '4'
+                    tabselect: '4SK',
                 })
                 break;
             case '9':
@@ -590,38 +622,38 @@ class Devices extends Component {
                 this.setState({
                     devices: devices,
                     column: this.state.columns,
-                    tabselect: '9'
+                    tabselect: '9',
                 })
                 break;
-            case '7':
+            case '7SK':
                 devices = this.filterList(DEVICE_SUSPENDED, this.props.devices)
                 this.setState({
                     devices: devices,
                     column: this.state.columns,
-                    tabselect: '7'
+                    tabselect: '7SK',
                 })
                 break;
-            case '6':
+            case '6SK':
                 devices = this.filterList(DEVICE_EXPIRED, this.props.devices)
                 this.setState({
                     devices: devices,
                     column: this.state.columns,
-                    tabselect: '6'
+                    tabselect: '6SK',
                 })
                 break;
-            case '1':
+            case '1SK':
                 this.setState({
                     devices: this.props.devices,
                     column: this.state.columns,
-                    tabselect: '1'
+                    tabselect: '1SK',
                 })
                 break;
-            case "5":
+            case "5SK":
                 devices = this.filterList(DEVICE_UNLINKED, this.props.devices)
                 this.setState({
                     devices: devices,
                     column: this.state.columns,
-                    tabselect: '5'
+                    tabselect: '5SK'
                 })
                 break;
             case "2":
@@ -647,11 +679,15 @@ class Devices extends Component {
                     tabselect: '8'
                 })
                 break;
+            // for (let i = 0; i < array.length; i++) {
+            //     const element = array[i];
+
+            // }
             default:
                 this.setState({
                     devices: this.props.devices,
                     column: this.state.columns,
-                    tabselect: '1'
+                    tabselect: '1SK'
                 })
                 break;
         }
@@ -721,6 +757,15 @@ class Devices extends Component {
 
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.whiteLabels.length) {
+            // console.log(nextProps.whiteLabels);
+            this.setState({
+                whiteLables: nextProps.whiteLabels
+            })
+        }
+    }
+
     componentDidUpdate(prevProps) {
 
         // console.log('updated');
@@ -730,11 +775,16 @@ class Devices extends Component {
                 devices: this.props.devices,
                 columns: this.state.columns,
                 defaultPagingValue: this.props.DisplayPages,
-                selectedOptions: this.props.selectedOptions
-
+                selectedOptions: this.props.selectedOptions,
+                totalAllDevices: this.props.devices,
+                totalActiveDevices: this.filterList(DEVICE_ACTIVATED, this.props.devices),
+                totalExpireDevices: this.filterList(DEVICE_EXPIRED, this.props.devices),
+                totalSuspendDevices: this.filterList(DEVICE_SUSPENDED, this.props.devices),
+                totalArchiveDevices: this.filterList(DEVICE_DELETE, this.props.devices),
             })
             // this.copyDevices = this.props.devices;
-            this.handleChangetab(this.state.tabselect)
+            // this.handleChangetab(this.state.tabselect);
+            this.handleChangeLabelTab(this.state.tabselect);
         }
     }
 
@@ -748,6 +798,7 @@ class Devices extends Component {
         this.props.getOfflineDevices();
         // this.props.getDropdown('devices');
         // this.props.getPagination('devices');
+        this.props.getWhiteLabels();
     }
 
 
@@ -866,6 +917,7 @@ class Devices extends Component {
     }
 
     render() {
+        console.log('new devices are:: ', this.props.devices);
 
         const formItemLayout = {
             labelCol: {
@@ -902,6 +954,12 @@ class Devices extends Component {
                             /> */}
 
                             <DevicesTabs
+                                whiteLables={this.state.whiteLables}
+                                totalAllDevices={this.state.totalAllDevices.length}
+                                totalActiveDevices={this.state.totalActiveDevices.length}
+                                totalExpireDevices={this.state.totalExpireDevices.length}
+                                totalSuspendDevices={this.state.totalSuspendDevices.length}
+                                totalArchiveDevices={this.state.totalArchiveDevices.length}
                                 devices={this.state.devices}
                                 // suspendDevice={this.props.suspendDevice}
                                 // activateDevice={this.props.activateDevice}
@@ -914,6 +972,7 @@ class Devices extends Component {
                                 handleChange={this.handleChange}
                                 tabselect={this.state.tabselect}
                                 handleChangetab={this.handleChangetab}
+                                handleChangeLabelTab={this.handleChangeLabelTab}
                                 handlePagination={this.handlePagination}
                                 deleteUnlinkDevice={this.props.deleteUnlinkDevice}
                                 user={this.props.user}
@@ -983,13 +1042,15 @@ function mapDispatchToProps(dispatch) {
         postDropdown: postDropdown,
         postPagination: postPagination,
         getPagination: getPagination,
+        getWhiteLabels: getWhiteLabels,
     }, dispatch);
 }
 
-var mapStateToProps = ({ devices, auth }) => {
+var mapStateToProps = ({ devices, auth, sidebarMenu }) => {
     // console.log('devices AUTH', auth);
     //   console.log(devices.options,'devices OPTION', devices.selectedOptions);
     return {
+        whiteLabels: sidebarMenu.whiteLabels,
         devices: devices.devices,
         msg: devices.msg,
         showMsg: devices.showMsg,

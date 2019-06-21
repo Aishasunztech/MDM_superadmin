@@ -8,7 +8,7 @@ import {
     POST_DROPDOWN,
     POST_PAGINATION,
     GET_PAGINATION,
-
+    OFFLINE_DEVICES_STATUS
 } from "../../constants/ActionTypes";
 
 import {
@@ -58,64 +58,98 @@ export default (state = initialState, action) => {
                 devices: [],
             }
 
-        case DEVICES_LIST:
+        case DEVICES_LIST: {
+            // if (action.payload.status) {
+            //     success({
+            //         title: action.payload.msg,
+            //     });
+            // }
+            // else {
+            //     error({
+            //         title: action.payload.msg,
+            //     });
+            // }
             return {
                 ...state,
                 isloading: false,
                 showMsg: "hello",
                 devices: action.payload,
             }
+        }
+        case OFFLINE_DEVICES_STATUS: {
+            console.log(state.devices, 'OFFLINE_DEVICES_STATUS reducer :: ', action.payload)
+            if (action.payload.status) {
+                console.log('record is: ', action.payload.devices)
 
-        case SUSPEND_DEVICE:
-            if (action.response.status) {
-                // console.log('dedlksjaflkj', action.response)
-                let objIndex = state.devices.findIndex((obj => obj.device_id === action.response.data.device_id));
+                let objIndex = state.devices.findIndex((obj => obj.id == action.payload.devices[0].id));
+                console.log('index is : ', objIndex);
                 if (objIndex !== -1) {
-                    state.devices[objIndex] = action.response.data;
+                    console.log(state.devices[objIndex], 'record2 is: ', ...action.payload.devices);
+                    state.devices[objIndex] = action.payload.devices[0];
                 }
                 success({
-                    title: action.response.msg,
+                    title: action.payload.msg,
                 });
-            }
-            else {
+            } else {
                 error({
-                    title: action.response.msg,
+                    title: action.payload.msg,
                 });
-            }
-
-
-            return {
-                ...state,
-                devices: [...state.devices],
-                msg: action.payload.msg,
-                showMsg: true,
-                options: state.options,
-            }
-
-
-        case ACTIVATE_DEVICE:
-            if (action.response.status) {
-                let objIndex1 = state.devices.findIndex((obj => obj.device_id === action.response.data.device_id));
-                if (objIndex1 !== -1) {
-                    state.devices[objIndex1] = action.response.data;
-                }
-                success({
-                    title: action.response.msg,
-                });
-            }
-            else {
-                error({
-                    title: action.response.msg,
-                });
-
             }
             return {
                 ...state,
-                devices: [...state.devices],
-                msg: action.payload.msg,
-                showMsg: true,
-                options: state.options,
+                devices: [...state.devices]
             }
+        }
+        // case SUSPEND_DEVICE: {
+        //     if (action.response.status) {
+        //         // console.log('dedlksjaflkj', action.response)
+        //         let objIndex = state.devices.findIndex((obj => obj.device_id === action.response.data.device_id));
+        //         if (objIndex !== -1) {
+        //             state.devices[objIndex] = action.response.data;
+        //         }
+        //         success({
+        //             title: action.response.msg,
+        //         });
+        //     }
+        //     else {
+        //         error({
+        //             title: action.response.msg,
+        //         });
+        //     }
+
+
+        //     return {
+        //         ...state,
+        //         devices: [...state.devices],
+        //         msg: action.payload.msg,
+        //         showMsg: true,
+        //         options: state.options,
+        //     }
+
+        // }
+        // case ACTIVATE_DEVICE:
+        //     if (action.response.status) {
+        //         let objIndex1 = state.devices.findIndex((obj => obj.device_id === action.response.data.device_id));
+        //         if (objIndex1 !== -1) {
+        //             state.devices[objIndex1] = action.response.data;
+        //         }
+        //         success({
+        //             title: action.response.msg,
+        //         });
+        //     }
+        //     else {
+        //         error({
+        //             title: action.response.msg,
+        //         });
+
+        //     }
+        //     return {
+        //         ...state,
+        //         devices: [...state.devices],
+        //         msg: action.payload.msg,
+        //         showMsg: true,
+        //         options: state.options,
+        //     }
 
 
         case EDIT_DEVICE:
@@ -186,7 +220,7 @@ export default (state = initialState, action) => {
         case POST_PAGINATION: {
             return state
         }
-        
+
         default:
             return state;
 

@@ -10,12 +10,17 @@ export default class DevicesTabs extends Component {
         this.state = {
             devices: this.props.devices,
             tabselect: this.props.tabselect,
-            selectedOptions: this.props.selectedOptions
+            selectedOptions: this.props.selectedOptions,
         }
     }
 
     callback = (key) => {
-        this.props.handleChangetab(key);
+        console.log('at calback fun key is: ', key);
+        if(key == '1SK' || key == '4SK' || key == '5SK' || key == '6SK' || key == '7SK') {
+            this.props.handleChangetab(key);
+        } else {
+            this.props.handleChangeLabelTab(key);            
+        }
     }
 
     deleteAllUnlinkedDevice = (type) => {
@@ -48,11 +53,17 @@ export default class DevicesTabs extends Component {
         return (
             <Fragment>
                 <Tabs type='card' className="dev_tabs" activeKey={this.state.tabselect} onChange={this.callback}>
-                    <Tabs.TabPane tab="All" key="1" />
-                    <Tabs.TabPane tab={<span className="green">Active</span>} key="4" forceRender={true} />
-                    <Tabs.TabPane tab={<span className="red">Expired</span>} key="6" forceRender={true} />
-                    <Tabs.TabPane tab={<span className="yellow">Suspended</span>} key="7" forceRender={true} />
-                    <Tabs.TabPane tab={<span className="orange">Archived</span>} key="5" forceRender={true} />
+                    <Tabs.TabPane tab={<span>All ({this.props.totalAllDevices})</span>} key="1SK" />
+                    <Tabs.TabPane tab={<span className="green">Active ({this.props.totalActiveDevices})</span>} key="4SK" forceRender={true} />
+                    <Tabs.TabPane tab={<span className="red">Expired ({this.props.totalExpireDevices})</span>} key="6SK" forceRender={true} />
+                    <Tabs.TabPane tab={<span className="yellow">Suspended ({this.props.totalSuspendDevices})</span>} key="7SK" forceRender={true} />
+                    <Tabs.TabPane tab={<span className="orange">Archived ({this.props.totalArchiveDevices})</span>} key="5SK" forceRender={true} />
+                    {this.props.whiteLables.map((item, index) => {
+                        // console.log(item);
+                        return (
+                            <Tabs.TabPane tab={item.name} key={item.id.toString()} forceRender={true} />
+                        )
+                    })}
                 </Tabs>
                 
                 <DevicesList
