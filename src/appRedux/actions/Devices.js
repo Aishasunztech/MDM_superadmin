@@ -224,7 +224,16 @@ export function statusDevice(device, requireStatus) {
                             dispatch({
                                 type: DEVICES_LIST,
                                 payload: response.data.devices,
+                            });
 
+                            // dispatch({
+                            //     type: OFFLINE_DEVICES_STATUS,
+                            //     msg: response.data.msg,
+                            // });
+                        }else {
+                            dispatch({
+                                type: DEVICES_LIST,
+                                payload: [],
                             });
                         }
                     } else {

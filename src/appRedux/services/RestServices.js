@@ -150,8 +150,8 @@ const RestService = {
     },
 
     setPackage: (data) => {
-        console.log(data, 'data')
-        return axios.patch(USER_URL+ 'save-package', {data}, RestService.getHeader());
+        // console.log(data, 'data')
+        return axios.post(USER_URL+ 'save-package', {data}, RestService.getHeader());
     },
 
     // ======================================== Account ===========================================
