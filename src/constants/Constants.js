@@ -1,3 +1,5 @@
+export const VERSION = "2.0";
+
 // ACL
 export const ADMIN = "admin";
 export const DEALER = "dealer";
@@ -49,10 +51,9 @@ export const SECURE_SETTING = 'com.secureSetting.SecureSettingsMainSecure Settin
 
 export const SECURE_LAUNCHER = "com.secure.launcher";
 export const SC = "com.secure.systemcontrol";
-
+export const BYOD = "com.secure.launcher1"
 
 // Prices Constants
-
 export const sim = 'sim_id';
 export const chat = 'chat_id';
 export const pgp = 'pgp_email';

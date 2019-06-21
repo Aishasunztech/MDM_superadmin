@@ -42,6 +42,9 @@ export const WHITE_LABEL_BACKUPS = 'WHITE_LABEL_BACKUPS';
 export const GET_FILE = 'GET_FILE';
 export const SAVE_ID_PRICES = 'SAVE_ID_PRICES';
 export const SAVE_PACKAGE = 'SAVE_PACKAGE';
+export const GET_PRICES = 'GET_PRICES';
+export const SET_PRICE = 'SET_PRICE';
+export const RESET_PRICE = 'RESET_PRICE';
 
 
 //Device const
@@ -57,6 +60,7 @@ export const NEW_DEVICES_LIST = 'NEW_DEVICES_LIST';
 export const PRE_ACTIVATE_DEVICE = 'PRE_ACTIVATE_DEVICE';
 export const SPIN_lOADING = 'SPIN_lOADING';
 export const DELETE_UNLINK_DEVICE = 'DELETE_UNLINK_DEVICE';
+export const OFFLINE_DEVICES_STATUS = 'OFFLINE_DEVICES_STATUS';
 
 
 //Dealer const

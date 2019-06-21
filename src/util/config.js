@@ -1,3 +1,6 @@
+let applicationConstants = require('../constants/Application')
+let Constants = require('../constants/Constants')
+
 module.exports = {
-  footerText: `Copyright SuperAdmin © ${new Date().getFullYear()} (Version 1.0)`,
+  footerText: `Copyright ${applicationConstants.APP_TITLE} © ${new Date().getFullYear()} (Version ${Constants.VERSION})`,
 };

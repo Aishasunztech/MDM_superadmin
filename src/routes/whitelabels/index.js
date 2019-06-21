@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 // import {Route, Switch} from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { SECURE_LAUNCHER, SC } from '../../constants/Constants';
+import { SECURE_LAUNCHER, SC, BYOD } from '../../constants/Constants';
 import { checkValue } from '../utils/commonUtils'
 import { Link } from 'react-router-dom';
 import {
@@ -13,10 +13,12 @@ import style from "./whitelabels.css"
 
 import {
     getWhiteLabelInfo, editWhiteLabelInfo,
-    getWhitelabelBackups, getFile, saveIDPrices, setPackage
+    getWhitelabelBackups, getFile, saveIDPrices, setPackage,
+    getPrices, setPrice, resetPrice
 } from '../../appRedux/actions';
 
 import EditWhiteLabel from "./components/EditWhiteLabel";
+import EditByodApk from "./components/EditByodApk"
 import LoadIDsModal from "./components/LoadIDsModal";
 import WhiteLabelPricing from './components/WhiteLabelPricing';
 import { USER_URL } from '../../constants/Application'
@@ -101,6 +103,9 @@ class WhiteLabels extends Component {
             backupDatabaseModal: false,
             copy_status: true,
             pricing_modal: false,
+            byod_model: false,
+            byod_apk: {},
+            edit_byod_modal: false
         }
     }
 
@@ -134,9 +139,29 @@ class WhiteLabels extends Component {
         }
 
     }
+    showBYODModal = (e, visible) => {
+        console.log(this.props.whiteLabelInfo);
+        let index2 = this.props.whiteLabelInfo.apks.findIndex(apk => apk.is_byod == '1')
+        console.log(index2);
+        if (index2 > -1) {
+            this.setState({
+                byod_apk: this.props.whiteLabelInfo.apks[index2],
+                byod_model: visible,
+            })
+        } else {
+            this.setState({
+                byod_model: visible,
+            })
+        }
+    }
     editInfoModal = (e, visible) => {
         this.setState({
             edit_modal: visible
+        })
+    }
+    editBYODModal = (e, visible) => {
+        this.setState({
+            edit_byod_modal: visible
         })
     }
 
@@ -186,6 +211,7 @@ class WhiteLabels extends Component {
     componentDidMount() {
         this.props.getWhiteLabelInfo(this.props.id);
         this.props.getWhitelabelBackups(this.props.id);
+        this.props.getPrices(this.props.id);
 
         this.setState({
             whitelabelBackups: this.props.whitelabelBackups
@@ -227,7 +253,7 @@ class WhiteLabels extends Component {
     }
 
     render() {
-
+        console.log('prices are', this.props.isPriceChanged)
         // load ids modal
         if (this.props.showMsg) {
             if (this.props.msg === "imported successfully") {
@@ -367,14 +393,14 @@ class WhiteLabels extends Component {
                                             </div>
                                         }
                                         visible={this.state.info_modal}
-                                        // onOk={this.InsertNewData}
+                                        onOk={(e) => {
+                                            this.showInfoModal(e, false);
+                                        }}
                                         onCancel={(e) => {
                                             this.showInfoModal(e, false);
                                         }}
-                                        // okText='Submit'
-                                        okText={(e) => {
-                                            this.showInfoModal(e, false);
-                                        }}
+                                    // okText='Submit'
+                                    // okText="OK"
                                     // okButtonProps={{
                                     //     disabled: this.state.newData.length ? false : true
                                     // }}
@@ -465,8 +491,8 @@ class WhiteLabels extends Component {
                         </Col>
                         <Col xs={24} sm={24} md={6} lg={6} xl={6}>
                             <div>
-                                <div className="contenar">
-                                    <a href="javascript:void(0)" >
+                                <div>
+                                    <Link to="#" onClick={(e) => this.showBYODModal(e, true)} >
                                         <Card className="manage_sec" style={{ borderRadius: 12 }}>
                                             <div>
                                                 <h2 style={{ textAlign: "center" }}>BYOD APK</h2>
@@ -475,11 +501,104 @@ class WhiteLabels extends Component {
                                             </div>
                                             <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
-                                    </a>
-                                    <div className="middle">
+                                    </Link>
+                                    {/* <div className="middle">
                                         <div className="text">Coming Soon</div>
-                                    </div>
+                                    </div> */}
                                 </div>
+                                <Modal
+                                    maskClosable={false}
+                                    destroyOnClose={true}
+                                    title={
+                                        <div>
+                                            <span>WhiteLabel Info</span>
+                                            <Button
+                                                type="primary"
+                                                size="small"
+                                                style={{ float: "right", marginRight: 32 }}
+                                                onClick={(e) => {
+                                                    this.editBYODModal(e, true)
+                                                }}
+                                            >Edit</Button>
+                                        </div>
+                                    }
+                                    visible={this.state.byod_model}
+                                    onOk={(e) => {
+                                        this.showBYODModal(e, false);
+                                    }}
+                                    onCancel={(e) => {
+                                        this.showBYODModal(e, false);
+                                    }}
+                                // okText='Submit'
+                                // okText="OK"
+                                // okButtonProps={{
+                                //     disabled: this.state.newData.length ? false : true
+                                // }}
+                                >
+                                    <Table
+                                        bordered
+                                        showHeader={false}
+                                        size='small'
+                                        className="model_id_table"
+                                        columns={[
+                                            {
+                                                // title: 'Name',
+                                                dataIndex: 'name',
+                                                key: 'name',
+                                            },
+                                            {
+                                                // title: 'Value',
+                                                dataIndex: 'value',
+                                                key: 'value',
+                                            },
+                                            // {
+                                            //     dataIndex: 'action',
+                                            //     key: 'action'
+                                            // }
+                                        ]}
+                                        pagination={false}
+                                        dataSource={[
+                                            {
+                                                key: 1,
+                                                name: (<b>Model ID</b>),
+                                                // value: '',
+                                                value: checkValue(this.props.whiteLabelInfo.model_id),
+                                            },
+                                            {
+                                                key: 2,
+                                                name: (<b>Command</b>),
+                                                // value: '',
+                                                value: checkValue(this.props.whiteLabelInfo.command_name),
+                                            },
+                                            {
+                                                key: 3,
+                                                name: (<b>BYOD (APK)</b>),
+                                                value: checkValue(this.state.byod_apk.apk_file),
+                                            },
+                                            {
+                                                key: 4,
+                                                name: (<b>Version Name</b>),
+                                                // value: '',
+                                                value: checkValue(this.state.byod_apk.version_name),
+                                            },
+                                            {
+                                                key: 5,
+                                                name: (<b>Size</b>),
+                                                // value: '',
+                                                value: checkValue(this.state.byod_apk.apk_size),
+                                            },
+                                        ]}
+                                    />
+
+                                </Modal>
+                                <EditByodApk
+                                    whiteLabelInfo={this.props.whiteLabelInfo}
+                                    editBYODModal={this.editBYODModal}
+                                    edit_modal={this.state.edit_byod_modal}
+                                    editWhiteLabelInfo={this.props.editWhiteLabelInfo}
+                                    getWhiteLabelInfo={this.getWhiteLabelInfo}
+                                    showBYODModal={this.showBYODModal}
+                                />
                             </div>
                         </Col>
                         <Col xs={24} sm={24} md={6} lg={6} xl={6}>
@@ -574,6 +693,10 @@ class WhiteLabels extends Component {
                                             saveIDPrices={this.props.saveIDPrices}
                                             whitelabel_id={this.props.whiteLabelInfo.id}
                                             setPackage={this.props.setPackage}
+                                            prices={this.props.prices}
+                                            setPrice={this.props.setPrice}
+                                            isPriceChanged={this.props.isPriceChanged}
+                                            resetPrice={this.props.resetPrice}
 
                                         />
                                     </div>
@@ -583,8 +706,7 @@ class WhiteLabels extends Component {
                         </Col>
                         <Col xs={24} sm={24} md={6} lg={6} xl={6} onClick={() => this.refs.loadidsofModal.getWrappedInstance().showModal(this.props.whiteLabelInfo)}>
                             <div>
-                                {/* className="contenar" */}
-                                <div className="">
+                                <div>
                                     <a href="javascript:void(0)">
                                         <Card className="manage_sec" style={{ borderRadius: 12 }}>
                                             <div>
@@ -594,17 +716,12 @@ class WhiteLabels extends Component {
                                             <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
                                     </a>
-                                    <div className="middle">
-                                        <div className="text">Coming Soon</div>
-                                    </div>
                                 </div>
                             </div>
                         </Col>
                     </Row>
                     <LoadIDsModal ref="loadidsofModal" />
-
                 </div>
-
             </div>
 
         );
@@ -621,14 +738,19 @@ function mapDispatchToProps(dispatch) {
         getWhitelabelBackups: getWhitelabelBackups,
         getFile: getFile,
         saveIDPrices: saveIDPrices,
-        setPackage: setPackage
+        setPackage: setPackage,
+        getPrices: getPrices,
+        setPrice: setPrice,
+        resetPrice: resetPrice
     }, dispatch);
 }
 
 var mapStateToProps = ({ whiteLabels }, otherProps) => {
     return {
         whiteLabelInfo: whiteLabels.whiteLabel,
-        whitelabelBackups: whiteLabels.whitelabelBackups
+        whitelabelBackups: whiteLabels.whitelabelBackups,
+        prices: whiteLabels.prices,
+        isPriceChanged: whiteLabels.isPriceChanged
     };
 }
 

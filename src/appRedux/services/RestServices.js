@@ -146,13 +146,24 @@ const RestService = {
 
     saveIDPrices: (data) => {
         console.log(data, 'data')
-        return axios.patch(USER_URL+ 'save-prices', data, RestService.getHeader());
+        return axios.patch(USER_URL + 'save-prices', data, RestService.getHeader());
+    },
+
+    getPrices: (whitelabel_id) => {
+        console.log(whitelabel_id, 'whte label on get price')
+        return axios.get(USER_URL + 'get-prices/' + whitelabel_id, RestService.getHeader());
     },
 
     setPackage: (data) => {
-        // console.log(data, 'data')
-        return axios.post(USER_URL+ 'save-package', {data}, RestService.getHeader());
+        console.log(data, 'data')
+        return axios.patch(USER_URL + 'save-package', { data }, RestService.getHeader());
     },
+
+    checkPackageName: (name) => {
+        console.log(name, 'data')
+        return axios.patch(USER_URL + 'check-package-name', { name, name }, RestService.getHeader());
+    },
+
 
     // ======================================== Account ===========================================
     getSimIDs: () => {

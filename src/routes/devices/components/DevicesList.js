@@ -80,9 +80,9 @@ class DevicesList extends Component {
         // console.log('list of dec', list)
         return list.map((device, index) => {
 
-            // console.log('device is: ', device);
+            console.log('device is: ', device);
             var status = device.finalStatus;
-            // console.log('status is : ', status);
+            console.log('status is : ', status);
             // const button_type = (status === DEVICE_ACTIVATED || status === DEVICE_TRIAL) ? "danger" : "dashed";
 
             // const flagged = device.flagged;
@@ -139,10 +139,10 @@ class DevicesList extends Component {
                 key: status == DEVICE_UNLINKED ? `${device.user_acc_id}` : device.id,
                 counter: ++index,
                 action: (StatusBtn),
-                offline_id: device.fl_dvc_id ? device.fl_dvc_id : 'N/A',
-                status: (<span style={color} > {titleCase(status)}</span >),
+                offline_id: checkValue(device.fl_dvc_id),
+                status: (<span style={color} > {titleCase(status)}</span>),
                 flagged: (device.flagged !== '') ? device.flagged : 'Not Flagged',
-                device_id: checkValue(device.fl_dvc_id),
+                device_id: checkValue(device.wl_dvc_id),
                 // device_id: ((status != DEVICE_PRE_ACTIVATION)) ? checkValue(device.device_id) : (device.validity) ? (this.props.tabselect == '3') ? `${device.validity}` : "N/A" : "N/A",
                 user_id: <a onClick={() => { this.handleUserId(device.user_id) }}>{checkValue(device.user_id)}</a>,
                 validity: checkValue(device.validity),
@@ -160,16 +160,9 @@ class DevicesList extends Component {
                 sim_1: checkValue(device.simno),
                 imei_2: checkValue(device.imei2),
                 sim_2: checkValue(device.simno2),
-                serial_number: checkValue(device.serial_no),
-                label: device.name,
+                serial_number: checkValue(device.serial_number),
+                label: checkValue(device.whitelabel),
                 model: checkValue(device.model),
-
-                // start_date: device.start_date ? `${new Date(device.start_date).toJSON().slice(0,10).replace(/-/g,'-')}` : "N/A",
-                // expiry_date: device.expiry_date ? `${new Date(device.expiry_date).toJSON().slice(0,10).replace(/-/g,'-')}` : "N/A",
-                dealer_name: checkValue(device.dealer_name),
-                online: device.online ? (device.online == "On") ? (<span style={{ color: "green" }}>Online</span>) : (<span style={{ color: "red" }}>Offline</span>) : "N/A",
-                s_dealer: checkValue(device.s_dealer),
-                s_dealer_name: checkValue(device.s_dealer_name),
                 start_date: checkValue(moment(device.start_date).format('DD-MM-YY')),
                 expiry_date: checkValue(moment(device.expiry_date).format('DD-MM-YY')),
             }
@@ -316,10 +309,10 @@ class DevicesList extends Component {
         // console.log(rowSelection);
         return (
             <div className="dev_table">
-                <ActivateDevcie ref="activate"
+                {/* <ActivateDevcie ref="activate"
                     activateDevice={activateDevice} />
                 <SuspendDevice ref="suspend"
-                    suspendDevice={suspendDevice} />
+                    suspendDevice={suspendDevice} /> */}
                 <StatusDevice ref="deviceStatusUpdate"
                     statusDevice={statusDevice} />
 
