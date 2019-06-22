@@ -13,6 +13,7 @@ import {
     REJECT_DEVICE,
     PRE_ACTIVATE_DEVICE,
     DELETE_UNLINK_DEVICE,
+    OFFLINE_DEVICES_STATUS
 } from "../../constants/ActionTypes";
 
 import RestService from '../services/RestServices';
@@ -212,34 +213,62 @@ export function deleteUnlinkDevice(action, devices) {
 // }
 
 export function statusDevice(device, requireStatus) {
-    // console.log('at action status is: ', requireStatus);
+    console.log('at action status is: ', requireStatus);
 
     return (dispatch) => {
 
         RestService.statusDevice(device, requireStatus).then((response) => {
-
+console.log('statusDevice response at action is: ', response.data);
             if (RestService.checkAuth(response.data)) {
+                if (response.data.status) {
+                    dispatch({
+                        type: OFFLINE_DEVICES_STATUS,
+                        payload: response.data,
+                        // msg: "Offline Device Status Successfully Updated!",
+                    });
+                } else {
+                    dispatch({
+                        type: OFFLINE_DEVICES_STATUS,
+                        payload: response.data,
+                        // msg: "Failed to update Offline Device Status!",
+                    });
+                }
 
                 // get all updated ofline devices
-                RestService.getOfflineDevices().then((response) => {
-                    // console.log("data form server");
-                    console.log(response.data);
-                    if (RestService.checkAuth(response.data)) {
-                        // console.log(response.data)
-                        if (response.data.status) {
+                // RestService.getOfflineDevices().then((response) => {
+                //     // console.log("data form server");
+                //     console.log(response.data);
+                //     if (RestService.checkAuth(response.data)) {
+                //         // console.log(response.data)
+                //         if (response.data) {
 
-                            dispatch({
-                                type: DEVICES_LIST,
-                                payload: response.data.devices,
+                //             dispatch({
+                //                 type: DEVICES_LIST,
+                //                 payload: response.data,
+                //             });
 
-                            });
-                        }
-                    } else {
-                        dispatch({
-                            type: INVALID_TOKEN
-                        });
-                    }
-                })
+                //             // dispatch({
+                //             //     type: OFFLINE_DEVICES_STATUS,
+                //             //     status: response.data.status,
+                //             //     msg: "Offline Device Status Successfully Updated!",
+                //             // });
+                //         } else {
+                //             dispatch({
+                //                 type: DEVICES_LIST,
+                //                 payload: response.data,
+                //             });
+                //             // dispatch({
+                //             //     type: OFFLINE_DEVICES_STATUS,
+                //             //     status: response.data.status,
+                //             //     msg: "Failed to update Offline Device Status!",
+                //             // });
+                //         }
+                //     } else {
+                //         dispatch({
+                //             type: INVALID_TOKEN
+                //         });
+                //     }
+                // })
 
             } else {
                 dispatch({
