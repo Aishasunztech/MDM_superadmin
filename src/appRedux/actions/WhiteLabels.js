@@ -9,7 +9,8 @@ import {
     SAVE_PACKAGE,
     GET_PRICES,
     SET_PRICE,
-    RESET_PRICE
+    RESET_PRICE,
+    GET_PACKAGES
 } from "../../constants/ActionTypes"
 
 import RestService from '../services/RestServices';
@@ -84,6 +85,24 @@ export const getPrices = (data) => {
             if (RestService.checkAuth(response.data)) {
                 dispatch({
                     type: GET_PRICES,
+                    response: response.data
+                })
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+        });
+
+    }
+}
+
+export const getPackages = (data) => {
+    return (dispatch) => {  
+        RestService.getPackages(data).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                dispatch({
+                    type: GET_PACKAGES,
                     response: response.data
                 })
             } else {

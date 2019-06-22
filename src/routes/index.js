@@ -5,7 +5,8 @@ import ManageData from "./account/ManageData";
 import Tools from "./tools/index";
 import WhiteLabels from "./whitelabels/index";
 import Device from "./devices/index";
-import AutoUpdate from './autoUpdate/index'
+import AutoUpdate from './autoUpdate/index';
+import SetPrices from './whitelabels/components/pricesPackages/index';
 
 import FourOFour from "./404/";
 
@@ -14,10 +15,10 @@ const AppRoutes = ({ match, whiteLabels }) => {
   return (
     <div className="gx-main-content-wrapper">
       <Switch>
-        <Route 
+        <Route
           exact
-          path= {`${match.url}devices`}
-          component = {Device}
+          path={`${match.url}devices`}
+          component={Device}
         />
         <Route
           exact
@@ -27,27 +28,44 @@ const AppRoutes = ({ match, whiteLabels }) => {
         {
           whiteLabels.map((whiteLabel, index) => {
             return (
-              <Route
-                exact
-                path={`${whiteLabel.route_uri}`}
-                key={index}
-                // id={whiteLabel.id} 
-                render={
-                  (routeProps) => (
-                    <WhiteLabels
-                      {...routeProps}
-                      id={whiteLabel.id}
-                    />
-                  )
-                }
-              />);
+              <Switch>
+                <Route
+                  exact
+                  path={`${whiteLabel.route_uri}`}
+                  key={index}
+                  // id={whiteLabel.id} 
+                  render={
+                    (routeProps) => (
+                      <WhiteLabels
+                        {...routeProps}
+                        id={whiteLabel.id}
+                      />
+                    )
+                  }
+                />
+                <Route
+                  exact
+                  path={'/set-prices' +whiteLabel.route_uri}
+                  id={whiteLabel.id}
+                  render={
+                    (routeProps) => (
+                      <SetPrices
+                        {...routeProps}
+                        id={whiteLabel.id}
+                      />
+                    )
+                  }
+                />
+              </Switch>
+
+            );
           })
         }
         <Route
           exact
           path={`${match.url}account`}
           component={Account}
-          // component={ManageData}
+        // component={ManageData}
         />
         <Route
           exact

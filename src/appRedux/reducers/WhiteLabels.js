@@ -7,7 +7,8 @@ import {
     SAVE_PACKAGE,
     GET_PRICES,
     SET_PRICE,
-    RESET_PRICE
+    RESET_PRICE,
+    GET_PACKAGES
 } from "../../constants/ActionTypes";
 
 import { message, Modal } from 'antd';
@@ -21,7 +22,9 @@ const initialState = {
     whitelabelBackups: [],
     prices: {},
     isPriceChanged: false,
-    pricesCopy: {}
+    pricesCopy: {},
+    packages: [],
+    packagesCopy:[]
 };
 
 export default (state = initialState, action) => {
@@ -56,12 +59,23 @@ export default (state = initialState, action) => {
         }
         case GET_PRICES: {
             console.log(action.response, 'response of get prices')
-           
-            return{
+
+            return {
                 ...state,
                 prices: action.response.data,
                 pricesCopy: JSON.parse(JSON.stringify(action.response.data))
-              
+
+            }
+        }
+
+        case GET_PACKAGES: {
+            console.log(action.response, 'response of get prices')
+
+            return {
+                ...state,
+                packages: action.response.data,
+                packagesCopy: JSON.parse(JSON.stringify(action.response.data))
+
             }
         }
 
@@ -69,15 +83,15 @@ export default (state = initialState, action) => {
             let copyPrices = state.prices;
             let price_for = action.payload.price_for;
             let field = action.payload.field;
-            if(price_for && price_for !== ''){
+            if (price_for && price_for !== '') {
                 copyPrices[price_for][field] = action.payload.value;
             }
-            return{
+            return {
                 ...state,
                 prices: copyPrices,
                 isPriceChanged: true
             }
-           
+
         }
 
         case SAVE_ID_PRICES: {
@@ -86,10 +100,12 @@ export default (state = initialState, action) => {
                 success({
                     title: action.response.msg
                 })
+                state.pricesCopy = JSON.parse(JSON.stringify(state.prices))
             } else {
                 error({
                     title: action.response.msg
                 })
+                state.prices = JSON.parse(JSON.stringify(state.pricesCopy)) 
             }
             return {
                 ...state,
@@ -98,7 +114,7 @@ export default (state = initialState, action) => {
         }
 
         case RESET_PRICE: {
-            return{
+            return {
                 ...state,
                 prices: state.pricesCopy,
                 isPriceChanged: false
@@ -107,16 +123,19 @@ export default (state = initialState, action) => {
 
         case SAVE_PACKAGE: {
             // console.log(action.response, 'response form save id prices')
-            if(action.response.status){
+            if (action.response.status) {
                 success({
                     title: action.response.msg
                 })
-            }else{
+                if(action.response.data.length){
+                    state.packages.push(action.response.data[0])
+                }
+            } else {
                 error({
                     title: action.response.msg
                 })
             }
-            return{
+            return {
                 ...state
             }
         }
@@ -124,7 +143,7 @@ export default (state = initialState, action) => {
 
         case EDIT_WHITE_LABEL_INFO: {
             // console.log('reducer response', action.payload)
-            if(action.payload.status){
+            if (action.payload.status) {
                 success({
                     title: action.payload.msg,
                 });

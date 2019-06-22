@@ -150,8 +150,13 @@ const RestService = {
     },
 
     getPrices: (whitelabel_id) => {
-        console.log(whitelabel_id, 'whte label on get price')
+        // console.log(whitelabel_id, 'whte label on get price')
         return axios.get(USER_URL + 'get-prices/' + whitelabel_id, RestService.getHeader());
+    },
+
+    getPackages: (whitelabel_id) => {
+        // console.log(whitelabel_id, 'whte label on get price')
+        return axios.get(USER_URL + 'get-packages/' + whitelabel_id, RestService.getHeader());
     },
 
     setPackage: (data) => {

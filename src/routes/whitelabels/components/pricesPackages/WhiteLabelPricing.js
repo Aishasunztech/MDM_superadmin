@@ -4,10 +4,10 @@ import {
     Button, Modal, Tabs
 } from "antd";
 
-import ItemsTab from "../../../components/ItemsTab";
+import ItemsTab from "../../../../components/ItemsTab";
 
-import PackagePricingForm from './PackagePricingForm';
-import { sim, chat, pgp, vpn, pkg_features } from '../../../constants/Constants';
+import PackagePricingForm from './components/PackagePricingForm';
+import { sim, chat, pgp, vpn, pkg_features } from '../../../../constants/Constants';
 
 const { TabPane } = Tabs;
 export default class WhiteLabelPricing extends Component {
@@ -53,13 +53,14 @@ export default class WhiteLabelPricing extends Component {
             })
         } else if (this.state.outerTab === '2') {
             console.log('ref is hte ', this.form);
-            this.form.props.form.validateFields((err, values) => {
-                if (!err) {
-                    console.log('no error found', values);
-                    if (this.state.pkg_features) {
+            // this.form.props.form.validateFields((err, values) => {
+                // if (!err) {
+                    // console.log('no error found', values);
+                
+                    if (this.state.pkg_features && this.state.pkgName && this.state.pkgTerms && this.state.pkgName != '' && this.state.pkgTerms != '') {
                         let data = {
-                            pkgName: values.pkgName,
-                            pkgTerm: values.pkgTerms,
+                            pkgName: this.state.pkgName,
+                            pkgTerm: this.state.pkgTerms,
                             pkgPrice: this.state.pkgPrice,
                             pkgFeatures: this.state.pkg_features,
                             whitelabel_id: this.props.whitelabel_id
@@ -71,8 +72,8 @@ export default class WhiteLabelPricing extends Component {
                             pkg_features: pkg_features,
                         })
                     }
-                }
-            })
+                // }
+            // })
         }
 
         // console.log('submit data is', data)
@@ -90,7 +91,9 @@ export default class WhiteLabelPricing extends Component {
 
     setPrice = (price, field, price_for) => {
 
-        this.state[price_for][field] = price
+        if(price > 0){
+            this.state[price_for][field] = price
+        }
         // console.log('price', price, 'field', field, 'price_for', price_for)
     }
 

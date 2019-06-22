@@ -3,9 +3,9 @@ import React, { Component, Fragment } from 'react'
 import {
     Form, Input, Row, Col, Button, Select,
 } from "antd";
-import styles from '../whitelabels.css';
-import RestService from '../../../appRedux/services/RestServices';
-import { one_month, three_month, six_month, twelve_month, sim, chat, pgp, vpn } from '../../../constants/Constants';
+import styles from '../../../whitelabels.css';
+import RestService from '../../../../../appRedux/services/RestServices';
+import { one_month, three_month, six_month, twelve_month, sim, chat, pgp, vpn } from '../../../../../constants/Constants';
 
 class PackagePricingForm extends Component {
     constructor(props) {
@@ -19,33 +19,37 @@ class PackagePricingForm extends Component {
         }
     }
 
+
     setPrice = (fieldName, is_pkg_feature = false, pkg_feature_value = '') => {
         // let value = e.target.value;
         let value = ''
         if (fieldName) {
-            if (is_pkg_feature) {
-                if (pkg_feature_value !== '' && fieldName) {
-                    value = pkg_feature_value;
-                    this.props.setPkgDetail(pkg_feature_value, fieldName, is_pkg_feature);
-                }
+            if (fieldName == 'pkgPrice' && value < 0) {
             } else {
-                value = this.props.form.getFieldValue(fieldName)
-                // console.log('fiels name', fieldName, 'value', value)
-                if (value !== '' && fieldName) {
-                    this.props.setPkgDetail(value, fieldName, is_pkg_feature);
+                if (is_pkg_feature) {
+                    if (pkg_feature_value !== '' && fieldName) {
+                        value = pkg_feature_value;
+                        this.props.setPkgDetail(pkg_feature_value, fieldName, is_pkg_feature);
+                    }
+                } else {
+                    value = this.props.form.getFieldValue(fieldName)
+                    // console.log('fiels name', fieldName, 'value', value)
+                    if (value !== '' && fieldName) {
+                        this.props.setPkgDetail(value, fieldName, is_pkg_feature);
+                    }
                 }
+                this.setState({
+                    [fieldName]: value
+                })
             }
 
-            this.setState({
-                [fieldName]: value
-            })
         }
     }
 
 
-    PackageNameChange = async (rule,value, callback) => {
+    PackageNameChange = async (rule, value, callback) => {
         let response = true
-console.log('value', value)
+        console.log('value', value)
         response = await RestService.checkPackageName(value).then((response) => {
             if (RestService.checkAuth(response.data)) {
                 if (response.data.status) {
@@ -99,10 +103,10 @@ console.log('value', value)
                         </Form.Item>
                     </Col>
                     <Col span={4}>
-                        {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}>Set</Button> */}
+                        <Button type="primary" onClick={() => this.setPrice('pkgName')}>Set</Button>
                     </Col>
                     <Col span={6}>
-                        {/* <h4 className='priceText'>Price: 51651</h4> */}
+                        <h4 className='priceText'>{this.state.pkgName}</h4>
                     </Col>
                 </Row>
                 <Row>
@@ -138,10 +142,10 @@ console.log('value', value)
                         </Form.Item>
                     </Col>
                     <Col span={4}>
-                        {/* <Button type="primary" onClick={() => this.setPrice('pkgTerms')}>Set</Button> */}
+                        <Button type="primary" onClick={() => this.setPrice('pkgTerms')}>Set</Button>
                     </Col>
                     <Col span={7}>
-                        {/* <h4 className='priceText'>Price: 51651</h4> */}
+                        <h4 className='priceText'>{this.state.pkgTerms}</h4>
                     </Col>
                 </Row>
                 <Row>
@@ -155,7 +159,7 @@ console.log('value', value)
                                         message: 'Please Input Package Price',
                                     },
                                 ],
-                            })(<Input type='number' />)}
+                            })(<Input type='number' min={0} />)}
 
                         </Form.Item>
                     </Col>
