@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-// import {Route, Switch} from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { SECURE_LAUNCHER, SC, BYOD } from '../../constants/Constants';
@@ -20,13 +19,14 @@ import {
 import EditWhiteLabel from "./components/EditWhiteLabel";
 import EditByodApk from "./components/EditByodApk"
 import LoadIDsModal from "./components/LoadIDsModal";
-import WhiteLabelPricing from './components/WhiteLabelPricing';
+// import WhiteLabelPricing from './components/WhiteLabelPricing';
 import { USER_URL } from '../../constants/Application'
 
 const confirm = Modal.confirm;
 const success = Modal.success
 const error = Modal.error
 let copiedData = [];
+
 
 class WhiteLabels extends Component {
     constructor(props) {
@@ -211,7 +211,7 @@ class WhiteLabels extends Component {
     componentDidMount() {
         this.props.getWhiteLabelInfo(this.props.id);
         this.props.getWhitelabelBackups(this.props.id);
-        this.props.getPrices(this.props.id);
+        // this.props.getPrices(this.props.id);
 
         this.setState({
             whitelabelBackups: this.props.whitelabelBackups
@@ -675,7 +675,8 @@ class WhiteLabels extends Component {
                         <Col xs={24} sm={24} md={6} lg={6} xl={6}>
                             <div>
                                 <div className="contenar">
-                                    <a href="javascript:void(0)" onClick={(e) => { this.showPricingModal(true) }} >
+                                    {/* <a href="javascript:void(0)" onClick={(e) => { this.showPricingModal(true) }} > */}
+                                    <Link to={ "/set-prices/"+this.props.whiteLabelInfo.name}>
                                         <Card className="manage_sec" style={{ borderRadius: 12 }}>
                                             <div>
                                                 <h2 style={{ textAlign: "center" }}>Set Prices</h2>
@@ -684,9 +685,10 @@ class WhiteLabels extends Component {
                                             </div>
                                             <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
-                                    </a>
+                                    </Link>
+                                    {/* </a> */}
                                     <div className="middle">
-                                        <WhiteLabelPricing
+                                        {/* <WhiteLabelPricing
                                             showPricingModal={this.showPricingModal}
                                             pricing_modal={this.state.pricing_modal}
                                             LabelName={this.props.whiteLabelInfo.name}
@@ -698,7 +700,7 @@ class WhiteLabels extends Component {
                                             isPriceChanged={this.props.isPriceChanged}
                                             resetPrice={this.props.resetPrice}
 
-                                        />
+                                        /> */}
                                     </div>
                                 </div>
                             </div>

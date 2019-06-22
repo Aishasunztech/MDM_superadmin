@@ -12,7 +12,7 @@ import {
 } from '../../constants/LabelConstants';
 import { sim, chat, pgp, vpn } from '../../constants/Constants';
 import { CLEAR_APPLICATIONS } from '../../constants/ActionTypes';
-import SimTabContent from "../../routes/whitelabels/components/SimTabContent";
+import SimTabContent from "../../routes/whitelabels/components/pricesPackages/components/SimTabContent";
 const { TabPane } = Tabs;
 
 

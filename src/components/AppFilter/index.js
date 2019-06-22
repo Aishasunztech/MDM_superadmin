@@ -197,6 +197,7 @@ class AppFilter extends Component {
                             {(this.props.handleFilterOptions !== undefined && this.props.handleFilterOptions !== null) ? this.props.handleFilterOptions() : null}
                         </div>
                     </Col>
+                    <Col className={`${fullScreenClass2} col-sm-6 col-xs-12`}></Col>
                     <Col className={`${fullScreenClass2} col-sm-6 col-xs-12`}>
                         <div className="gutter-box">
                             <Search
@@ -207,7 +208,7 @@ class AppFilter extends Component {
                             />
                         </div>
                     </Col>
-                    <Col className={`${fullScreenClass2} col-sm-6 col-xs-12`}>
+                    {/* <Col className={`${fullScreenClass2} col-sm-6 col-xs-12`}>
                         <div className="gutter-box">
                             <Select
                                 value={this.state.DisplayPages}
@@ -223,7 +224,7 @@ class AppFilter extends Component {
                                 <Select.Option value="100">100</Select.Option>
                             </Select>
                         </div>
-                    </Col>
+                    </Col> */}
                     <Col className={`${fullScreenClass2} col-sm-12 col-xs-12`}>
                         <div className="gutter-box">
                             {
@@ -265,6 +266,15 @@ class AppFilter extends Component {
                                                         disabled={(this.props.disableAddButton === true) ? true : false}
                                                         style={{ width: '100%' }}
                                                         onClick={() => this.props.handleUploadApkModal(true)}
+                                                    >
+                                                        {this.props.addButtonText}
+                                                    </Button>
+                                                    : (this.props.setPrice) ?
+                                                    <Button
+                                                        type="primary"
+                                                        disabled={(this.props.disableAddButton === true) ? true : false}
+                                                        style={{ width: '100%' }}
+                                                        onClick={() => this.props.showPricingModal(true)}
                                                     >
                                                         {this.props.addButtonText}
                                                     </Button>
