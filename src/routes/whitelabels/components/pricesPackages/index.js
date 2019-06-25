@@ -217,6 +217,7 @@ class Prices extends Component {
 
     componentWillReceiveProps(nextProps){
         if (this.props !== nextProps) {
+            // console.log(this.props.packages, 'will reciece packages')
             this.setState({
                 prices: nextProps.prices,
                 packages: nextProps.packages,
@@ -233,6 +234,7 @@ class Prices extends Component {
 
 
     renderList = () => {
+        // console.log('this.state.packages', this.state.packages)
         if (this.state.packages) {
            return this.state.packages.map((item, index) => {
                 return{
@@ -285,6 +287,7 @@ class Prices extends Component {
         })
     }
     render() {
+        // console.log(this.props.packages,'comoing prop are')
         return (
             <div>
                 <div>
@@ -389,7 +392,7 @@ function mapDispatchToProps(dispatch) {
 
 
 var mapStateToProps = ({ whiteLabels }, otherprops) => {
-    console.log(whiteLabels, 'props are')
+    // console.log(whiteLabels.packages, 'props are for packages')
     return {
         prices: whiteLabels.prices,
         packages: whiteLabels.packages,

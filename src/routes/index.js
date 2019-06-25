@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Route, Switch } from "react-router-dom";
 import Account from "./account/index";
 import ManageData from "./account/ManageData";
@@ -28,36 +28,42 @@ const AppRoutes = ({ match, whiteLabels }) => {
         {
           whiteLabels.map((whiteLabel, index) => {
             return (
-              <Switch>
-                <Route
-                  exact
-                  path={`${whiteLabel.route_uri}`}
-                  key={index}
-                  // id={whiteLabel.id} 
-                  render={
-                    (routeProps) => (
-                      <WhiteLabels
-                        {...routeProps}
-                        id={whiteLabel.id}
-                      />
-                    )
-                  }
-                />
-                <Route
-                  exact
-                  path={'/set-prices' +whiteLabel.route_uri}
-                  id={whiteLabel.id}
-                  render={
-                    (routeProps) => (
-                      <SetPrices
-                        {...routeProps}
-                        id={whiteLabel.id}
-                      />
-                    )
-                  }
-                />
-              </Switch>
 
+              <Route
+                exact
+                path={`${whiteLabel.route_uri}`}
+                key={index}
+                // id={whiteLabel.id} 
+                render={
+                  (routeProps) => (
+                    <WhiteLabels
+                      {...routeProps}
+                      id={whiteLabel.id}
+                    />
+                  )
+                }
+              />
+
+            );
+          })
+        }
+
+        {
+          whiteLabels.map((whiteLabel, index) => {
+            return (
+              <Route
+                exact
+                path={'/set-prices' + whiteLabel.route_uri}
+                id={whiteLabel.id}
+                render={
+                  (routeProps) => (
+                    <SetPrices
+                      {...routeProps}
+                      id={whiteLabel.id}
+                    />
+                  )
+                }
+                />
             );
           })
         }

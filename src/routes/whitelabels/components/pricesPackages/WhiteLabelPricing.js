@@ -52,7 +52,7 @@ export default class WhiteLabelPricing extends Component {
                 innerTab: sim
             })
         } else if (this.state.outerTab === '2') {
-            console.log('ref is hte ', this.form);
+            // console.log('ref is hte ', this.form);
             // this.form.props.form.validateFields((err, values) => {
                 // if (!err) {
                     // console.log('no error found', values);
@@ -70,6 +70,8 @@ export default class WhiteLabelPricing extends Component {
                         this.setState({
                             pkgPrice: 0,
                             pkg_features: pkg_features,
+                            pkgName: '',
+                            pkgTerms: '',
                         })
                     }
                 // }
@@ -82,7 +84,7 @@ export default class WhiteLabelPricing extends Component {
 
     setPkgDetail = (value, field, is_pkg_feature = false) => {
         if (is_pkg_feature) {
-            console.log(this.state.pkg_features, 'pkg features')
+            // console.log(this.state.pkg_features, 'pkg features')
             this.state.pkg_features[field] = value
         } else {
             this.state[field] = value
@@ -104,7 +106,7 @@ export default class WhiteLabelPricing extends Component {
     }
 
     render() {
-        console.log(this.props.isPriceChanged, 'ischanged price')
+        // console.log(this.props.isPriceChanged, 'ischanged price')
         // console.log(sim, this.state[sim], 'sim object ',this.state[chat], 'chat object ',this.state[pgp], 'pgp object',this.state[vpn], 'sim object',)
         return (
             <Modal

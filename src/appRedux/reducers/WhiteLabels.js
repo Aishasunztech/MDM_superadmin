@@ -58,7 +58,7 @@ export default (state = initialState, action) => {
             }
         }
         case GET_PRICES: {
-            console.log(action.response, 'response of get prices')
+            // console.log(action.response, 'response of get prices')
 
             return {
                 ...state,
@@ -69,7 +69,7 @@ export default (state = initialState, action) => {
         }
 
         case GET_PACKAGES: {
-            console.log(action.response, 'response of get prices')
+            // console.log(action.response, 'response of get prices')
 
             return {
                 ...state,
@@ -95,7 +95,7 @@ export default (state = initialState, action) => {
         }
 
         case SAVE_ID_PRICES: {
-            console.log(action.response, 'response form save id prices')
+            // console.log(action.response, 'response form save id prices')
             if (action.response.status) {
                 success({
                     title: action.response.msg
@@ -114,15 +114,16 @@ export default (state = initialState, action) => {
         }
 
         case RESET_PRICE: {
+            // console.log('reset prices')
             return {
                 ...state,
-                prices: state.pricesCopy,
+                prices: JSON.parse(JSON.stringify(state.pricesCopy)),
                 isPriceChanged: false
             }
         }
 
         case SAVE_PACKAGE: {
-            // console.log(action.response, 'response form save id prices')
+            console.log(action.response, 'response form save id prices')
             if (action.response.status) {
                 success({
                     title: action.response.msg
@@ -136,7 +137,8 @@ export default (state = initialState, action) => {
                 })
             }
             return {
-                ...state
+                ...state,
+                packages: [...state.packages]
             }
         }
 
