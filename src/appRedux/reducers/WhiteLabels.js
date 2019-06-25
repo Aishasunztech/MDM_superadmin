@@ -20,9 +20,19 @@ const error = Modal.error
 const initialState = {
     whiteLabel: {},
     whitelabelBackups: [],
-    prices: {},
+    prices: {
+        sim_id:{},
+        chat_id:{},
+        pgp_email:{},
+        vpn: {}
+    },
     isPriceChanged: false,
-    pricesCopy: {},
+    pricesCopy: {
+        sim_id:{},
+        chat_id:{},
+        pgp_email:{},
+        vpn: {}
+    },
     packages: [],
     packagesCopy:[]
 };
