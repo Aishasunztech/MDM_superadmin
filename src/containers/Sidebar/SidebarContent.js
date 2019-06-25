@@ -111,7 +111,7 @@ class SidebarContent extends Component {
             >
               {
                 this.props.whiteLabels.map((whiteLabel) => {
-                  console.log(whiteLabel, 'white label is the ')
+                  // console.log(whiteLabel, 'white label is the ')
                   return (
                     <Menu.Item key={whiteLabel.name}>
                       <Link to={whiteLabel.route_uri}>

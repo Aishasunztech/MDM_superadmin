@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Button, Tabs, Table, Card, Input } from 'antd';
+import { Button, Tabs, Table, Card, Input, Icon } from 'antd';
 import {
     getPrices, resetPrice, setPackage,
     saveIDPrices, setPrice, getPackages
@@ -18,7 +18,7 @@ import {
 } from '../../../../constants/LabelConstants';
 import { isArray } from "util";
 import WhiteLabelPricing from './WhiteLabelPricing';
-let packagesCopy=[];
+let packagesCopy = [];
 class Prices extends Component {
     constructor(props) {
         super(props)
@@ -83,6 +83,20 @@ class Prices extends Component {
                         sortDirections: ['ascend', 'descend'],
                     }
                 ]
+            },
+            {
+                title: (
+                    <span>
+                        Services
+                        {/* <Popover placement="top" >
+                            <span className="helping_txt"><Icon type="info-circle" /></span>
+                        </Popover> */}
+                    </span>
+                ),
+                align: 'center',
+                dataIndex: 'permission',
+                key: 'permission',
+                className: 'row '
             },
             {
                 title: (
@@ -153,13 +167,13 @@ class Prices extends Component {
     handleSearch = (e) => {
 
         let dumyPackages = [];
-        if(this.state.copyStatus){
+        if (this.state.copyStatus) {
             packagesCopy = this.state.packages;
             this.state.copyStatus = false;
         }
-    
+
         if (e.target.value.length) {
-      
+
             packagesCopy.forEach((dealer) => {
 
                 if (dealer[e.target.name] !== undefined) {
@@ -215,7 +229,7 @@ class Prices extends Component {
     //     }
     // }
 
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
         if (this.props !== nextProps) {
             // console.log(this.props.packages, 'will reciece packages')
             this.setState({
@@ -236,21 +250,58 @@ class Prices extends Component {
     renderList = () => {
         // console.log('this.state.packages', this.state.packages)
         if (this.state.packages) {
-           return this.state.packages.map((item, index) => {
-                return{
+            return this.state.packages.map((item, index) => {
+                return {
                     key: item.id,
                     sr: ++index,
                     pkg_name: item.pkg_name,
-                    pkg_price: "$"+item.pkg_price,
+                    pkg_price: "$" + item.pkg_price,
                     pkg_term: item.pkg_term,
+                    pkg_features: item.pkg_features ? JSON.parse(item.pkg_features) : {},
                     pkg_expiry: item.pkg_expiry
                 }
             })
         }
-            // console.log(this.props.packages, 'packages are')
+        // console.log(this.props.packages, 'packages are')
     }
 
-    
+    customExpandIcon(props) {
+        if (props.expanded) {
+            return <a style={{ fontSize: 22, verticalAlign: 'sub' }} onClick={e => {
+                props.onExpand(props.record, e);
+            }}><Icon type="caret-down" /></a>
+        } else {
+
+            return <a style={{ fontSize: 22, verticalAlign: 'sub' }} onClick={e => {
+                props.onExpand(props.record, e);
+            }}><Icon type="caret-right" /></a>
+        }
+    }
+
+    renderFeatures = (data) => {
+        let features = [];
+        if (Object.keys(data).length !== 0 && data.constructor === Object) {
+
+            for (var key in data) {
+                if (data.hasOwnProperty(key)) {
+                    console.log(key + " -> " + data[key]);
+                    let name=  key;
+                   name = name.charAt(0).toUpperCase() + name.slice(1);
+                    let dump = {
+                        name: name.replace(/_/g,' '), 
+                        f_value: data[key] ? "yes" : 'No',
+                        rowKey: key
+                    }
+
+                    features.push(dump)
+                }
+            }
+        }
+        console.log(features, 'featues arte')
+        return features
+    }
+
+
     handleComponentSearch = (value) => {
 
         try {
@@ -287,7 +338,7 @@ class Prices extends Component {
         })
     }
     render() {
-        // console.log(this.props.packages,'comoing prop are')
+        console.log(this.props.packages, 'comoing prop are')
         return (
             <div>
                 <div>
@@ -351,7 +402,32 @@ class Prices extends Component {
                                 <Table
                                     columns={this.columns}
                                     dataSource={this.renderList()}
+                                    expandIcon={(props) => this.customExpandIcon(props)}
                                     bordered
+                                    expandIconAsCell={false}
+                                    expandIconColumnIndex={3}
+                                    expandedRowRender={record => {
+                                        if (Object.keys(record.pkg_features).length !== 0 && record.pkg_features.constructor === Object) {
+                                            return (
+                                                <div>
+                                                    <Table
+                                                        columns={[
+                                                            { title: 'Service Name', dataIndex: 'name', key: 'name', align: 'center' },
+                                                            { title: 'Included', key: 'f_value', dataIndex: 'f_value', align: 'center' }]}
+                                                        dataSource={this.renderFeatures(record.pkg_features)}
+                                                        pagination={false}
+                                                    />
+                                                </div>)
+                                        } else {
+                                            return (
+                                                <div>
+
+                                                </div>
+                                            )
+                                        }
+
+
+                                    }}
                                     pagination={false}
 
                                 />
