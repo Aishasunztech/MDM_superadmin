@@ -231,7 +231,6 @@ class Prices extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props !== nextProps) {
-            // console.log(this.props.packages, 'will reciece packages')
             this.setState({
                 prices: nextProps.prices,
                 packages: nextProps.packages,
@@ -253,7 +252,7 @@ class Prices extends Component {
             return this.state.packages.map((item, index) => {
                 return {
                     key: item.id,
-                    sr: index++,
+                    sr: ++index,
                     pkg_name: item.pkg_name,
                     pkg_price: "$" + item.pkg_price,
                     pkg_term: item.pkg_term,
