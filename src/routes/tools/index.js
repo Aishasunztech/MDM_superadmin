@@ -42,7 +42,6 @@ class Tools extends Component {
     }
 
     renderList(list) {
-        console.log('list is: ', list)
         data = []
         list.map((item, index) => {
             data.push({

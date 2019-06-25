@@ -9,6 +9,8 @@ import sidebarMenu from "./SidebarMenu";
 import whiteLabels from './WhiteLabels';
 import Apk_List from "./Apk";
 import Devices from './Devices';
+import Tool from "./Tool";
+
 
 const reducers = combineReducers({
   routing: routerReducer,
@@ -20,7 +22,7 @@ const reducers = combineReducers({
   sidebarMenu: sidebarMenu,
   whiteLabels: whiteLabels,
   apk_list: Apk_List,
-
+  tool: Tool
 });
 
 export default reducers;

@@ -46,7 +46,7 @@ export const GET_PRICES = 'GET_PRICES';
 export const SET_PRICE = 'SET_PRICE';
 export const RESET_PRICE = 'RESET_PRICE';
 export const GET_PACKAGES ='GET_PACKAGES'
-
+export const RESTART_WHITELABEL = 'RESTART_WHITELABEL';
 
 //Device const
 export const DEVICES_LIST = 'DEVICES_LIST';
