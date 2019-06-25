@@ -55,6 +55,7 @@ const AppRoutes = ({ match, whiteLabels }) => {
                 exact
                 path={'/set-prices' + whiteLabel.route_uri}
                 id={whiteLabel.id}
+                key={index}
                 render={
                   (routeProps) => (
                     <SetPrices

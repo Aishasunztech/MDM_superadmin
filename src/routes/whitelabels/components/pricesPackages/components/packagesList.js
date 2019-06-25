@@ -106,7 +106,8 @@ class Prices extends Component {
                     pkg_name: item.pkg_name,
                     pkg_price: "$" + item.pkg_price,
                     pkg_term: item.pkg_term,
-                    pkg_expiry: item.pkg_expiry
+                    pkg_expiry: item.pkg_expiry,
+                    pkg_features: item.pkg_features
                 }
             })
         }
@@ -116,15 +117,19 @@ class Prices extends Component {
     render() {
         console.log(this.state.packages, 'prices are')
         return (
-
             <Table
                 columns={this.columns}
                 dataSource={this.renderList()}
                 bordered
                 pagination={false}
+                // expandIconColumnIndex={3}
+                // expandIconAsCell={false}
 
+                expandedRowRender={record => <p style={{ margin: 0 }}>sdfsdfadfasdasdf</p>}
             />
 
         )
     }
 }
+
+
