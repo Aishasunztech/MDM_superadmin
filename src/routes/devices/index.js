@@ -1008,6 +1008,7 @@ class Devices extends Component {
                                     format="DD-MM-YYYY"
                                     defaultValue={moment(this.state.extendExpiryDevice.expiry_date)}
                                     onChange={this.saveExpiryDate}
+                                    disabledDate={this.disabledDate}
                                 />
                             </Form.Item>
 

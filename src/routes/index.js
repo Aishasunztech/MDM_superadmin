@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { Route, Switch } from "react-router-dom";
 import Account from "./account/index";
 import ManageData from "./account/ManageData";
-import Modal from "./whitelabels/components/LoadIDsModal";
+import Tools from "./tools/index";
 import WhiteLabels from "./whitelabels/index";
 import Device from "./devices/index";
 import AutoUpdate from './autoUpdate/index';
@@ -75,8 +75,8 @@ const AppRoutes = ({ match, whiteLabels }) => {
         />
         <Route
           exact
-          path={`${match.url}account/modal`}
-          component={Modal}
+          path={`${match.url}tools`}
+          component={Tools}
         />
         <Route
           exact

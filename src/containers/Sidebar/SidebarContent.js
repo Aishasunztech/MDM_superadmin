@@ -125,12 +125,23 @@ class SidebarContent extends Component {
               }
 
             </Menu.SubMenu>
+
+
             <Menu.Item key="account">
               <Link to="/account">
                 <i className="icon icon-profile2" />
                 <IntlMessages id="sidebar.account" />
               </Link>
             </Menu.Item>
+
+
+            <Menu.Item key="tools">
+              <Link to="/tools">
+              <i className="icon icon-profile2" style={{visibility: 'hidden'}} />
+                <IntlMessages id="sidebar.tools" />
+              </Link>
+            </Menu.Item>
+
             <Menu.Item key="logout"
               onClick={
                 (e) => { this.logout() }
