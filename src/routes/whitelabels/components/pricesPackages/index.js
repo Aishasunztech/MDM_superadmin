@@ -231,7 +231,6 @@ class Prices extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props !== nextProps) {
-            // console.log(this.props.packages, 'will reciece packages')
             this.setState({
                 prices: nextProps.prices,
                 packages: nextProps.packages,
