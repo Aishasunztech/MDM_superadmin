@@ -2,9 +2,8 @@ import React, { Component, Fragment } from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Card, Button, Row, Col, Table } from "antd";
-import { getWhiteLabels } from "../../appRedux/actions";
 
-
+import { getWhiteLabels, restartWhiteLabel } from "../../appRedux/actions";
 
 let data = [];
 class Tools extends Component {
@@ -46,13 +45,20 @@ class Tools extends Component {
         console.log('list is: ', list)
         data = []
         list.map((item, index) => {
-              data.push({
-                'row_key': `${index}Key`,
-                'count': ++index,
-                'label': item.name ? item.name : 'N/A',
-                'reboot': <Fragment>
-                    <Button style={{ backgroundColor: "orange", color: 'white', borderRadius: '15px'}}>Reboot Server</Button>
-                </Fragment>,
+            data.push({
+                row_key: `${index}`,
+                count: ++index,
+                label: item.name ? item.name : 'N/A',
+                reboot: (
+                    <Fragment>
+                        <Button
+                            style={{ backgroundColor: "orange", color: 'white', borderRadius: '15px' }}
+                            onClick = {(e)=>{
+                                this.props.restartWhiteLabel(item.id);
+                            }}
+                        >Reboot Server</Button>
+                    </Fragment>
+                ),
             })
         });
         return (data);
@@ -86,7 +92,7 @@ class Tools extends Component {
                 </Card>
                 <Card>
                     <Table size="middle"
-                        style={{width: '40%'}}
+                        style={{ width: '40%' }}
                         // className="gx-table-responsive devices table"
                         bordered
                         columns={this.state.columns}
@@ -110,6 +116,7 @@ var mapStateToProps = (state) => {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getWhiteLabels: getWhiteLabels,
+        restartWhiteLabel: restartWhiteLabel
     }, dispatch);
 }
 

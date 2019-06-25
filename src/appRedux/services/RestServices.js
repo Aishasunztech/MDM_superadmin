@@ -51,8 +51,6 @@ const RestService = {
         localStorage.setItem('name', data.name);
         localStorage.setItem('firstName', data.first_name);
         localStorage.setItem('lastName', data.last_name);
-        // localStorage.setItem('connected_dealer', data.user.connected_dealer);
-        // localStorage.setItem('connected_devices', data.user.connected_devices[0].total);
         // localStorage.setItem('type', data.user.user_type);
         // localStorage.setItem('dealer_pin', data.user.link_code);
         localStorage.setItem('two_factor_auth', data.two_factor_auth);
@@ -129,6 +127,9 @@ const RestService = {
     },
 
     // =========================================Sidebar Menus =====================================
+    restartWhiteLabel: (wlID) => {
+        return axios.post(USER_URL + 'restart-whitelabel', {wlID} ,RestService.getHeader());
+    },
     getWhiteLabels: () => {
         return axios.get(USER_URL + 'white-labels', RestService.getHeader());
     },
