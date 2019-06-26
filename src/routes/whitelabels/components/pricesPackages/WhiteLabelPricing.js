@@ -38,6 +38,8 @@ export default class WhiteLabelPricing extends Component {
 
     handleSubmit = () => {
 
+        console.log('tab selected is', this.state.outerTab)
+
         if(this.state.outerTab === '1'){
             let data = this.props.prices
             // console.log(this.props.whitelabel_id)
@@ -49,7 +51,8 @@ export default class WhiteLabelPricing extends Component {
                 [chat]: {},
                 [pgp]: {},
                 [vpn]: {},
-                innerTab: sim
+                innerTab: sim,
+                outerTab: '1'
             })
         } else if (this.state.outerTab === '2') {
             // console.log('ref is hte ', this.form);
@@ -72,6 +75,7 @@ export default class WhiteLabelPricing extends Component {
                             pkg_features: pkg_features,
                             pkgName: '',
                             pkgTerms: '',
+                            outerTab: '1'
                         })
                     }
                 // }
@@ -106,7 +110,7 @@ export default class WhiteLabelPricing extends Component {
     }
 
     render() {
-        // console.log(this.props.isPriceChanged, 'ischanged price')
+        console.log(this.props.isPriceChanged, 'ischanged price', this.state.outerTab)
         // console.log(sim, this.state[sim], 'sim object ',this.state[chat], 'chat object ',this.state[pgp], 'pgp object',this.state[vpn], 'sim object',)
         return (
             <Modal
@@ -117,7 +121,7 @@ export default class WhiteLabelPricing extends Component {
                 onOk={this.handleSubmit}
                 okText='Save'
                 okButtonProps={{disabled: this.state.outerTab == '1' ? !this.props.isPriceChanged : false}}
-                onCancel={() => {this.props.showPricingModal(false); this.props.resetPrice()}}
+                onCancel={() => {this.props.showPricingModal(false); this.props.resetPrice(); this.setState({outerTab: '1'})}}
                 // footer={null}
                 width='650px'
             >
