@@ -40,11 +40,12 @@ class EditByodApk extends Component {
                     'model_id': values.model_id,
                     'command_name': this.props.whiteLabelInfo.command_name,
                     'apk_files': apk_files,
-                    'is_byod': true
+                    'is_byod': true,
+                    'byod_type': this.props.type
                     // 'apk': apk,
                     // 'sc_apk': ScApk
                 }
-                // console.log(form_data);
+                console.log(form_data, 'form data');
                 // this.props.editApk(form_data);
                 this.props.editWhiteLabelInfo(form_data);
                 this.props.getWhiteLabelInfo(this.props.whiteLabelInfo.id);
@@ -64,7 +65,7 @@ class EditByodApk extends Component {
     }
 
     render() {
-        console.log("BYOD", apk);
+        // console.log("BYOD", apk);
 
         const formItemLayout = {
             labelCol: {
