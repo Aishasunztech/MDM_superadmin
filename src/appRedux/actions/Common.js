@@ -2,7 +2,7 @@ import {
     GET_DROPDOWN,
     POST_DROPDOWN,
     INVALID_TOKEN,
-    NEW_DEVICES_LIST,
+    NEW_REQUEST_LIST,
     POST_PAGINATION,
     GET_PAGINATION
 } from "constants/ActionTypes"
@@ -22,16 +22,15 @@ export function getDropdown(pageName) {
                     //  console.log("action selected options", JSON.parse(response.data.data));
                     let res = response.data.data;
                     // console.log(res);
-                    if(res === undefined || res === 'undefined')
-                    {
-                        
+                    if (res === undefined || res === 'undefined') {
+
                         res = [];
-                       
+
                     }
-                    else{
-                        res= JSON.parse(res)
+                    else {
+                        res = JSON.parse(res)
                     }
-                  //  res = (res !== undefined || res !== 'undefined') ? res : [""];
+                    //  res = (res !== undefined || res !== 'undefined') ? res : [""];
                     dispatch({
                         type: GET_DROPDOWN,
                         payload: res

@@ -18,7 +18,10 @@ import IntlMessages from "../../util/IntlMessages";
 import { connect } from "react-redux";
 import {
   logout,
-  getWhiteLabels
+  getWhiteLabels,
+  getNewCashRequests,
+  rejectRequest,
+  acceptRequest
 } from '../../appRedux/actions/';
 
 
@@ -62,6 +65,18 @@ class SidebarContent extends Component {
   handleClick = (e) => {
 
   }
+
+
+  componentDidMount() {
+    this.props.getNewCashRequests();
+  }
+  componentWillReceiveProps(nextprops) {
+    if (this.props.pathname !== nextprops.pathname) {
+      this.props.getNewCashRequests();
+    }
+  }
+
+
   render() {
     // console.log(addDevice)
     const { themeType, navStyle, pathname } = this.props;
@@ -76,6 +91,9 @@ class SidebarContent extends Component {
           <div className={`gx-sidebar-notifications ${this.getNoHeaderClass(navStyle)} `}>
             <UserProfile
               logout={this.props.logout}
+              requests={this.props.requests}
+              acceptRequest={this.props.acceptRequest}
+              rejectRequest={this.props.rejectRequest}
             />
             {/* <AppsNavigation/> */}
           </div>
@@ -165,12 +183,16 @@ class SidebarContent extends Component {
 const mapStateToProps = ({ settings, sidebarMenu }) => {
   const { navStyle, themeType, locale, pathname } = settings;
 
-  return { navStyle, themeType, locale, pathname, whiteLabels: sidebarMenu.whiteLabels }
+  return { navStyle, themeType, locale, pathname, whiteLabels: sidebarMenu.whiteLabels, requests: sidebarMenu.newRequests }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     getWhiteLabels: getWhiteLabels,
+    getNewCashRequests: getNewCashRequests,
+    rejectRequest: rejectRequest,
+    acceptRequest: acceptRequest,
+
     logout: logout
   }, dispatch);
 }
