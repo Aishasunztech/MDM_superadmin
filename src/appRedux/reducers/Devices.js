@@ -8,7 +8,8 @@ import {
     POST_DROPDOWN,
     POST_PAGINATION,
     GET_PAGINATION,
-    OFFLINE_DEVICES_STATUS
+    OFFLINE_DEVICES_STATUS,
+    NEW_REQUEST_LIST
 } from "../../constants/ActionTypes";
 
 import {
@@ -42,6 +43,7 @@ const initialState = {
         DEVICE_START_DATE,
         DEVICE_EXPIRY_DATE,
     ],
+    newRequests: [],
 };
 
 export default (state = initialState, action) => {
@@ -76,6 +78,7 @@ export default (state = initialState, action) => {
                 devices: action.payload,
             }
         }
+
         case OFFLINE_DEVICES_STATUS: {
             console.log(state.devices, 'OFFLINE_DEVICES_STATUS reducer :: ', action.payload)
             if (action.payload.status) {

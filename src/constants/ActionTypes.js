@@ -45,7 +45,11 @@ export const SAVE_PACKAGE = 'SAVE_PACKAGE';
 export const GET_PRICES = 'GET_PRICES';
 export const SET_PRICE = 'SET_PRICE';
 export const RESET_PRICE = 'RESET_PRICE';
-export const GET_PACKAGES ='GET_PACKAGES'
+export const GET_PACKAGES = 'GET_PACKAGES'
+export const REJECT_REQUEST = 'REJECT_REQUEST'
+export const ACCEPT_REQUEST = 'ACCEPT_REQUEST'
+
+
 
 
 //Device const
@@ -57,7 +61,7 @@ export const EDIT_DEVICE = 'EDIT_DEVICE';
 export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
 export const ADD_DEVICE = 'ADD_DEVICE';
 export const REJECT_DEVICE = 'REJECT_DEVICE';
-export const NEW_DEVICES_LIST = 'NEW_DEVICES_LIST';
+export const NEW_REQUEST_LIST = 'NEW_REQUEST_LIST';
 export const PRE_ACTIVATE_DEVICE = 'PRE_ACTIVATE_DEVICE';
 export const SPIN_lOADING = 'SPIN_lOADING';
 export const DELETE_UNLINK_DEVICE = 'DELETE_UNLINK_DEVICE';

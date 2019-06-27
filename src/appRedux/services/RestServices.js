@@ -254,7 +254,21 @@ const RestService = {
     // },
     statusDevice: (data, requireStatus) => {
         // console.log('at service file status is: ', requireStatus);
-        return axios.put(USER_URL + 'device-status', {data, requireStatus}, RestService.getHeader());
-    }
+        return axios.put(USER_URL + 'device-status', { data, requireStatus }, RestService.getHeader());
+    },
+    getNewCashRequests: () => {
+        return axios.get(USER_URL + 'newRequests',
+            RestService.getHeader()
+        )
+    },
+    rejectRequest: (request) => {
+        // console.log(device);
+        return axios.put(USER_URL + 'delete_request/' + request.id, request, RestService.getHeader());
+    },
+    acceptRequest: (request) => {
+        // console.log(device);
+        return axios.put(USER_URL + 'accept_request/' + request.id, request, RestService.getHeader());
+    },
+
 }
 export default RestService;
