@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 // import {Link} from "react-router-dom";
 
 import { Button, Form, Icon, Input, message } from "antd";
-import IntlMessages from "util/IntlMessages";
 import CircularProgress from "components/CircularProgress/index";
 
 import { APP_TITLE } from "../constants/Application";
@@ -75,7 +74,7 @@ class Login extends React.Component {
             <div className="gx-app-login-content">
               <Form onSubmit={this.handleSubmit} className="gx-signin-form gx-form-row0">
 
-                <FormItem>
+                <Form.Item>
                   {getFieldDecorator('email', {
                     initialValue: "",
                     rules: [{
@@ -89,8 +88,8 @@ class Login extends React.Component {
                       autoComplete={false}
                     />
                   )}
-                </FormItem>
-                <FormItem>
+                </Form.Item>
+                <Form.Item>
                   {getFieldDecorator('pwd', {
                     initialValue: "",
                     rules: [{
@@ -100,13 +99,13 @@ class Login extends React.Component {
                   })(
                     <Input type="password" placeholder="Password" />
                   )}
-                </FormItem>
+                </Form.Item>
 
-                <FormItem>
+                <Form.Item>
                   <Button type="primary" className="gx-mb-0" htmlType="submit">
-                    <IntlMessages id="app.userAuth.signIn" />
+                    Sign In
                   </Button>
-                </FormItem>
+                </Form.Item>
 
               </Form>
 

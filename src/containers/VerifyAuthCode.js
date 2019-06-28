@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Form, Icon, Input, message } from "antd";
 import { Redirect, Route } from "react-router-dom";
-import IntlMessages from "util/IntlMessages";
 import CircularProgress from "components/CircularProgress/index";
 import { connect } from "react-redux";
 
