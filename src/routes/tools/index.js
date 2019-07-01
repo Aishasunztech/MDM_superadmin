@@ -39,6 +39,7 @@ class Tools extends Component {
                         checkPass={this.props.checkPass}
                         confirmRebootModal={this.props.confirmRebootModal}
                         restartWhiteLabel={this.props.restartWhiteLabel}
+                        resetConfirmReboot = {this.props.resetConfirmReboot}
                     />
 
                 </Card>

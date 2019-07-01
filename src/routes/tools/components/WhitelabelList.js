@@ -34,17 +34,22 @@ export default class WhitelabelList extends Component {
             columns: columns,
             // reset_confirm_modal: false,
             password_modal: false,
+            wlID: null
         }
 
     }
 
     showPasswrodForm = (visible) => {
         this.setState({
-            password_modal: visible
+            password_modal: visible,
+        })
+    }
+    setWLID = (id) => {
+        this.setState({
+            wlID: id
         })
     }
     renderList() {
-        const _this = this;
         return this.props.whiteLabels.map((item, index) => {
             return {
                 row_key: `${index}`,
@@ -55,8 +60,8 @@ export default class WhitelabelList extends Component {
                         <Button
                             style={{ backgroundColor: "orange", color: 'white', borderRadius: '15px' }}
                             onClick={(e) => {
+                                this.setWLID(item.id);
                                 this.showPasswrodForm(true)
-
                             }}
                         >Reboot Server</Button>
                     </Fragment>
@@ -66,7 +71,6 @@ export default class WhitelabelList extends Component {
 
     }
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps.confirmRebootModal)
         if (nextProps.confirmRebootModal) {
             let _this = this
             confirm({
@@ -74,6 +78,7 @@ export default class WhitelabelList extends Component {
                 content: "Are you sure, you want to Reboot Server",
                 okText: "Confirm",
                 onOk() {
+                    _this.props.restartWhiteLabel(_this.state.wlID);
                     _this.props.resetConfirmReboot()
                 },
                 onCancel() {
