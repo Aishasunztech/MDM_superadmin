@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Modal, message } from 'antd';
 import EditForm from './editForm';
 let editDevice;
-export default class EditDealer extends Component {
+export default class EditDevice extends Component {
 
     constructor(props) {
         super(props);

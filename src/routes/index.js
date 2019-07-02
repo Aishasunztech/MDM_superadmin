@@ -7,6 +7,7 @@ import WhiteLabels from "./whitelabels/index";
 import Device from "./devices/index";
 import AutoUpdate from './autoUpdate/index';
 import SetPrices from './whitelabels/components/pricesPackages/index';
+import Billing from "./account/billing/index.js"
 
 import FourOFour from "./404/";
 
@@ -64,7 +65,7 @@ const AppRoutes = ({ match, whiteLabels }) => {
                     />
                   )
                 }
-                />
+              />
             );
           })
         }
@@ -83,6 +84,11 @@ const AppRoutes = ({ match, whiteLabels }) => {
           exact
           path={`${match.url}account/managedata`}
           component={ManageData}
+        />
+        <Route
+          exact
+          path={`${match.url}account/billing`}
+          component={Billing}
         />
         <Route
           exact

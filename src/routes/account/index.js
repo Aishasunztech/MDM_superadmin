@@ -87,7 +87,7 @@ class Account extends Component {
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                             <div>
-                                <a href="javascript:void(0)">
+                                <Link to="/account/billing">
                                     <Card className="manage_ac" style={{ borderRadius: 12 }}>
                                         <div>
                                             <h2 style={{ textAlign: "center" }}>Billing</h2>
@@ -106,8 +106,7 @@ class Account extends Component {
                                         </div>
                                     </Card>
                                     <Button type="primary" size="small" className="open_btn">Open</Button>
-                                </a>
-
+                                </Link>
                             </div>
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8} xl={8}>

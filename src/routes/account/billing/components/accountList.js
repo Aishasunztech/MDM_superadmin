@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Table, Avatar, Switch, Button, Icon, Card, Modal, Tabs } from "antd";
+// import { Tabs } from 'antd';
+
 const TabPane = Tabs.TabPane;
 
 let data = [];
@@ -36,50 +38,6 @@ class AccountList extends Component {
         }
     }
 
-    // handleCheckChange = (values) => {
-
-    //     let dumydata = this.state.columns;
-
-    //     try {
-    //         if (values.length) {
-    //             this.state.columns.map((column, index) => {
-
-    //                 if (dumydata[index].className !== 'row') {
-    //                     dumydata[index].className = 'hide';
-    //                 }
-
-    //                 values.map((value) => {
-    //                     if (column.title === value) {
-    //                         dumydata[index].className = '';
-    //                     }
-    //                 });
-
-    //             });
-
-    //             this.setState({ columns: dumydata });
-
-    //         } else {
-    //             const newState = this.state.columns.map((column) => {
-    //                 if (column.className === 'row') {
-    //                     return column;
-    //                 } else {
-    //                     return ({ ...column, className: 'hide' })
-    //                 }
-    //             });
-
-    //             this.setState({
-    //                 columns: newState,
-    //             });
-    //         }
-    //     } catch (error) {
-    //         alert(error, 'errro');
-    //     }
-
-
-    //     this.props.postDropdown(values, this.state.dealer_type);
-    // }
-
-
     renderList(list) {
         data = [];
         // console.log('data list at renderList::', this.props.dataList)
@@ -115,28 +73,7 @@ class AccountList extends Component {
     }
 
 
-    // showInnerTabContent = (dataFieldName = "") => {
-    //     // console.log(dataFieldName);
-    //     if (dataFieldName === "sim_ids") {
-    //         this.props.getSimIDs();
-    //     } else if (dataFieldName === "pgp_emails") {
-    //         this.props.getPGPEmails();
-    //     } else if (dataFieldName === "chat_ids") {
-    //         this.props.getChatIDs();
-    //     } else if (dataFieldName === "used_pgp_emails") {
-    //         this.props.getUsedPGPEmails();
-    //     } else if (dataFieldName === "used_chat_ids") {
-    //         this.props.getUsedChatIds();
-    //     } else if (dataFieldName === "used_sim_ids") {
-    //         this.props.getUsedSimIds();
-    //     }
-    //     this.setState({
-    //         dataFieldName: dataFieldName,
-    //     });
-    // }
-
     render() {
-        // console.log('data list at::', this.props.dataList)
         return (
             <Card bordered={false}>
                 <Tabs defaultActiveKey="1" type='card' tabPosition="left" className="dev_tabs manage_data" onChange={this.callback}>
@@ -165,23 +102,6 @@ class AccountList extends Component {
     }
 }
 
-// function showConfirm(id, action, btn_title) {
-//     confirm({
-//         title: 'Do you want to ' + btn_title + ' of this ' + window.location.pathname.split("/").pop() + ' ?',
-//         onOk() {
-//             return new Promise((resolve, reject) => {
-//                 setTimeout(Math.random() > 0.5 ? resolve : reject);
-//                 if (btn_title === 'RESET PASSWORD') {
-//                     id.pageName = 'dealer'
-//                 }
-//                 action(id);
-//                 //  success();
-
-//             }).catch(() => console.log('Oops errors!'));
-//         },
-//         onCancel() { },
-//     });
-// }
 export default class Tab extends Component {
     constructor(props) {
         super(props)
@@ -222,13 +142,12 @@ export default class Tab extends Component {
                 <Tabs defaultActiveKey="all" type='card' className="dev_tabs" activeKey={this.state.tabselect} onChange={this.callback}>
                     <TabPane tab="All" key="all" >
                     </TabPane>
-
-                    {this.props.whiteLables.map((item, index) => {
-                        // console.log(item);
-                        return (
-                            <TabPane tab={item.name} key={item.id.toString()} forceRender={true} > </TabPane>
-                        )
-                    })}
+                    <TabPane tab="All" key="all" >
+                    </TabPane>
+                    <TabPane tab="All" key="all" >
+                    </TabPane>
+                    <TabPane tab="All" key="all" >
+                    </TabPane>
                 </Tabs>
 
                 <AccountList
