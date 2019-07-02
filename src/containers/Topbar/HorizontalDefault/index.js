@@ -12,7 +12,6 @@ import UserInfo from "components/UserInfo";
 import HorizontalNav from "../HorizontalNav";
 import { Link } from "react-router-dom";
 import { switchLanguage, toggleCollapsedSideNav } from "../../../appRedux/actions/Setting";
-// import IntlMessages from "../../../util/IntlMessages";
 
 const { Header } = Layout;
 const Option = Select.Option;
@@ -63,21 +62,7 @@ class HorizontalDefault extends Component {
     const { locale, navCollapsed } = this.props;
     return (
       <div className="gx-header-horizontal">
-        {/* <div className="gx-header-horizontal-top">
-          <div className="gx-container">
-            <div className="gx-header-horizontal-top-flex">
-              <div className="gx-header-horizontal-top-left">
-                <i className="icon icon-alert gx-mr-3"/>
-                <p className="gx-mb-0 gx-text-truncate"><IntlMessages id="app.announced"/></p>
-              </div>
-              <ul className="gx-login-list">
-                <li>Login</li>
-                <li>Signup</li>
-              </ul>
-            </div>
-          </div>
-        </div> */}
-
+      
         <Header
           className="gx-header-horizontal-main">
           <div className="gx-container">

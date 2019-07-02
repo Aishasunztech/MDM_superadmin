@@ -52,22 +52,22 @@ const RestService = {
         localStorage.setItem('firstName', data.first_name);
         localStorage.setItem('lastName', data.last_name);
         // localStorage.setItem('type', data.user.user_type);
-        // localStorage.setItem('dealer_pin', data.user.link_code);
         localStorage.setItem('two_factor_auth', data.two_factor_auth);
 
     },
     setUserData: (data) => {
+
         // console.log("hello12312", data);
-        localStorage.setItem('email', data.user.email);
-        localStorage.setItem('id', data.user.id);
-        localStorage.setItem('name', data.user.admin_name);
-        localStorage.setItem('firstName', data.user.firstName);
-        localStorage.setItem('lastName', data.user.lastName);
-        localStorage.setItem('connected_dealer', data.user.connected_dealer);
-        // localStorage.setItem('connected_devices', data.user.connected_devices[0].total);
-        localStorage.setItem('type', data.user.user_type);
-        localStorage.setItem('dealer_pin', data.user.link_code);
-        localStorage.setItem('two_factor_auth', data.user.two_factor_auth);
+        localStorage.setItem('email', data.email);
+        localStorage.setItem('id', data.id);
+        localStorage.setItem('name', data.name);
+
+        localStorage.setItem('firstName', data.first_name);
+        localStorage.setItem('lastName', data.last_name);
+
+        // localStorage.setItem('type', data.user.user_type);        
+        localStorage.setItem('two_factor_auth', data.two_factor_auth);
+
 
     },
 
@@ -127,14 +127,17 @@ const RestService = {
     },
 
     // =========================================Sidebar Menus =====================================
-    restartWhiteLabel: (wlID) => {
-        return axios.post(USER_URL + 'restart-whitelabel', {wlID} ,RestService.getHeader());
+    getAllWhiteLabels: () => {
+        return axios.get(USER_URL + 'white-labels/all', RestService.getHeader());
     },
     getWhiteLabels: () => {
-        return axios.get(USER_URL + 'white-labels', RestService.getHeader());
+        return axios.get(USER_URL + 'white-labels/whitelabels', RestService.getHeader());
     },
     getWhiteLabelInfo: (id) => {
-        return axios.get(USER_URL + 'white-labels/' + id, RestService.getHeader());
+        return axios.get(USER_URL + 'get-white-labels/' + id, RestService.getHeader());
+    },
+    restartWhiteLabel: (wlID) => {
+        return axios.post(USER_URL + 'restart-whitelabel', { wlID }, RestService.getHeader());
     },
 
     whitelabelBackups: (id) => {
@@ -270,6 +273,9 @@ const RestService = {
         // console.log(device);
         return axios.put(USER_URL + 'accept_request/' + request.id, request, RestService.getHeader());
     },
+    checkPass: (user) => {
+        return axios.post(USER_URL + 'check-pwd', user, RestService.getHeader());
+    }
 
 }
 export default RestService;

@@ -1,21 +1,38 @@
 import {
     INVALID_TOKEN,
-    GET_WHITE_LABELS,
     GET_WHITE_LABEL_INFO,
     EDIT_WHITE_LABEL_INFO,
     WHITE_LABEL_BACKUPS,
-    GET_FILE,
     SAVE_ID_PRICES,
     SAVE_PACKAGE,
     GET_PRICES,
     SET_PRICE,
     RESET_PRICE,
-    GET_PACKAGES
+    GET_PACKAGES,
+    GET_ALL_WHITE_LABELS
 } from "../../constants/ActionTypes"
 
 import RestService from '../services/RestServices';
 
 
+export const getAllWhiteLabels = () => {
+    return (dispatch) => {
+        RestService.getAllWhiteLabels().then(response => {
+
+            if (RestService.checkAuth(response.data)) {
+                dispatch({
+                    type: GET_ALL_WHITE_LABELS,
+                    payload: response.data.whiteLabels
+                })
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+
+        })
+    }
+}
 
 export const getWhiteLabelInfo = (id) => {
     // console.log('id',id)
@@ -36,7 +53,7 @@ export const getWhiteLabelInfo = (id) => {
     }
 }
 
-export const setPrice = (field, value, price_for='') => {
+export const setPrice = (field, value, price_for = '') => {
     return (dispatch) => {
         dispatch({
             type: SET_PRICE,
@@ -53,7 +70,7 @@ export const resetPrice = () => {
     return (dispatch) => {
         dispatch({
             type: RESET_PRICE,
-           
+
         })
     }
 }
@@ -98,7 +115,7 @@ export const getPrices = (data) => {
 }
 
 export const getPackages = (data) => {
-    return (dispatch) => {  
+    return (dispatch) => {
         RestService.getPackages(data).then((response) => {
             if (RestService.checkAuth(response.data)) {
                 dispatch({

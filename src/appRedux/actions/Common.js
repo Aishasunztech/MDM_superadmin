@@ -4,8 +4,9 @@ import {
     INVALID_TOKEN,
     NEW_REQUEST_LIST,
     POST_PAGINATION,
-    GET_PAGINATION
-} from "constants/ActionTypes"
+    GET_PAGINATION,
+    CHECK_PASS
+} from "../../constants/ActionTypes"
 // import AuthFailed from './Auth';
 
 import RestService from '../services/RestServices';
@@ -107,4 +108,23 @@ export function getPagination(pageName) {
             });
 
     };
+}
+
+export const checkPass = (user) => {
+    console.log(user);
+    return (dispatch) => {
+        RestService.checkPass(user).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                dispatch({
+                    type: CHECK_PASS,
+                    payload: response.data
+                })
+            }
+            else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+        })
+    }
 }

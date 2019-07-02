@@ -11,7 +11,6 @@ import UserInfo from "components/UserInfo";
 import HorizontalNav from "../HorizontalNav";
 import { Link } from "react-router-dom";
 import { switchLanguage, toggleCollapsedSideNav } from "../../../appRedux/actions/Setting";
-// import IntlMessages from "../../../util/IntlMessages";
 
 const { Header } = Layout;
 
@@ -59,22 +58,7 @@ class InsideHeader extends Component {
 
     return (
       <div className="gx-header-horizontal gx-header-horizontal-dark gx-inside-header-horizontal">
-        {/* <div className="gx-header-horizontal-top">
-          <div className="gx-container">
-            <div className="gx-header-horizontal-top-flex">
-              <div className="gx-header-horizontal-top-left">
-                <i className="icon icon-alert gx-mr-3"/>
-                <p className="gx-mb-0 gx-text-truncate"><IntlMessages id="app.announced"/></p>
-              </div>
-              <ul className="gx-login-list">
-                <li>Login</li>
-                <li>Signup</li>
-              </ul>
-            </div>
-          </div>
-        </div> */}
-
-
+        
         <Header
           className="gx-header-horizontal-main">
           <div className="gx-container">
@@ -95,51 +79,7 @@ class InsideHeader extends Component {
                 <HorizontalNav />
               </div>
               <ul className="gx-header-notifications gx-ml-auto">
-                {/* <li className="gx-notify gx-notify-search">
-                  <Popover overlayClassName="gx-popover-horizantal"
-                    placement="bottomRight" content={
-                      <div className="gx-d-flex">
-                        {/* <Dropdown overlay={menu}>
-                          <Button>
-                            Category <Icon type="down" />
-                          </Button>
-                        </Dropdown> 
-                        <SearchBox styleName="gx-popover-search-bar"
-                          placeholder="Search in app..."
-                          onChange={this.updateSearchChatUser.bind(this)}
-                          value={this.state.searchText} />
-                      </div>
-                    } trigger="click">
-
-                    <span className="gx-pointer gx-d-block"><i className="icon icon-search-new" /></span>
-
-                  </Popover>
-                </li>
-
-                <li className="gx-notify">
-                  <Popover overlayClassName="gx-popover-horizantal" placement="bottomRight" content={<AppNotification />}
-                    trigger="click">
-                    <span className="gx-pointer gx-d-block"><i className="icon icon-notification" /></span>
-                  </Popover>
-                </li>
-
-                <li className="gx-msg">
-                  <Popover overlayClassName="gx-popover-horizantal" placement="bottomRight"
-                    content={<MailNotification />} trigger="click">
-                    <span className="gx-pointer gx-status-pos gx-d-block">
-                      <i className="icon icon-chat-new" />
-                      <span className="gx-status gx-status-rtl gx-small gx-orange" />
-                    </span>
-                  </Popover>
-                </li>
-                <li className="gx-language">
-                  <Popover overlayClassName="gx-popover-horizantal" placement="bottomRight"
-                    content={this.languageMenu()} trigger="click">
-                    <span className="gx-pointer gx-flex-row gx-align-items-center"><i
-                      className={`flag flag-24 flag-${locale.icon}`} />
-                    </span>
-                  </Popover>
-                </li> */}
+        
                 <li className="gx-user-nav"><UserInfo /></li>
               </ul>
             </div>

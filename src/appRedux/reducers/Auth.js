@@ -15,7 +15,9 @@ import {
   TWO_FACTOR_AUTH,
   VERIFY_CODE,
   CODE_VERIFIED,
-  GOTO_LOGIN
+  GOTO_LOGIN,
+  CHECK_PASS,
+  RESET_REBOOT_CONFIRM
 } from "../../constants/ActionTypes";
 // import { stat } from "fs";
 import RestService from '../services/RestServices';
@@ -26,25 +28,20 @@ const error = Modal.error
 
 const INIT_STATE = {
   loader: false,
-  alertMessage: '',
-  showMessage: false,
   initURL: '',
   socket: io,
   isAllowed: false,
   isRequested: false,
+  confirmRebootModal: false,
   two_factor_auth: (localStorage.getItem('is_twoFactorAuth') === null) ? false : localStorage.getItem('is_twoFactorAuth'),
   authUser: {
     id: localStorage.getItem('id'),
-    // connected_devices: localStorage.getItem('connected_devices'),
-    // connected_dealer: localStorage.getItem('connected_dealer'),
     email: localStorage.getItem("email"),
-    // dealerId: localStorage.getItem("id"),
     first_name: localStorage.getItem("first_name"),
     last_name: localStorage.getItem("last_name"),
     name: localStorage.getItem("name"),
     token: localStorage.getItem("token"),
     // type: localStorage.getItem("type"),
-    // dealer_pin: localStorage.getItem("dealer_pin"),
     two_factor_auth: (
       localStorage.getItem('two_factor_auth') === undefined ||
       localStorage.getItem('two_factor_auth') === 'undefined' ||
@@ -189,35 +186,6 @@ export default (state = INIT_STATE, action) => {
         loader: false
       }
     }
-    case SHOW_MESSAGE: {
-      return {
-        ...state,
-        alertMessage: action.payload,
-        showMessage: true,
-        loader: false
-      }
-    }
-    case HIDE_MESSAGE: {
-      return {
-        ...state,
-        alertMessage: '',
-        showMessage: false,
-        loader: false
-      }
-    }
-
-    case ON_SHOW_LOADER: {
-      return {
-        ...state,
-        loader: true
-      }
-    }
-    case ON_HIDE_LOADER: {
-      return {
-        ...state,
-        loader: false
-      }
-    }
     case COMPONENT_ALLOWED: {
       // let socket = RestService.connectSocket(state.authUser.token);
       return {
@@ -262,6 +230,50 @@ export default (state = INIT_STATE, action) => {
       }
       return {
         ...state
+      }
+    }
+    case CHECK_PASS:
+      if(!action.payload.password_matched){
+        error({
+          title: "invalid credentials",
+        });
+      }
+      return {
+        ...state,
+        confirmRebootModal: action.payload.password_matched
+      }
+    case RESET_REBOOT_CONFIRM:
+      return {
+        ...state,
+        confirmRebootModal: false
+      }
+    case SHOW_MESSAGE: {
+      return {
+        ...state,
+        alertMessage: action.payload,
+        showMessage: true,
+        loader: false
+      }
+    }
+    case HIDE_MESSAGE: {
+      return {
+        ...state,
+        alertMessage: '',
+        showMessage: false,
+        loader: false
+      }
+    }
+
+    case ON_SHOW_LOADER: {
+      return {
+        ...state,
+        loader: true
+      }
+    }
+    case ON_HIDE_LOADER: {
+      return {
+        ...state,
+        loader: false
       }
     }
     default:

@@ -34,8 +34,11 @@ export const TWO_FACTOR_AUTH = 'TWO_FACTOR_AUTH';
 export const VERIFY_CODE = 'VERIFY_CODE';
 export const CODE_VERIFIED = 'CODE_VERIFIED';
 export const GOTO_LOGIN = 'GOTO_LOGIN';
+export const RESET_REBOOT_CONFIRM = 'RESET_REBOOT_CONFIRM';
 
 // WhiteLabels const
+export const GET_ALL_WHITE_LABELS = 'GET_ALL_WHITE_LABELS';
+
 export const GET_WHITE_LABELS = 'GET_WHITE_LABELS';
 export const EDIT_WHITE_LABEL_INFO = 'EDIT_WHITE_LABEL_INFO';
 export const WHITE_LABEL_BACKUPS = 'WHITE_LABEL_BACKUPS';
@@ -88,27 +91,9 @@ export const RESET_UPLOAD_FORM = 'RESET_UPLOAD_FORM';
 
 
 // Connect Device 
-export const GET_DEVICE_DETAILS = 'GET_DEVICE_DETAILS';
-export const CLEAR_APPLICATIONS = 'CLEAR_APPLICATIONS';
-export const GET_ACTIVITIES = 'GET_ACTIVITIES';
-export const GET_DEVICE_APPS = 'GET_DEVICE_APPS';
-export const GET_PROFILES = 'GET_PROFILES';
-export const GET_DEVICE_HISTORIES = 'GET_DEVICE_HISTORIES';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
-export const GET_APPS_PERMISSIONS = 'GET_APPS_PERMISSIONS';
 
-export const SUBMIT_PASSWORD = 'SUBMIT_PASSWORD';
-export const GUEST_PASSWORD = 'guest_password';
-export const ENCRYPTED_PASSWORD = 'encrypted_password';
-export const DURESS_PASSWORD = 'duress_password';
-export const ADMIN_PASSWORD = 'admin_password';
-export const ACTIVATE_DEVICE2 = 'ACTIVATE_DEVICE2';
-export const SUSPEND_DEVICE2 = 'SUSPEND_DEVICE2';
-export const GET_USER_ACC_ID = 'GET_USER_ACC_ID';
-export const FLAG_DEVICE = 'FLAG_DEVICE';
-export const UNFLAG_DEVICE = 'UNFLAG_DEVICE';
-export const WIPE_DEVICE = 'WIPE_DEVICE';
-export const CHECKPASS = 'CHECKPASS';
+export const CHECK_PASS = 'CHECK_PASS';
 export const GET_DEALER_APPS = 'GET_DEALER_APPS';
 export const HANDLE_CHECK_EXTENSION = 'HANDLE_CHECK_EXTENSION';
 export const HANDLE_CHECK_ALL_EXTENSION = 'HANDLE_CHECK_ALL_EXTENSION';

@@ -12,7 +12,6 @@ import { switchLanguage, toggleCollapsedSideNav } from "../../../appRedux/action
 import { TAB_SIZE } from "../../../constants/ThemeSetting";
 import HorizontalNav from "../HorizontalNav";
 import { Link } from "react-router-dom";
-// import IntlMessages from "../../../util/IntlMessages";
 
 const { Header } = Layout;
 
@@ -69,31 +68,11 @@ class AboveHeader extends Component {
           <div className="gx-container">
             <div className="gx-header-horizontal-nav-flex">
               <HorizontalNav />
-              {/* <ul className="gx-header-notifications gx-ml-auto">
-                <li><span className="gx-pointer gx-d-block"><i className="icon icon-menu-lines"/></span></li>
-                <li><span className="gx-pointer gx-d-block"><i className="icon icon-setting"/></span></li>
-                <li><span className="gx-pointer gx-d-block"><i className="icon icon-apps-new"/></span></li>
-              </ul> */}
-            </div>
-          </div>
-        </div>
-{/* 
-        <div className="gx-header-horizontal-top">
-          <div className="gx-container">
-            <div className="gx-header-horizontal-top-flex">
-              <div className="gx-header-horizontal-top-left">
-                <i className="icon icon-alert gx-mr-3"/>
-                <p className="gx-mb-0 gx-text-truncate"><IntlMessages id="app.announced"/></p>
-              </div>
-              <ul className="gx-login-list">
-                <li><IntlMessages id="app.userAuth.login"/></li>
-                <li><IntlMessages id="app.userAuth.signUp"/></li>
-              </ul>
+       
             </div>
           </div>
         </div>
 
- */}
         <Header
           className="gx-header-horizontal-main">
           <div className="gx-container">

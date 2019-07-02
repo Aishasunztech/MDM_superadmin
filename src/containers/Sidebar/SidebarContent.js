@@ -14,7 +14,6 @@ import {
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
   THEME_TYPE_LITE
 } from "../../constants/ThemeSetting";
-import IntlMessages from "../../util/IntlMessages";
 import { connect } from "react-redux";
 import {
   logout,
@@ -110,7 +109,7 @@ class SidebarContent extends Component {
                 <i className="icon icon-mobile" >
                   <i className="fa fa-mobile" aria-hidden="true"></i>
                 </i>
-                <IntlMessages id="sidebar.devices" />
+                Devices
               </Link>
             </Menu.Item>
 
@@ -118,7 +117,7 @@ class SidebarContent extends Component {
               <Link to="#">
                 <span>
                   <i className="icon" />
-                  <IntlMessages id="sidebar.labels" />
+                  Labels
                 </span>
               </Link>
             </Menu.Item>
@@ -129,11 +128,9 @@ class SidebarContent extends Component {
             >
               {
                 this.props.whiteLabels.map((whiteLabel) => {
-                  // console.log(whiteLabel, 'white label is the ')
                   return (
                     <Menu.Item key={whiteLabel.name}>
                       <Link to={whiteLabel.route_uri}>
-                        {/* <i className="icon icon-crypto" /> */}
                         {whiteLabel.name}
                       </Link>
                     </Menu.Item>
@@ -144,19 +141,18 @@ class SidebarContent extends Component {
 
             </Menu.SubMenu>
 
-
             <Menu.Item key="account">
               <Link to="/account">
                 <i className="icon icon-profile2" />
-                <IntlMessages id="sidebar.account" />
+                Account
               </Link>
             </Menu.Item>
 
 
             <Menu.Item key="tools">
               <Link to="/tools">
-              <i className="icon icon-profile2" style={{visibility: 'hidden'}} />
-                <IntlMessages id="sidebar.tools" />
+                <i className="icon icon-profile2" style={{ visibility: 'hidden' }} />
+                Tools
               </Link>
             </Menu.Item>
 
@@ -165,12 +161,10 @@ class SidebarContent extends Component {
                 (e) => { this.logout() }
               }
             >
-              {/* <Link to="/logout"> */}
               <i className="icon">
                 <i className="fa fa-sign-out ml-6" aria-hidden="true"></i>
               </i>
-              <IntlMessages id="sidebar.logout" />
-              {/* </Link> */}
+              Logout
             </Menu.Item>
           </Menu>
         </div>

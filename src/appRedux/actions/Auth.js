@@ -14,7 +14,8 @@ import {
   BEFORE_COMPONENT_ALLOWED,
   TWO_FACTOR_AUTH,
   VERIFY_CODE,
-  GOTO_LOGIN
+  GOTO_LOGIN,
+  RESET_REBOOT_CONFIRM
 } from "../../constants/ActionTypes";
 
 import RestService from '../services/RestServices';
@@ -35,7 +36,7 @@ export const loginUser = (user) => {
           }
         });
       } else {
-        if(resp.data.two_factor_auth){
+        if (resp.data.two_factor_auth) {
           dispatch({
             type: VERIFY_CODE,
             payload: resp.data
@@ -44,7 +45,6 @@ export const loginUser = (user) => {
           let payload = {
             id: resp.data.user.id,
             email: resp.data.user.email,
-            dealerId: resp.data.user.id,
             first_name: resp.data.user.first_name,
             last_name: resp.data.user.last_name,
             name: resp.data.user.first_name + ' ' + resp.data.user.last_name,
@@ -68,7 +68,7 @@ export const loginUser = (user) => {
 export const verifyCode = (verifyForm) => {
   return (dispatch) => {
     RestService.verifyCode(verifyForm).then((response) => {
-      if(response.data.status){
+      if (response.data.status) {
         let payload = {
           id: response.data.user.id,
           connected_dealer: response.data.user.connected_dealer,
@@ -116,10 +116,10 @@ export const twoFactorAuth = (isEnable) => {
   }
 }
 
-export const goToLogin = ()=>{
+export const goToLogin = () => {
   return (dispatch) => {
     dispatch({
-      type:GOTO_LOGIN
+      type: GOTO_LOGIN
     })
   }
 }
@@ -133,23 +133,19 @@ export const checkComponent = (componentUri) => {
     RestService.checkComponent(componentUri).then((resp) => {
       if (RestService.checkAuth(resp.data)) {
         if (resp.data.status === true) {
+          console.log(resp.data);
 
           let payload = {
             id: resp.data.user.id,
-            connected_dealer: resp.data.user.connected_dealer,
-            // connected_devices: resp.data.user.connected_devices[0].total,
             email: resp.data.user.email,
-            dealerId: resp.data.user.id,
-            firstName: resp.data.user.firstName,
-            lastName: resp.data.user.lastName,
-            name: resp.data.user.dealer_name,
-            // token: resp.data.token,
-            type: resp.data.user.user_type,
-            dealer_pin: resp.data.user.link_code,
-            two_factor_auth: resp.data.user.two_factor_auth,
-            verified: resp.data.user.verified
+            first_name: resp.data.user.first_name,
+            last_name: resp.data.user.last_name,
+            name: resp.data.user.first_name + ' ' + resp.data.user.last_name,
+            token: resp.data.user.token,
+
+            two_factor_auth: resp.data.user.two_factor_auth
           }
-          RestService.setUserData(resp.data);
+          RestService.setUserData(payload);
 
           dispatch({
             type: COMPONENT_ALLOWED,
@@ -196,6 +192,14 @@ export const updateUserProfile = (fromData) => {
           type: INVALID_TOKEN
         });
       }
+    });
+  }
+};
+export const resetConfirmReboot = () => {
+  return (dispatch) => {
+    // alert("hello");
+    dispatch({
+      type: RESET_REBOOT_CONFIRM,
     });
   }
 };
