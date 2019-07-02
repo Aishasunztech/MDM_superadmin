@@ -8,7 +8,8 @@ import {
     GET_PRICES,
     SET_PRICE,
     RESET_PRICE,
-    GET_PACKAGES
+    GET_PACKAGES,
+    GET_ALL_WHITE_LABELS
 } from "../../constants/ActionTypes";
 
 import { message, Modal } from 'antd';
@@ -20,27 +21,34 @@ const error = Modal.error
 const initialState = {
     whiteLabel: {},
     whitelabelBackups: [],
+    whiteLabels: [],
     prices: {
-        sim_id:{},
-        chat_id:{},
-        pgp_email:{},
+        sim_id: {},
+        chat_id: {},
+        pgp_email: {},
         vpn: {}
     },
     isPriceChanged: false,
     pricesCopy: {
-        sim_id:{},
-        chat_id:{},
-        pgp_email:{},
+        sim_id: {},
+        chat_id: {},
+        pgp_email: {},
         vpn: {}
     },
     packages: [],
-    packagesCopy:[]
+    packagesCopy: []
 };
 
 export default (state = initialState, action) => {
 
     switch (action.type) {
 
+        case GET_ALL_WHITE_LABELS: {
+            return {
+                ...state,
+                whiteLabels: action.payload
+            }
+        }
         case GET_WHITE_LABEL_INFO: {
             // console.log('get labels',action.payload);
             return {
@@ -115,7 +123,7 @@ export default (state = initialState, action) => {
                 error({
                     title: action.response.msg
                 })
-                state.prices = JSON.parse(JSON.stringify(state.pricesCopy)) 
+                state.prices = JSON.parse(JSON.stringify(state.pricesCopy))
             }
             return {
                 ...state,
@@ -138,7 +146,7 @@ export default (state = initialState, action) => {
                 success({
                     title: action.response.msg
                 })
-                if(action.response.data.length){
+                if (action.response.data.length) {
                     state.packages.push(action.response.data[0])
                 }
             } else {

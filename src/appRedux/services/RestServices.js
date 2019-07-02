@@ -56,7 +56,7 @@ const RestService = {
 
     },
     setUserData: (data) => {
-        
+
         // console.log("hello12312", data);
         localStorage.setItem('email', data.email);
         localStorage.setItem('id', data.id);
@@ -64,7 +64,7 @@ const RestService = {
 
         localStorage.setItem('firstName', data.first_name);
         localStorage.setItem('lastName', data.last_name);
-        
+
         // localStorage.setItem('type', data.user.user_type);        
         localStorage.setItem('two_factor_auth', data.two_factor_auth);
 
@@ -127,14 +127,17 @@ const RestService = {
     },
 
     // =========================================Sidebar Menus =====================================
-    restartWhiteLabel: (wlID) => {
-        return axios.post(USER_URL + 'restart-whitelabel', {wlID} ,RestService.getHeader());
+    getAllWhiteLabels: () => {
+        return axios.get(USER_URL + 'white-labels/all', RestService.getHeader());
     },
     getWhiteLabels: () => {
-        return axios.get(USER_URL + 'white-labels', RestService.getHeader());
+        return axios.get(USER_URL + 'white-labels/whitelabels', RestService.getHeader());
     },
     getWhiteLabelInfo: (id) => {
         return axios.get(USER_URL + 'white-labels/' + id, RestService.getHeader());
+    },
+    restartWhiteLabel: (wlID) => {
+        return axios.post(USER_URL + 'restart-whitelabel', { wlID }, RestService.getHeader());
     },
 
     whitelabelBackups: (id) => {

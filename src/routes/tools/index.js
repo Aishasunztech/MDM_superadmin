@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import { Card, Button, Row, Col, Table } from "antd";
 import WhitelabelList from "./components/WhitelabelList";
 
-import { getWhiteLabels, restartWhiteLabel, checkPass, resetConfirmReboot } from "../../appRedux/actions";
+import { getAllWhiteLabels, restartWhiteLabel, checkPass, resetConfirmReboot } from "../../appRedux/actions";
 
 class Tools extends Component {
 
@@ -48,17 +48,17 @@ class Tools extends Component {
     }
 }
 
-var mapStateToProps = ({ sidebarMenu, auth }) => {
-    console.log(auth);
+var mapStateToProps = ({ auth, whiteLabels }) => {
+    console.log(whiteLabels);
     return {
-        whiteLabels: sidebarMenu.whiteLabels,
+        whiteLabels: whiteLabels.whiteLabels,
         confirmRebootModal: auth.confirmRebootModal,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        getWhiteLabels: getWhiteLabels,
+        getWhiteLabels: getAllWhiteLabels,
         restartWhiteLabel: restartWhiteLabel,
         checkPass: checkPass,
         resetConfirmReboot: resetConfirmReboot,

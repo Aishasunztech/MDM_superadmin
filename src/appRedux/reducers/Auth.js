@@ -233,6 +233,11 @@ export default (state = INIT_STATE, action) => {
       }
     }
     case CHECK_PASS:
+      if(!action.payload.password_matched){
+        error({
+          title: "invalid credentials",
+        });
+      }
       return {
         ...state,
         confirmRebootModal: action.payload.password_matched
@@ -242,6 +247,35 @@ export default (state = INIT_STATE, action) => {
         ...state,
         confirmRebootModal: false
       }
+    case SHOW_MESSAGE: {
+      return {
+        ...state,
+        alertMessage: action.payload,
+        showMessage: true,
+        loader: false
+      }
+    }
+    case HIDE_MESSAGE: {
+      return {
+        ...state,
+        alertMessage: '',
+        showMessage: false,
+        loader: false
+      }
+    }
+
+    case ON_SHOW_LOADER: {
+      return {
+        ...state,
+        loader: true
+      }
+    }
+    case ON_HIDE_LOADER: {
+      return {
+        ...state,
+        loader: false
+      }
+    }
     default:
       return state;
   }
