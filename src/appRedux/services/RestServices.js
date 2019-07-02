@@ -134,7 +134,7 @@ const RestService = {
         return axios.get(USER_URL + 'white-labels/whitelabels', RestService.getHeader());
     },
     getWhiteLabelInfo: (id) => {
-        return axios.get(USER_URL + 'white-labels/' + id, RestService.getHeader());
+        return axios.get(USER_URL + 'get-white-labels/' + id, RestService.getHeader());
     },
     restartWhiteLabel: (wlID) => {
         return axios.post(USER_URL + 'restart-whitelabel', { wlID }, RestService.getHeader());
