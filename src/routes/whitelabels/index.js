@@ -145,7 +145,7 @@ class WhiteLabels extends Component {
         // console.log(this.props.whiteLabelInfo, 'white label info');
         let index2 = -1
         if (type) {
-            index2 = this.props.whiteLabelInfo.apks.findIndex(apk => apk.is_byod == '1' && apk.byod_type==type)
+            index2 = this.props.whiteLabelInfo.apks.findIndex(apk => apk.byod_type==type)
         }
         console.log(index2);
         if (index2 > -1) {
