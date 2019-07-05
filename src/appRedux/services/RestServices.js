@@ -275,6 +275,9 @@ const RestService = {
     },
     checkPass: (user) => {
         return axios.post(USER_URL + 'check-pwd', user, RestService.getHeader());
+    },
+    checkDealerPin: (data) => {
+        return axios.post(USER_URL + 'check-dealer_pin', data, RestService.getHeader());
     }
 
 }

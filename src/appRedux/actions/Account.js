@@ -11,8 +11,10 @@ import {
     GET_USED_CHAT_IDS,
     GET_USED_SIM_IDS,
     DUPLICATE_SIM_IDS,
-    NEW_DATA_INSERTED
-} from "constants/ActionTypes"
+    NEW_DATA_INSERTED,
+    CHECK_DEALER_PIN
+} from "../../constants/ActionTypes"
+
 
 import RestService from '../services/RestServices';
 
@@ -199,5 +201,27 @@ export function getUsedChatIds() {
                 });
             }
         });
+    }
+}
+export const checkDealerPin = (data) => {
+    // console.log(user);
+    return (dispatch) => {
+        RestService.checkDealerPin(data).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                dispatch({
+                    type: CHECK_DEALER_PIN,
+                    payload: {
+                        // actionType: actionType,
+                        dealerPinMatched: response.data,
+                    }
+                })
+            }
+            else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+        })
+
     }
 }

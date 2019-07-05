@@ -8,8 +8,9 @@ import {
     GET_SIM_IDS,
     RELEASE_CSV,
     DUPLICATE_SIM_IDS,
-    NEW_DATA_INSERTED
-} from "constants/ActionTypes";
+    NEW_DATA_INSERTED,
+    CHECK_DEALER_PIN
+} from "../../constants/ActionTypes";
 import { message, Modal } from "antd";
 
 const success = Modal.success
@@ -151,6 +152,29 @@ export default (state = initialState, action) => {
                 }
             }
         }
+        case CHECK_DEALER_PIN: {
+            if (action.payload.dealerPinMatched.pin_matched) {
+                success({
+                    title: "Password has been sent to your Email. Please verify Your account.",
+                });
+            }
+
+            else {
+                error({
+                    title: "ADMIN PIN did not Match. Please try again.",
+                });
+                return {
+                    ...state
+                }
+            }
+
+        }
+
+
+
+
+
+
         default:
             return state;
     }

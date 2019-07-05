@@ -20,7 +20,8 @@ import {
   getWhiteLabels,
   getNewCashRequests,
   rejectRequest,
-  acceptRequest
+  acceptRequest,
+  checkDealerPin
 } from '../../appRedux/actions/';
 
 
@@ -93,6 +94,7 @@ class SidebarContent extends Component {
               requests={this.props.requests}
               acceptRequest={this.props.acceptRequest}
               rejectRequest={this.props.rejectRequest}
+              checkDealerPin={this.props.checkDealerPin}
             />
             {/* <AppsNavigation/> */}
           </div>
@@ -177,7 +179,7 @@ class SidebarContent extends Component {
 const mapStateToProps = ({ settings, sidebarMenu }) => {
   const { navStyle, themeType, locale, pathname } = settings;
 
-  return { navStyle, themeType, locale, pathname, whiteLabels: sidebarMenu.whiteLabels, requests: sidebarMenu.newRequests }
+  return { navStyle, themeType, locale, pathname, whiteLabels: sidebarMenu.whiteLabels, requests: sidebarMenu.newRequests, }
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -186,8 +188,8 @@ const mapDispatchToProps = (dispatch) => {
     getNewCashRequests: getNewCashRequests,
     rejectRequest: rejectRequest,
     acceptRequest: acceptRequest,
-
-    logout: logout
+    logout: logout,
+    checkDealerPin: checkDealerPin
   }, dispatch);
 }
 

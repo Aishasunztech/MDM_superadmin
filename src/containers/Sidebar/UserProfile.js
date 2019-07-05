@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Avatar, Popover, Badge, Modal, Table, Button } from "antd";
+import { Avatar, Popover, Badge, Modal, Table, Button, Form, Input } from "antd";
 import { Link } from "react-router-dom";
 import { logout, } from "appRedux/actions/Auth";
 import socketIOClient from "socket.io-client";
@@ -18,7 +18,8 @@ class UserProfile extends Component {
     super(props);
     this.state = {
       visible: false,
-      NewRequests: []
+      NewRequests: [],
+      confirmDealerPin: false
     }
 
   }
@@ -33,6 +34,16 @@ class UserProfile extends Component {
     this.setState({
       visible: false,
     });
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        this.props.checkDealerPin({ dealer_pin: values.pin });
+      }
+    });
+    this.props.form.resetFields()
   }
 
   componentDidMount() {
@@ -136,8 +147,67 @@ class UserProfile extends Component {
             columns={columns}
             style={{ marginTop: 20 }}
             dataSource={this.renderList(this.state.NewRequests)}
-
           />
+        </Modal>
+        <Modal
+          // closable={false}
+          maskClosable={false}
+          style={{ top: 20 }}
+          width="330px"
+          className="push_app"
+          title=""
+          visible={this.state.confirmDealerPin}
+          footer={false}
+          onOk={() => {
+          }}
+          onCancel={() => {
+            // this.props.showPwdConfirmModal(false, this.props.actionType)
+            this.setState({
+              confirmDealerPin: false
+            })
+            this.props.form.resetFields()
+          }
+          }
+          okText="Push Apps"
+        >
+          <Form onSubmit={this.handleSubmit} autoComplete="new-password" className="text-center wipe_content">
+            <Form.Item
+              wrapperCol={{
+                xs: { span: 24, offset: 0 },
+                sm: { span: 24, offset: 0 },
+              }}
+            >
+              <h4>PLEASE ENTER YOUR <br />DEALER PIN TO DO <br />THIS ACTION</h4>
+            </Form.Item>
+
+            <Form.Item
+              wrapperCol={{
+                xs: { span: 24, offset: 0 },
+                sm: { span: 24, offset: 0 },
+              }}
+            >
+              {
+                this.props.form.getFieldDecorator('pin', {
+                  initialValue: '',
+                  rules: [
+                    {
+                      required: true, message: 'Dealer PIN is required!',
+                    }
+                  ],
+                })(
+                  <Input.Password className="password_field" type='password' placeholder="Enter Dealer PIN" autoComplete='password' />
+                )
+              }
+            </Form.Item>
+            <Form.Item className="edit_ftr_btn1"
+              wrapperCol={{
+                xs: { span: 24, offset: 0 },
+                sm: { span: 24, offset: 0 },
+              }}
+            >
+              <Button type="primary" htmlType="submit">Submit</Button>
+            </Form.Item>
+          </Form>
         </Modal>
       </div>
 
@@ -146,9 +216,9 @@ class UserProfile extends Component {
   }
 }
 
+const WrappedForm = Form.create()(UserProfile)
 
-
-export default UserProfile;
+export default WrappedForm;
 
 function showConfirm(_this, msg, action, request) {
   confirm({
@@ -156,7 +226,10 @@ function showConfirm(_this, msg, action, request) {
     content: msg,
     okText: "Confirm",
     onOk() {
-      action(request);
+      _this.setState({
+        confirmDealerPin: true
+      })
+      // action(request);
     },
     onCancel() { },
   });
