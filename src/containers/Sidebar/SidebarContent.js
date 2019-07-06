@@ -21,7 +21,9 @@ import {
   getNewCashRequests,
   rejectRequest,
   acceptRequest,
-  checkDealerPin
+  checkDealerPin,
+  syncWhiteLabelsIDs,
+
 } from '../../appRedux/actions/';
 
 
@@ -69,6 +71,7 @@ class SidebarContent extends Component {
 
   componentDidMount() {
     this.props.getNewCashRequests();
+    this.props.syncWhiteLabelsIDs();
   }
   componentWillReceiveProps(nextprops) {
     if (this.props.pathname !== nextprops.pathname) {
@@ -189,7 +192,8 @@ const mapDispatchToProps = (dispatch) => {
     rejectRequest: rejectRequest,
     acceptRequest: acceptRequest,
     logout: logout,
-    checkDealerPin: checkDealerPin
+    checkDealerPin: checkDealerPin,
+    syncWhiteLabelsIDs: syncWhiteLabelsIDs
   }, dispatch);
 }
 

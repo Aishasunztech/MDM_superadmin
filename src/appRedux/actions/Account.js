@@ -12,7 +12,9 @@ import {
     GET_USED_SIM_IDS,
     DUPLICATE_SIM_IDS,
     NEW_DATA_INSERTED,
-    CHECK_DEALER_PIN
+    CHECK_DEALER_PIN,
+    DELETE_IDS,
+    SYNC_IDS
 } from "../../constants/ActionTypes"
 
 
@@ -223,5 +225,44 @@ export const checkDealerPin = (data) => {
             }
         })
 
+    }
+}
+export function deleteCSVids(type, ids) {
+    return (dispatch) => {
+        // alert("hello");
+        // console.log(ids);
+        RestService.deleteCSVids(type, ids).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                // console.log('successfully ', response.data);
+                dispatch({
+                    type: DELETE_IDS,
+                    response: response.data,
+                    payload: {
+                        formData: ids
+                    }
+                });
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+        });
+    }
+}
+export function syncWhiteLabelsIDs() {
+    return (dispatch) => {
+        RestService.syncWhiteLabelsIDs().then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                // console.log('successfully ', response.data);
+                dispatch({
+                    type: SYNC_IDS,
+                    response: response.data
+                });
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+        });
     }
 }

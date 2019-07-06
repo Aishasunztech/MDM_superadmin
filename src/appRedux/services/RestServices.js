@@ -278,7 +278,12 @@ const RestService = {
     },
     checkDealerPin: (data) => {
         return axios.post(USER_URL + 'check-dealer_pin', data, RestService.getHeader());
-    }
-
+    },
+    deleteCSVids: (type, ids) => {
+        return axios.put(USER_URL + 'delete_CSV_ids/' + type, { ids }, RestService.getHeader())
+    },
+    syncWhiteLabelsIDs: () => {
+        return axios.get(USER_URL + 'sync_whiteLabels_ids', RestService.getHeader())
+    },
 }
 export default RestService;

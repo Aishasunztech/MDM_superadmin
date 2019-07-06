@@ -91,6 +91,8 @@ export const RESET_UPLOAD_FORM = 'RESET_UPLOAD_FORM';
 
 
 // Connect Device 
+export const DELETE_IDS = 'DELETE_IDS';
+export const SYNC_IDS = 'SYNC_IDS';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 
 export const CHECK_PASS = 'CHECK_PASS';

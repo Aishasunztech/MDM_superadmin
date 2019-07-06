@@ -9,7 +9,9 @@ import {
     RELEASE_CSV,
     DUPLICATE_SIM_IDS,
     NEW_DATA_INSERTED,
-    CHECK_DEALER_PIN
+    CHECK_DEALER_PIN,
+    DELETE_IDS,
+    SYNC_IDS
 } from "../../constants/ActionTypes";
 import { message, Modal } from "antd";
 
@@ -117,41 +119,50 @@ export default (state = initialState, action) => {
             }
         }
 
-        case RELEASE_CSV: {
+        case DELETE_IDS: {
             // alert("hello");
-            // console.log(action.payload);
-            if (action.payload.status) {
+            // console.log(action.response);
+            if (action.response.status) {
                 success({
-                    title: action.payload.msg,
+                    title: action.response.msg,
                 });
             }
             else {
                 error({
-                    title: action.payload.msg,
+                    title: action.response.msg,
                 });
 
             }
-            if (action.payload.type === 'sim') {
-                return {
-                    ...state,
-                    used_sim_ids: action.payload.data
+            if (action.response.data) {
+
+                if (action.response.type === 'sim') {
+                    return {
+                        ...state,
+                        sim_ids: action.response.data
+                    }
+                } else if (action.response.type === 'chat') {
+                    return {
+                        ...state,
+                        chat_ids: action.response.data
+                    }
+                } else if (action.response.type === 'pgp') {
+                    return {
+                        ...state,
+                        pgp_emails: action.response.data
+                    }
+                } else {
+                    return {
+                        ...state,
+                    }
                 }
-            } else if (action.payload.type === 'chat') {
-                return {
-                    ...state,
-                    used_chat_ids: action.payload.data
-                }
-            } else if (action.payload.type === 'pgp') {
-                return {
-                    ...state,
-                    used_pgp_emails: action.payload.data
-                }
-            } else {
+            }
+            else {
                 return {
                     ...state,
                 }
             }
         }
+
         case CHECK_DEALER_PIN: {
             if (action.payload.dealerPinMatched.pin_matched) {
                 success({
@@ -169,12 +180,15 @@ export default (state = initialState, action) => {
             }
 
         }
-
-
-
-
-
-
+        case SYNC_IDS:
+            if (action.response.status) {
+                return {
+                    ...state,
+                    pgp_emails: action.response.pgp_emails,
+                    chat_ids: action.response.chat_ids,
+                    sim_ids: action.response.sim_ids
+                }
+            }
         default:
             return state;
     }

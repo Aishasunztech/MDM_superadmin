@@ -106,7 +106,7 @@ export default class WhitelabelList extends Component {
                     />
                 </Modal>
                 <Table size="middle"
-                    style={{ width: '40%' }}
+                    style={{ width: '100%' }}
                     bordered
                     columns={this.state.columns}
                     rowKey='row_key'
