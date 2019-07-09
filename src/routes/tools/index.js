@@ -164,7 +164,7 @@ class Tools extends Component {
 }
 
 var mapStateToProps = ({ auth, whiteLabels }) => {
-    console.log(whiteLabels);
+    // console.log(whiteLabels);
     return {
         whiteLabels: whiteLabels.whiteLabels,
         confirmRebootModal: auth.confirmRebootModal,

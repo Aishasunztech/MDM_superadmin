@@ -8,10 +8,125 @@ import { BASE_URL } from "../../constants/Application"
 const confirm = Modal.confirm;
 const columns = [
   { title: 'Action', dataIndex: 'action', key: 'action', align: "center" },
+  { title: 'DEALER PIN', dataIndex: 'dealer_pin', key: 'dealer_pin', align: "center" },
   { title: 'DEALER NAME', dataIndex: 'dealer_name', key: 'dealer_name', align: "center" },
   { title: 'LABEL', dataIndex: 'label', key: 'label', align: "center" },
   { title: 'CREDITS', dataIndex: 'credits', key: 'credits', align: "center" },
 ];
+
+
+
+class AcceptPasswordForm extends Component {
+
+  handleCancel = (e) => {
+    // console.log(e);
+    this.setState({
+      visible: false,
+    });
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        this.props.acceptRequest(this.props.request, values.pass, this.props.dealer_pin);
+      }
+    });
+    this.props.resetDealerPinForm();
+    this.props.form.resetFields();
+  }
+
+  render() {
+    // console.log("header devices count", this.props.devices);
+
+    // const userMenuOptions = (
+    //   <ul className="">
+    //     {/* <Link to="/profile"><li>My Account</li></Link> */}
+    //     {/* <li>Connections</li> 
+    //     <li onClick={() => this.props.logout()}>Logout
+    //     </li>*/}
+    //   </ul>
+    // );
+
+    return (
+      <div className="gx-flex-row gx-align-items-center gx-mb-4 gx-avatar-row side_bar_main">
+        <Modal
+          // closable={false}
+          maskClosable={false}
+          style={{ top: 20 }}
+          width="330px"
+          className="push_app"
+          title=""
+          visible={this.props.acceptPasswordForm}
+          footer={false}
+          onOk={() => {
+          }}
+          onCancel={() => {
+            let _this = this
+            confirm({
+              title: "Are you sure to leave this process ?",
+              content: '',
+              okText: "Confirm",
+              onOk() {
+                _this.props.resetAcceptPasswordForm()
+                _this.setState({
+                  request: {}
+                })
+                _this.props.form.resetFields()
+                _this.props.resetDealerPinForm()
+
+              },
+              onCancel() { },
+            })
+          }
+          }
+          okText="Push Apps"
+        >
+          <Form onSubmit={this.handleSubmit} autoComplete="new-password" className="text-center wipe_content">
+            <Form.Item
+              wrapperCol={{
+                xs: { span: 24, offset: 0 },
+                sm: { span: 24, offset: 0 },
+              }}
+            >
+              <h4>PLEASE ENTER PASSWORD <br />THAT WE SENT TO<br />YOUR EMAIL.</h4>
+            </Form.Item>
+
+            <Form.Item
+              wrapperCol={{
+                xs: { span: 24, offset: 0 },
+                sm: { span: 24, offset: 0 },
+              }}
+            >
+              {
+                this.props.form.getFieldDecorator('pass', {
+                  initialValue: '',
+                  rules: [
+                    {
+                      required: true, message: 'password is required!',
+                    }
+                  ],
+                })(
+                  <Input.Password className="password_field" type='password' placeholder="Enter Password" autoComplete='password' />
+                )
+              }
+            </Form.Item>
+            <Form.Item className="edit_ftr_btn1"
+              wrapperCol={{
+                xs: { span: 24, offset: 0 },
+                sm: { span: 24, offset: 0 },
+              }}
+            >
+              <Button type="primary" htmlType="submit">Submit</Button>
+            </Form.Item>
+          </Form>
+        </Modal>
+      </div>
+    )
+  }
+}
+
+const WrappedAcceptPasswordForm = Form.create()(AcceptPasswordForm)
 
 class UserProfile extends Component {
   constructor(props) {
@@ -19,7 +134,9 @@ class UserProfile extends Component {
     this.state = {
       visible: false,
       NewRequests: [],
-      confirmDealerPin: false
+      confirmDealerPin: false,
+      request: {},
+      dealer_pin: ''
     }
 
   }
@@ -40,10 +157,13 @@ class UserProfile extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        this.props.checkDealerPin({ dealer_pin: values.pin });
+        this.props.checkDealerPin({ dealer_pin: values.pin, requestData: this.state.request });
+        this.props.form.resetFields()
+        this.setState({
+          dealer_pin: values.pin
+        })
       }
     });
-    this.props.form.resetFields()
   }
 
   componentDidMount() {
@@ -61,14 +181,21 @@ class UserProfile extends Component {
   }
 
   rejectRequest(request) {
-    showConfirm(this, "Are you sure you want to decline this request ?", this.props.rejectRequest, request)
+    showConfirm(this, "Are you sure you want to decline this request ?", 'decline', request)
 
     // this.setState({ visible: false })
   }
   acceptRequest(request) {
-    showConfirm(this, "Are you sure you want to accept this request ?", this.props.acceptRequest, request)
+    showConfirm(this, "Are you sure you want to accept this request ?", 'accept', request)
     // this.props.rejectRequest(request);
     // this.setState({ visible: false })
+  }
+  resetDealerPinForm = () => {
+    this.setState({
+      confirmDealerPin: false,
+      dealer_pin: ''
+    })
+    this.props.form.resetFields()
   }
 
 
@@ -86,6 +213,7 @@ class UserProfile extends Component {
             onClick={() => { this.acceptRequest(request) }}>
             ACCEPT
                 </Button></div>,
+        dealer_pin: request.dealer_pin !== '' ? request.dealer_pin : "N/A",
         dealer_name: request.dealer_name ? `${request.dealer_name}` : "N/A",
         label: request.label ? `${request.label}` : "N/A",
         credits: request.credits ? `${request.credits}` : "N/A",
@@ -162,10 +290,7 @@ class UserProfile extends Component {
           }}
           onCancel={() => {
             // this.props.showPwdConfirmModal(false, this.props.actionType)
-            this.setState({
-              confirmDealerPin: false
-            })
-            this.props.form.resetFields()
+            this.resetDealerPinForm()
           }
           }
           okText="Push Apps"
@@ -209,8 +334,15 @@ class UserProfile extends Component {
             </Form.Item>
           </Form>
         </Modal>
+        <WrappedAcceptPasswordForm
+          acceptPasswordForm={this.props.acceptPasswordForm}
+          request={this.state.request}
+          resetAcceptPasswordForm={this.props.resetAcceptPasswordForm}
+          acceptRequest={this.props.acceptRequest}
+          resetDealerPinForm={this.resetDealerPinForm}
+          dealer_pin={this.state.dealer_pin}
+        />
       </div>
-
     )
 
   }
@@ -220,16 +352,20 @@ const WrappedForm = Form.create()(UserProfile)
 
 export default WrappedForm;
 
-function showConfirm(_this, msg, action, request) {
+function showConfirm(_this, msg, type, request) {
   confirm({
     title: 'WARNNING!',
     content: msg,
     okText: "Confirm",
     onOk() {
-      _this.setState({
-        confirmDealerPin: true
-      })
-      // action(request);
+      if (type === 'decline') {
+        _this.props.rejectRequest(request)
+      } else {
+        _this.setState({
+          confirmDealerPin: true,
+          request: request
+        })
+      }
     },
     onCancel() { },
   });

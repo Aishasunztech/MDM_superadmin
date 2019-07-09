@@ -269,9 +269,9 @@ const RestService = {
         // console.log(device);
         return axios.put(USER_URL + 'delete_request/' + request.id, request, RestService.getHeader());
     },
-    acceptRequest: (request) => {
+    acceptRequest: (request, pass, dealer_pin) => {
         // console.log(device);
-        return axios.put(USER_URL + 'accept_request/' + request.id, request, RestService.getHeader());
+        return axios.put(USER_URL + 'accept_request/' + request.id, { request, pass, dealer_pin }, RestService.getHeader());
     },
     checkPass: (user) => {
         return axios.post(USER_URL + 'check-pwd', user, RestService.getHeader());
@@ -284,6 +284,12 @@ const RestService = {
     },
     syncWhiteLabelsIDs: () => {
         return axios.get(USER_URL + 'sync_whiteLabels_ids', RestService.getHeader())
+    },
+    getSalesList: () => {
+        return axios.get(USER_URL + 'get_sales_list', RestService.getHeader());
+    },
+    getDealerList: (labelID) => {
+        return axios.get(USER_URL + 'get_dealer_list/' + labelID, RestService.getHeader());
     },
 }
 export default RestService;

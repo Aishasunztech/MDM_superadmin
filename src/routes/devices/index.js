@@ -324,12 +324,9 @@ class Devices extends Component {
 
     saveExpiryDate = (date) => {
         let { _d } = date;
-        // console.log(this.state.expiry_date, '------------ ', _d);
-
         this.setState({
             expiry_date: _d
         })
-
     }
 
     // range(start, end) {

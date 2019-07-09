@@ -2,12 +2,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Card, Button, Row, Col, Select, Input, Checkbox, Icon, Tabs, Table } from "antd";
+import { Card, Button, Row, Col, Select, Input, Checkbox, Icon, Tabs, Table, InputNumber, Form } from "antd";
 // import {getDevicesList} from '../../appRedux/actions/Devices';
 // import EditDealer from './components/editDealer';
 import CircularProgress from "components/CircularProgress/index";
-import AccountList from "./components/accountList";
-import styles from './manage_data.css'
+import SalesList from "./components/SalesList";
+import Reports from "./components/Reports";
+import styles from './billing.css'
+import {
+    getSalesList,
+    getDealerList
+} from '../../../appRedux/actions/';
 
 
 import { componentSearch, getDealerStatus, titleCase } from '../../utils/commonUtils';
@@ -18,7 +23,7 @@ import {
     LABEL_DATA_CREATED_AT,
 } from '../../../constants/LabelConstants';
 import { DEALER_PIN } from "../../../constants/DealerConstants";
-import { ACTION, NAME, ACCOUNT_TYPE, CREDITS_PURCHASED, INV_NO, STATUS, ORDER_DATE, PAID_DATE, PAY_TYPE } from "../../../constants/BillingConstants";
+import { ACTION, NAME, ACCOUNT_TYPE, CREDITS_PURCHASED, INV_NO, STATUS, ORDER_DATE, PAID_DATE, PAY_TYPE, ACCEPTED_BY } from "../../../constants/BillingConstants";
 
 const TabPane = Tabs.TabPane;
 
@@ -182,9 +187,9 @@ class Billing extends Component {
             {
                 title: (
                     <Input.Search
-                        name="inv"
-                        key="inv"
-                        id="inv"
+                        name="inv_no"
+                        key="inv_no"
+                        id="inv_no"
                         className="search_heading"
                         autoComplete="new-password"
                         placeholder={titleCase(INV_NO)}
@@ -192,15 +197,15 @@ class Billing extends Component {
 
                     />
                 ),
-                dataIndex: 'inv',
+                dataIndex: 'inv_no',
                 className: '',
                 children: [
                     {
                         title: INV_NO,
-                        dataIndex: 'inv',
-                        key: 'inv',
+                        dataIndex: 'inv_no',
+                        key: 'inv_no',
                         align: 'center',
-                        sorter: (a, b) => { return a.inv.localeCompare(b.inv) },
+                        sorter: (a, b) => { return a.inv_no.localeCompare(b.inv_no) },
                         sortDirections: ['ascend', 'descend'],
                         className: '',
                     }
@@ -314,6 +319,33 @@ class Billing extends Component {
                     }
                 ]
             },
+            {
+                title: (
+                    <Input.Search
+                        name="accepted_by"
+                        key="accepted_by"
+                        id="accepted_by"
+                        className="search_heading"
+                        autoComplete="new-password"
+                        placeholder={titleCase(ACCEPTED_BY)}
+                        onKeyUp={this.handleSearch}
+
+                    />
+                ),
+                dataIndex: 'accepted_by',
+                className: '',
+                children: [
+                    {
+                        title: ACCEPTED_BY,
+                        dataIndex: 'accepted_by',
+                        key: 'accepted_by',
+                        align: 'center',
+                        sorter: (a, b) => a.accepted_by - b.accepted_by,
+                        sortDirections: ['ascend', 'descend'],
+                        className: '',
+                    }
+                ]
+            },
         ]
 
         this.state = {
@@ -332,39 +364,15 @@ class Billing extends Component {
             visible: true,
         });
     }
-
-
-    filterList = (type, dealers) => {
-        let dumyDealers = [];
-        dealers.filter(function (dealer) {
-            let dealerStatus = getDealerStatus(dealer.unlink_status, dealer.account_status);
-            if (dealerStatus === type) {
-                dumyDealers.push(dealer);
-            }
-        });
-        return dumyDealers;
-    }
     componentDidMount() {
+        this.props.getSalesList()
+        // this.props.getWhiteLabels()
     }
 
 
 
 
     componentWillReceiveProps(nextProps) {
-
-        if (this.state.innerTabSelect == '1') {
-            this.setState({
-                innerContent: nextProps.chat_ids
-            })
-        } else if (this.state.innerTabSelect == '2') {
-            this.setState({
-                innerContent: nextProps.pgp_emails
-            })
-        } else if (this.state.innerTabSelect == '3') {
-            this.setState({
-                innerContent: nextProps.sim_ids
-            })
-        }
     }
 
     handleComponentSearch = (value) => {
@@ -410,58 +418,6 @@ class Billing extends Component {
 
     }
 
-    handleChangeInnerTab = (value) => {
-        switch (value) {
-            case '1':
-                this.setState({
-                    innerContent: this.props.chat_ids,
-                    columns: this.state.columnsChatids,
-                    innerTabSelect: '1'
-                })
-                status = true;
-                break;
-            case '2':
-                this.setState({
-                    innerContent: this.props.pgp_emails,
-                    columns: this.state.columnsPgpemails,
-                    innerTabSelect: '2'
-                })
-                status = true;
-
-                break;
-            case "3":
-                this.setState({
-                    innerContent: this.props.sim_ids,
-                    columns: this.state.columnsSimids,
-                    innerTabSelect: '3'
-                })
-                status = true;
-                break;
-            case '4':
-                this.setState({
-                    // dealers: this.filterList('suspended', this.props.dealers),
-                    innerContent: [],
-                    columns: this.state.columnsVpn,
-                    innerTabSelect: '4'
-                })
-                status = true;
-                break;
-
-
-            default:
-                this.setState({
-                    innerContent: this.props.chat_ids,
-                    columns: this.state.columnsChatids,
-                    innerTabSelect: '1'
-                })
-                status = true;
-                break;
-        }
-
-        // this.handleCheckChange(this.props.selectedOptions)
-
-    }
-
 
     render() {
         // console.log(this.state.columns, window.location.pathname.split("/").pop(), this.state.options)
@@ -475,44 +431,26 @@ class Billing extends Component {
                         <div style={{ marginTop: 50 }}>
                             <Tabs defaultActiveKey="1" type='card' className="dev_tabs" activeKey={this.state.tabselect} onChange={this.handleChangetab}>
                                 <TabPane tab="SALES" key="1" >
-                                    <Table
-                                        size="middle"
-                                        // className="gx-table-responsive devices table m_d_table"
-                                        bordered
-                                        scroll={{ x: 500 }}
+                                    <SalesList
+                                        salesList={this.props.salesList}
                                         columns={this.state.salesColumns}
-                                        rowKey='row_key'
-                                        align='center'
-                                        pagination={{ pageSize: this.state.pagination, size: "midddle" }}
-                                        dataSource={[]}
-                                        scroll={{
-                                            x: 300,
-                                        }}
                                     />
                                 </TabPane>
-                                <TabPane tab="REPORTS" key="2" >
-
-                                    {/* 
-                                    <AccountList
-                                        whiteLables={this.state.whiteLables}
-                                        columns={this.state.columns}
-                                        dataList={this.state.innerContent}
-                                        // suspendDealer={this.props.suspendDealer}
-                                        // activateDealer={this.props.activateDealer}
-                                        // deleteDealer={this.props.deleteDealer}
-                                        // undoDealer={this.props.undoDealer}
-                                        // editDealer={this.props.editDealer}
-                                        pagination={this.props.DisplayPages}
-                                        // getDealerList={this.props.getDealerList}
-                                        tabselect={this.state.tabselect}
-                                        innerTabSelect={this.state.innerTabSelect}
-                                        handleChangetab={this.handleChangetab}
-                                        handleChangeInnerTab={this.handleChangeInnerTab}
-                                        // updatePassword={this.props.updatePassword}
-                                        ref='dealerList'
-                                    /> */}
+                                <TabPane tab="INVENTORY" key="2" >
                                 </TabPane>
-                                <TabPane tab="PROFIT AND LOSS" key="3" >
+                                <TabPane tab="REPORTS" key="3" >
+                                    <Reports
+                                        whiteLabels={this.props.whiteLabels}
+                                        dealerList={this.props.dealerList}
+                                        getDealerList={this.props.getDealerList}
+                                    />
+                                </TabPane>
+                                <TabPane tab="PROFIT AND LOSS" key="4" >
+                                    <Reports
+                                        whiteLabels={this.props.whiteLabels}
+                                        dealerList={this.props.dealerList}
+                                        getDealerList={this.props.getDealerList}
+                                    />
                                 </TabPane>
                             </Tabs>
 
@@ -575,13 +513,19 @@ class Billing extends Component {
 }
 
 
-var mapStateToProps = (state) => {
+var mapStateToProps = ({ account, sidebarMenu }) => {
+    // console.log(account.dealerList);
     return {
+        salesList: account.salesList,
+        whiteLabels: sidebarMenu.whiteLabels,
+        dealerList: account.dealerList
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
+        getSalesList,
+        getDealerList,
     }, dispatch);
 }
 

@@ -7,4 +7,5 @@ export const STATUS = 'STATUS';
 export const ORDER_DATE = 'ORDER DATE';
 export const PAID_DATE = 'PAID DATE';
 export const PAY_TYPE = 'PAY TYPE';
+export const ACCEPTED_BY = 'ACCEPTED BY';
 

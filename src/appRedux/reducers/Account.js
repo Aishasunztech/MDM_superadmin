@@ -11,7 +11,9 @@ import {
     NEW_DATA_INSERTED,
     CHECK_DEALER_PIN,
     DELETE_IDS,
-    SYNC_IDS
+    SYNC_IDS,
+    GET_SALE_LIST,
+    GET_DEALER_LIST
 } from "../../constants/ActionTypes";
 import { message, Modal } from "antd";
 
@@ -31,6 +33,8 @@ const initialState = {
     duplicate_modal_show: false,
     duplicate_data_type: '',
     newData: [],
+    salesList: [],
+    dealerList: []
 };
 
 export default (state = initialState, action) => {
@@ -163,24 +167,7 @@ export default (state = initialState, action) => {
             }
         }
 
-        case CHECK_DEALER_PIN: {
-            if (action.payload.dealerPinMatched.pin_matched) {
-                success({
-                    title: "Password has been sent to your Email. Please verify Your account.",
-                });
-            }
-
-            else {
-                error({
-                    title: "ADMIN PIN did not Match. Please try again.",
-                });
-                return {
-                    ...state
-                }
-            }
-
-        }
-        case SYNC_IDS:
+        case SYNC_IDS: {
             if (action.response.status) {
                 return {
                     ...state,
@@ -188,7 +175,28 @@ export default (state = initialState, action) => {
                     chat_ids: action.response.chat_ids,
                     sim_ids: action.response.sim_ids
                 }
+            } else {
+                return {
+                    ...state
+                }
             }
+        }
+
+        case GET_SALE_LIST: {
+            // alert("hello");
+            // console.log(action.payload);
+            return {
+                ...state,
+                salesList: action.payload
+            }
+        }
+        case GET_DEALER_LIST: {
+            return {
+                ...state,
+                dealerList: action.payload
+            }
+        }
+
         default:
             return state;
     }

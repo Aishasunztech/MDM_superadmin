@@ -23,6 +23,7 @@ import {
   acceptRequest,
   checkDealerPin,
   syncWhiteLabelsIDs,
+  resetAcceptPasswordForm
 
 } from '../../appRedux/actions/';
 
@@ -98,6 +99,8 @@ class SidebarContent extends Component {
               acceptRequest={this.props.acceptRequest}
               rejectRequest={this.props.rejectRequest}
               checkDealerPin={this.props.checkDealerPin}
+              acceptPasswordForm={this.props.acceptPasswordForm}
+              resetAcceptPasswordForm={this.props.resetAcceptPasswordForm}
             />
             {/* <AppsNavigation/> */}
           </div>
@@ -182,7 +185,15 @@ class SidebarContent extends Component {
 const mapStateToProps = ({ settings, sidebarMenu }) => {
   const { navStyle, themeType, locale, pathname } = settings;
 
-  return { navStyle, themeType, locale, pathname, whiteLabels: sidebarMenu.whiteLabels, requests: sidebarMenu.newRequests, }
+  return {
+    navStyle,
+    themeType,
+    locale,
+    pathname,
+    whiteLabels: sidebarMenu.whiteLabels,
+    requests: sidebarMenu.newRequests,
+    acceptPasswordForm: sidebarMenu.acceptPasswordForm,
+  }
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -193,7 +204,8 @@ const mapDispatchToProps = (dispatch) => {
     acceptRequest: acceptRequest,
     logout: logout,
     checkDealerPin: checkDealerPin,
-    syncWhiteLabelsIDs: syncWhiteLabelsIDs
+    syncWhiteLabelsIDs: syncWhiteLabelsIDs,
+    resetAcceptPasswordForm: resetAcceptPasswordForm
   }, dispatch);
 }
 

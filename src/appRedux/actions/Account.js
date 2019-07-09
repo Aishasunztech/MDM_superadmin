@@ -14,7 +14,9 @@ import {
     NEW_DATA_INSERTED,
     CHECK_DEALER_PIN,
     DELETE_IDS,
-    SYNC_IDS
+    SYNC_IDS,
+    GET_SALE_LIST,
+    GET_DEALER_LIST
 } from "../../constants/ActionTypes"
 
 
@@ -205,28 +207,6 @@ export function getUsedChatIds() {
         });
     }
 }
-export const checkDealerPin = (data) => {
-    // console.log(user);
-    return (dispatch) => {
-        RestService.checkDealerPin(data).then((response) => {
-            if (RestService.checkAuth(response.data)) {
-                dispatch({
-                    type: CHECK_DEALER_PIN,
-                    payload: {
-                        // actionType: actionType,
-                        dealerPinMatched: response.data,
-                    }
-                })
-            }
-            else {
-                dispatch({
-                    type: INVALID_TOKEN
-                })
-            }
-        })
-
-    }
-}
 export function deleteCSVids(type, ids) {
     return (dispatch) => {
         // alert("hello");
@@ -262,6 +242,44 @@ export function syncWhiteLabelsIDs() {
                 dispatch({
                     type: INVALID_TOKEN
                 })
+            }
+        });
+    }
+}
+export function getSalesList() {
+    return (dispatch) => {
+        // alert("hello");
+        RestService.getSalesList().then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                // console.log('response', response.data);
+                dispatch({
+                    type: GET_SALE_LIST,
+                    payload: response.data.data
+                });
+
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                });
+            }
+        });
+    }
+}
+export function getDealerList(labelId) {
+    return (dispatch) => {
+        // alert("hello");
+        RestService.getDealerList(labelId).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                // console.log('response', response.data);
+                dispatch({
+                    type: GET_DEALER_LIST,
+                    payload: response.data.data
+                });
+
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                });
             }
         });
     }
