@@ -149,12 +149,12 @@ class SidebarContent extends Component {
             </Menu.Item>
 
 
-            <Menu.Item key="tools">
+            {/* <Menu.Item key="tools">
               <Link to="/tools">
                 <i className="icon icon-profile2" style={{ visibility: 'hidden' }} />
                 Tools
               </Link>
-            </Menu.Item>
+            </Menu.Item> */}
 
             <Menu.Item key="logout"
               onClick={
