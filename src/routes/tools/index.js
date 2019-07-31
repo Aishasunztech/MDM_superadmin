@@ -1,12 +1,22 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Card, Button, Row, Col, Table } from "antd";
+import { Card, Button, Row, Col, Icon, Modal, Form, Input, Upload, message, Table, Divider } from "antd";
 import WhitelabelList from "./components/WhitelabelList";
-
+import { Link } from 'react-router-dom';
 import { getAllWhiteLabels, restartWhiteLabel, checkPass, resetConfirmReboot } from "../../appRedux/actions";
+import { checkValue } from '../utils/commonUtils';
+import styles from './tools.css'
 
 class Tools extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            VSP100: false,
+            VSP200: false,
+        }
+    }
 
     componentDidMount() {
         this.props.getWhiteLabels();
@@ -19,6 +29,17 @@ class Tools extends Component {
             })
         }
     }
+    cancelVPS100 = () => {
+        this.setState({
+            VSP100: false
+        });
+    }
+
+    cancelVPS200 = () => {
+        this.setState({
+            VSP200: false
+        });
+    }
 
     render() {
         return (
@@ -28,21 +49,95 @@ class Tools extends Component {
                     <Row gutter={16} className="filter_top">
                         <Col className="col-md-3 col-sm-6 col-xs-12">
                             <div className="gutter-box">
-                                <h1 style={{ lineHeight: "35px", marginBottom: 0 }}>SYSTEM ADMIN TOOLS</h1>
+                                <h1 style={{ lineHeight: "35px", marginBottom: 0 }}>DOWNLOAD TOOLS</h1>
                             </div>
                         </Col>
                     </Row>
                 </Card>
-                <Card>
-                    <WhitelabelList
+                {/* <Card> */}
+                {/* <WhitelabelList
                         whiteLabels={this.props.whiteLabels}
                         checkPass={this.props.checkPass}
                         confirmRebootModal={this.props.confirmRebootModal}
                         restartWhiteLabel={this.props.restartWhiteLabel}
                         resetConfirmReboot = {this.props.resetConfirmReboot}
-                    />
+                    /> */}
 
-                </Card>
+
+                <Row>
+                    <Col xs={24} sm={24} md={6} lg={6} xl={6}>
+                        <div>
+                            <div className="contenar">
+                                <Link to="#" onClick={() => this.setState({ VSP100: true })} >
+                                    <Card className="manage_sec" style={{ borderRadius: 12 }}>
+                                        <div>
+                                            <h2 style={{ textAlign: "center" }}>VSP100</h2>
+                                            <Divider className="mb-0" />
+
+                                        </div>
+                                        <Button type="primary" size="small" className="open_btn1">Open</Button>
+                                    </Card>
+                                </Link>
+                            </div>
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={24} md={6} lg={6} xl={6}>
+                        <div>
+                            <div>
+                                <Link to="#" onClick={() => this.setState({ VSP200: true })} >
+                                    <Card className="manage_sec" style={{ borderRadius: 12 }}>
+                                        <div>
+                                            <h2 style={{ textAlign: "center" }}>VSP200</h2>
+                                            <Divider className="mb-0" />
+
+                                        </div>
+                                        <Button type="primary" size="small" className="open_btn1">Open</Button>
+                                    </Card>
+                                </Link>
+                            </div>
+                        </div>
+                    </Col>
+                    <Modal
+                        title={"VSP100"}
+                        visible={this.state.VSP100}
+                        onOk={this.handleOk}
+                        okText={"Ok"}
+                        cancelText={"Cancel"}
+                        onCancel={this.cancelVPS100}
+                        className="d_tool_pup"
+                        width="42%"
+                    >
+                        <Row className="d_t_m">
+                            <h4 style={{ lineHeight: '30px', marginBottom: 0 }}>Firmware VSP100 (DEV)</h4>
+                            <a href="#">
+                                <Button type="primary" size="default" style={{ margin: '0 0 0 16px', height: 30, lineHeight: '30px' }}>
+                                    {"Download"}
+                                </Button>
+                            </a>
+                        </Row>
+                    </Modal>
+
+                    <Modal
+                        title={"VSP200"}
+                        visible={this.state.VSP200}
+                        onOk={this.handleOk}
+                        okText={"Ok"}
+                        cancelText={"Cancel"}
+                        onCancel={this.cancelVPS200}
+                        className="d_tool_pup"
+                        width="42%"
+                    >
+                        <Row className="d_t_m">
+                            <h4 style={{ lineHeight: '30px', marginBottom: 0 }}>Firmware VSP200 (DEV)</h4>
+                            <a href="#">
+                                <Button type="primary" size="default" style={{ margin: '0 0 0 16px', height: 30, lineHeight: '30px' }}>
+                                    {"Download"}
+                                </Button>
+                            </a>
+                        </Row>
+                    </Modal>
+                </Row>
+                {/* </Card> */}
             </div>
         );
     }
