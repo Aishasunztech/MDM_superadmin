@@ -151,7 +151,7 @@ class AccountList extends Component {
                     <TabPane tab="VPN" key="4" forceRender={true}>
                     </TabPane>
                 </Tabs>
-                <CustomScrollbars className="gx-popover-scroll ">
+                {/* <CustomScrollbars className="gx-popover-scroll "> */}
                     <Table
                         size="middle"
                         className="gx-table-responsive devices table m_d_table"
@@ -164,7 +164,7 @@ class AccountList extends Component {
                         pagination={false}
                         dataSource={this.renderList(this.props.dataList)}
                     />
-                </CustomScrollbars>
+                {/* </CustomScrollbars> */}
             </Card>
         )
     }
