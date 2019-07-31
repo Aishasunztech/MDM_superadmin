@@ -45,6 +45,7 @@ class ManageData extends Component {
         align: 'center',
         className: 'row',
         width: 50,
+        render: (text, record, index) => ++index,
       },
       {
         title: LABEL,
@@ -115,6 +116,7 @@ class ManageData extends Component {
         align: 'center',
         className: 'row',
         width: 50,
+        render: (text, record, index) => ++index,
       },
       {
         title: LABEL,
@@ -186,6 +188,7 @@ class ManageData extends Component {
         align: 'center',
         className: 'row',
         width: 50,
+        render: (text, record, index) => ++index,
       },
       {
         title: LABEL,
@@ -257,6 +260,7 @@ class ManageData extends Component {
         align: 'center',
         className: 'row',
         width: 50,
+        render: (text, record, index) => ++index,
       },
       {
         title: LABEL,
