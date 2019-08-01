@@ -7,14 +7,18 @@ import { Link } from 'react-router-dom';
 import { getAllWhiteLabels, restartWhiteLabel, checkPass, resetConfirmReboot } from "../../appRedux/actions";
 import { checkValue } from '../utils/commonUtils';
 import styles from './tools.css'
+import { FIRMWARE_URL } from '../../constants/Application';
 
 class Tools extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            VSP100: false,
-            VSP200: false,
+            title: '',
+            content: '',
+            fileName: '',
+            visible: false,
+            VSP200: false
         }
     }
 
@@ -29,17 +33,34 @@ class Tools extends Component {
             })
         }
     }
-    cancelVPS100 = () => {
-        this.setState({
-            VSP100: false
-        });
-    }
+    // handleCancel = () => {
+    //     this.setState({
+    //         visible: false
+    //     });
+    // }
 
-    cancelVPS200 = () => {
+    handleCancel = () => {
         this.setState({
             VSP200: false
         });
     }
+
+    handleVisible = () => {
+        this.setState({
+            visible: false
+        });
+    }
+
+    handleModalOpen = (title, content, file) => {
+        this.setState({
+            visible: true,
+            title,
+            content,
+            fileName: file
+        });
+    }
+
+
 
     render() {
         return (
@@ -68,7 +89,7 @@ class Tools extends Component {
                     <Col xs={24} sm={24} md={6} lg={6} xl={6}>
                         <div>
                             <div className="contenar">
-                                <Link to="#" onClick={() => this.setState({ VSP100: true })} >
+                                <Link to="#" onClick={() => this.handleModalOpen("VSP100")} >
                                     <Card className="manage_sec" style={{ borderRadius: 12 }}>
                                         <div>
                                             <h2 style={{ textAlign: "center" }}>VSP100</h2>
@@ -97,19 +118,37 @@ class Tools extends Component {
                             </div>
                         </div>
                     </Col>
+
+
                     <Modal
-                        title={"VSP100"}
-                        visible={this.state.VSP100}
-                        onOk={this.handleOk}
+                        title={this.state.title}
+                        visible={this.state.visible}
+                        onOk={this.handleVisible}
                         okText={"Ok"}
                         cancelText={"Cancel"}
-                        onCancel={this.cancelVPS100}
+                        onCancel={this.handleVisible}
                         className="d_tool_pup"
                         width="42%"
                     >
                         <Row className="d_t_m">
                             <h4 style={{ lineHeight: '30px', marginBottom: 0 }}>Firmware VSP100 (DEV)</h4>
-                            <a href="#">
+                            <a href={`${FIRMWARE_URL}Firmware_VSP100_DEV.gz`}>
+                                <Button type="primary" size="default" style={{ margin: '0 0 0 16px', height: 30, lineHeight: '30px' }}>
+                                    {"Download"}
+                                </Button>
+                            </a>
+                        </Row>
+                        <Row className="d_t_m">
+                            <h4 style={{ lineHeight: '30px', marginBottom: 0 }}>Firmware VSP100 (NO ADB)</h4>
+                            <a href={`${FIRMWARE_URL}Firmware_VSP100_no_ADB.zip`}>
+                                <Button type="primary" size="default" style={{ margin: '0 0 0 16px', height: 30, lineHeight: '30px' }}>
+                                    {"Download"}
+                                </Button>
+                            </a>
+                        </Row>
+                        <Row className="d_t_m">
+                            <h4 style={{ lineHeight: '30px', marginBottom: 0 }}>Firmware VSP100 Final</h4>
+                            <a href={`${FIRMWARE_URL}Firmware_VSP100_Final.gz`}>
                                 <Button type="primary" size="default" style={{ margin: '0 0 0 16px', height: 30, lineHeight: '30px' }}>
                                     {"Download"}
                                 </Button>
@@ -120,16 +159,16 @@ class Tools extends Component {
                     <Modal
                         title={"VSP200"}
                         visible={this.state.VSP200}
-                        onOk={this.handleOk}
+                        onOk={this.handleCancel}
                         okText={"Ok"}
                         cancelText={"Cancel"}
-                        onCancel={this.cancelVPS200}
+                        onCancel={this.handleCancel}
                         className="d_tool_pup"
                         width="42%"
                     >
                         <Row className="d_t_m">
-                            <h4 style={{ lineHeight: '30px', marginBottom: 0 }}>Firmware VSP200 (DEV)</h4>
-                            <a href="#">
+                            <h4 style={{ lineHeight: '30px', marginBottom: 0 }}>Firmware VSP200 Final</h4>
+                            <a href={`${FIRMWARE_URL}Firmware_VSP200_Final.gz`}>
                                 <Button type="primary" size="default" style={{ margin: '0 0 0 16px', height: 30, lineHeight: '30px' }}>
                                     {"Download"}
                                 </Button>

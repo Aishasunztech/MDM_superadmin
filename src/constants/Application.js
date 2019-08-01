@@ -3,6 +3,8 @@ let hostName = window.location.hostname
 
 let URL = 'http://localhost:8042/api/v1/';
 let TITLE = "SuperAdmin";
+export const FIRMWARE_URL = 'http://cdn.meshguard.co/';
+
 
 switch (hostName) {
     case "localhost":
@@ -30,6 +32,7 @@ switch (hostName) {
     default:
         break;
 }
+
 
 let USER_URI = URL + 'users/';
 
