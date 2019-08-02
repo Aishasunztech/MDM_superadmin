@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Table, Avatar, Switch, Button, Icon, Card, Modal, Tabs } from "antd";
+import CustomScrollbars from "../../../utils/CustomScrollbars";
 const TabPane = Tabs.TabPane;
 
 let data = [];
@@ -138,7 +139,8 @@ class AccountList extends Component {
     render() {
         // console.log('data list at::', this.props.dataList)
         return (
-            <Card bordered={false}>
+            <Card bordered={false} className="fix_card devices_fix_card">
+
                 <Tabs defaultActiveKey="1" type='card' tabPosition="left" className="dev_tabs manage_data" onChange={this.callback}>
                     <TabPane tab="CHAT" key="1" >
                     </TabPane>
@@ -149,17 +151,20 @@ class AccountList extends Component {
                     <TabPane tab="VPN" key="4" forceRender={true}>
                     </TabPane>
                 </Tabs>
-                <Table
-                    size="middle"
-                    className="gx-table-responsive devices table m_d_table"
-                    bordered
-                    scroll={{ x: 500 }}
-                    columns={this.state.columns}
-                    rowKey='row_key'
-                    align='center'
-                    pagination={{ pageSize: this.state.pagination, size: "midddle" }}
-                    dataSource={this.renderList(this.props.dataList)}
-                />
+                {/* <CustomScrollbars className="gx-popover-scroll "> */}
+                    <Table
+                        size="middle"
+                        className="gx-table-responsive devices table m_d_table"
+                        bordered
+                        // scroll={{ x: 500 }}
+                        columns={this.state.columns}
+                        rowKey='row_key'
+                        align='center'
+                        // pagination={{ pageSize: this.state.pagination, size: "midddle" }}
+                        pagination={false}
+                        dataSource={this.renderList(this.props.dataList)}
+                    />
+                {/* </CustomScrollbars> */}
             </Card>
         )
     }

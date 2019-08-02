@@ -27,6 +27,7 @@
 }
 
 .m_d_table {
+    border-left: 1px solid #e8e8e8;
     height: 458px;
     overflow: overlay;
     float: right;
