@@ -297,23 +297,6 @@ class AccountList extends Component {
     }
 }
 
-// function showConfirm(id, action, btn_title) {
-//     confirm({
-//         title: 'Do you want to ' + btn_title + ' of this ' + window.location.pathname.split("/").pop() + ' ?',
-//         onOk() {
-//             return new Promise((resolve, reject) => {
-//                 setTimeout(Math.random() > 0.5 ? resolve : reject);
-//                 if (btn_title === 'RESET PASSWORD') {
-//                     id.pageName = 'dealer'
-//                 }
-//                 action(id);
-//                 //  success();
-
-//             }).catch(() => console.log('Oops errors!'));
-//         },
-//         onCancel() { },
-//     });
-// }
 export default class Tab extends Component {
     constructor(props) {
         super(props)

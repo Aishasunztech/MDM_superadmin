@@ -72,7 +72,10 @@ class SidebarContent extends Component {
 
   componentDidMount() {
     this.props.getNewCashRequests();
-    this.props.syncWhiteLabelsIDs();
+    // console.log(this.props.pathname);
+    if (this.props.pathname === "/account/managedata") {
+      this.props.syncWhiteLabelsIDs();
+    }
   }
   componentWillReceiveProps(nextprops) {
     if (this.props.pathname !== nextprops.pathname) {

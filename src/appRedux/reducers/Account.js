@@ -169,6 +169,11 @@ export default (state = initialState, action) => {
 
         case SYNC_IDS: {
             if (action.response.status) {
+                if (action.isButton) {
+                    success({
+                        title: action.response.msg
+                    })
+                }
                 return {
                     ...state,
                     pgp_emails: action.response.pgp_emails,
@@ -176,6 +181,11 @@ export default (state = initialState, action) => {
                     sim_ids: action.response.sim_ids
                 }
             } else {
+                if (action.isButton) {
+                    error({
+                        title: action.response.msg
+                    })
+                }
                 return {
                     ...state
                 }

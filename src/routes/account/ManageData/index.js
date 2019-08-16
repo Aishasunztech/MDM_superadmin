@@ -8,7 +8,7 @@ import { getWhiteLabels } from "../../../appRedux/actions";
 import AppFilter from '../../../components/AppFilter';
 // import EditDealer from './components/editDealer';
 import CircularProgress from "components/CircularProgress/index";
-import AccountList from "./components/accountList";
+import AccountList from "./components/AccountList";
 import styles from './manage_data.css'
 
 import { componentSearch, getDealerStatus, titleCase } from '../../utils/commonUtils';
@@ -633,7 +633,7 @@ class ManageData extends Component {
                       <Button
                         type="primary"
                         style={{ width: '100%' }}
-                        onClick={() => this.props.syncWhiteLabelsIDs()}
+                        onClick={() => this.props.syncWhiteLabelsIDs(true)}
                       >
                         RESYNC ID'S DATA
                       </Button>

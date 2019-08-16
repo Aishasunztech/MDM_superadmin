@@ -87,7 +87,8 @@ class Account extends Component {
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                             <div>
-                                <Link to="/account/billing">
+                                {/* <Link to="/account/billing"> */}
+                                <Link to="#">
                                     <Card className="manage_ac" style={{ borderRadius: 12 }}>
                                         <div>
                                             <h2 style={{ textAlign: "center" }}>Billing</h2>

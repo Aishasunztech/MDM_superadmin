@@ -229,14 +229,15 @@ export function deleteCSVids(type, ids) {
         });
     }
 }
-export function syncWhiteLabelsIDs() {
+export function syncWhiteLabelsIDs(isButton) {
     return (dispatch) => {
         RestService.syncWhiteLabelsIDs().then((response) => {
             if (RestService.checkAuth(response.data)) {
                 // console.log('successfully ', response.data);
                 dispatch({
                     type: SYNC_IDS,
-                    response: response.data
+                    response: response.data,
+                    isButton: isButton
                 });
             } else {
                 dispatch({

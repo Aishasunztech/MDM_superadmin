@@ -367,7 +367,7 @@ class Devices extends Component {
 
     handleOk = e => {
         this.state.extendExpiryDevice.expiry_date = this.state.expiry_date;
-        console.log(this.state.extendExpiryDevice, 'handleOk and required status is', this.state.requireStatus)
+        // console.log(this.state.extendExpiryDevice, 'handleOk and required status is', this.state.requireStatus)
         // console.log(e);
         this.setState({
             visible: false,
@@ -376,7 +376,7 @@ class Devices extends Component {
     };
 
     handleCancel = e => {
-        console.log(e);
+        // console.log(e);
         this.setState({
             visible: false,
         });
@@ -530,7 +530,7 @@ class Devices extends Component {
 
         let filteredDevices = this.state.totalAllDevices.filter(e => e.whitelabel_id == key);
 
-        console.log('devices will be: ', filteredDevices);
+        // console.log('devices will be: ', filteredDevices);
         if (filteredDevices.length) {
             this.setState({
                 devices: filteredDevices,
@@ -914,7 +914,7 @@ class Devices extends Component {
     }
 
     render() {
-        console.log('new devices are:: ', this.props.devices);
+        // console.log('new devices are:: ', this.props.devices);
 
         const formItemLayout = {
             labelCol: {
