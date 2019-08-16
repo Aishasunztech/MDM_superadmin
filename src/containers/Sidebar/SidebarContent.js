@@ -20,7 +20,11 @@ import {
   getWhiteLabels,
   getNewCashRequests,
   rejectRequest,
-  acceptRequest
+  acceptRequest,
+  checkDealerPin,
+  syncWhiteLabelsIDs,
+  resetAcceptPasswordForm
+
 } from '../../appRedux/actions/';
 
 
@@ -68,6 +72,10 @@ class SidebarContent extends Component {
 
   componentDidMount() {
     this.props.getNewCashRequests();
+    // console.log(this.props.pathname);
+    if (this.props.pathname === "/account/managedata") {
+      this.props.syncWhiteLabelsIDs();
+    }
   }
   componentWillReceiveProps(nextprops) {
     if (this.props.pathname !== nextprops.pathname) {
@@ -93,6 +101,9 @@ class SidebarContent extends Component {
               requests={this.props.requests}
               acceptRequest={this.props.acceptRequest}
               rejectRequest={this.props.rejectRequest}
+              checkDealerPin={this.props.checkDealerPin}
+              acceptPasswordForm={this.props.acceptPasswordForm}
+              resetAcceptPasswordForm={this.props.resetAcceptPasswordForm}
             />
             {/* <AppsNavigation/> */}
           </div>
@@ -180,7 +191,15 @@ class SidebarContent extends Component {
 const mapStateToProps = ({ settings, sidebarMenu }) => {
   const { navStyle, themeType, locale, pathname } = settings;
 
-  return { navStyle, themeType, locale, pathname, whiteLabels: sidebarMenu.whiteLabels, requests: sidebarMenu.newRequests }
+  return {
+    navStyle,
+    themeType,
+    locale,
+    pathname,
+    whiteLabels: sidebarMenu.whiteLabels,
+    requests: sidebarMenu.newRequests,
+    acceptPasswordForm: sidebarMenu.acceptPasswordForm,
+  }
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -189,8 +208,10 @@ const mapDispatchToProps = (dispatch) => {
     getNewCashRequests: getNewCashRequests,
     rejectRequest: rejectRequest,
     acceptRequest: acceptRequest,
-
-    logout: logout
+    logout: logout,
+    checkDealerPin: checkDealerPin,
+    syncWhiteLabelsIDs: syncWhiteLabelsIDs,
+    resetAcceptPasswordForm: resetAcceptPasswordForm
   }, dispatch);
 }
 

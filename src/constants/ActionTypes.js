@@ -91,9 +91,13 @@ export const RESET_UPLOAD_FORM = 'RESET_UPLOAD_FORM';
 
 
 // Connect Device 
+export const DELETE_IDS = 'DELETE_IDS';
+export const SYNC_IDS = 'SYNC_IDS';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
+export const RESET_ACCEPT_PASSWORD_FORM = 'RESET_ACCEPT_PASSWORD_FORM';
 
 export const CHECK_PASS = 'CHECK_PASS';
+export const CHECK_DEALER_PIN = 'CHECK_DEALER_PIN';
 export const GET_DEALER_APPS = 'GET_DEALER_APPS';
 export const HANDLE_CHECK_EXTENSION = 'HANDLE_CHECK_EXTENSION';
 export const HANDLE_CHECK_ALL_EXTENSION = 'HANDLE_CHECK_ALL_EXTENSION';
@@ -155,6 +159,10 @@ export const GET_USED_SIM_IDS = 'GET_USED_SIM_IDS';
 export const RELEASE_CSV = 'RELEASE_CSV';
 export const GET_IMIE_HISTORY = 'GET_IMIE_HISTORY';
 export const WRITE_IMEI = 'WRITE_IMEI';
+
+export const GET_SALE_LIST = 'GET_SALE_LIST';
+export const GET_DEALER_LIST = 'GET_DEALER_LIST';
+
 
 // Policy consts
 export const GET_POLICIES = 'GET_POLICIES'

@@ -17,13 +17,13 @@ export const DEVICE_UNLINKED = "Unlinked";
 export const DEVICE_PENDING_ACTIVATION = "Pending activation";
 export const DEVICE_PRE_ACTIVATION = "Pre-activated";
 
- // devices
+// devices
 //  export const DEVICE_ACTIVATED= "active";
 //  export const DEVICE_SUSPENDED= "suspended";
 //  export const DEVICE_EXPIRED= "expired";
 //  export const DEVICE_UNLINKED= "Unlinked";
- export const DEVICE_DELETE= "deleted";
- export const DEVICE_EXTEND = "extended";
+export const DEVICE_DELETE = "deleted";
+export const DEVICE_EXTEND = "extended";
 
 export const DEVICE_ONLINE = "On";
 export const DEVICE_OFFLINE = "off";
@@ -55,6 +55,7 @@ export const BYOD = "com.secure.launcher1"
 
 // Prices Constants
 export const sim = 'sim_id';
+export const sim2 = 'sim_id2';
 export const chat = 'chat_id';
 export const pgp = 'pgp_email';
 export const vpn = 'vpn';
@@ -66,6 +67,7 @@ export const twelve_month = '12 month';
 export const pkg_features = {
     chat_id: false,
     sim_id: false,
+    sim_id2: false,
     pgp_email: false,
     vpn: false
 

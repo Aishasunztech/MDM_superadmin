@@ -40,7 +40,7 @@ export default class WhiteLabelPricing extends Component {
 
         console.log('tab selected is', this.state.outerTab)
 
-        if(this.state.outerTab === '1'){
+        if (this.state.outerTab === '1') {
             let data = this.props.prices
             // console.log(this.props.whitelabel_id)
 
@@ -57,28 +57,29 @@ export default class WhiteLabelPricing extends Component {
         } else if (this.state.outerTab === '2') {
             // console.log('ref is hte ', this.form);
             // this.form.props.form.validateFields((err, values) => {
-                // if (!err) {
-                    // console.log('no error found', values);
-                
-                    if (this.state.pkg_features && this.state.pkgName && this.state.pkgTerms && this.state.pkgName != '' && this.state.pkgTerms != '') {
-                        let data = {
-                            pkgName: this.state.pkgName,
-                            pkgTerm: this.state.pkgTerms,
-                            pkgPrice: this.state.pkgPrice,
-                            pkgFeatures: this.state.pkg_features,
-                            whitelabel_id: this.props.whitelabel_id
-                        }
-                        this.props.setPackage(data);
-                        this.props.showPricingModal(false);
-                        this.setState({
-                            pkgPrice: 0,
-                            pkg_features: pkg_features,
-                            pkgName: '',
-                            pkgTerms: '',
-                            outerTab: '1'
-                        })
-                    }
-                // }
+            // if (!err) {
+            // console.log('no error found', values);
+
+            if (this.state.pkg_features && this.state.pkgName && this.state.pkgTerms && this.state.pkgName != '' && this.state.pkgTerms != '') {
+                console.log(this.state.pkg_features, pkg_features);
+                let data = {
+                    pkgName: this.state.pkgName,
+                    pkgTerm: this.state.pkgTerms,
+                    pkgPrice: this.state.pkgPrice,
+                    pkgFeatures: this.state.pkg_features,
+                    whitelabel_id: this.props.whitelabel_id
+                }
+                this.props.setPackage(data);
+                this.props.showPricingModal(false);
+                this.setState({
+                    pkgPrice: 0,
+                    pkg_features: pkg_features,
+                    pkgName: '',
+                    pkgTerms: '',
+                    outerTab: '1'
+                })
+            }
+            // }
             // })
         }
 
@@ -88,16 +89,16 @@ export default class WhiteLabelPricing extends Component {
 
     setPkgDetail = (value, field, is_pkg_feature = false) => {
         if (is_pkg_feature) {
-            // console.log(this.state.pkg_features, 'pkg features')
             this.state.pkg_features[field] = value
         } else {
             this.state[field] = value
         }
+        // console.log(this.refs.packageForm);
     }
 
     setPrice = (price, field, price_for) => {
 
-        if(price > 0){
+        if (price > 0) {
             this.state[price_for][field] = price
         }
         // console.log('price', price, 'field', field, 'price_for', price_for)
@@ -120,8 +121,8 @@ export default class WhiteLabelPricing extends Component {
                 visible={this.props.pricing_modal}
                 onOk={this.handleSubmit}
                 okText='Save'
-                okButtonProps={{disabled: this.state.outerTab == '1' ? !this.props.isPriceChanged : false}}
-                onCancel={() => {this.props.showPricingModal(false); this.props.resetPrice(); this.setState({outerTab: '1'})}}
+                okButtonProps={{ disabled: this.state.outerTab == '1' ? !this.props.isPriceChanged : false }}
+                onCancel={() => { this.props.showPricingModal(false); this.props.resetPrice(); this.setState({ outerTab: '1' }) }}
                 // footer={null}
                 width='650px'
             >
@@ -143,6 +144,7 @@ export default class WhiteLabelPricing extends Component {
                             showPricingModal={this.props.showPricingModal}
                             setPkgDetail={this.setPkgDetail}
                             wrappedComponentRef={(form) => this.form = form}
+                            ref="packageForm"
                         />
 
                     </TabPane>
