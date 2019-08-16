@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Table, Avatar, Switch, Button, Icon, Card, Modal, Tabs } from "antd";
+import CustomScrollbars from "../../../utils/CustomScrollbars";
 const TabPane = Tabs.TabPane;
 
 let data = [];

@@ -4,7 +4,8 @@
 }
 
 .side_bar_main.gx-mb-4 {
-    margin-bottom: 0px !important;
+    /* margin-bottom: 0px !important; */
+    margin-bottom: 5px !important;
 }
 
 .side_bar_main .notification_icn {

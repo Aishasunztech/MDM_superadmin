@@ -8,7 +8,7 @@ import { getWhiteLabels } from "../../../appRedux/actions";
 import AppFilter from '../../../components/AppFilter';
 // import EditDealer from './components/editDealer';
 import CircularProgress from "components/CircularProgress/index";
-import AccountList from "./components/AccountList";
+import AccountList from "./components/accountList";
 import styles from './manage_data.css'
 
 import { componentSearch, getDealerStatus, titleCase } from '../../utils/commonUtils';
@@ -47,6 +47,7 @@ class ManageData extends Component {
         align: 'center',
         className: 'row',
         width: 50,
+        render: (text, record, index) => ++index,
       },
       {
         title: LABEL,
@@ -117,6 +118,7 @@ class ManageData extends Component {
         align: 'center',
         className: 'row',
         width: 50,
+        render: (text, record, index) => ++index,
       },
       {
         title: LABEL,
@@ -188,6 +190,7 @@ class ManageData extends Component {
         align: 'center',
         className: 'row',
         width: 50,
+        render: (text, record, index) => ++index,
       },
       {
         title: LABEL,
@@ -259,6 +262,7 @@ class ManageData extends Component {
         align: 'center',
         className: 'row',
         width: 50,
+        render: (text, record, index) => ++index,
       },
       {
         title: LABEL,
