@@ -291,5 +291,8 @@ const RestService = {
     getDealerList: (labelID) => {
         return axios.get(USER_URL + 'get_dealer_list/' + labelID, RestService.getHeader());
     },
+    saveBackup: (id) => {
+        return axios.post(USER_URL + 'save_backup', { id }, RestService.getHeader());
+    },
 }
 export default RestService;
