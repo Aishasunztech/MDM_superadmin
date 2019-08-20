@@ -561,28 +561,6 @@ class ManageData extends Component {
 
             <div>
 
-              {/* <AppFilter
-                handleFilterOptions={this.handleFilterOptions}
-                searchPlaceholder="Search Dealer"
-                defaultPagingValue={this.props.DisplayPages}
-                // addButtonText={"Add " + this.state.dealer_type}
-                // selectedOptions={this.props.selectedOptions}
-                options={this.state.options}
-                // isAddButton={true}
-                // dealer_type={this.state.dealer_type}
-                displayOptions={
-                  [
-                    { label: 'Thing 1', value: 1 },
-                    { label: 'Thing 2', value: 2 },
-                  ]
-                }
-                handleCheckChange={this.handleCheckChange}
-                handlePagination={this.handlePagination}
-                handleComponentSearch={this.handleComponentSearch}
-              // testfunc={this.testfunc}
-              // toLink={"/create-dealer/" + this.state.dealer_type}
-              /> */}
-
               <Card >
                 <Row gutter={16} className="filter_top">
                   <Col className="col-md-3 col-sm-6 col-xs-12">

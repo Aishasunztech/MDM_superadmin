@@ -145,7 +145,7 @@ class WhiteLabels extends Component {
         // console.log(this.props.whiteLabelInfo, 'white label info');
         let index2 = -1
         if (type) {
-            index2 = this.props.whiteLabelInfo.apks.findIndex(apk => apk.byod_type==type)
+            index2 = this.props.whiteLabelInfo.apks.findIndex(apk => apk.byod_type == type)
         }
         console.log(index2);
         if (index2 > -1) {
@@ -153,7 +153,7 @@ class WhiteLabels extends Component {
                 byod_apk: this.props.whiteLabelInfo.apks[index2],
                 byod_model: visible,
                 byod_type: type,
-           
+
             })
         } else {
             this.setState({
@@ -261,6 +261,11 @@ class WhiteLabels extends Component {
             pricing_modal: visible
         });
     }
+
+    saveBackup = () => {
+        this.props.saveBackup(this.props.whiteLabelInfo.id)
+    }
+
 
     render() {
         // console.log('prices are', this.props.isPriceChanged)
@@ -617,95 +622,7 @@ class WhiteLabels extends Component {
                                             <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
                                     </Link>
-                                    {/* <div className="middle">
-                                        <div className="text">Coming Soon</div>
-                                    </div> */}
                                 </div>
-                                {/* <Modal
-                                    maskClosable={false}
-                                    destroyOnClose={true}
-                                    title={
-                                        <div>
-                                            <span>WhiteLabel BYOD7 Info</span>
-                                            <Button
-                                                type="primary"
-                                                size="small"
-                                                style={{ float: "right", marginRight: 32 }}
-                                                onClick={(e) => {
-                                                    this.editBYODModal(e, true, true)
-                                                }}
-                                            >Edit</Button>
-                                        </div>
-                                    }
-                                    visible={this.state.byod_model}
-                                    onOk={(e) => {
-                                        this.showBYODModal(e, false);
-                                    }}
-                                    onCancel={(e) => {
-                                        this.showBYODModal(e, false);
-                                    }}
-                                // okText='Submit'
-                                // okText="OK"
-                                // okButtonProps={{
-                                //     disabled: this.state.newData.length ? false : true
-                                // }}
-                                >
-                                    <Table
-                                        bordered
-                                        showHeader={false}
-                                        size='small'
-                                        className="model_id_table"
-                                        columns={[
-                                            {
-                                                // title: 'Name',
-                                                dataIndex: 'name',
-                                                key: 'name',
-                                            },
-                                            {
-                                                // title: 'Value',
-                                                dataIndex: 'value',
-                                                key: 'value',
-                                            },
-                                            // {
-                                            //     dataIndex: 'action',
-                                            //     key: 'action'
-                                            // }
-                                        ]}
-                                        pagination={false}
-                                        dataSource={[
-                                            {
-                                                key: 1,
-                                                name: (<b>Model ID</b>),
-                                                // value: '',
-                                                value: checkValue(this.props.whiteLabelInfo.model_id),
-                                            },
-                                            {
-                                                key: 2,
-                                                name: (<b>Command</b>),
-                                                // value: '',
-                                                value: checkValue(this.props.whiteLabelInfo.command_name),
-                                            },
-                                            {
-                                                key: 3,
-                                                name: (<b>BYOD (APK)</b>),
-                                                value: checkValue(this.state.byod_apk.apk_file),
-                                            },
-                                            {
-                                                key: 4,
-                                                name: (<b>Version Name</b>),
-                                                // value: '',
-                                                value: checkValue(this.state.byod_apk.version_name),
-                                            },
-                                            {
-                                                key: 5,
-                                                name: (<b>Size</b>),
-                                                // value: '',
-                                                value: checkValue(this.state.byod_apk.apk_size),
-                                            },
-                                        ]}
-                                    />
-
-                                </Modal> */}
                             </div>
                         </Col>
                         <Col xs={24} sm={24} md={6} lg={6} xl={6}>
@@ -741,7 +658,12 @@ class WhiteLabels extends Component {
                                     </a>
                                     {/* <WhiteLabelBackups /> */}
                                     <Modal
-                                        title="Database Backups"
+                                        title={
+                                            <div>
+                                                <Button type="primary" size="small" className="mng_d_btn" onClick={this.saveBackup} >SAVE BACKUP NOW</Button>
+                                                <span>Database Backups</span>
+                                            </div>
+                                        }
                                         visible={this.state.backupDatabaseModal}
                                         onOk={this.handleOk}
                                         onCancel={this.handleCancel}
@@ -758,7 +680,7 @@ class WhiteLabels extends Component {
                                 </div>
                             </div>
                         </Col>
-                   
+
                         <Col xs={24} sm={24} md={6} lg={6} xl={6}>
                             <div>
                                 <div className="contenar">
