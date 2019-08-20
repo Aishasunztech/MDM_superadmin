@@ -28,7 +28,9 @@ import {
   getPGPEmails,
 } from "../../../appRedux/actions/Devices";
 import {
-  exportCSV
+  exportCSV,
+  deleteCSVids,
+  syncWhiteLabelsIDs
 } from "../../../appRedux/actions/Account";
 
 var copyInnerContent = [];
@@ -490,52 +492,6 @@ class ManageData extends Component {
       })
 
     }
-
-
-    // switch (value) {
-
-    //   case 'all':
-    //     this.setState({
-    //       // dealers: this.props.dealers,
-    //       // column: this.state.columns,
-    //       tabselect: 'all'
-    //     })
-    //     break;
-    //   case '2':
-    //     this.setState({
-    //       // dealers: this.filterList('LockMesh', this.props.dealers),
-    //       // column: this.state.columns,
-    //       tabselect: '2'
-    //     })
-
-    //     break;
-    //   case "3":
-    //     this.setState({
-    //       // dealers: this.filterList('Titan Locker', this.props.dealers),
-    //       // column: this.state.columns,
-    //       tabselect: '3'
-    //     })
-    //     break;
-    //   case '4':
-    //     this.setState({
-    //       // dealers: this.filterList('suspended', this.props.dealers),
-    //       // column: this.state.columns,
-    //       tabselect: '4'
-    //     })
-    //     break;
-
-
-    //   default:
-    //     this.setState({
-    //       // dealers: this.props.dealers,
-    //       // column: this.state.columns,
-    //       tabselect: '1'
-    //     })
-    //     break;
-    // }
-
-    // this.handleCheckChange(this.props.selectedOptions)
-
   }
 
   handleChangeInnerTab = (value) => {
@@ -605,28 +561,6 @@ class ManageData extends Component {
 
             <div>
 
-              {/* <AppFilter
-                handleFilterOptions={this.handleFilterOptions}
-                searchPlaceholder="Search Dealer"
-                defaultPagingValue={this.props.DisplayPages}
-                // addButtonText={"Add " + this.state.dealer_type}
-                // selectedOptions={this.props.selectedOptions}
-                options={this.state.options}
-                // isAddButton={true}
-                // dealer_type={this.state.dealer_type}
-                displayOptions={
-                  [
-                    { label: 'Thing 1', value: 1 },
-                    { label: 'Thing 2', value: 2 },
-                  ]
-                }
-                handleCheckChange={this.handleCheckChange}
-                handlePagination={this.handlePagination}
-                handleComponentSearch={this.handleComponentSearch}
-              // testfunc={this.testfunc}
-              // toLink={"/create-dealer/" + this.state.dealer_type}
-              /> */}
-
               <Card >
                 <Row gutter={16} className="filter_top">
                   <Col className="col-md-3 col-sm-6 col-xs-12">
@@ -634,7 +568,7 @@ class ManageData extends Component {
                       <h1 style={{ lineHeight: "35px", marginBottom: 0 }}>Manage Data</h1>
                     </div>
                   </Col>
-                  <Col className="col-md-7 col-sm-6 col-xs-12">
+                  <Col className="col-md-5 col-sm-5 col-xs-12">
                     <div className="gutter-box">
                       <Search
                         placeholder="Search..."
@@ -643,25 +577,7 @@ class ManageData extends Component {
                       />
                     </div>
                   </Col>
-                  {/* <Col className="col-md-2 col-sm-6 col-xs-12">
-                            <div className="gutter-box">
-                                <Select
-                                    value="Import"
-                                    //  defaultValue={this.state.DisplayPages}
-                                    style={{ width: '100%' }}
-                                    // onSelect={value => this.setState({DisplayPages:value})}
-                                    // onChange={value => this.handlePagination(value)}
-                                >
-                                    <Select.Option value="10" >10</Select.Option>
-                                    <Select.Option value="20">20</Select.Option>
-                                    <Select.Option value="30">30</Select.Option>
-                                    <Select.Option value="50">50</Select.Option>
-                                    <Select.Option value="100">100</Select.Option>
-                                </Select>
-                            </div>
-                        </Col> */}
-
-                  <Col className="col-md-2 col-sm-6 col-xs-12">
+                  <Col className="col-md-2 col-sm-2 col-xs-12">
                     <div className="gutter-box">
                       <Select
                         value="Export"
@@ -691,6 +607,18 @@ class ManageData extends Component {
                         // }}
                         >Export VPNs</Select.Option>
                       </Select>
+
+                    </div>
+                  </Col>
+                  <Col className="col-md-2 col-sm-2 col-xs-12">
+                    <div className="gutter-box">
+                      <Button
+                        type="primary"
+                        style={{ width: '100%' }}
+                        onClick={() => this.props.syncWhiteLabelsIDs(true)}
+                      >
+                        RESYNC ID'S DATA
+                      </Button>
                     </div>
                   </Col>
 
@@ -713,6 +641,7 @@ class ManageData extends Component {
                 innerTabSelect={this.state.innerTabSelect}
                 handleChangetab={this.handleChangetab}
                 handleChangeInnerTab={this.handleChangeInnerTab}
+                deleteCSVids={this.props.deleteCSVids}
                 // updatePassword={this.props.updatePassword}
                 ref='dealerList'
 
@@ -816,13 +745,9 @@ function mapDispatchToProps(dispatch) {
     getChatIDs: getChatIDs,
     getPGPEmails: getPGPEmails,
     getWhiteLabels: getWhiteLabels,
-    // importCSV: importCSV,
     exportCSV: exportCSV,
-    // getUsedPGPEmails: getUsedPGPEmails,
-    // getUsedChatIds: getUsedChatIds,
-    // getUsedSimIds: getUsedSimIds,
-    // releaseCSV: releaseCSV,
-    // insertNewData: insertNewData
+    deleteCSVids: deleteCSVids,
+    syncWhiteLabelsIDs: syncWhiteLabelsIDs
   }, dispatch);
 }
 

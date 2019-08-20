@@ -5,7 +5,7 @@ import {
 } from "antd";
 import styles from '../../../whitelabels.css';
 import RestService from '../../../../../appRedux/services/RestServices';
-import { one_month, three_month, six_month, twelve_month, sim, chat, pgp, vpn } from '../../../../../constants/Constants';
+import { one_month, three_month, six_month, twelve_month, sim, chat, pgp, vpn, sim2 } from '../../../../../constants/Constants';
 
 class PackagePricingForm extends Component {
     constructor(props) {
@@ -13,6 +13,7 @@ class PackagePricingForm extends Component {
         this.state = {
             pkgPrice: 0,
             sim: false,
+            sim_id2: false,
             chat: false,
             pgp: false,
             vpn: false
@@ -67,6 +68,20 @@ class PackagePricingForm extends Component {
             callback("Package name already taken please use another name.")
         }
     }
+    componentDidMount() {
+        // console.log('component did mount');
+        this.setState({
+            pkgPrice: 0,
+            sim: false,
+            sim_id2: false,
+            chat: false,
+            pgp: false,
+            vpn: false
+        })
+    }
+    // resetState = ()=>{
+
+    // }
 
     render() {
 
@@ -180,6 +195,17 @@ class PackagePricingForm extends Component {
                     </Col>
                     <Col span={7}>
                         <span className='priceText' >Sim ID: </span><span style={{ fontWeight: 'bold' }}>{this.state[sim] ? 'Yes' : 'No'}</span>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={13}>
+                        <h4 className="labelTypeText">Sim ID 2:</h4>
+                    </Col>
+                    <Col span={4}>
+                        <Button type="primary" onClick={() => this.setPrice(sim2, true, !this.state[sim2])} >{this.state[sim2] ? 'Unset' : 'Set'}</Button>
+                    </Col>
+                    <Col span={7}>
+                        <span className='priceText' >Sim ID 2: </span><span style={{ fontWeight: 'bold' }}>{this.state[sim2] ? 'Yes' : 'No'}</span>
                     </Col>
                 </Row>
 

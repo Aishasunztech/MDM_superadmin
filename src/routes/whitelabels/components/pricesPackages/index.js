@@ -283,7 +283,7 @@ class Prices extends Component {
 
             for (var key in data) {
                 if (data.hasOwnProperty(key)) {
-                    console.log(key + " -> " + data[key]);
+                    // console.log(key + " -> " + data[key]);
                     let name=  key;
                    name = name.charAt(0).toUpperCase() + name.slice(1);
                     let dump = {

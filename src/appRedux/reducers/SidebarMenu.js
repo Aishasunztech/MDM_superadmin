@@ -2,16 +2,19 @@ import {
     GET_WHITE_LABELS,
     NEW_REQUEST_LIST,
     REJECT_REQUEST,
-    ACCEPT_REQUEST
+    ACCEPT_REQUEST,
+    CHECK_DEALER_PIN,
+    RESET_ACCEPT_PASSWORD_FORM
 } from "../../constants/ActionTypes";
-import { Modal } from 'antd';
+import { Modal, message } from 'antd';
 
 const success = Modal.success
 const error = Modal.error
 
 const initialSidebar = {
     whiteLabels: [],
-    newRequests: []
+    newRequests: [],
+    acceptPasswordForm: false
 };
 
 export default (state = initialSidebar, action) => {
@@ -57,13 +60,16 @@ export default (state = initialSidebar, action) => {
         case ACCEPT_REQUEST: {
             var newRequests = state.newRequests;
             var request_id = action.request.id;
-            var filteredRequests = newRequests
+            var filteredRequests = newRequests;
+            var acceptPasswordForm = true;
 
             if (action.response.status) {
                 success({
                     title: action.response.msg,
                 });
                 filteredRequests = newRequests.filter(request => request.id !== request_id);
+                acceptPasswordForm = false;
+
             } else {
                 error({
                     title: action.response.msg,
@@ -75,7 +81,37 @@ export default (state = initialSidebar, action) => {
             return {
                 ...state,
                 newRequests: filteredRequests,
+                acceptPasswordForm: acceptPasswordForm
+
             }
+        }
+
+        case CHECK_DEALER_PIN: {
+            if (action.payload.dealerPinMatched.pin_matched) {
+                message.success("Password has been sent to your Email. Please verify Your account.");
+                return {
+                    ...state,
+                    acceptPasswordForm: true
+                }
+            }
+            else {
+                error({
+                    title: "ADMIN PIN did not Match. Please try again.",
+                });
+                return {
+                    ...state
+                }
+            }
+            break
+
+        }
+        case RESET_ACCEPT_PASSWORD_FORM: {
+
+            return {
+                ...state,
+                acceptPasswordForm: false
+            }
+
         }
 
         default:

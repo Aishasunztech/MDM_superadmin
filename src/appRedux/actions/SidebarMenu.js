@@ -1,5 +1,5 @@
 import {
-    GET_WHITE_LABELS, INVALID_TOKEN, NEW_REQUEST_LIST, REJECT_REQUEST, ACCEPT_REQUEST
+    GET_WHITE_LABELS, INVALID_TOKEN, NEW_REQUEST_LIST, REJECT_REQUEST, ACCEPT_REQUEST, CHECK_DEALER_PIN, RESET_ACCEPT_PASSWORD_FORM
 } from "../../constants/ActionTypes"
 
 import RestService from '../services/RestServices';
@@ -66,10 +66,10 @@ export function rejectRequest(request) {
         });
     }
 }
-export function acceptRequest(request) {
+export function acceptRequest(request ,pass,dealer_pin) {
     return (dispatch) => {
         // console.log(device)
-        RestService.acceptRequest(request).then((response) => {
+        RestService.acceptRequest(request,pass,dealer_pin).then((response) => {
             if (RestService.checkAuth(response.data)) {
                 console.log("REsponse", response.data);
                 dispatch({
@@ -83,5 +83,35 @@ export function acceptRequest(request) {
                 })
             }
         });
+    }
+}
+export const checkDealerPin = (data) => {
+    // console.log(user);
+    return (dispatch) => {
+        RestService.checkDealerPin(data).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                dispatch({
+                    type: CHECK_DEALER_PIN,
+                    payload: {
+                        // actionType: actionType,
+                        dealerPinMatched: response.data,
+                    }
+                })
+            }
+            else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+        })
+
+    }
+}
+export const resetAcceptPasswordForm = () => {
+    // console.log(user);
+    return (dispatch) => {
+        dispatch({
+            type: RESET_ACCEPT_PASSWORD_FORM
+        })
     }
 }

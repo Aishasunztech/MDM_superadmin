@@ -9,7 +9,9 @@ import {
     SET_PRICE,
     RESET_PRICE,
     GET_PACKAGES,
-    GET_ALL_WHITE_LABELS
+    GET_ALL_WHITE_LABELS,
+    SAVE_BACKUP,
+    START_BACKUP_LOADING
 } from "../../constants/ActionTypes";
 
 import { message, Modal } from 'antd';
@@ -36,7 +38,8 @@ const initialState = {
         vpn: {}
     },
     packages: [],
-    packagesCopy: []
+    packagesCopy: [],
+    backupLoading: false,
 };
 
 export default (state = initialState, action) => {
@@ -162,7 +165,6 @@ export default (state = initialState, action) => {
 
 
         case EDIT_WHITE_LABEL_INFO: {
-            // console.log('reducer response', action.payload)
             if (action.payload.status) {
                 success({
                     title: action.payload.msg,
@@ -172,7 +174,37 @@ export default (state = initialState, action) => {
                     title: action.payload.msg,
                 });
             }
+
         }
+
+        case SAVE_BACKUP: {
+            let backups = state.whitelabelBackups
+            if (action.response.status) {
+                success({
+                    title: action.response.msg,
+                });
+                backups.push(action.response.data)
+            } else {
+                error({
+                    title: action.response.msg,
+                });
+            }
+            return {
+                ...state,
+                whitelabelBackups: [...backups],
+                backupLoading: false
+
+            }
+        }
+        case START_BACKUP_LOADING: {
+            return {
+                ...state,
+                backupLoading: true
+            }
+        }
+
+
+
         default:
             return state;
 

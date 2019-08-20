@@ -18,7 +18,9 @@ class Tools extends Component {
             content: '',
             fileName: '',
             visible: false,
-            VSP200: false
+            VSP200: false,
+            rebootModal: false,
+            tools_modal: false
         }
     }
 
@@ -183,7 +185,7 @@ class Tools extends Component {
 }
 
 var mapStateToProps = ({ auth, whiteLabels }) => {
-    console.log(whiteLabels);
+    // console.log(whiteLabels);
     return {
         whiteLabels: whiteLabels.whiteLabels,
         confirmRebootModal: auth.confirmRebootModal,

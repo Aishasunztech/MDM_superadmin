@@ -110,6 +110,4 @@ const AppRoutes = ({ match, whiteLabels }) => {
   )
 }
 
-  ;
-
 export default AppRoutes;

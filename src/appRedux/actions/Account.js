@@ -11,8 +11,14 @@ import {
     GET_USED_CHAT_IDS,
     GET_USED_SIM_IDS,
     DUPLICATE_SIM_IDS,
-    NEW_DATA_INSERTED
-} from "constants/ActionTypes"
+    NEW_DATA_INSERTED,
+    CHECK_DEALER_PIN,
+    DELETE_IDS,
+    SYNC_IDS,
+    GET_SALE_LIST,
+    GET_DEALER_LIST
+} from "../../constants/ActionTypes"
+
 
 import RestService from '../services/RestServices';
 
@@ -190,6 +196,84 @@ export function getUsedChatIds() {
                 // console.log('response', response.data);
                 dispatch({
                     type: GET_USED_CHAT_IDS,
+                    payload: response.data.data
+                });
+
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                });
+            }
+        });
+    }
+}
+export function deleteCSVids(type, ids) {
+    return (dispatch) => {
+        // alert("hello");
+        // console.log(ids);
+        RestService.deleteCSVids(type, ids).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                // console.log('successfully ', response.data);
+                dispatch({
+                    type: DELETE_IDS,
+                    response: response.data,
+                    payload: {
+                        formData: ids
+                    }
+                });
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+        });
+    }
+}
+export function syncWhiteLabelsIDs(isButton) {
+    return (dispatch) => {
+        RestService.syncWhiteLabelsIDs().then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                // console.log('successfully ', response.data);
+                dispatch({
+                    type: SYNC_IDS,
+                    response: response.data,
+                    isButton: isButton
+                });
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+        });
+    }
+}
+export function getSalesList() {
+    return (dispatch) => {
+        // alert("hello");
+        RestService.getSalesList().then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                // console.log('response', response.data);
+                dispatch({
+                    type: GET_SALE_LIST,
+                    payload: response.data.data
+                });
+
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                });
+            }
+        });
+    }
+}
+export function getDealerList(labelId) {
+    return (dispatch) => {
+        // alert("hello");
+        RestService.getDealerList(labelId).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                // console.log('response', response.data);
+                dispatch({
+                    type: GET_DEALER_LIST,
                     payload: response.data.data
                 });
 

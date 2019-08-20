@@ -8,14 +8,17 @@ const confirm = Modal.confirm;
 class AccountList extends Component {
     constructor(props) {
         super(props);
-
+        this.confirm = Modal.confirm;
         this.state = {
             searchText: '',
             columns: [],
             dataFieldName: '',
             pagination: this.props.pagination,
-            innerTabSelect: this.props.innerTabSelect
-
+            innerTabSelect: this.props.innerTabSelect,
+            dataList: [],
+            innerTabKey: '1',
+            selectedRowKeys: [],
+            selectedRows: [],
         };
         this.renderList = this.renderList.bind(this);
     }
@@ -31,65 +34,111 @@ class AccountList extends Component {
     componentDidUpdate(prevProps) {
 
         if (this.props !== prevProps) {
+            // console.log(this.props.columns);
             this.setState({
-                columns: this.props.columns
+                columns: this.props.columns,
+                dataList: this.props.dataList,
+                innerTabKey: "1",
+                selectedRows: [],
+                selectedRowKeys: [],
             })
         }
     }
 
-    // handleCheckChange = (values) => {
+    resetSeletedRows = () => {
+        // console.log('table ref', this.refs.tablelist)
+        this.setState({
+            selectedRowKeys: [],
+            selectedRows: [],
+        })
+    }
 
-    //     let dumydata = this.state.columns;
+    deleteIDs = (id) => {
+        let arr = [];
+        arr.push(id);
+        let title = ' Are you sure, you want to delete the ID';
+        this.confirmDelete(arr, title);
+    }
+    confirmDelete = (ids, title) => {
+        console.log(ids);
+        this.confirm({
+            title: title,
+            content: '',
+            onOk: (() => {
+                let type = '';
+                switch (this.state.innerTabSelect) {
+                    case '1':
+                        type = 'chat_id'
+                        break;
+                    case '2':
+                        type = 'pgp_email'
+                        break;
+                    case '3':
+                        type = 'sim_id'
+                        break;
 
-    //     try {
-    //         if (values.length) {
-    //             this.state.columns.map((column, index) => {
+                    default:
+                        break;
+                }
+                // console.log(type);
+                this.props.deleteCSVids(type, ids);
+                //    this.props.resetTabSelected()
+                // this.props.refreshComponent();
+                // console.log('this.refs.tablelist.props.rowSelection', this.refs.tablelist.props.rowSelection)
+                this.resetSeletedRows();
+                if (this.refs.tablelist.props.rowSelection !== null) {
+                    this.refs.tablelist.props.rowSelection.selectedRowKeys = []
+                }
+            }),
+            onCancel() { },
+        });
+    }
 
-    //                 if (dumydata[index].className !== 'row') {
-    //                     dumydata[index].className = 'hide';
-    //                 }
-
-    //                 values.map((value) => {
-    //                     if (column.title === value) {
-    //                         dumydata[index].className = '';
-    //                     }
-    //                 });
-
-    //             });
-
-    //             this.setState({ columns: dumydata });
-
-    //         } else {
-    //             const newState = this.state.columns.map((column) => {
-    //                 if (column.className === 'row') {
-    //                     return column;
-    //                 } else {
-    //                     return ({ ...column, className: 'hide' })
-    //                 }
-    //             });
-
-    //             this.setState({
-    //                 columns: newState,
-    //             });
-    //         }
-    //     } catch (error) {
-    //         alert(error, 'errro');
-    //     }
-
-
-    //     this.props.postDropdown(values, this.state.dealer_type);
-    // }
-
+    deleteSelectedIDs = (type) => {
+        console.log(type);
+        if (this.state.selectedRowKeys.length) {
+            let title = ' Are you sure, you want to delete All these IDS';
+            let arr = [];
+            // console.log('delete the device', this.state.selectedRowKeys);
+            for (let id of this.state.selectedRowKeys) {
+                for (let data of this.props.dataList) {
+                    if (type == '1') {
+                        if (data.id == id && data.whitelabel_id == this.props.tabselect && this.state.innerTabSelect == '1') {
+                            arr.push(data)
+                        }
+                    }
+                    else if (type == '2') {
+                        if (data.id == id && data.whitelabel_id == this.props.tabselect && this.state.innerTabSelect == '2') {
+                            arr.push(data)
+                        }
+                    }
+                    else if (type == '3') {
+                        // console.log(data.id == id, data.whitelabel_id == this.props.tabselect, this.state.innerTabSelect == '3');
+                        if (data.id == id && data.whitelabel_id == this.props.tabselect && this.state.innerTabSelect == '3') {
+                            arr.push(data)
+                        }
+                    }
+                }
+            }
+            this.confirmDelete(arr, title);
+        }
+    }
 
     renderList(list) {
         data = [];
+        // console.log(this.state.innerTabSelect);
         // console.log('data list at renderList::', this.props.dataList)
         // console.log('index is::', this.props.tabselect);
         if (this.props.tabselect != 'all') {
 
             list = list.filter(e => e.whitelabel_id == this.props.tabselect);
         }
+        if (this.state.innerTabKey !== '3') {
+            this.state.columns = this.state.columns.filter((item) => {
+                return item.dataIndex !== 'action'
 
+            })
+        }
         // if (this.props.tabselect == 2) {
         // } else if (this.props.tabselect == 3) {
         //     list = list.filter(e => e.whitelabel_id == 2);
@@ -98,48 +147,126 @@ class AccountList extends Component {
         list.map((item, index) => {
             // let label;
             // if (item.whitelabel_id == 1) { label = "Lockmesh" } else if (item.whitelabel_id == 2) { label = "Titan Locker" } else { label = "N/A" }
-            data.push({
-                'row_key': `${index}Key`,
-                'count': ++index,
-                'label': item.name,
-                'chat_id': item.chat_id ? item.chat_id : 'N/A',
-                'sim_id': item.sim_id ? item.sim_id : 'N/A',
-                'pgp_email': item.pgp_email ? item.pgp_email : 'N/A',
-                'created_at': item.created_at ? item.created_at : 'N/A',
-            })
+            if (this.state.innerTabKey === '3') {
+                // console.log(this.state.innerTabSelect);
+                data.push({
+                    'row_key': `${item.id}`,
+                    'action': <Button type="danger" size="small" style={{ margin: '0 8px 0 8px ', textTransform: 'uppercase' }} onClick={() => this.deleteIDs(item)} >DELETE</Button>,
+                    'count': ++index,
+                    'label': item.name,
+                    'chat_id': item.chat_id ? item.chat_id : 'N/A',
+                    'sim_id': item.sim_id ? item.sim_id : 'N/A',
+                    'pgp_email': item.pgp_email ? item.pgp_email : 'N/A',
+                    'created_at': item.created_at ? item.created_at : 'N/A',
+                })
+            } else {
+                data.push({
+                    'row_key': `${item.id}`,
+                    'count': ++index,
+                    'label': item.name,
+                    'chat_id': item.chat_id ? item.chat_id : 'N/A',
+                    'sim_id': item.sim_id ? item.sim_id : 'N/A',
+                    'pgp_email': item.pgp_email ? item.pgp_email : 'N/A',
+                    'created_at': item.created_at ? item.created_at : 'N/A',
+                })
+
+            }
         });
         return (data);
     }
 
     callback = (key) => {
         this.props.handleChangeInnerTab(key);
+        this.setState({
+            innerTabSelect: key
+        })
+    }
+    callback1 = (key) => {
+        let data = []
+        switch (key) {
+            case '1':
+                this.setState({
+                    dataList: this.props.dataList,
+                    innerTabKey: key,
+                    columns: this.props.columns
+                })
+                break;
+            case '2':
+                data = this.props.dataList.filter((item) => {
+                    return item.used == 1
+                })
+                // console.log(data);
+                this.setState({
+                    dataList: data,
+                    innerTabKey: key,
+                    columns: this.props.columns
+                })
+
+                break;
+            case "3":
+                data = this.props.dataList.filter((item) => {
+                    return item.used == 0
+                })
+                this.state.columns.splice(0, 0, {
+                    title: <Button type="danger" size="small" style={{ margin: '0 8px 0 8px' }} onClick={() => this.deleteSelectedIDs(this.state.innerTabSelect)} >Delete Selected</Button>,
+                    dataIndex: 'action',
+                    align: 'center',
+                    className: 'row',
+                    width: 100,
+                })
+                // console.log(data);
+                this.setState({
+                    dataList: data,
+                    innerTabKey: key,
+                    columns: this.state.columns
+                })
+                break
+
+
+            default:
+                this.setState({
+                    data: this.props.dataList,
+                    innerTabKey: "1",
+                    columns: this.props.columns
+                })
+                break;
+        }
     }
 
-
-    // showInnerTabContent = (dataFieldName = "") => {
-    //     // console.log(dataFieldName);
-    //     if (dataFieldName === "sim_ids") {
-    //         this.props.getSimIDs();
-    //     } else if (dataFieldName === "pgp_emails") {
-    //         this.props.getPGPEmails();
-    //     } else if (dataFieldName === "chat_ids") {
-    //         this.props.getChatIDs();
-    //     } else if (dataFieldName === "used_pgp_emails") {
-    //         this.props.getUsedPGPEmails();
-    //     } else if (dataFieldName === "used_chat_ids") {
-    //         this.props.getUsedChatIds();
-    //     } else if (dataFieldName === "used_sim_ids") {
-    //         this.props.getUsedSimIds();
-    //     }
-    //     this.setState({
-    //         dataFieldName: dataFieldName,
-    //     });
-    // }
-
     render() {
-        // console.log('data list at::', this.props.dataList)
+        let rowSelection;
+        if (this.state.innerTabKey == '3') {
+            rowSelection = {
+                onChange: (selectedRowKeys, selectedRows) => {
+                    this.setState({ selectedRows: selectedRows, selectedRowKeys: selectedRowKeys })
+                },
+                getCheckboxProps: record => ({
+                    disabled: record.name === 'Disabled User', // Column configuration not to be checked
+                    name: record.name,
+                }),
+            };
+        }
+        else {
+            rowSelection = null
+        }
+
+
+
+
+
+
         return (
-            <Card bordered={false} className="fix_card devices_fix_card">
+            <Card bordered={false}>
+                {(this.props.tabselect !== 'all') ?
+                    <Tabs className="text-center" activeKey={this.state.innerTabKey} defaultActiveKey="1" type='card' onChange={this.callback1}>
+                        <TabPane tab="All" key="1" >
+                        </TabPane>
+                        <TabPane tab="Used" key="2" forceRender={true}>
+                        </TabPane>
+                        <TabPane tab="Unused" key="3" forceRender={true}>
+                        </TabPane>
+                    </Tabs>
+                    : null}
 
                 <Tabs defaultActiveKey="1" type='card' tabPosition="left" className="dev_tabs manage_data" onChange={this.callback}>
                     <TabPane tab="CHAT" key="1" >
@@ -151,42 +278,26 @@ class AccountList extends Component {
                     <TabPane tab="VPN" key="4" forceRender={true}>
                     </TabPane>
                 </Tabs>
-                {/* <CustomScrollbars className="gx-popover-scroll "> */}
-                    <Table
-                        size="middle"
-                        className="gx-table-responsive devices table m_d_table"
-                        bordered
-                        // scroll={{ x: 500 }}
-                        columns={this.state.columns}
-                        rowKey='row_key'
-                        align='center'
-                        // pagination={{ pageSize: this.state.pagination, size: "midddle" }}
-                        pagination={false}
-                        dataSource={this.renderList(this.props.dataList)}
-                    />
-                {/* </CustomScrollbars> */}
+                <Table
+                    ref='tablelist'
+                    size="middle"
+                    className="gx-table-responsive devices table m_d_table"
+                    bordered
+                    scroll={{ x: 500 }}
+                    columns={this.state.columns}
+                    rowSelection={rowSelection}
+                    rowKey='row_key'
+                    align='center'
+                    pagination={false}
+                    dataSource={this.renderList(this.state.dataList)}
+                />
+
+
             </Card>
         )
     }
 }
 
-// function showConfirm(id, action, btn_title) {
-//     confirm({
-//         title: 'Do you want to ' + btn_title + ' of this ' + window.location.pathname.split("/").pop() + ' ?',
-//         onOk() {
-//             return new Promise((resolve, reject) => {
-//                 setTimeout(Math.random() > 0.5 ? resolve : reject);
-//                 if (btn_title === 'RESET PASSWORD') {
-//                     id.pageName = 'dealer'
-//                 }
-//                 action(id);
-//                 //  success();
-
-//             }).catch(() => console.log('Oops errors!'));
-//         },
-//         onCancel() { },
-//     });
-// }
 export default class Tab extends Component {
     constructor(props) {
         super(props)
@@ -251,6 +362,7 @@ export default class Tab extends Component {
                     // editDealer={this.props.editDealer}
                     // updatePassword={this.props.updatePassword}
                     handleChangeInnerTab={this.props.handleChangeInnerTab}
+                    deleteCSVids={this.props.deleteCSVids}
                 />
             </Fragment>
 

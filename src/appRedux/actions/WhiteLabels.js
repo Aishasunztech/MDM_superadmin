@@ -9,7 +9,9 @@ import {
     SET_PRICE,
     RESET_PRICE,
     GET_PACKAGES,
-    GET_ALL_WHITE_LABELS
+    GET_ALL_WHITE_LABELS,
+    SAVE_BACKUP,
+    START_BACKUP_LOADING
 } from "../../constants/ActionTypes"
 
 import RestService from '../services/RestServices';
@@ -178,6 +180,26 @@ export const saveIDPrices = (data) => {
             if (RestService.checkAuth(response.data)) {
                 dispatch({
                     type: SAVE_ID_PRICES,
+                    response: response.data
+                })
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+        });
+
+    }
+}
+export const saveBackup = (id) => {
+    return (dispatch) => {
+        dispatch({
+            type: START_BACKUP_LOADING,
+        })
+        RestService.saveBackup(id).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                dispatch({
+                    type: SAVE_BACKUP,
                     response: response.data
                 })
             } else {
