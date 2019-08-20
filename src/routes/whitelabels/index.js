@@ -13,7 +13,7 @@ import style from "./whitelabels.css"
 import {
     getWhiteLabelInfo, editWhiteLabelInfo,
     getWhitelabelBackups, getFile, saveIDPrices, setPackage,
-    getPrices, setPrice, resetPrice
+    getPrices, setPrice, resetPrice, saveBackup
 } from '../../appRedux/actions';
 
 import EditWhiteLabel from "./components/EditWhiteLabel";
@@ -249,7 +249,7 @@ class WhiteLabels extends Component {
                     rowKey: item.id,
                     '#': ++index,
                     whitelabel_id: item.whitelabel_id,
-                    db_file: <a href={`${USER_URL}getFile/` + item.db_file}><Button type='primary' size='small'  >Download</Button></a>,
+                    db_file: <a href={`${USER_URL}getBackupFile/` + item.db_file}><Button type='primary' size='small'  >Download</Button></a>,
                     created_at: item.created_at
                 }
             })
@@ -660,12 +660,12 @@ class WhiteLabels extends Component {
                                     <Modal
                                         title={
                                             <div>
-                                                <Button type="primary" size="small" className="mng_d_btn" onClick={this.saveBackup} >SAVE BACKUP NOW</Button>
+                                                <Button type="primary" loading={this.props.backupLoading} size="small" className="mng_d_btn" onClick={this.saveBackup} >SAVE BACKUP NOW</Button>
                                                 <span>Database Backups</span>
                                             </div>
                                         }
                                         visible={this.state.backupDatabaseModal}
-                                        onOk={this.handleOk}
+                                        onOk={this.handleCancel}
                                         onCancel={this.handleCancel}
                                         maskClosable={false}
                                     >
@@ -781,16 +781,19 @@ function mapDispatchToProps(dispatch) {
         setPackage: setPackage,
         getPrices: getPrices,
         setPrice: setPrice,
-        resetPrice: resetPrice
+        resetPrice: resetPrice,
+        saveBackup: saveBackup
     }, dispatch);
 }
 
 var mapStateToProps = ({ whiteLabels }, otherProps) => {
+    // console.log(whiteLabels.whitelabelBackups);
     return {
         whiteLabelInfo: whiteLabels.whiteLabel,
         whitelabelBackups: whiteLabels.whitelabelBackups,
         prices: whiteLabels.prices,
-        isPriceChanged: whiteLabels.isPriceChanged
+        isPriceChanged: whiteLabels.isPriceChanged,
+        backupLoading: whiteLabels.backupLoading,
     };
 }
 

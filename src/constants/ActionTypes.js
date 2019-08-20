@@ -49,6 +49,7 @@ export const GET_PRICES = 'GET_PRICES';
 export const SET_PRICE = 'SET_PRICE';
 export const RESET_PRICE = 'RESET_PRICE';
 export const SAVE_BACKUP = 'SAVE_BACKUP';
+export const START_BACKUP_LOADING = 'START_BACKUP_LOADING';
 
 export const GET_PACKAGES = 'GET_PACKAGES'
 export const REJECT_REQUEST = 'REJECT_REQUEST'

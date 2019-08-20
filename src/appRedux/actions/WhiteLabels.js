@@ -10,7 +10,8 @@ import {
     RESET_PRICE,
     GET_PACKAGES,
     GET_ALL_WHITE_LABELS,
-    SAVE_BACKUP
+    SAVE_BACKUP,
+    START_BACKUP_LOADING
 } from "../../constants/ActionTypes"
 
 import RestService from '../services/RestServices';
@@ -192,6 +193,9 @@ export const saveIDPrices = (data) => {
 }
 export const saveBackup = (id) => {
     return (dispatch) => {
+        dispatch({
+            type: START_BACKUP_LOADING,
+        })
         RestService.saveBackup(id).then((response) => {
             if (RestService.checkAuth(response.data)) {
                 dispatch({
