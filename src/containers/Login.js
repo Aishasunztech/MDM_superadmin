@@ -14,6 +14,7 @@ import {
 
 
 const FormItem = Form.Item;
+var LoginExp = true;
 
 class Login extends React.Component {
 
@@ -37,7 +38,7 @@ class Login extends React.Component {
         this.props.hideMessage();
       }, 100);
     }
-    const { authUser } = this.props;
+    const { authUser, alertMessage } = this.props;
     // console.log(this.props.auth);
     // if (this.props.auth.two_factor_auth === true || this.props.auth.two_factor_auth === 1 || this.props.auth.two_factor_auth === 'true') {
     //   // console.log("asdaddsa");
@@ -52,6 +53,19 @@ class Login extends React.Component {
     ) {
       this.props.history.push('/');
     }
+
+    if (this.props.showMessage) {
+      if (alertMessage == "Login expired" && LoginExp) {
+        message.error(alertMessage.toString());
+        LoginExp = false;
+      } else if (this.props.loginFailedStatus != prevProps.loginFailedStatus) {
+        message.error(alertMessage.toString());
+      }
+      // else if (alertMessage == 'Invalid verification code') {
+      //   message.error(alertMessage.toString())
+      // }
+    }
+
   }
 
   render() {
@@ -115,8 +129,8 @@ class Login extends React.Component {
               <div className="gx-loader-view">
                 <CircularProgress />
               </div> : null}
-            {showMessage ?
-              message.error(alertMessage.toString()) : null}
+            {/* {showMessage ?
+              message.error(alertMessage.toString()) : null} */}
           </div>
         </div>
       </div>
@@ -129,8 +143,8 @@ const WrappedNormalLoginForm = Form.create()(Login);
 const mapStateToProps = ({ auth }) => {
   // console.log(auth);
 
-  const { loader, alertMessage, showMessage, authUser } = auth;
-  return { loader, alertMessage, showMessage, authUser, auth }
+  const { loader, alertMessage, showMessage, authUser, loginFailedStatus } = auth;
+  return { loader, alertMessage, showMessage, authUser, auth, loginFailedStatus }
 };
 
 export default connect(mapStateToProps, {
