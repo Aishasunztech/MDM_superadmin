@@ -13,7 +13,7 @@ import {
     getSalesList,
     getDealerList
 } from '../../../appRedux/actions/';
-
+import {Redirect} from 'react-router-dom';
 
 import { componentSearch, getDealerStatus, titleCase } from '../../utils/commonUtils';
 
@@ -422,43 +422,51 @@ class Billing extends Component {
     render() {
         // console.log(this.state.columns, window.location.pathname.split("/").pop(), this.state.options)
         const Search = Input.Search;
-        return (
+        if (this.props.location.state) {
+            return (
 
-            <div>
-                {
-                    this.props.isloading ? <CircularProgress /> :
+                <div>
+                    {
+                        this.props.isloading ? <CircularProgress /> :
 
-                        <div style={{ marginTop: 50 }}>
-                            <Tabs defaultActiveKey="1" type='card' className="dev_tabs" activeKey={this.state.tabselect} onChange={this.handleChangetab}>
-                                <TabPane tab="SALES" key="1" >
-                                    <SalesList
-                                        salesList={this.props.salesList}
-                                        columns={this.state.salesColumns}
-                                    />
-                                </TabPane>
-                                <TabPane tab="INVENTORY" key="2" >
-                                </TabPane>
-                                <TabPane tab="REPORTS" key="3" >
-                                    <Reports
-                                        whiteLabels={this.props.whiteLabels}
-                                        dealerList={this.props.dealerList}
-                                        getDealerList={this.props.getDealerList}
-                                    />
-                                </TabPane>
-                                <TabPane tab="PROFIT AND LOSS" key="4" >
-                                    <Reports
-                                        whiteLabels={this.props.whiteLabels}
-                                        dealerList={this.props.dealerList}
-                                        getDealerList={this.props.getDealerList}
-                                    />
-                                </TabPane>
-                            </Tabs>
+                            <div style={{ marginTop: 50 }}>
+                                <Tabs defaultActiveKey="1" type='card' className="dev_tabs" activeKey={this.state.tabselect} onChange={this.handleChangetab}>
+                                    <TabPane tab="SALES" key="1" >
+                                        <SalesList
+                                            salesList={this.props.salesList}
+                                            columns={this.state.salesColumns}
+                                        />
+                                    </TabPane>
+                                    <TabPane tab="INVENTORY" key="2" >
+                                    </TabPane>
+                                    <TabPane tab="REPORTS" key="3" >
+                                        <Reports
+                                            whiteLabels={this.props.whiteLabels}
+                                            dealerList={this.props.dealerList}
+                                            getDealerList={this.props.getDealerList}
+                                        />
+                                    </TabPane>
+                                    <TabPane tab="PROFIT AND LOSS" key="4" >
+                                        <Reports
+                                            whiteLabels={this.props.whiteLabels}
+                                            dealerList={this.props.dealerList}
+                                            getDealerList={this.props.getDealerList}
+                                        />
+                                    </TabPane>
+                                </Tabs>
 
 
-                        </div>
-                }
-            </div>
-        );
+                            </div>
+                    }
+                </div>
+            );
+        } else {
+            return (
+                <Redirect to={{
+                    pathname: '/account',
+                }} />
+            )
+        }
     }
 
     handleSearch = (e) => {

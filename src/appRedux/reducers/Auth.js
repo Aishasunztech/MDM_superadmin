@@ -17,7 +17,9 @@ import {
   CODE_VERIFIED,
   GOTO_LOGIN,
   CHECK_PASS,
-  RESET_REBOOT_CONFIRM
+  RESET_REBOOT_CONFIRM,
+  VERIFY_PASSWORD,
+  RESET_PASSWORD_VARIFIED
 } from "../../constants/ActionTypes";
 // import { stat } from "fs";
 import RestService from '../services/RestServices';
@@ -51,7 +53,8 @@ const INIT_STATE = {
       localStorage.getItem('two_factor_auth') === null ||
       localStorage.getItem('two_factor_auth') === 'null'
     ) ? false : localStorage.getItem('two_factor_auth'),
-    verified: false
+    verified: false,
+    password_verified: false
   },
 };
 
@@ -67,6 +70,27 @@ export default (state = INIT_STATE, action) => {
         initURL: action.payload,
 
       }
+    }
+
+    case VERIFY_PASSWORD: {
+      console.log(action.response)
+      if(action.response.password_matched){
+        return {
+          ...state,
+          password_verified: true
+        }
+      }else{
+        error({
+          title: 'Password Did not Match. Please Try again',
+      });
+      }
+    }
+
+    case RESET_PASSWORD_VARIFIED: {
+        return {
+          ...state,
+          password_verified: false
+        }
     }
     case GOTO_LOGIN: {
       return {
