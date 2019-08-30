@@ -198,6 +198,7 @@ export const saveBackup = (id) => {
         })
         RestService.saveBackup(id).then((response) => {
             if (RestService.checkAuth(response.data)) {
+                console.log(response, 'response in backup save')
                 dispatch({
                     type: SAVE_BACKUP,
                     response: response.data
