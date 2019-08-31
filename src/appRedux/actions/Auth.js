@@ -15,7 +15,9 @@ import {
   TWO_FACTOR_AUTH,
   VERIFY_CODE,
   GOTO_LOGIN,
-  RESET_REBOOT_CONFIRM
+  RESET_REBOOT_CONFIRM,
+  VERIFY_PASSWORD,
+  RESET_PASSWORD_VARIFIED
 } from "../../constants/ActionTypes";
 
 import RestService from '../services/RestServices';
@@ -113,6 +115,33 @@ export const twoFactorAuth = (isEnable) => {
         });
       }
     });
+  }
+}
+
+export const verifyPassword = (password) => {
+  return (dispatch) => {
+    RestService.checkPass(password).then((response) => {
+      if (RestService.checkAuth(response.data)) {
+        // console.log(response, 'response from checkpass')
+        dispatch({
+          type:  VERIFY_PASSWORD,
+          response: response.data
+        })
+
+      } else {
+        dispatch({
+          type: INVALID_TOKEN
+        });
+      }
+    });
+  }
+}
+
+export const reset_password_varified = () => {
+  return (dispatch) => {
+    dispatch({
+      type: RESET_PASSWORD_VARIFIED
+    })
   }
 }
 

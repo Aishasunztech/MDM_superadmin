@@ -175,7 +175,11 @@ export default (state = initialState, action) => {
                 });
             }
 
+            return{
+                ...state,
+            }
         }
+        
 
         case SAVE_BACKUP: {
             let backups = state.whitelabelBackups
