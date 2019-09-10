@@ -18,6 +18,10 @@ import { getWhiteLabels } from "../../appRedux/actions";
 
 import { footerText } from "util/config";
 import AppRoutes from "../../routes/index";
+
+
+import IdleTimer from 'react-idle-timer'
+
 import {
   NAV_STYLE_ABOVE_HEADER,
   NAV_STYLE_BELOW_HEADER,
@@ -36,6 +40,21 @@ import NoHeaderNotification from "../Topbar/NoHeaderNotification/index";
 const { Content, Footer } = Layout;
 
 export class MainApp extends Component {
+
+  constructor(props) {
+    super(props)
+
+    this.idleTimer = null
+    this.onAction = this._onAction.bind(this)
+    this.onActive = this._onActive.bind(this)
+    this.onIdle = this._onIdle.bind(this)
+
+    this.state = {
+      seconds: 0,
+      interval: null
+    };
+  }
+
 
   componentDidMount() {
     this.props.getWhiteLabels()
@@ -103,28 +122,62 @@ export class MainApp extends Component {
     }
   };
 
+  _onAction(e) {
+  }
+
+  _onActive(e) {
+
+  }
+
+  _onIdle(e) {
+
+    localStorage.removeItem('email');
+    localStorage.removeItem('id');
+    localStorage.removeItem('type');
+    localStorage.removeItem('name');
+    localStorage.removeItem('firstName');
+    localStorage.removeItem('lastName');
+    localStorage.removeItem('token');
+    localStorage.removeItem('dealer_pin');
+
+    setTimeout(() => {
+      this.props.history.push('/session_timeout')
+    }, 1000);
+  }
+
+
   render() {
     const { match, width, navStyle } = this.props;
 
     return (
-      <Layout className="gx-app-layout">
-        {this.getSidebar(navStyle, width)}
-        <Layout>
-          {this.getNavStyles(navStyle)}
-          <Content className={`gx-layout-content ${this.getContainerClass(navStyle)} `}>
-            <AppRoutes
-              match={match}
-              whiteLabels={this.props.whiteLabels}
-            />
-            <Footer>
-              <div className="gx-layout-footer-content">
-                {footerText}
-              </div>
-            </Footer>
-          </Content>
+      <div>
+        <IdleTimer
+          ref={ref => { this.idleTimer = ref }}
+          element={document}
+          onActive={this.onActive}
+          onIdle={this.onIdle}
+          onAction={this.onAction}
+          debounce={250}
+          timeout={300000} />
+        <Layout className="gx-app-layout">
+          {this.getSidebar(navStyle, width)}
+          <Layout>
+            {this.getNavStyles(navStyle)}
+            <Content className={`gx-layout-content ${this.getContainerClass(navStyle)} `}>
+              <AppRoutes
+                match={match}
+                whiteLabels={this.props.whiteLabels}
+              />
+              <Footer>
+                <div className="gx-layout-footer-content">
+                  {footerText}
+                </div>
+              </Footer>
+            </Content>
+          </Layout>
+          <Customizer />
         </Layout>
-        <Customizer />
-      </Layout>
+      </div>
     )
   }
 }
