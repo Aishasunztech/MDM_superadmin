@@ -86,7 +86,10 @@ class Login extends React.Component {
               </div>
             </div>
             <div className="gx-app-login-content">
-              <Form onSubmit={this.handleSubmit} className="gx-signin-form gx-form-row0">
+              <Form
+                onSubmit={this.handleSubmit}
+                className="gx-signin-form gx-form-row0"
+                autoComplete="off">
 
                 <Form.Item>
                   {getFieldDecorator('email', {
