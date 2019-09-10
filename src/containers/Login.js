@@ -18,6 +18,25 @@ var LoginExp = true;
 
 class Login extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      demail: '',
+      pwd: ''
+    }
+
+  }
+
+  demailHandler = event => {
+    this.setState({ demail: event.target.value });
+  };
+
+  pwdlHandler = event => {
+    this.setState({ pwd: event.target.value });
+  };
+
+
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, user) => {
@@ -68,6 +87,17 @@ class Login extends React.Component {
 
   }
 
+  checkCapsLock = (e) => {
+    let isCapsLock = e.getModifierState('CapsLock');
+    let element = document.getElementById("text")
+    if (isCapsLock) {
+      element.style.display = "block"
+    } else {
+      element.style.display = "none"
+    }
+
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const { showMessage, loader, alertMessage } = this.props;
@@ -94,6 +124,7 @@ class Login extends React.Component {
                 <Form.Item>
                   {getFieldDecorator('email', {
                     initialValue: "",
+                    setFieldsValue: this.state.demail,
                     rules: [{
                       required: true,
                       type: 'email',
@@ -102,21 +133,29 @@ class Login extends React.Component {
                   })(
                     <Input
                       placeholder="Email"
-                      autoComplete={false}
+                      autoComplete="new-password"
+                      onChange={this.demailHandler}
                     />
                   )}
                 </Form.Item>
                 <Form.Item>
                   {getFieldDecorator('pwd', {
                     initialValue: "",
+                    setFieldsValue: this.state.pwd,
                     rules: [{
                       required: true,
                       message: 'You forgot to enter your password'
                     }],
                   })(
-                    <Input type="password" placeholder="Password" />
+                    <Input
+                      type="password"
+                      placeholder="Password"
+                      autoComplete="new-password"
+                      onKeyUp={(e) => { this.checkCapsLock(e) }}
+                      onChange={this.pwdHandler} />
                   )}
                 </Form.Item>
+                <p id="text" style={{ display: 'none', color: 'red', margin: 0, padding: 0 }}>NOTE: Your CapsLock key is currently turned on</p>
 
                 <Form.Item>
                   <Button type="primary" className="gx-mb-0" htmlType="submit">
