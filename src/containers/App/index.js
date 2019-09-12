@@ -15,6 +15,8 @@ import { onLayoutTypeChange, onNavStyleChange, setThemeType } from "appRedux/act
 
 import { APP_TITLE } from "../../constants/Application";
 
+import SessionTimeOut from "../Session_timeout";
+
 import {
   LAYOUT_TYPE_BOXED,
   LAYOUT_TYPE_FRAMED,
@@ -111,26 +113,33 @@ class App extends Component {
 
     return (
 
-          <Switch>
-            <Route
-              exact
-              path='/login'
-              component={Login}
-            />
-            <Route
-              exact
-              path="/verify-auth"
-              component={VerifyAuthCode}
-            />
+      <Switch>
+        <Route
+          exact
+          path="/session_timeout"
+          component={SessionTimeOut}
+        />
 
-            <RestrictedRoute
-              authUser={authUser}
-              path={`${match.url}`}
-              // authUser={authUser}
-              component={MainApp}
-            />
+        <Route
+          exact
+          path='/login'
+          component={Login}
+        />
 
-          </Switch>
+        <Route
+          exact
+          path="/verify-auth"
+          component={VerifyAuthCode}
+        />
+
+        <RestrictedRoute
+          authUser={authUser}
+          path={`${match.url}`}
+          // authUser={authUser}
+          component={MainApp}
+        />
+
+      </Switch>
     )
   }
 

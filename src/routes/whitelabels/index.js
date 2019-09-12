@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { SECURE_LAUNCHER, SC, BYOD } from '../../constants/Constants';
+import { SECURE_LAUNCHER, SC, BYOD, LAUNCHER_TYPE, SCS_TYPE, BYOD_TYPE, BYOD7_TYPE } from '../../constants/Constants';
 import { checkValue } from '../utils/commonUtils'
 import { Link } from 'react-router-dom';
 import {
@@ -113,7 +113,7 @@ class WhiteLabels extends Component {
 
     showInfoModal = (e, visible) => {
         if (this.props.whiteLabelInfo.apks.length && visible) {
-            let index = this.props.whiteLabelInfo.apks.findIndex(apk => apk.package_name === SECURE_LAUNCHER)
+            let index = this.props.whiteLabelInfo.apks.findIndex(apk => apk.apk_type === LAUNCHER_TYPE)
             if (index > -1) {
                 this.setState({
                     secureLouncer: this.props.whiteLabelInfo.apks[index],
@@ -121,7 +121,7 @@ class WhiteLabels extends Component {
                 })
             }
 
-            let index2 = this.props.whiteLabelInfo.apks.findIndex(apk => apk.package_name === SC)
+            let index2 = this.props.whiteLabelInfo.apks.findIndex(apk => apk.apk_type === SCS_TYPE)
             if (index2 > -1) {
                 this.setState({
                     scApk: this.props.whiteLabelInfo.apks[index2],
@@ -145,7 +145,7 @@ class WhiteLabels extends Component {
         // console.log(this.props.whiteLabelInfo, 'white label info');
         let index2 = -1
         if (type) {
-            index2 = this.props.whiteLabelInfo.apks.findIndex(apk => apk.byod_type == type)
+            index2 = this.props.whiteLabelInfo.apks.findIndex(apk => apk.apk_type == type)
         }
         console.log(index2);
         if (index2 > -1) {

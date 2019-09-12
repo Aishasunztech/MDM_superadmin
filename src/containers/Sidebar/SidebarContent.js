@@ -162,7 +162,7 @@ class SidebarContent extends Component {
 
             <Menu.Item key="tools">
               <Link to="/tools">
-                <i class="icon icon-components" />
+                <i className="icon icon-components" />
                 {/* <i className="icon" >
                   <Icon type="tool" className="mb-10" />
                 </i> */}

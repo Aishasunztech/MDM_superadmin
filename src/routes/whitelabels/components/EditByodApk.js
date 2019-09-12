@@ -29,10 +29,12 @@ class EditByodApk extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('values', values, apk)
+                console.log('values', apk)
                 let apk_files = [];
                 if (apk !== '') {
-                    apk_files.push(apk)
+                    
+                    // apk.apk_type = this.props.type
+                    apk_files.push({apk: apk, apk_type: this.props.type})
                 }
 
                 let form_data = {
@@ -41,7 +43,7 @@ class EditByodApk extends Component {
                     'command_name': this.props.whiteLabelInfo.command_name,
                     'apk_files': apk_files,
                     'is_byod': true,
-                    'byod_type': this.props.type
+                    'apk_type': this.props.type
                     // 'apk': apk,
                     // 'sc_apk': ScApk
                 }

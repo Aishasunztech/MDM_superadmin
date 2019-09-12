@@ -51,7 +51,13 @@ export const SECURE_SETTING = 'com.secureSetting.SecureSettingsMainSecure Settin
 
 export const SECURE_LAUNCHER = "com.secure.launcher";
 export const SC = "com.secure.systemcontrol";
-export const BYOD = "com.secure.launcher1"
+export const BYOD = "com.secure.launcher1";
+
+
+export const BYOD_TYPE = "BYOD";
+export const BYOD7_TYPE = "BYOD7";
+export const LAUNCHER_TYPE = "LAUNCHER";
+export const SCS_TYPE = "SCS";
 
 // Prices Constants
 export const sim = 'sim_id';

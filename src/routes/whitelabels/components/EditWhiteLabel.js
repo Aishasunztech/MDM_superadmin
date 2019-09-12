@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Card, Button, Row, Col, Icon, Modal, Form, Input, Upload, message, Table, Select, Divider } from "antd";
-
+import { SECURE_LAUNCHER, SC, BYOD, LAUNCHER_TYPE, SCS_TYPE, BYOD_TYPE, BYOD7_TYPE } from '../../../constants/Constants';
 import { USER_URL } from "../../../constants/Application";
 import styles from '../whitelabels.css';
 
@@ -33,21 +33,24 @@ class EditWhiteLabel extends Component {
                 console.log('values', values, apk)
                 let apk_files = [];
                 if(apk !== ''){
-                    apk_files.push(apk)
+                    apk_files.push({apk: apk, apk_type: LAUNCHER_TYPE })
                 }
 
                 if(ScApk !== ''){
-                    apk_files.push(ScApk)
+                    apk_files.push({apk: ScApk, apk_type: SCS_TYPE })
                 }
               
                 let form_data = {
                     'id': this.props.whiteLabelInfo.id,
                     'model_id': values.model_id,
                     'command_name': values.command_name,
-                    'apk_files': apk_files
+                    'apk_files': apk_files,
+                    // 'apk_type': this.props.type
                     // 'apk': apk,
                     // 'sc_apk': ScApk
                 }
+
+                console.log(form_data, 'form data', this.props.whiteLabelInfo)
                 // console.log(form_data);
                 // this.props.editApk(form_data);
                 this.props.editWhiteLabelInfo(form_data);
@@ -215,7 +218,7 @@ class EditWhiteLabel extends Component {
                 // title="WhiteLabel Info"
                 visible={this.props.edit_modal}
                 // onOk={this.InsertNewData}
-                onCancel={() => this.props.editInfoModal(false)}
+                onCancel={() => {this.props.editInfoModal(false); this.setState({disableApk: false, disableScApk: false})}}
                 footer={null}
             // okButtonProps={{
             //     disabled: this.state.newData.length ? false : true

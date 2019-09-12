@@ -1104,7 +1104,7 @@ function mapDispatchToProps(dispatch) {
     }, dispatch);
 }
 var mapStateToProps = ({ account, devices, routing }) => {
-    console.log("account store => ", account);
+    // console.log("account store => ", account);
     return {
         msg: account.msg,
         showMsg: account.showMsg,
