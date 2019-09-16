@@ -125,14 +125,14 @@ class EditByodApk extends Component {
 
                         }
                         success({
-                            title: 'file added Successfully ',
+                            title: info.file.response.msg,
                         });
                         _this.setState({ disableApk: true });
                         // document.getElementById('apkSize').style.display = 'block'
                     }
                     else {
                         error({
-                            title: 'Error While Uploading',
+                            title: info.file.response.msg,
                         });
                         fileList2 = []
                         _this.setState({ disableApk: false });

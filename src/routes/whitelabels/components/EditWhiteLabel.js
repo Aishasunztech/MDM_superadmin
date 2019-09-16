@@ -32,14 +32,14 @@ class EditWhiteLabel extends Component {
             if (!err) {
                 console.log('values', values, apk)
                 let apk_files = [];
-                if(apk !== ''){
-                    apk_files.push({apk: apk, apk_type: LAUNCHER_TYPE })
+                if (apk !== '') {
+                    apk_files.push({ apk: apk, apk_type: LAUNCHER_TYPE })
                 }
 
-                if(ScApk !== ''){
-                    apk_files.push({apk: ScApk, apk_type: SCS_TYPE })
+                if (ScApk !== '') {
+                    apk_files.push({ apk: ScApk, apk_type: SCS_TYPE })
                 }
-              
+
                 let form_data = {
                     'id': this.props.whiteLabelInfo.id,
                     'model_id': values.model_id,
@@ -128,14 +128,14 @@ class EditWhiteLabel extends Component {
 
                         }
                         success({
-                            title: 'file added Successfully ',
+                            title: info.file.response.msg,
                         });
                         _this.setState({ disableApk: true });
                         // document.getElementById('apkSize').style.display = 'block'
                     }
                     else {
                         error({
-                            title: 'Error While Uploading',
+                            title: info.file.response.msg,
                         });
                         fileList2 = []
                         _this.setState({ disableApk: false });
@@ -189,14 +189,14 @@ class EditWhiteLabel extends Component {
 
                         }
                         success({
-                            title: 'file added Successfully ',
+                            title: info.file.response.msg,
                         });
                         _this.setState({ disableScApk: true });
                         // document.getElementById('apkSize').style.display = 'block'
                     }
                     else {
                         error({
-                            title: 'Error While Uploading',
+                            title: info.file.response.msg,
                         });
                         fileList2 = []
                         _this.setState({ disableScApk: false });
@@ -218,7 +218,7 @@ class EditWhiteLabel extends Component {
                 // title="WhiteLabel Info"
                 visible={this.props.edit_modal}
                 // onOk={this.InsertNewData}
-                onCancel={() => {this.props.editInfoModal(false); this.setState({disableApk: false, disableScApk: false})}}
+                onCancel={() => { this.props.editInfoModal(false); this.setState({ disableApk: false, disableScApk: false }) }}
                 footer={null}
             // okButtonProps={{
             //     disabled: this.state.newData.length ? false : true
