@@ -357,7 +357,7 @@ class Prices extends Component {
                         // handleCheckChange={this.handleCheckChange}
                         // handlePagination={this.handlePagination}
                         handleComponentSearch={this.handleComponentSearch}
-                        pageTitle={this.props.whiteLabel.name}
+                        pageTitle={this.props.whiteLabelName}
 
                     />
 
@@ -440,7 +440,7 @@ class Prices extends Component {
                 <WhiteLabelPricing
                     showPricingModal={this.showPricingModal}
                     pricing_modal={this.state.pricing_modal}
-                    LabelName={this.props.whiteLabel.name}
+                    LabelName={this.props.whiteLabelName}
                     saveIDPrices={this.props.saveIDPrices}
                     // whitelabel_id={this.props.whiteLabelInfo.id}
                     setPackage={this.props.setPackage}
@@ -473,7 +473,6 @@ var mapStateToProps = ({ whiteLabels }, otherprops) => {
         prices: whiteLabels.prices,
         packages: whiteLabels.packages,
         isPriceChanged: whiteLabels.isPriceChanged,
-        whiteLabel: whiteLabels.whiteLabel
 
     }
 }

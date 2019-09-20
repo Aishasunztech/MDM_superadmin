@@ -195,7 +195,7 @@ function showConfirm(_this, data) {
                     {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
                 </Col>
                 <Col span={12}>
-                    <p >{_this.state.pkgPrice}</p>
+                    <p >${_this.state.pkgPrice}</p>
                 </Col>
 
 
