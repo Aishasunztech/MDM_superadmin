@@ -296,7 +296,7 @@ class Prices extends Component {
                 }
             }
         }
-        console.log(features, 'featues arte')
+        // console.log(features, 'featues arte')
         return features
     }
 
@@ -337,7 +337,7 @@ class Prices extends Component {
         })
     }
     render() {
-        console.log(this.props.packages, 'comoing prop are')
+        // console.log(this.props.packages, 'comoing prop are')
         return (
             <div>
                 <div>
@@ -357,6 +357,7 @@ class Prices extends Component {
                         // handleCheckChange={this.handleCheckChange}
                         // handlePagination={this.handlePagination}
                         handleComponentSearch={this.handleComponentSearch}
+                        pageTitle={this.props.whiteLabel.name}
 
                     />
 
@@ -439,7 +440,7 @@ class Prices extends Component {
                 <WhiteLabelPricing
                     showPricingModal={this.showPricingModal}
                     pricing_modal={this.state.pricing_modal}
-                    // LabelName={this.props.whiteLabelInfo.name}
+                    LabelName={this.props.whiteLabel.name}
                     saveIDPrices={this.props.saveIDPrices}
                     // whitelabel_id={this.props.whiteLabelInfo.id}
                     setPackage={this.props.setPackage}
@@ -467,11 +468,12 @@ function mapDispatchToProps(dispatch) {
 
 
 var mapStateToProps = ({ whiteLabels }, otherprops) => {
-    // console.log(whiteLabels.packages, 'props are for packages')
+    // console.log(whiteLabels, 'props are for packages')
     return {
         prices: whiteLabels.prices,
         packages: whiteLabels.packages,
         isPriceChanged: whiteLabels.isPriceChanged,
+        whiteLabel: whiteLabels.whiteLabel
 
     }
 }

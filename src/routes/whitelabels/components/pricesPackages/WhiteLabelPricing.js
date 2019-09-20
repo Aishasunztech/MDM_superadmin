@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import {
-    Button, Modal, Tabs
+    Button, Modal, Tabs, Col, Row, Divider
 } from "antd";
 
 import ItemsTab from "../../../../components/ItemsTab";
@@ -19,7 +19,7 @@ export default class WhiteLabelPricing extends Component {
             [chat]: {},
             [pgp]: {},
             [vpn]: {},
-            pkg_features: pkg_features,
+            pkg_features: JSON.parse(JSON.stringify(pkg_features)),
             outerTab: '1',
             pkgName: '',
             pkgTerms: '',
@@ -38,11 +38,11 @@ export default class WhiteLabelPricing extends Component {
 
     handleSubmit = () => {
 
-        console.log('tab selected is', this.state.outerTab)
+        // console.log('tab selected is', this.state.outerTab)
 
         if (this.state.outerTab === '1') {
             let data = this.props.prices
-            // console.log(this.props.whitelabel_id)
+            // console.log(data, 'price data')
 
             this.props.saveIDPrices({ data: data, whitelabel_id: this.props.whitelabel_id })
             this.props.showPricingModal(false);
@@ -58,10 +58,9 @@ export default class WhiteLabelPricing extends Component {
             // console.log('ref is hte ', this.form);
             // this.form.props.form.validateFields((err, values) => {
             // if (!err) {
-            // console.log('no error found', values);
 
             if (this.state.pkg_features && this.state.pkgName && this.state.pkgTerms && this.state.pkgName != '' && this.state.pkgTerms != '') {
-                console.log(this.state.pkg_features, pkg_features);
+                // console.log(this.state.pkg_features, pkg_features);
                 let data = {
                     pkgName: this.state.pkgName,
                     pkgTerm: this.state.pkgTerms,
@@ -69,15 +68,17 @@ export default class WhiteLabelPricing extends Component {
                     pkgFeatures: this.state.pkg_features,
                     whitelabel_id: this.props.whitelabel_id
                 }
-                this.props.setPackage(data);
-                this.props.showPricingModal(false);
-                this.setState({
-                    pkgPrice: 0,
-                    pkg_features: pkg_features,
-                    pkgName: '',
-                    pkgTerms: '',
-                    outerTab: '1'
-                })
+                // this.props.setPackage(data);
+                // this.props.showPricingModal(false);
+                // this.setState({
+                //     pkgPrice: 0,
+                //     pkg_features: pkg_features,
+                //     pkgName: '',
+                //     pkgTerms: '',
+                //     outerTab: '1'
+                // })
+
+                showConfirm(this, data)
             }
             // }
             // })
@@ -93,12 +94,13 @@ export default class WhiteLabelPricing extends Component {
         } else {
             this.state[field] = value
         }
-        // console.log(this.refs.packageForm);
+
     }
+
 
     setPrice = (price, field, price_for) => {
 
-        if (price > 0) {
+        if (price > 0 || price == '') {
             this.state[price_for][field] = price
         }
         // console.log('price', price, 'field', field, 'price_for', price_for)
@@ -111,7 +113,7 @@ export default class WhiteLabelPricing extends Component {
     }
 
     render() {
-        console.log(this.props.isPriceChanged, 'ischanged price', this.state.outerTab)
+        // console.log(pkg_features, 'this.state.pksfeatures', this.state.pkg_features)
         // console.log(sim, this.state[sim], 'sim object ',this.state[chat], 'chat object ',this.state[pgp], 'pgp object',this.state[vpn], 'sim object',)
         return (
             <Modal
@@ -122,7 +124,17 @@ export default class WhiteLabelPricing extends Component {
                 onOk={this.handleSubmit}
                 okText='Save'
                 okButtonProps={{ disabled: this.state.outerTab == '1' ? !this.props.isPriceChanged : false }}
-                onCancel={() => { this.props.showPricingModal(false); this.props.resetPrice(); this.setState({ outerTab: '1' }) }}
+                onCancel={() => {
+                    this.props.showPricingModal(false);
+                    this.props.resetPrice();
+                    this.setState({
+                        outerTab: '1',
+                        pkgPrice: 0,
+                        pkg_features: JSON.parse(JSON.stringify(pkg_features)),
+                        pkgTerm: '',
+                        pkgName: ''
+                    })
+                }}
                 // footer={null}
                 width='650px'
             >
@@ -152,4 +164,92 @@ export default class WhiteLabelPricing extends Component {
             </Modal>
         )
     }
+}
+
+
+function showConfirm(_this, data) {
+    Modal.confirm({
+        title: 'Save Package ?',
+        cancelText: 'Cancel',
+        okText: 'Save',
+        content: <div>
+            <Row>
+                <Divider />
+                <Col span={12}><p>Package Name</p>
+                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                </Col>
+                <Col span={12}>
+                    <p >{_this.state.pkgName}</p>
+                </Col>
+
+
+                <Col span={12}><p>Package Term</p>
+                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                </Col>
+                <Col span={12}>
+                    <p >{_this.state.pkgTerms}</p>
+                </Col>
+
+
+                <Col span={12}><p>Package Price</p>
+                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                </Col>
+                <Col span={12}>
+                    <p >{_this.state.pkgPrice}</p>
+                </Col>
+
+
+                <Col span={12}><p>Sim id</p>
+                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                </Col>
+                <Col span={12}>
+                    <p >{_this.state.pkg_features.sim_id ? 'yes' : 'No'}</p>
+                </Col>
+
+                <Col span={12}><p>Sim id 2</p>
+                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                </Col>
+                <Col span={12}>
+                    <p >{_this.state.pkg_features.sim_id2 ? 'yes' : 'No'}</p>
+                </Col>
+
+
+                <Col span={12}><p>Chat id</p>
+                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                </Col>
+                <Col span={12}>
+                    <p >{_this.state.pkg_features.chat_id ? 'yes' : 'No'}</p>
+                </Col>
+
+                <Col span={12}><p>Pgp Email</p>
+                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                </Col>
+                <Col span={12}>
+                    <p >{_this.state.pkg_features.pgp_email ? 'yes' : 'No'}</p>
+                </Col>
+
+                <Col span={12}><p>Vpn</p>
+                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                </Col>
+                <Col span={12}>
+                    <p >{_this.state.pkg_features.vpn ? 'yes' : 'No'}</p>
+                </Col>
+            </Row>
+        </div>,
+        onOk() {
+            // console.log('OK');
+            _this.props.setPackage(data);
+            _this.props.showPricingModal(false);
+            _this.setState({
+                pkgPrice: 0,
+                pkg_features: JSON.parse(JSON.stringify(pkg_features)),
+                pkgTerm: '',
+                pkgName: '',
+                outerTab: '1'
+            })
+        },
+        onCancel() {
+            // console.log('Cancel');
+        },
+    });
 }

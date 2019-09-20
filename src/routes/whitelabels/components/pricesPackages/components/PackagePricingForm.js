@@ -21,7 +21,7 @@ class PackagePricingForm extends Component {
     }
 
 
-    setPrice = (fieldName, is_pkg_feature = false, pkg_feature_value = '') => {
+    setPrice = (fieldName, is_pkg_feature = false, pkg_feature_value = '', e) => {
         // let value = e.target.value;
         let value = ''
         if (fieldName) {
@@ -33,11 +33,12 @@ class PackagePricingForm extends Component {
                         this.props.setPkgDetail(pkg_feature_value, fieldName, is_pkg_feature);
                     }
                 } else {
-                    value = this.props.form.getFieldValue(fieldName)
+                    // value = this.props.form.getFieldValue(fieldName)
                     // console.log('fiels name', fieldName, 'value', value)
-                    if (value !== '' && fieldName) {
-                        this.props.setPkgDetail(value, fieldName, is_pkg_feature);
+                    if (e !== '' && fieldName) {
+                        this.props.setPkgDetail(e, fieldName, is_pkg_feature);
                     }
+                    value = e
                 }
                 this.setState({
                     [fieldName]: value
@@ -114,11 +115,11 @@ class PackagePricingForm extends Component {
                                         validator: this.PackageNameChange,
                                     }
                                 ],
-                            })(<Input />)}
+                            })(<Input onChange={(e => this.setPrice('pkgName', '', '', e.target.value))} />)}
                         </Form.Item>
                     </Col>
                     <Col span={4}>
-                        <Button type="primary" onClick={() => this.setPrice('pkgName')}>Set</Button>
+                        {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}>Set</Button> */}
                     </Col>
                     <Col span={6}>
                         <h4 className='priceText'>{this.state.pkgName}</h4>
@@ -140,6 +141,7 @@ class PackagePricingForm extends Component {
                                 style={{ width: "100%" }}
                                 placeholder="Select a Price"
                                 optionFilterProp="children"
+                                onChange={(pkgTerms => this.setPrice('pkgTerms', '', '', pkgTerms))}
                                 // onChange={onChange}
                                 // onFocus={onFocus}
                                 // onBlur={onBlur}
@@ -157,7 +159,7 @@ class PackagePricingForm extends Component {
                         </Form.Item>
                     </Col>
                     <Col span={4}>
-                        <Button type="primary" onClick={() => this.setPrice('pkgTerms')}>Set</Button>
+                        {/* <Button type="primary" onClick={() => this.setPrice('pkgTerms')}>Set</Button> */}
                     </Col>
                     <Col span={7}>
                         <h4 className='priceText'>{this.state.pkgTerms}</h4>
@@ -174,12 +176,12 @@ class PackagePricingForm extends Component {
                                         message: 'Please Input Package Price',
                                     },
                                 ],
-                            })(<Input type='number' min={0} />)}
+                            })(<Input onChange={(e => this.setPrice('pkgPrice', '', '', e.target.value))} type='number' min={0} />)}
 
                         </Form.Item>
                     </Col>
                     <Col span={4}>
-                        <Button type="primary" onClick={() => this.setPrice('pkgPrice')} >Set</Button>
+                        {/* <Button type="primary" onClick={() => this.setPrice('pkgPrice')} >Set</Button> */}
                     </Col>
                     <Col span={7}>
                         <h4 className='priceText'>Price: ${this.state.pkgPrice}</h4>

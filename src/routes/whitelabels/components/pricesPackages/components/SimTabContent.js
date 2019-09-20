@@ -11,6 +11,7 @@ export default class SimTabContent extends Component {
                 <PricingFrom
                     showPricingModal={this.props.showPricingModal}
                     setPrice={this.props.setPrice}
+                    innerTab={this.props.innerTab}
                     price_for={this.props.innerTab}
                     innerTabData={this.props.innerTabData}
                 />
