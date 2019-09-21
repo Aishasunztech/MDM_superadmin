@@ -16,7 +16,9 @@ class PackagePricingForm extends Component {
             sim_id2: false,
             chat: false,
             pgp: false,
-            vpn: false
+            vpn: false,
+            help: '',
+            validateStatus: 'success'
         }
     }
 
@@ -25,25 +27,43 @@ class PackagePricingForm extends Component {
         // let value = e.target.value;
         let value = ''
         if (fieldName) {
-            if (fieldName == 'pkgPrice' && value < 0) {
-            } else {
-                if (is_pkg_feature) {
-                    if (pkg_feature_value !== '' && fieldName) {
-                        value = pkg_feature_value;
-                        this.props.setPkgDetail(pkg_feature_value, fieldName, is_pkg_feature);
-                    }
-                } else {
-                    // value = this.props.form.getFieldValue(fieldName)
-                    // console.log('fiels name', fieldName, 'value', value)
-                    if (e !== '' && fieldName) {
-                        this.props.setPkgDetail(e, fieldName, is_pkg_feature);
-                    }
-                    value = e
+
+            if (is_pkg_feature) {
+                if (pkg_feature_value !== '' && fieldName) {
+                    value = pkg_feature_value;
+                    this.props.setPkgDetail(pkg_feature_value, fieldName, is_pkg_feature);
                 }
+            } else {
+                // value = this.props.form.getFieldValue(fieldName)
+                // console.log('fiels name', fieldName, 'value', value)
+                if (fieldName) {
+                    this.props.setPkgDetail(e, fieldName, is_pkg_feature);
+                }
+                value = e
+            }
+
+            if (fieldName == 'pkgPrice') {
+                var isnum = /^\d+$/.test(e);
+                if(!isnum || e == 0){
+                    this.setState({
+                        validateStatus: 'error',
+                        help: e === '' ? 'Please Input Package Price': 'Price must be in Numbers and greater than zero',
+                        [fieldName]: value
+                    })
+                }else{
+                    this.setState({
+                        validateStatus: 'success',
+                        help: '',
+                        [fieldName]: value
+                    })
+                }
+                // console.log(isnum, 'value', e)
+            }else{
                 this.setState({
                     [fieldName]: value
                 })
             }
+           
 
         }
     }
@@ -115,7 +135,7 @@ class PackagePricingForm extends Component {
                                         validator: this.PackageNameChange,
                                     }
                                 ],
-                            })(<Input onChange={(e => this.setPrice('pkgName', '', '', e.target.value))} />)}
+                            })(<Input placeholder="Package Name" onChange={(e => this.setPrice('pkgName', '', '', e.target.value))} />)}
                         </Form.Item>
                     </Col>
                     <Col span={4}>
@@ -139,7 +159,7 @@ class PackagePricingForm extends Component {
                             })(<Select
                                 showSearch
                                 style={{ width: "100%" }}
-                                placeholder="Select a Price"
+                                placeholder="Select a Term"
                                 optionFilterProp="children"
                                 onChange={(pkgTerms => this.setPrice('pkgTerms', '', '', pkgTerms))}
                                 // onChange={onChange}
@@ -168,15 +188,17 @@ class PackagePricingForm extends Component {
                 <Row>
                     <Col span={13}>
                         <Form.Item label="Package Price" labelCol={{ span: 11 }}
+                         validateStatus={this.state.validateStatus}
+                         help={this.state.help}
                             wrapperCol={{ span: 13 }}>
                             {getFieldDecorator('pkgPrice', {
                                 rules: [
                                     {
                                         required: true,
                                         message: 'Please Input Package Price',
-                                    },
+                                    }
                                 ],
-                            })(<Input onChange={(e => this.setPrice('pkgPrice', '', '', e.target.value))} type='number' min={0} />)}
+                            })(<Input placeholder="Package Price" onChange={(e => this.setPrice('pkgPrice', '', '', e.target.value))} type='number' min={0} />)}
 
                         </Form.Item>
                     </Col>

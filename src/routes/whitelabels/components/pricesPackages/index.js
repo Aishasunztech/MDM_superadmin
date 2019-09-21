@@ -160,7 +160,8 @@ class Prices extends Component {
             innerTabData: this.props.prices ? this.props.prices[sim] : {},
             tabSelected: sim,
             packages: [],
-            copyStatus: true
+            copyStatus: true,
+            isPriceChanged: this.props.isPriceChanged,
         }
     }
 
@@ -234,6 +235,7 @@ class Prices extends Component {
             this.setState({
                 prices: nextProps.prices,
                 packages: nextProps.packages,
+                isPriceChanged: nextProps.isPriceChanged,
                 copyStatus: true
             })
         }
@@ -446,7 +448,7 @@ class Prices extends Component {
                     setPackage={this.props.setPackage}
                     prices={this.props.prices}
                     setPrice={this.props.setPrice}
-                    isPriceChanged={this.props.isPriceChanged}
+                    isPriceChanged={this.state.isPriceChanged}
                     resetPrice={this.props.resetPrice}
                     whitelabel_id={this.props.id}
                 />
@@ -468,7 +470,7 @@ function mapDispatchToProps(dispatch) {
 
 
 var mapStateToProps = ({ whiteLabels }, otherprops) => {
-    // console.log(whiteLabels, 'props are for packages')
+    // console.log(whiteLabels.isPriceChanged, 'props are for packages')
     return {
         prices: whiteLabels.prices,
         packages: whiteLabels.packages,

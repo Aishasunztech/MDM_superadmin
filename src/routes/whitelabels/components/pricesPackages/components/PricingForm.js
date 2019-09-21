@@ -19,29 +19,43 @@ class PricingForm extends Component {
     }
 
     setPrice = (fieldName, value) => {
-        // let value = e.target.value;
-        if (fieldName) {
-            // let value = this.props.form.getFieldValue(fieldName)
-            if (value >= 0 || value == '') {
 
-                if (value && fieldName && this.props.price_for) {
-                    this.props.setPrice(fieldName, value, this.props.price_for);
-                }
-                // this.props.form.setFieldsValue({ [fieldName]: '' })
+        if (fieldName) {
+
+            if (fieldName && this.props.price_for) {
+                this.props.setPrice(fieldName, value, this.props.price_for);
             }
         }
 
     }
-    
-    componentDidUpdate(prevProps){
+
+    checkPrice = async (rule, e, callback) => {
+       
+        let value = e;
+        let field = rule.field;
+        var isnum = /^\d+$/.test(e);
+        // console.log(value, 'value type', isnum)
+        if (isnum || (value == 0 || value == '')) {
+            callback()
+            if (this.props.pricesFormErrors && this.props.pricesFormErrors.length) {
+                this.props.restrictSubmit(true, `${field + this.props.innerTab}`)
+            }
+        } else {
+            callback("Price must be in Numbers")
+            this.props.restrictSubmit(false, `${field + this.props.innerTab}`)
+        }
+    }
+
+    componentDidUpdate(prevProps) {
         // console.log(this.props.innerTab, 'llllllllll', prevProps.innerTab)
-        if(this.props.innerTab !== prevProps.innerTab){
-            this.props.form.resetFields()
+        if (this.props.innerTab !== prevProps.innerTab) {
+            this.props.form.resetFields();
+            this.props.form.validateFields()
         }
     }
 
     render() {
-        // console.log(this.props.innerTabData, 'props are')
+        // console.log(this.props.pricesFormErrors, 'render 4')
 
         const { getFieldDecorator } = this.props.form;
         return (
@@ -52,8 +66,16 @@ class PricingForm extends Component {
                             labelCol={{ span: 8 }}
                             wrapperCol={{ span: 15 }}>
                             {getFieldDecorator(one_month, {
-
-                            })(<Input onChange={e =>  this.setPrice('1 month', e.target.value)} type='number' min={0} />)}
+                                initialValue: this.props.innerTabData ? this.props.innerTabData[one_month] ? this.props.innerTabData[one_month] : '0' : '0',
+                                rules: [
+                                    {
+                                        min: 0
+                                    }, {
+                                        validator: this.checkPrice,
+                                    }
+                                ],
+                            })(<Input type='number'
+                                onChange={e => this.setPrice('1 month', e.target.value)} />)}
 
                         </Form.Item>
                     </Col>
@@ -61,7 +83,7 @@ class PricingForm extends Component {
                         {/* <Button type="primary" onClick={() => this.setPrice(one_month)} >Set</Button> */}
                     </Col>
                     <Col span={7}>
-                        <h4 className='priceText'>Price: ${this.props.innerTabData ? this.props.innerTabData[one_month] ? this.props.innerTabData[one_month] : 0 : 0}</h4>
+                        <h4 className='priceText'>Price: ${this.props.innerTabData ? this.props.innerTabData[one_month] ? this.props.innerTabData[one_month] : '0' : '0'}</h4>
                     </Col>
                 </Row>
 
@@ -69,9 +91,17 @@ class PricingForm extends Component {
                     <Col span={13}>
                         <Form.Item label="3 MONTH" labelCol={{ span: 8 }}
                             wrapperCol={{ span: 15 }}>
-                            {getFieldDecorator(three_month, {
-
-                            })(<Input onChange={e =>  this.setPrice('3 month', e.target.value)} type='number' min={0} />)}
+                            {getFieldDecorator(`${three_month}`, {
+                                initialValue: this.props.innerTabData ? this.props.innerTabData[`${three_month}`] ? this.props.innerTabData[`${three_month}`] : '0' : '0',
+                                rules: [
+                                    {
+                                        min: 0,
+                                    }, {
+                                        validator: this.checkPrice,
+                                    }
+                                ],
+                            })(<Input type='number'
+                                onChange={e => this.setPrice('3 month', e.target.value)} />)}
 
 
                         </Form.Item>
@@ -80,7 +110,7 @@ class PricingForm extends Component {
                         {/* <Button type="primary" onClick={() => this.setPrice(three_month)} >Set</Button> */}
                     </Col>
                     <Col span={7}>
-                        <h4 className='priceText'>Price: ${this.props.innerTabData ? this.props.innerTabData[three_month] ? this.props.innerTabData[three_month] : 0 : 0}</h4>
+                        <h4 className='priceText'>Price: ${this.props.innerTabData ? this.props.innerTabData[three_month] ? this.props.innerTabData[three_month] : '0' : '0'}</h4>
                     </Col>
                 </Row>
                 <Row>
@@ -88,8 +118,15 @@ class PricingForm extends Component {
                         <Form.Item label="6 MONTH" labelCol={{ span: 8 }}
                             wrapperCol={{ span: 15 }}>
                             {getFieldDecorator(six_month, {
-
-                            })(<Input onChange={e =>  this.setPrice('6 month', e.target.value)} type='number' min={0} />)}
+                                initialValue: this.props.innerTabData ? this.props.innerTabData[six_month] ? this.props.innerTabData[six_month] : '0' : '0',
+                                rules: [
+                                    {
+                                        min: 0,
+                                    }, {
+                                        validator: this.checkPrice,
+                                    }
+                                ],
+                            })(<Input type='number' onChange={e => this.setPrice('6 month', e.target.value)} />)}
 
 
                         </Form.Item>
@@ -98,7 +135,7 @@ class PricingForm extends Component {
                         {/* <Button type="primary" onClick={() => thi s.setPrice(six_month)}>Set</Button> */}
                     </Col>
                     <Col span={7}>
-                        <h4 className='priceText'>Price: ${this.props.innerTabData ? this.props.innerTabData[six_month] ? this.props.innerTabData[six_month] : 0 : 0}</h4>
+                        <h4 className='priceText'>Price: ${this.props.innerTabData ? this.props.innerTabData[six_month] ? this.props.innerTabData[six_month] : '0' : '0'}</h4>
                     </Col>
                 </Row>
                 <Row>
@@ -106,8 +143,15 @@ class PricingForm extends Component {
                         <Form.Item label="12 MONTH" labelCol={{ span: 8 }}
                             wrapperCol={{ span: 15 }}>
                             {getFieldDecorator(twelve_month, {
-
-                            })(<Input onChange={e =>  this.setPrice('12 month', e.target.value)} type='number' min={0} />)}
+                                initialValue: this.props.innerTabData ? this.props.innerTabData[twelve_month] ? this.props.innerTabData[twelve_month] : '0' : '0',
+                                rules: [
+                                    {
+                                        min: 0
+                                    }, {
+                                        validator: this.checkPrice,
+                                    }
+                                ],
+                            })(<Input type='number' onChange={e => this.setPrice('12 month', e.target.value)} />)}
 
                         </Form.Item>
                     </Col>
@@ -115,7 +159,7 @@ class PricingForm extends Component {
                         {/* <Button type="primary" onClick={() => this.setPrice(twelve_month)}>Set</Button> */}
                     </Col>
                     <Col span={7}>
-                        <h4 className='priceText'>Price: ${this.props.innerTabData ? this.props.innerTabData[twelve_month] ? this.props.innerTabData[twelve_month] : 0 : 0}</h4>
+                        <h4 className='priceText'>Price: ${this.props.innerTabData ? this.props.innerTabData[twelve_month] ? this.props.innerTabData[twelve_month] : '0' : '0'}</h4>
                     </Col>
                 </Row>
 

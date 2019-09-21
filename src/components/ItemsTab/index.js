@@ -32,6 +32,7 @@ export default class ItemTabs extends Component {
         })
     }
     render() {
+        // console.log(this.props.pricesFormErrors, 'render 2')
         return (
             <div>
                 <Tabs
@@ -61,6 +62,11 @@ export default class ItemTabs extends Component {
                         setPrice={this.props.setPrice}
                         innerTab={this.state.tabSelected}
                         innerTabData={this.state.innerTabData}
+                        restrictSubmit={this.props.restrictSubmit}
+                        submitAvailable={this.props.submitAvailable}
+                        pricesFormErrors={this.props.pricesFormErrors}
+
+
                     />
                 </div>
 

@@ -23,7 +23,9 @@ export default class WhiteLabelPricing extends Component {
             outerTab: '1',
             pkgName: '',
             pkgTerms: '',
-            pkgPrice: 0
+            pkgPrice: 0,
+            submitAvailable: true,
+            pricesFormErrors: []
         }
 
     }
@@ -34,6 +36,31 @@ export default class WhiteLabelPricing extends Component {
 
     onTabChange = () => {
 
+    }
+
+    restrictSubmit = (available, item) => {
+        // console.log(this.state.pricesFormErrors, 'restrictsubmit called', item, available)
+        if(!available){
+            if(!this.state.pricesFormErrors.includes(item)){
+                this.state.pricesFormErrors.push(item)
+            }
+         
+        }else{
+            // console.log(item, 'item is')
+            let index = this.state.pricesFormErrors.indexOf(item);
+            // console.log(index, 'index id')
+             if(index > -1){
+                
+                 this.state.pricesFormErrors.splice(index, 1)
+             }
+        }
+
+        // console.log(this.state.pricesFormErrors, 'errors of price form')
+       
+        this.setState({
+            pricesFormErrors: this.state.pricesFormErrors,
+            submitAvailable: this.state.pricesFormErrors.length ? false : true
+        })
     }
 
     handleSubmit = () => {
@@ -52,14 +79,15 @@ export default class WhiteLabelPricing extends Component {
                 [pgp]: {},
                 [vpn]: {},
                 innerTab: sim,
-                outerTab: '1'
+                outerTab: '1',
+                submitAvailable: true
             })
         } else if (this.state.outerTab === '2') {
             // console.log('ref is hte ', this.form);
             // this.form.props.form.validateFields((err, values) => {
             // if (!err) {
-
-            if (this.state.pkg_features && this.state.pkgName && this.state.pkgTerms && this.state.pkgName != '' && this.state.pkgTerms != '') {
+                var isnum = /^\d+$/.test(this.state.pkgPrice);
+            if (this.state.pkgPrice != 0 && isnum && this.state.pkg_features && this.state.pkgName && this.state.pkgTerms && this.state.pkgName != '' && this.state.pkgTerms != '') {
                 // console.log(this.state.pkg_features, pkg_features);
                 let data = {
                     pkgName: this.state.pkgName,
@@ -100,7 +128,7 @@ export default class WhiteLabelPricing extends Component {
 
     setPrice = (price, field, price_for) => {
 
-        if (price > 0 || price == '') {
+        if (price >= 0 || price == '') {
             this.state[price_for][field] = price
         }
         // console.log('price', price, 'field', field, 'price_for', price_for)
@@ -113,7 +141,8 @@ export default class WhiteLabelPricing extends Component {
     }
 
     render() {
-        // console.log(pkg_features, 'this.state.pksfeatures', this.state.pkg_features)
+        // console.log(this.state.pricesFormErrors, 'price render')
+        // console.log(this.props.isPriceChanged, 'is price chagned', this.state.submitAvailable)
         // console.log(sim, this.state[sim], 'sim object ',this.state[chat], 'chat object ',this.state[pgp], 'pgp object',this.state[vpn], 'sim object',)
         return (
             <Modal
@@ -123,7 +152,7 @@ export default class WhiteLabelPricing extends Component {
                 visible={this.props.pricing_modal}
                 onOk={this.handleSubmit}
                 okText='Save'
-                okButtonProps={{ disabled: this.state.outerTab == '1' ? !this.props.isPriceChanged : false }}
+                okButtonProps={{ disabled: this.state.outerTab == '1' ?  (!this.props.isPriceChanged || !this.state.submitAvailable) ? true : false  : false }}
                 onCancel={() => {
                     this.props.showPricingModal(false);
                     this.props.resetPrice();
@@ -132,7 +161,8 @@ export default class WhiteLabelPricing extends Component {
                         pkgPrice: 0,
                         pkg_features: JSON.parse(JSON.stringify(pkg_features)),
                         pkgTerm: '',
-                        pkgName: ''
+                        pkgName: '',
+                        submitAvailable: true
                     })
                 }}
                 // footer={null}
@@ -148,6 +178,9 @@ export default class WhiteLabelPricing extends Component {
                             innerTabChanged={this.innerTabChanged}
                             setPrice={this.props.setPrice}
                             prices={this.props.prices}
+                            restrictSubmit={this.restrictSubmit}
+                            submitAvailable={this.state.submitAvailable}
+                            pricesFormErrors={this.state.pricesFormErrors}
 
                         />
                     </TabPane>

@@ -104,7 +104,8 @@ export default (state = initialState, action) => {
             let copyPrices = state.prices;
             let price_for = action.payload.price_for;
             let field = action.payload.field;
-            if (price_for && price_for !== '') {
+            // console.log(action.payload.value, 'action value is the ', parseInt(action.payload.value))
+            if (price_for && price_for !== '' ) {
                 copyPrices[price_for][field] = action.payload.value;
             }
             return {
