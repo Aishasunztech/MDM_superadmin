@@ -18,7 +18,8 @@ class PackagePricingForm extends Component {
             pgp: false,
             vpn: false,
             help: '',
-            validateStatus: 'success'
+            validateStatus: 'success',
+            pkgTerms: '1 month'
         }
     }
 
@@ -37,33 +38,39 @@ class PackagePricingForm extends Component {
                 // value = this.props.form.getFieldValue(fieldName)
                 // console.log('fiels name', fieldName, 'value', value)
                 if (fieldName) {
+                    value = e;
+                    if (fieldName == 'pkgPrice') {
+                        e = +e;
+                        e = e.toString();
+                    }
                     this.props.setPkgDetail(e, fieldName, is_pkg_feature);
                 }
-                value = e
             }
 
             if (fieldName == 'pkgPrice') {
-                var isnum = /^\d+$/.test(e);
-                if(!isnum || e == 0){
+                var isnum = /^\d+$/.test(value);
+                if (!isnum || e <= 0) {
+                    this.props.restrictPackageSubmit(false, fieldName)
                     this.setState({
                         validateStatus: 'error',
-                        help: e === '' ? 'Please Input Package Price': 'Price must be in Numbers and greater than zero',
-                        [fieldName]: value
+                        help: value === '' ? 'Please Input Package Price' : 'Price must be in Numbers and greater than zero',
+                        [fieldName]: e
                     })
-                }else{
+                } else {
+                    this.props.restrictPackageSubmit(true, fieldName)
                     this.setState({
                         validateStatus: 'success',
                         help: '',
-                        [fieldName]: value
+                        [fieldName]: e
                     })
                 }
                 // console.log(isnum, 'value', e)
-            }else{
+            } else {
                 this.setState({
                     [fieldName]: value
                 })
             }
-           
+
 
         }
     }
@@ -84,9 +91,15 @@ class PackagePricingForm extends Component {
         });
         // console.log(response, 'respoinse ise  d')
         if (response) {
+            this.props.restrictPackageSubmit(true, 'pkgName')
             callback()
+            
         } else {
+             this.props.restrictPackageSubmit(false, 'pkgName')
             callback("Package name already taken please use another name.")
+        }
+        if(value == ''){
+            this.props.restrictPackageSubmit(false, 'pkgName')
         }
     }
     componentDidMount() {
@@ -150,6 +163,7 @@ class PackagePricingForm extends Component {
                         <Form.Item label="Package Terms" labelCol={{ span: 11 }}
                             wrapperCol={{ span: 13 }}>
                             {getFieldDecorator('pkgTerms', {
+                                 initialValue: '1 month',
                                 rules: [
                                     {
                                         required: true,
@@ -188,8 +202,8 @@ class PackagePricingForm extends Component {
                 <Row>
                     <Col span={13}>
                         <Form.Item label="Package Price" labelCol={{ span: 11 }}
-                         validateStatus={this.state.validateStatus}
-                         help={this.state.help}
+                            validateStatus={this.state.validateStatus}
+                            help={this.state.help}
                             wrapperCol={{ span: 13 }}>
                             {getFieldDecorator('pkgPrice', {
                                 rules: [
@@ -198,7 +212,7 @@ class PackagePricingForm extends Component {
                                         message: 'Please Input Package Price',
                                     }
                                 ],
-                            })(<Input placeholder="Package Price" onChange={(e => this.setPrice('pkgPrice', '', '', e.target.value))} type='number' min={0} />)}
+                            })(<Input placeholder="Package Price" onChange={(e => this.setPrice('pkgPrice', '', '', e.target.value))} type='number' min={1} />)}
 
                         </Form.Item>
                     </Col>

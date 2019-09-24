@@ -21,27 +21,31 @@ class PricingForm extends Component {
     setPrice = (fieldName, value) => {
 
         if (fieldName) {
+            var isnum = /^\d+$/.test(value);
 
-            if (fieldName && this.props.price_for) {
+            if ((fieldName && this.props.price_for) && (isnum || value == '')) {
                 this.props.setPrice(fieldName, value, this.props.price_for);
+                if (this.props.pricesFormErrors && this.props.pricesFormErrors.length) {
+                    this.props.restrictSubmit(true, `${fieldName + this.props.innerTab}`)
+                }
+            }else{
+                this.props.restrictSubmit(false, `${fieldName + this.props.innerTab}`)
             }
         }
 
     }
 
-    checkPrice = async (rule, e, callback) => {
+    checkPrice = async (rule, value, callback) => {
        
-        let value = e;
         let field = rule.field;
-        var isnum = /^\d+$/.test(e);
-        // console.log(value, 'value type', isnum)
-        if (isnum || (value == 0 || value == '')) {
+        var isnum = /^\d+$/.test(value);
+        if (isnum && value > 0) {
             callback()
             if (this.props.pricesFormErrors && this.props.pricesFormErrors.length) {
                 this.props.restrictSubmit(true, `${field + this.props.innerTab}`)
             }
         } else {
-            callback("Price must be in Numbers")
+            callback("Price must be in Numbers & greater than zero")
             this.props.restrictSubmit(false, `${field + this.props.innerTab}`)
         }
     }
@@ -60,7 +64,7 @@ class PricingForm extends Component {
         const { getFieldDecorator } = this.props.form;
         return (
             <Form onSubmit={this.handleSubmit}>
-                <Row>
+                <Row>   
                     <Col span={13}>
                         <Form.Item label="1 MONTH"
                             labelCol={{ span: 8 }}
@@ -75,7 +79,7 @@ class PricingForm extends Component {
                                     }
                                 ],
                             })(<Input type='number'
-                                onChange={e => this.setPrice('1 month', e.target.value)} />)}
+                                onChange={e => this.setPrice('1 month', e.target.value)} min={1} />)}
 
                         </Form.Item>
                     </Col>
@@ -101,7 +105,7 @@ class PricingForm extends Component {
                                     }
                                 ],
                             })(<Input type='number'
-                                onChange={e => this.setPrice('3 month', e.target.value)} />)}
+                                onChange={e => this.setPrice('3 month', e.target.value)} min={1} />)}
 
 
                         </Form.Item>
@@ -126,7 +130,7 @@ class PricingForm extends Component {
                                         validator: this.checkPrice,
                                     }
                                 ],
-                            })(<Input type='number' onChange={e => this.setPrice('6 month', e.target.value)} />)}
+                            })(<Input type='number' onChange={e => this.setPrice('6 month', e.target.value)} min={1} />)}
 
 
                         </Form.Item>
@@ -151,7 +155,7 @@ class PricingForm extends Component {
                                         validator: this.checkPrice,
                                     }
                                 ],
-                            })(<Input type='number' onChange={e => this.setPrice('12 month', e.target.value)} />)}
+                            })(<Input type='number' onChange={e => this.setPrice('12 month', e.target.value)} min={1} />)}
 
                         </Form.Item>
                     </Col>
