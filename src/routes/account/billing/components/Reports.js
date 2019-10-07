@@ -119,8 +119,8 @@ class SalesList extends Component {
 
                                                 <Select.Option value=''>SELECT DEALER</Select.Option>
                                                 <Select.Option value='admin'>Generate Admin report</Select.Option>
-                                                {this.props.dealerList.map((label, index) => {
-                                                    return (<Select.Option key={index} value={label.id}>{label.name}</Select.Option>)
+                                                {this.props.dealerList.map((dealer, index) => {
+                                                    return (<Select.Option key={dealer.link_code} value={dealer.link_code}>{dealer.dealer_name} ({dealer.link_code})</Select.Option>)
                                                 })}
                                             </Select>
                                         )}

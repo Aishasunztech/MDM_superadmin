@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { Table, Avatar, Switch, Button, Icon, Card, Modal, Tabs } from "antd";
 import { checkValue } from '../../../utils/commonUtils';
 import styles from '../billing.css'
+import { ADMIN } from '../../../../constants/Constants';
 
 // import { Tabs } from 'antd';
 
@@ -49,7 +50,7 @@ export default class SalesList extends Component {
                 'label': checkValue(item.label),
                 'name': checkValue(item.dealer_name),
                 'account_type': checkValue(item.account_type),
-                'dealer_pin': checkValue(item.dealer_pin),
+                'dealer_pin': (item.dealer_name === ADMIN) ? "N/A" : checkValue(item.dealer_pin),
                 'credits_purchased': checkValue(item.credits),
                 'inv_no': checkValue(item.inv_no),
                 'status': checkValue(item.status),

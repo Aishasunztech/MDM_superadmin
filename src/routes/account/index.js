@@ -68,7 +68,7 @@ class Account extends Component {
 
         if (this.props.password_verified) {
             this.props.reset_password_varified();
-            this.props.history.push({pathname:"/account/billing", state: { id: this.props.user.id }})
+            this.props.history.push({ pathname: "/account/billing", state: { id: this.props.user.id } })
             return (
                 null
             )
@@ -108,10 +108,10 @@ class Account extends Component {
                             <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                                 <div>
                                     {/* <Link to="/account/billing"> */}
-                                    <a 
-                                    // onClick={() => 
-                                    //     this.toggleLockModal()} 
-                                        >
+                                    <a
+                                        onClick={() =>
+                                            this.toggleLockModal()}
+                                    >
                                         <Card className="manage_ac" style={{ borderRadius: 12 }}>
                                             <div>
                                                 <h2 style={{ textAlign: "center" }}>Billing</h2>
