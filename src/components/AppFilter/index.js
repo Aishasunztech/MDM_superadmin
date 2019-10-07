@@ -186,6 +186,8 @@ class AppFilter extends Component {
                                         }
                                     />
                                 </Fragment>
+                                : this.props.pageTitle ?
+                                 <h2>{this.props.pageTitle}</h2> 
                                 :
                                 null
                             }

@@ -704,7 +704,7 @@ class WhiteLabels extends Component {
                             <div>
                                 <div className="contenar">
                                     {/* <a href="javascript:void(0)" onClick={(e) => { this.showPricingModal(true) }} > */}
-                                    <Link to={"/set-prices/" + this.props.whiteLabelInfo.name}>
+                                    <Link to={"/set-prices" + this.props.whiteLabelInfo.route_uri}>
                                         <Card className="manage_sec" style={{ borderRadius: 12 }}>
                                             <div>
                                                 <h2 style={{ textAlign: "center" }}>Set Prices</h2>
@@ -787,7 +787,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 var mapStateToProps = ({ whiteLabels }, otherProps) => {
-    // console.log(whiteLabels.whitelabelBackups);
+    // console.log(whiteLabels.whiteLabel);
     return {
         whiteLabelInfo: whiteLabels.whiteLabel,
         whitelabelBackups: whiteLabels.whitelabelBackups,

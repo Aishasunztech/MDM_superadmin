@@ -62,6 +62,7 @@ const AppRoutes = ({ match, whiteLabels }) => {
                     <SetPrices
                       {...routeProps}
                       id={whiteLabel.id}
+                      whiteLabelName={whiteLabel.name}
                     />
                   )
                 }

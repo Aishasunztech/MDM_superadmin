@@ -120,7 +120,8 @@ class Prices extends Component {
                         dataIndex: 'pkg_price',
                         key: 'pkg_price',
                         // ...this.getColumnSearchProps('status'),
-                        sorter: (a, b) => { return a.pkg_price - b.pkg_price },
+                        // sorter: (a, b) => { return a.pkg_price - b.pkg_price },
+                        sorter: (a, b) => { return a.pkg_price.localeCompare(b.pkg_price) },
 
                         sortDirections: ['ascend', 'descend'],
                     }
@@ -160,7 +161,8 @@ class Prices extends Component {
             innerTabData: this.props.prices ? this.props.prices[sim] : {},
             tabSelected: sim,
             packages: [],
-            copyStatus: true
+            copyStatus: true,
+            isPriceChanged: this.props.isPriceChanged,
         }
     }
 
@@ -234,6 +236,7 @@ class Prices extends Component {
             this.setState({
                 prices: nextProps.prices,
                 packages: nextProps.packages,
+                isPriceChanged: nextProps.isPriceChanged,
                 copyStatus: true
             })
         }
@@ -289,14 +292,14 @@ class Prices extends Component {
                     let dump = {
                         name: name.replace(/_/g,' '), 
                         f_value: data[key] ? "yes" : 'No',
-                        rowKey: key
+                        rowKey: name
                     }
 
                     features.push(dump)
                 }
             }
         }
-        console.log(features, 'featues arte')
+        // console.log(features, 'featues arte')
         return features
     }
 
@@ -337,7 +340,7 @@ class Prices extends Component {
         })
     }
     render() {
-        console.log(this.props.packages, 'comoing prop are')
+        // console.log(this.props.packages, 'comoing prop are')
         return (
             <div>
                 <div>
@@ -357,6 +360,7 @@ class Prices extends Component {
                         // handleCheckChange={this.handleCheckChange}
                         // handlePagination={this.handlePagination}
                         handleComponentSearch={this.handleComponentSearch}
+                        pageTitle={this.props.whiteLabelName}
 
                     />
 
@@ -439,13 +443,13 @@ class Prices extends Component {
                 <WhiteLabelPricing
                     showPricingModal={this.showPricingModal}
                     pricing_modal={this.state.pricing_modal}
-                    // LabelName={this.props.whiteLabelInfo.name}
+                    LabelName={this.props.whiteLabelName}
                     saveIDPrices={this.props.saveIDPrices}
                     // whitelabel_id={this.props.whiteLabelInfo.id}
                     setPackage={this.props.setPackage}
                     prices={this.props.prices}
                     setPrice={this.props.setPrice}
-                    isPriceChanged={this.props.isPriceChanged}
+                    isPriceChanged={this.state.isPriceChanged}
                     resetPrice={this.props.resetPrice}
                     whitelabel_id={this.props.id}
                 />
@@ -467,7 +471,7 @@ function mapDispatchToProps(dispatch) {
 
 
 var mapStateToProps = ({ whiteLabels }, otherprops) => {
-    // console.log(whiteLabels.packages, 'props are for packages')
+    // console.log(whiteLabels.isPriceChanged, 'props are for packages')
     return {
         prices: whiteLabels.prices,
         packages: whiteLabels.packages,

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import {
-    Button, Modal, Tabs
+    Button, Modal, Tabs, Col, Row, Divider
 } from "antd";
 
 import ItemsTab from "../../../../components/ItemsTab";
@@ -19,13 +19,15 @@ export default class WhiteLabelPricing extends Component {
             [chat]: {},
             [pgp]: {},
             [vpn]: {},
-            pkg_features: pkg_features,
+            pkg_features: JSON.parse(JSON.stringify(pkg_features)),
             outerTab: '1',
             pkgName: '',
-            pkgTerms: '',
-            pkgPrice: 0
+            pkgTerms: '1 month',
+            pkgPrice: 0,
+            submitAvailable: true,
+            pricesFormErrors: [],
+            packageFormErrors: ['pkgName', 'pkgPrice', 'pkg_features'],
         }
-
     }
 
     componentDidMount() {
@@ -36,32 +38,63 @@ export default class WhiteLabelPricing extends Component {
 
     }
 
+    restrictSubmit = (available, item) => {
+        // console.log(this.state.pricesFormErrors, 'restrictsubmit called', item, available)
+        if (!available) {
+            if (!this.state.pricesFormErrors.includes(item)) {
+                this.state.pricesFormErrors.push(item)
+            }
+
+        } else {
+            let index = this.state.pricesFormErrors.indexOf(item);
+            if (index > -1) {
+                this.state.pricesFormErrors.splice(index, 1)
+            }
+        }
+
+        this.setState({
+            pricesFormErrors: this.state.pricesFormErrors,
+            submitAvailable: this.state.pricesFormErrors.length ? false : true
+        })
+    }
+
     handleSubmit = () => {
 
-        console.log('tab selected is', this.state.outerTab)
-
         if (this.state.outerTab === '1') {
-            let data = this.props.prices
-            // console.log(this.props.whitelabel_id)
+            let data = this.props.prices;
+            let errors = 0;
 
-            this.props.saveIDPrices({ data: data, whitelabel_id: this.props.whitelabel_id })
-            this.props.showPricingModal(false);
-            this.setState({
-                [sim]: {},
-                [chat]: {},
-                [pgp]: {},
-                [vpn]: {},
-                innerTab: sim,
-                outerTab: '1'
-            })
+            for (let key in data) {
+                Object.values(data[key]).map(value => {
+                    if (value < 1) {
+                        errors++;
+                    }
+                })
+                if(Object.values(data[key]).length < 4){
+                    errors++;
+                }
+            }
+            // console.log(errors, 'errors are')
+
+            if (errors === 0) {
+                this.props.saveIDPrices({ data: data, whitelabel_id: this.props.whitelabel_id })
+                this.props.showPricingModal(false);
+                this.setState({
+                    [sim]: {},
+                    [chat]: {},
+                    [pgp]: {},
+                    [vpn]: {},
+                    innerTab: sim,
+                    outerTab: '1',
+                    submitAvailable: true
+                })
+            }
+
         } else if (this.state.outerTab === '2') {
-            // console.log('ref is hte ', this.form);
-            // this.form.props.form.validateFields((err, values) => {
-            // if (!err) {
-            // console.log('no error found', values);
 
-            if (this.state.pkg_features && this.state.pkgName && this.state.pkgTerms && this.state.pkgName != '' && this.state.pkgTerms != '') {
-                console.log(this.state.pkg_features, pkg_features);
+            var isnum = /^\d+$/.test(this.state.pkgPrice);
+            if (this.state.packageFormErrors && !this.state.packageFormErrors.length && isnum && this.state.pkgPrice > 0 && this.state.pkg_features && this.state.pkgName && this.state.pkgTerms && this.state.pkgName != '' && this.state.pkgTerms != '') {
+                // console.log(this.state.pkg_features, pkg_features);
                 let data = {
                     pkgName: this.state.pkgName,
                     pkgTerm: this.state.pkgTerms,
@@ -69,36 +102,56 @@ export default class WhiteLabelPricing extends Component {
                     pkgFeatures: this.state.pkg_features,
                     whitelabel_id: this.props.whitelabel_id
                 }
-                this.props.setPackage(data);
-                this.props.showPricingModal(false);
-                this.setState({
-                    pkgPrice: 0,
-                    pkg_features: pkg_features,
-                    pkgName: '',
-                    pkgTerms: '',
-                    outerTab: '1'
-                })
+
+                showConfirm(this, data)
             }
-            // }
-            // })
         }
-
-        // console.log('submit data is', data)
-
     }
 
     setPkgDetail = (value, field, is_pkg_feature = false) => {
         if (is_pkg_feature) {
-            this.state.pkg_features[field] = value
+            this.state.pkg_features[field] = value;
+
+            if (!value) {
+                let arr = Object.values(this.state.pkg_features);
+                if (!arr.includes(true)) {
+                    this.restrictPackageSubmit(false, 'pkg_features');
+                    // console.log(this.state.packageFormErrors, 'error')
+                } else {
+                    this.restrictPackageSubmit(true, 'pkg_features')
+                }
+            } else {
+                this.restrictPackageSubmit(true, 'pkg_features')
+            }
+
         } else {
             this.state[field] = value
         }
-        // console.log(this.refs.packageForm);
+
     }
+
+    restrictPackageSubmit = (available, item) => {
+        if (!available) {
+            if (!this.state.packageFormErrors.includes(item)) {
+                this.state.packageFormErrors.push(item)
+            }
+        } else {
+            let index = this.state.packageFormErrors.indexOf(item);
+            if (index > -1) {
+
+                this.state.packageFormErrors.splice(index, 1)
+            }
+        }
+        this.setState({
+            packageFormErrors: this.state.packageFormErrors
+        })
+    }
+
+
 
     setPrice = (price, field, price_for) => {
 
-        if (price > 0) {
+        if (price >= 0 || price == '') {
             this.state[price_for][field] = price
         }
         // console.log('price', price, 'field', field, 'price_for', price_for)
@@ -111,8 +164,7 @@ export default class WhiteLabelPricing extends Component {
     }
 
     render() {
-        console.log(this.props.isPriceChanged, 'ischanged price', this.state.outerTab)
-        // console.log(sim, this.state[sim], 'sim object ',this.state[chat], 'chat object ',this.state[pgp], 'pgp object',this.state[vpn], 'sim object',)
+      
         return (
             <Modal
                 maskClosable={false}
@@ -121,8 +173,20 @@ export default class WhiteLabelPricing extends Component {
                 visible={this.props.pricing_modal}
                 onOk={this.handleSubmit}
                 okText='Save'
-                okButtonProps={{ disabled: this.state.outerTab == '1' ? !this.props.isPriceChanged : false }}
-                onCancel={() => { this.props.showPricingModal(false); this.props.resetPrice(); this.setState({ outerTab: '1' }) }}
+                okButtonProps={{ disabled: this.state.outerTab == '1' ? (!this.props.isPriceChanged || !this.state.submitAvailable) ? true : false : this.state.packageFormErrors && this.state.packageFormErrors.length ? true : false }}
+                onCancel={() => {
+                    this.props.showPricingModal(false);
+                    this.props.resetPrice();
+                    this.setState({
+                        outerTab: '1',
+                        pkgPrice: 0,
+                        pkg_features: JSON.parse(JSON.stringify(pkg_features)),
+                        pkgTerm: '1 month',
+                        pkgName: '',
+                        submitAvailable: true,
+                        packageFormErrors: ['pkgName', 'pkgPrice', 'pkg_features']
+                    })
+                }}
                 // footer={null}
                 width='650px'
             >
@@ -136,6 +200,9 @@ export default class WhiteLabelPricing extends Component {
                             innerTabChanged={this.innerTabChanged}
                             setPrice={this.props.setPrice}
                             prices={this.props.prices}
+                            restrictSubmit={this.restrictSubmit}
+                            submitAvailable={this.state.submitAvailable}
+                            pricesFormErrors={this.state.pricesFormErrors}
 
                         />
                     </TabPane>
@@ -144,6 +211,7 @@ export default class WhiteLabelPricing extends Component {
                             showPricingModal={this.props.showPricingModal}
                             setPkgDetail={this.setPkgDetail}
                             wrappedComponentRef={(form) => this.form = form}
+                            restrictPackageSubmit={this.restrictPackageSubmit}
                             ref="packageForm"
                         />
 
@@ -152,4 +220,93 @@ export default class WhiteLabelPricing extends Component {
             </Modal>
         )
     }
+}
+
+
+function showConfirm(_this, data) {
+    Modal.confirm({
+        title: 'Save Package ?',
+        cancelText: 'Cancel',
+        okText: 'Save',
+        content: <div>
+            <Row>
+                <Divider />
+                <Col span={12}><p>Package Name</p>
+                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                </Col>
+                <Col span={12}>
+                    <p >{_this.state.pkgName}</p>
+                </Col>
+
+
+                <Col span={12}><p>Package Term</p>
+                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                </Col>
+                <Col span={12}>
+                    <p >{_this.state.pkgTerms}</p>
+                </Col>
+
+
+                <Col span={12}><p>Package Price</p>
+                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                </Col>
+                <Col span={12}>
+                    <p >${_this.state.pkgPrice}</p>
+                </Col>
+
+
+                <Col span={12}><p>Sim id</p>
+                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                </Col>
+                <Col span={12}>
+                    <p >{_this.state.pkg_features.sim_id ? 'yes' : 'No'}</p>
+                </Col>
+
+                <Col span={12}><p>Sim id 2</p>
+                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                </Col>
+                <Col span={12}>
+                    <p >{_this.state.pkg_features.sim_id2 ? 'yes' : 'No'}</p>
+                </Col>
+
+
+                <Col span={12}><p>Chat id</p>
+                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                </Col>
+                <Col span={12}>
+                    <p >{_this.state.pkg_features.chat_id ? 'yes' : 'No'}</p>
+                </Col>
+
+                <Col span={12}><p>Pgp Email</p>
+                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                </Col>
+                <Col span={12}>
+                    <p >{_this.state.pkg_features.pgp_email ? 'yes' : 'No'}</p>
+                </Col>
+
+                <Col span={12}><p>Vpn</p>
+                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                </Col>
+                <Col span={12}>
+                    <p >{_this.state.pkg_features.vpn ? 'yes' : 'No'}</p>
+                </Col>
+            </Row>
+        </div>,
+        onOk() {
+            // console.log('OK');
+            _this.props.setPackage(data);
+            _this.props.showPricingModal(false);
+            _this.setState({
+                pkgPrice: 0,
+                pkg_features: JSON.parse(JSON.stringify(pkg_features)),
+                pkgTerm: '1 month',
+                pkgName: '',
+                outerTab: '1',
+                packageFormErrors: ['pkgName', 'pkgPrice', 'pkg_features']
+            })
+        },
+        onCancel() {
+            // console.log('Cancel');
+        },
+    });
 }

@@ -16,33 +16,61 @@ class PackagePricingForm extends Component {
             sim_id2: false,
             chat: false,
             pgp: false,
-            vpn: false
+            vpn: false,
+            help: '',
+            validateStatus: 'success',
+            pkgTerms: '1 month'
         }
     }
 
 
-    setPrice = (fieldName, is_pkg_feature = false, pkg_feature_value = '') => {
+    setPrice = (fieldName, is_pkg_feature = false, pkg_feature_value = '', e) => {
         // let value = e.target.value;
         let value = ''
         if (fieldName) {
-            if (fieldName == 'pkgPrice' && value < 0) {
-            } else {
-                if (is_pkg_feature) {
-                    if (pkg_feature_value !== '' && fieldName) {
-                        value = pkg_feature_value;
-                        this.props.setPkgDetail(pkg_feature_value, fieldName, is_pkg_feature);
-                    }
-                } else {
-                    value = this.props.form.getFieldValue(fieldName)
-                    // console.log('fiels name', fieldName, 'value', value)
-                    if (value !== '' && fieldName) {
-                        this.props.setPkgDetail(value, fieldName, is_pkg_feature);
-                    }
+
+            if (is_pkg_feature) {
+                if (pkg_feature_value !== '' && fieldName) {
+                    value = pkg_feature_value;
+                    this.props.setPkgDetail(pkg_feature_value, fieldName, is_pkg_feature);
                 }
+            } else {
+                // value = this.props.form.getFieldValue(fieldName)
+                // console.log('fiels name', fieldName, 'value', value)
+                if (fieldName) {
+                    value = e;
+                    if (fieldName == 'pkgPrice') {
+                        e = +e;
+                        e = e.toString();
+                    }
+                    this.props.setPkgDetail(e, fieldName, is_pkg_feature);
+                }
+            }
+
+            if (fieldName == 'pkgPrice') {
+                var isnum = /^\d+$/.test(value);
+                if (!isnum || e <= 0) {
+                    this.props.restrictPackageSubmit(false, fieldName)
+                    this.setState({
+                        validateStatus: 'error',
+                        help: value === '' ? 'Please Input Package Price' : 'Price must be in Numbers and greater than zero',
+                        [fieldName]: e
+                    })
+                } else {
+                    this.props.restrictPackageSubmit(true, fieldName)
+                    this.setState({
+                        validateStatus: 'success',
+                        help: '',
+                        [fieldName]: e
+                    })
+                }
+                // console.log(isnum, 'value', e)
+            } else {
                 this.setState({
                     [fieldName]: value
                 })
             }
+
 
         }
     }
@@ -63,9 +91,15 @@ class PackagePricingForm extends Component {
         });
         // console.log(response, 'respoinse ise  d')
         if (response) {
+            this.props.restrictPackageSubmit(true, 'pkgName')
             callback()
+            
         } else {
+             this.props.restrictPackageSubmit(false, 'pkgName')
             callback("Package name already taken please use another name.")
+        }
+        if(value == ''){
+            this.props.restrictPackageSubmit(false, 'pkgName')
         }
     }
     componentDidMount() {
@@ -114,11 +148,11 @@ class PackagePricingForm extends Component {
                                         validator: this.PackageNameChange,
                                     }
                                 ],
-                            })(<Input />)}
+                            })(<Input placeholder="Package Name" onChange={(e => this.setPrice('pkgName', '', '', e.target.value))} />)}
                         </Form.Item>
                     </Col>
                     <Col span={4}>
-                        <Button type="primary" onClick={() => this.setPrice('pkgName')}>Set</Button>
+                        {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}>Set</Button> */}
                     </Col>
                     <Col span={6}>
                         <h4 className='priceText'>{this.state.pkgName}</h4>
@@ -129,6 +163,7 @@ class PackagePricingForm extends Component {
                         <Form.Item label="Package Terms" labelCol={{ span: 11 }}
                             wrapperCol={{ span: 13 }}>
                             {getFieldDecorator('pkgTerms', {
+                                 initialValue: '1 month',
                                 rules: [
                                     {
                                         required: true,
@@ -138,8 +173,9 @@ class PackagePricingForm extends Component {
                             })(<Select
                                 showSearch
                                 style={{ width: "100%" }}
-                                placeholder="Select a Price"
+                                placeholder="Select a Term"
                                 optionFilterProp="children"
+                                onChange={(pkgTerms => this.setPrice('pkgTerms', '', '', pkgTerms))}
                                 // onChange={onChange}
                                 // onFocus={onFocus}
                                 // onBlur={onBlur}
@@ -157,7 +193,7 @@ class PackagePricingForm extends Component {
                         </Form.Item>
                     </Col>
                     <Col span={4}>
-                        <Button type="primary" onClick={() => this.setPrice('pkgTerms')}>Set</Button>
+                        {/* <Button type="primary" onClick={() => this.setPrice('pkgTerms')}>Set</Button> */}
                     </Col>
                     <Col span={7}>
                         <h4 className='priceText'>{this.state.pkgTerms}</h4>
@@ -166,20 +202,22 @@ class PackagePricingForm extends Component {
                 <Row>
                     <Col span={13}>
                         <Form.Item label="Package Price" labelCol={{ span: 11 }}
+                            validateStatus={this.state.validateStatus}
+                            help={this.state.help}
                             wrapperCol={{ span: 13 }}>
                             {getFieldDecorator('pkgPrice', {
                                 rules: [
                                     {
                                         required: true,
                                         message: 'Please Input Package Price',
-                                    },
+                                    }
                                 ],
-                            })(<Input type='number' min={0} />)}
+                            })(<Input placeholder="Package Price" onChange={(e => this.setPrice('pkgPrice', '', '', e.target.value))} type='number' min={1} />)}
 
                         </Form.Item>
                     </Col>
                     <Col span={4}>
-                        <Button type="primary" onClick={() => this.setPrice('pkgPrice')} >Set</Button>
+                        {/* <Button type="primary" onClick={() => this.setPrice('pkgPrice')} >Set</Button> */}
                     </Col>
                     <Col span={7}>
                         <h4 className='priceText'>Price: ${this.state.pkgPrice}</h4>
