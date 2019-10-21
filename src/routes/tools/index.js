@@ -132,25 +132,26 @@ class Tools extends Component {
                         className="d_tool_pup"
                         width="42%"
                     >
-                        <Row className="d_t_m">
-                            <h4 style={{ lineHeight: '30px', marginBottom: 0 }}>Firmware VSP100 (DEV)</h4>
-                            <a href={`${FIRMWARE_URL}Firmware_VSP100_DEV.gz`}>
-                                <Button type="primary" size="default" style={{ margin: '0 0 0 16px', height: 30, lineHeight: '30px' }}>
-                                    {"Download"}
-                                </Button>
-                            </a>
-                        </Row>
-                        <Row className="d_t_m">
+                        
+                        {/* <Row className="d_t_m">
                             <h4 style={{ lineHeight: '30px', marginBottom: 0 }}>Firmware VSP100 (NO ADB)</h4>
                             <a href={`${FIRMWARE_URL}Firmware_VSP100_no_ADB.zip`}>
                                 <Button type="primary" size="default" style={{ margin: '0 0 0 16px', height: 30, lineHeight: '30px' }}>
                                     {"Download"}
                                 </Button>
                             </a>
-                        </Row>
+                        </Row> */}
                         <Row className="d_t_m">
                             <h4 style={{ lineHeight: '30px', marginBottom: 0 }}>Firmware VSP100 Final</h4>
-                            <a href={`${FIRMWARE_URL}Firmware_VSP100_Final.gz`}>
+                            <a href={`${FIRMWARE_URL}Firmware_VSP100_Final_20190928.gz`}>
+                                <Button type="primary" size="default" style={{ margin: '0 0 0 16px', height: 30, lineHeight: '30px' }}>
+                                    {"Download"}
+                                </Button>
+                            </a>
+                        </Row>
+                        <Row className="d_t_m">
+                            <h4 style={{ lineHeight: '30px', marginBottom: 0 }}>Firmware VSP100 (DEV)</h4>
+                            <a href={`${FIRMWARE_URL}Firmware_VSP100_DEV_20190926.gz`}>
                                 <Button type="primary" size="default" style={{ margin: '0 0 0 16px', height: 30, lineHeight: '30px' }}>
                                     {"Download"}
                                 </Button>
