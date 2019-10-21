@@ -517,9 +517,6 @@ class WhiteLabels extends Component {
                                             <Button type="primary" size="small" className="open_btn1">Open</Button>
                                         </Card>
                                     </Link>
-                                    {/* <div className="middle">
-                                        <div className="text">Coming Soon</div>
-                                    </div> */}
                                 </div>
                                 <Modal
                                     maskClosable={false}
