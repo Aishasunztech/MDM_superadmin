@@ -383,41 +383,33 @@ class Prices extends Component {
 
 
     editHardware = (hd) => {
-        console.log("this.props.editHardware", hd);
-
         this.setState({ visible: true, editHardwareObj: hd })
-        // this.props.editHardware(id)
     }
 
-    // handleOk = () => {
-    //     console.log('handle okay');
-    // }
-
     handleCancel = () => {
-        console.log('handle cancel');
         this.setState({ visible: false })
     }
 
-    deleteHardware = (id) => {
+    deleteHardware = (item) => {
         let _this = this;
 
         confirm({
-            title: "Are You Sure To Delete this Hardware",
+            title: <div>Are You Sure To Delete <span style={{ textDecoration: 'underline' }}>{item.name}</span> Hardware ?</div>,
             onOk() {
-                _this.props.deleteHardware(id)
+                _this.props.deleteHardware(item.id)
             },
             onCancel() {
             },
         })
     }
 
-    deletePakage = (id) => {
+    deletePakage = (item) => {
         let _this = this;
 
         confirm({
-            title: "Are You Sure To Delete this Package",
+            title: <div>Are You Sure To Delete <span style={{ textDecoration: 'underline' }}>{item.pkg_name}</span> Package ?</div>,
             onOk() {
-                _this.props.deletePakage(id)
+                _this.props.deletePakage(item.id)
             },
             onCancel() {
             },
@@ -432,7 +424,7 @@ class Prices extends Component {
                 return this.state.packages.map((item, index) => {
                     return {
                         key: item.id,
-                        action: <Button type="danger" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => { this.deletePakage(item.id) }}>DELETE </Button>,
+                        action: <Button type="danger" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => { this.deletePakage(item) }}>DELETE </Button>,
                         pkg_name: item.pkg_name,
                         pkg_price: "$" + item.pkg_price,
                         pkg_term: item.pkg_term,
@@ -449,7 +441,7 @@ class Prices extends Component {
                         key: item.id,
                         action: <Fragment>
                             <Button type="primary" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => this.editHardware(item)} >EDIT</Button>
-                            <Button type="danger" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => { this.deleteHardware(item.id) }}>DELETE </Button>
+                            <Button type="danger" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => { this.deleteHardware(item) }}>DELETE </Button>
                         </Fragment>,
                         name: item.name,
                         price: item.price
