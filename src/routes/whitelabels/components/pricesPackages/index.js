@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Button, Tabs, Table, Card, Input, Icon } from 'antd';
+import { Button, Tabs, Table, Card, Input, Icon, Modal } from 'antd';
 import {
     getPrices, resetPrice, setPackage,
-    saveIDPrices, setPrice, getPackages, saveHardware, getHardwares
+    saveIDPrices, setPrice, getPackages, saveHardware, getHardwares, deletePakage, deleteHardware, editHardware
 } from '../../../../appRedux/actions/WhiteLabels';
 import { sim, chat, pgp, vpn } from '../../../../constants/Constants';
 import AppFilter from '../../../../components/AppFilter/index';
@@ -18,16 +18,27 @@ import {
 } from '../../../../constants/LabelConstants';
 import { isArray } from "util";
 import WhiteLabelPricing from './WhiteLabelPricing';
+import EditHardware from './components/EditHardware';
+const confirm = Modal.confirm
 let packagesCopy = [];
+let hardwaresCopy = [];
 class Prices extends Component {
     constructor(props) {
         super(props)
         this.columns = [
             {
-                title: "Sr.#",
+                title: "#",
                 dataIndex: 'sr',
                 key: 'sr',
                 align: "center",
+                render: (text, record, index) => ++index,
+            },
+            {
+                title: "ACTION",
+                dataIndex: 'action',
+                align: 'center',
+                className: 'row',
+                key: "action"
             },
             {
                 title: (
@@ -158,16 +169,18 @@ class Prices extends Component {
         ];
         this.hardwareColumns = [
             {
-                title: "Sr.#",
+                title: "#",
                 dataIndex: 'sr',
                 key: 'sr',
                 align: "center",
+                render: (text, record, index) => ++index,
             },
             {
+                title: "ACTION",
                 dataIndex: 'action',
                 align: 'center',
                 className: 'row',
-                width: 800,
+                // width: 800,
             },
             {
                 title: (
@@ -176,7 +189,7 @@ class Prices extends Component {
                         key="name"
                         id="name"
                         className="search_heading"
-                        onKeyUp={this.handleSearch}
+                        onKeyUp={this.handleHDWSearch}
                         autoComplete="new-password"
                         placeholder='HARDWARE NAME'
                     />
@@ -204,7 +217,7 @@ class Prices extends Component {
                         key="price"
                         id="price"
                         className="search_heading"
-                        onKeyUp={this.handleSearch}
+                        onKeyUp={this.handleHDWSearch}
                         autoComplete="new-password"
                         placeholder='HADWARE PRICE (CREDITS)'
                     />
@@ -233,8 +246,11 @@ class Prices extends Component {
             tabSelected: sim,
             packages: [],
             copyStatus: true,
+            copyHDWStatus: true,
             isPriceChanged: this.props.isPriceChanged,
-            hardwares: []
+            hardwares: [],
+            visible: false,
+            editHardwareObj: {}
         }
     }
 
@@ -281,6 +297,49 @@ class Prices extends Component {
         }
     }
 
+    handleHDWSearch = (e) => {
+
+        let dumyHardwares = [];
+        if (this.state.copyHDWStatus) {
+            hardwaresCopy = this.state.hardwares;
+            this.state.copyHDWStatus = false;
+        }
+
+        if (e.target.value.length) {
+
+            hardwaresCopy.forEach((dealer) => {
+
+                if (dealer[e.target.name] !== undefined) {
+                    if ((typeof dealer[e.target.name]) === 'string') {
+                        if (dealer[e.target.name].toUpperCase().includes(e.target.value.toUpperCase())) {
+                            dumyHardwares.push(dealer);
+                        }
+                    } else if (dealer[e.target.name] != null) {
+                        if (dealer[e.target.name].toString().toUpperCase().includes(e.target.value.toUpperCase())) {
+                            dumyHardwares.push(dealer);
+                        }
+                        if (isArray(dealer[e.target.name])) {
+                            if (dealer[e.target.name][0]['total'].includes(e.target.value)) {
+                                dumyHardwares.push(dealer);
+                            }
+                        }
+                    } else {
+                    }
+                } else {
+                    dumyHardwares.push(dealer);
+                }
+            });
+
+            this.setState({
+                hardwares: dumyHardwares
+            })
+        } else {
+            this.setState({
+                hardwares: hardwaresCopy
+            })
+        }
+    }
+
     componentDidMount() {
         this.props.getPrices(this.props.id);
         this.props.getPackages(this.props.id)
@@ -323,6 +382,49 @@ class Prices extends Component {
     }
 
 
+    editHardware = (hd) => {
+        console.log("this.props.editHardware", hd);
+
+        this.setState({ visible: true, editHardwareObj: hd })
+        // this.props.editHardware(id)
+    }
+
+    // handleOk = () => {
+    //     console.log('handle okay');
+    // }
+
+    handleCancel = () => {
+        console.log('handle cancel');
+        this.setState({ visible: false })
+    }
+
+    deleteHardware = (id) => {
+        let _this = this;
+
+        confirm({
+            title: "Are You Sure To Delete this Hardware",
+            onOk() {
+                _this.props.deleteHardware(id)
+            },
+            onCancel() {
+            },
+        })
+    }
+
+    deletePakage = (id) => {
+        let _this = this;
+
+        confirm({
+            title: "Are You Sure To Delete this Package",
+            onOk() {
+                _this.props.deletePakage(id)
+            },
+            onCancel() {
+            },
+        })
+    }
+
+
     renderList = (type) => {
         if (type === 'packages') {
             // 
@@ -330,7 +432,7 @@ class Prices extends Component {
                 return this.state.packages.map((item, index) => {
                     return {
                         key: item.id,
-                        sr: ++index,
+                        action: <Button type="danger" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => { this.deletePakage(item.id) }}>DELETE </Button>,
                         pkg_name: item.pkg_name,
                         pkg_price: "$" + item.pkg_price,
                         pkg_term: item.pkg_term,
@@ -345,10 +447,9 @@ class Prices extends Component {
                 return this.state.hardwares.map((item, index) => {
                     return {
                         key: item.id,
-                        sr: ++index,
                         action: <Fragment>
-                            <Button type="primary" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => { this.props.editHardware(item.id) }} >EDIT</Button>
-                            <Button type="danger" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => { this.props.editHardware(item.id) }}>DELETE </Button>
+                            <Button type="primary" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => this.editHardware(item)} >EDIT</Button>
+                            <Button type="danger" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => { this.deleteHardware(item.id) }}>DELETE </Button>
                         </Fragment>,
                         name: item.name,
                         price: item.price
@@ -554,6 +655,19 @@ class Prices extends Component {
                     resetPrice={this.props.resetPrice}
                     whitelabel_id={this.props.id}
                 />
+
+                <Modal
+                    title="Edit Hardware"
+                    visible={this.state.visible}
+                    maskClosable={false}
+                    footer={false}
+                >
+                    <EditHardware
+                        editHardwareObj={this.state.editHardwareObj}
+                        editHardwareFunc={this.props.editHardware}
+                        handleCancel={this.handleCancel}
+                    />
+                </Modal>
             </div>
         )
     }
@@ -568,7 +682,10 @@ function mapDispatchToProps(dispatch) {
         setPrice: setPrice,
         getPackages: getPackages,
         saveHardware: saveHardware,
-        getHardwares: getHardwares
+        getHardwares: getHardwares,
+        deletePakage: deletePakage,
+        deleteHardware: deleteHardware,
+        editHardware: editHardware
     }, dispatch)
 }
 

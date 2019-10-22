@@ -13,7 +13,10 @@ import {
     SAVE_BACKUP,
     START_BACKUP_LOADING,
     SAVE_HARDWARE,
-    GET_HARDWARES
+    GET_HARDWARES,
+    DELETE_PAKAGE,
+    DELETE_HARDWARE,
+    EDIT_HARDWARE
 } from "../../constants/ActionTypes"
 
 import RestService from '../services/RestServices';
@@ -153,6 +156,66 @@ export const getHardwares = (data) => {
     }
 }
 
+export const editHardware = (data) => {
+    // console.log('edit record: ', data);
+    return (dispatch) => {
+        RestService.editHardware(data).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                dispatch({
+                    type: EDIT_HARDWARE,
+                    payload: response.data,
+                    response: data
+                })
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+        });
+
+    }
+}
+
+export const deletePakage = (data) => {
+    // console.log('deletePakage acion id :', data);
+    return (dispatch) => {
+        RestService.deletePakage(data).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                dispatch({
+                    type: DELETE_PAKAGE,
+                    payload: response.data,
+                    response: data
+                })
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+        });
+
+    }
+}
+
+export const deleteHardware = (data) => {
+    // console.log('deleteHardware acion id :', data);
+    return (dispatch) => {
+        RestService.deleteHardware(data).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                dispatch({
+                    type: DELETE_HARDWARE,
+                    payload: response.data,
+                    response: data
+                })
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+        });
+
+    }
+}
+
 export const editWhiteLabelInfo = (data) => {
     return (dispatch) => {
         RestService.editWhiteLabelInfo(data).then((response) => {
@@ -234,7 +297,7 @@ export const saveBackup = (id) => {
         })
         RestService.saveBackup(id).then((response) => {
             if (RestService.checkAuth(response.data)) {
-                
+
                 dispatch({
                     type: SAVE_BACKUP,
                     response: response.data
