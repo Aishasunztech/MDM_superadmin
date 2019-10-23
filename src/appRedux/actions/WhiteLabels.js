@@ -11,7 +11,9 @@ import {
     GET_PACKAGES,
     GET_ALL_WHITE_LABELS,
     SAVE_BACKUP,
-    START_BACKUP_LOADING
+    START_BACKUP_LOADING,
+    SAVE_HARDWARE,
+    GET_HARDWARES
 } from "../../constants/ActionTypes"
 
 import RestService from '../services/RestServices';
@@ -37,7 +39,7 @@ export const getAllWhiteLabels = () => {
 }
 
 export const getWhiteLabelInfo = (id) => {
-    // console.log('id',id)
+    // 
     return (dispatch) => {
         RestService.getWhiteLabelInfo(id).then((response) => {
             if (RestService.checkAuth(response.data)) {
@@ -80,7 +82,7 @@ export const resetPrice = () => {
 
 
 export const getWhitelabelBackups = (id) => {
-    // console.log('id',id)
+    // 
     return (dispatch) => {
         RestService.whitelabelBackups(id).then((response) => {
             if (RestService.checkAuth(response.data)) {
@@ -133,6 +135,23 @@ export const getPackages = (data) => {
 
     }
 }
+export const getHardwares = (data) => {
+    return (dispatch) => {
+        RestService.getHardwares(data).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                dispatch({
+                    type: GET_HARDWARES,
+                    response: response.data
+                })
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+        });
+
+    }
+}
 
 export const editWhiteLabelInfo = (data) => {
     return (dispatch) => {
@@ -172,6 +191,23 @@ export const setPackage = (data) => {
 
     }
 }
+export const saveHardware = (data) => {
+    return (dispatch) => {
+        RestService.saveHardware(data).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                dispatch({
+                    type: SAVE_HARDWARE,
+                    response: response.data
+                })
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+        });
+
+    }
+}
 
 
 export const saveIDPrices = (data) => {
@@ -198,7 +234,7 @@ export const saveBackup = (id) => {
         })
         RestService.saveBackup(id).then((response) => {
             if (RestService.checkAuth(response.data)) {
-                console.log(response, 'response in backup save')
+                
                 dispatch({
                     type: SAVE_BACKUP,
                     response: response.data

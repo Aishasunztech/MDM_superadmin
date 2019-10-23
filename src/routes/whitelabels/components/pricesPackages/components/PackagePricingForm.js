@@ -36,7 +36,7 @@ class PackagePricingForm extends Component {
                 }
             } else {
                 // value = this.props.form.getFieldValue(fieldName)
-                // console.log('fiels name', fieldName, 'value', value)
+                // 
                 if (fieldName) {
                     value = e;
                     if (fieldName == 'pkgPrice') {
@@ -64,7 +64,7 @@ class PackagePricingForm extends Component {
                         [fieldName]: e
                     })
                 }
-                // console.log(isnum, 'value', e)
+                // 
             } else {
                 this.setState({
                     [fieldName]: value
@@ -78,7 +78,7 @@ class PackagePricingForm extends Component {
 
     PackageNameChange = async (rule, value, callback) => {
         let response = true
-        // console.log('value', value)
+        // 
         response = await RestService.checkPackageName(value).then((response) => {
             if (RestService.checkAuth(response.data)) {
                 if (response.data.status) {
@@ -89,7 +89,7 @@ class PackagePricingForm extends Component {
                 }
             }
         });
-        // console.log(response, 'respoinse ise  d')
+        // 
         if (response) {
             this.props.restrictPackageSubmit(true, 'pkgName')
             callback()
@@ -103,7 +103,7 @@ class PackagePricingForm extends Component {
         }
     }
     componentDidMount() {
-        // console.log('component did mount');
+        // 
         this.setState({
             pkgPrice: 0,
             sim: false,

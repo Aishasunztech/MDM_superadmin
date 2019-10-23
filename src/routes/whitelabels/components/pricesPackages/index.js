@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Button, Tabs, Table, Card, Input, Icon } from 'antd';
 import {
     getPrices, resetPrice, setPackage,
-    saveIDPrices, setPrice, getPackages
+    saveIDPrices, setPrice, getPackages, saveHardware, getHardwares
 } from '../../../../appRedux/actions/WhiteLabels';
 import { sim, chat, pgp, vpn } from '../../../../constants/Constants';
 import AppFilter from '../../../../components/AppFilter/index';
@@ -156,6 +156,77 @@ class Prices extends Component {
                 ]
             }
         ];
+        this.hardwareColumns = [
+            {
+                title: "Sr.#",
+                dataIndex: 'sr',
+                key: 'sr',
+                align: "center",
+            },
+            {
+                dataIndex: 'action',
+                align: 'center',
+                className: 'row',
+                width: 800,
+            },
+            {
+                title: (
+                    <Input.Search
+                        name="name"
+                        key="name"
+                        id="name"
+                        className="search_heading"
+                        onKeyUp={this.handleSearch}
+                        autoComplete="new-password"
+                        placeholder='HARDWARE NAME'
+                    />
+                ),
+                dataIndex: 'name',
+                className: '',
+                children: [
+                    {
+                        title: 'HARDWARE NAME',
+                        align: "center",
+                        className: '',
+                        dataIndex: 'name',
+                        key: 'name',
+                        sorter: (a, b) => { return a.name.localeCompare(b.name) },
+
+                        sortDirections: ['ascend', 'descend'],
+                    }
+                ]
+            },
+
+            {
+                title: (
+                    <Input.Search
+                        name="price"
+                        key="price"
+                        id="price"
+                        className="search_heading"
+                        onKeyUp={this.handleSearch}
+                        autoComplete="new-password"
+                        placeholder='HADWARE PRICE (CREDITS)'
+                    />
+                ),
+                dataIndex: 'price',
+                className: '',
+                children: [
+                    {
+                        title: 'HADWARE PRICE (CREDITS)',
+                        align: "center",
+                        className: '',
+                        dataIndex: 'price',
+                        key: 'price',
+                        // ...this.getColumnSearchProps('status'),
+                        // sorter: (a, b) => { return a.price - b.price },
+                        sorter: (a, b) => { return a.price.localeCompare(b.price) },
+
+                        sortDirections: ['ascend', 'descend'],
+                    }
+                ]
+            }
+        ];
         this.state = {
             pricing_modal: false,
             innerTabData: this.props.prices ? this.props.prices[sim] : {},
@@ -163,6 +234,7 @@ class Prices extends Component {
             packages: [],
             copyStatus: true,
             isPriceChanged: this.props.isPriceChanged,
+            hardwares: []
         }
     }
 
@@ -212,6 +284,7 @@ class Prices extends Component {
     componentDidMount() {
         this.props.getPrices(this.props.id);
         this.props.getPackages(this.props.id)
+        this.props.getHardwares(this.props.id)
         this.setState({
             prices: this.props.prices,
             innerTabData: this.props.prices ? this.props.prices[sim] : {},
@@ -220,7 +293,7 @@ class Prices extends Component {
     }
 
     // componentDidUpdate(prevProps) {
-    //     console.log('did update', this.props.packages)
+    //     
     //     if (this.props !== prevProps) {
     //         this.setState({
     //             prices: this.props.prices,
@@ -237,6 +310,7 @@ class Prices extends Component {
                 prices: nextProps.prices,
                 packages: nextProps.packages,
                 isPriceChanged: nextProps.isPriceChanged,
+                hardwares: nextProps.hardwares,
                 copyStatus: true
             })
         }
@@ -249,22 +323,40 @@ class Prices extends Component {
     }
 
 
-    renderList = () => {
-        // console.log('this.state.packages', this.state.packages)
-        if (this.state.packages) {
-            return this.state.packages.map((item, index) => {
-                return {
-                    key: item.id,
-                    sr: ++index,
-                    pkg_name: item.pkg_name,
-                    pkg_price: "$" + item.pkg_price,
-                    pkg_term: item.pkg_term,
-                    pkg_features: item.pkg_features ? JSON.parse(item.pkg_features) : {},
-                    pkg_expiry: item.pkg_expiry
-                }
-            })
+    renderList = (type) => {
+        if (type === 'packages') {
+            // 
+            if (this.state.packages) {
+                return this.state.packages.map((item, index) => {
+                    return {
+                        key: item.id,
+                        sr: ++index,
+                        pkg_name: item.pkg_name,
+                        pkg_price: "$" + item.pkg_price,
+                        pkg_term: item.pkg_term,
+                        pkg_features: item.pkg_features ? JSON.parse(item.pkg_features) : {},
+                        pkg_expiry: item.pkg_expiry
+                    }
+                })
+            }
+        } else if (type === "hardware") {
+            if (this.state.hardwares) {
+
+                return this.state.hardwares.map((item, index) => {
+                    return {
+                        key: item.id,
+                        sr: ++index,
+                        action: <Fragment>
+                            <Button type="primary" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => { this.props.editHardware(item.id) }} >EDIT</Button>
+                            <Button type="danger" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => { this.props.editHardware(item.id) }}>DELETE </Button>
+                        </Fragment>,
+                        name: item.name,
+                        price: item.price
+                    }
+                })
+            }
         }
-        // console.log(this.props.packages, 'packages are')
+        // 
     }
 
     customExpandIcon(props) {
@@ -286,11 +378,11 @@ class Prices extends Component {
 
             for (var key in data) {
                 if (data.hasOwnProperty(key)) {
-                    // console.log(key + " -> " + data[key]);
-                    let name=  key;
-                   name = name.charAt(0).toUpperCase() + name.slice(1);
+                    // 
+                    let name = key;
+                    name = name.charAt(0).toUpperCase() + name.slice(1);
                     let dump = {
-                        name: name.replace(/_/g,' '), 
+                        name: name.replace(/_/g, ' '),
                         f_value: data[key] ? "yes" : 'No',
                         rowKey: name
                     }
@@ -299,7 +391,7 @@ class Prices extends Component {
                 }
             }
         }
-        // console.log(features, 'featues arte')
+        // 
         return features
     }
 
@@ -340,7 +432,7 @@ class Prices extends Component {
         })
     }
     render() {
-        // console.log(this.props.packages, 'comoing prop are')
+        // 
         return (
             <div>
                 <div>
@@ -404,7 +496,7 @@ class Prices extends Component {
                             <Tabs.TabPane tab="Packages" key="2">
                                 <Table
                                     columns={this.columns}
-                                    dataSource={this.renderList()}
+                                    dataSource={this.renderList("packages")}
                                     expandIcon={(props) => this.customExpandIcon(props)}
                                     bordered
                                     expandIconAsCell={false}
@@ -435,6 +527,14 @@ class Prices extends Component {
 
                                 />
                             </Tabs.TabPane>
+                            <Tabs.TabPane tab="Hardware" key="3">
+                                <Table
+                                    columns={this.hardwareColumns}
+                                    dataSource={this.renderList("hardware")}
+                                    bordered
+                                    pagination={false}
+                                />
+                            </Tabs.TabPane>
                         </Tabs>
 
                     </Card>
@@ -449,6 +549,7 @@ class Prices extends Component {
                     setPackage={this.props.setPackage}
                     prices={this.props.prices}
                     setPrice={this.props.setPrice}
+                    saveHardware={this.props.saveHardware}
                     isPriceChanged={this.state.isPriceChanged}
                     resetPrice={this.props.resetPrice}
                     whitelabel_id={this.props.id}
@@ -465,18 +566,20 @@ function mapDispatchToProps(dispatch) {
         setPackage: setPackage,
         resetPrice: resetPrice,
         setPrice: setPrice,
-        getPackages: getPackages
+        getPackages: getPackages,
+        saveHardware: saveHardware,
+        getHardwares: getHardwares
     }, dispatch)
 }
 
 
 var mapStateToProps = ({ whiteLabels }, otherprops) => {
-    // console.log(whiteLabels.isPriceChanged, 'props are for packages')
+    // 
     return {
         prices: whiteLabels.prices,
         packages: whiteLabels.packages,
         isPriceChanged: whiteLabels.isPriceChanged,
-
+        hardwares: whiteLabels.hardwares
     }
 }
 
