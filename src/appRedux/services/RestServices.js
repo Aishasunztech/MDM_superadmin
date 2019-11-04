@@ -294,5 +294,25 @@ const RestService = {
     saveBackup: (id) => {
         return axios.post(USER_URL + 'save_backup', { id }, RestService.getHeader());
     },
+
+    //product report
+    generateProductReport: (data) => {
+        return axios.post(USER_URL + 'billing/reports/product', data, RestService.getHeader());
+      },
+  
+    //invoice report
+    generateInvoiceReport: (data) => {
+      return axios.post(USER_URL + 'billing/reports/invoice', data, RestService.getHeader());
+    },
+  
+    //payment history report
+    generatePaymentHistoryReport: (data) => {
+      return axios.post(USER_URL + 'billing/reports/payment-history', data, RestService.getHeader());
+      },
+    
+    //hardware report
+    generateHardwareReport: (data) => {
+      return axios.post(USER_URL + 'billing/reports/hardware', data, RestService.getHeader());
+    },
 }
 export default RestService;

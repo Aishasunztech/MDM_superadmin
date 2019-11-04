@@ -199,3 +199,9 @@ export const IN_PROCESS = 'IN_PROCESS';
 // WHITE LABELS CONST
 
 export const GET_WHITE_LABEL_INFO = 'GET_WHITE_LABEL_INFO';
+
+//Reporting
+export const PRODUCT_REPORT         = 'PRODUCT_REPORT';
+export const INVOICE_REPORT         = 'INVOICE_REPORT';
+export const PAYMENT_HISTORY_REPORT = 'PAYMENT_HISTORY_REPORT';
+export const HARDWARE_REPORT        = 'HARDWARE_REPORT';
