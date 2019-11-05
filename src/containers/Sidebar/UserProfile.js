@@ -90,7 +90,7 @@ class AcceptPasswordForm extends Component {
                 sm: { span: 24, offset: 0 },
               }}
             >
-              <h4>PLEASE ENTER PASSWORD <br />THAT WE SENT TO<br />YOUR EMAIL.</h4>
+              <h4>VERIFICATION PASS <br /> HAS BEEN SENT <br />TO YOUR EMAIL</h4>
             </Form.Item>
 
             <Form.Item
