@@ -66,6 +66,7 @@ export const chat = 'chat_id';
 export const pgp = 'pgp_email';
 export const vpn = 'vpn';
 
+export const trial = 'trial';
 export const one_month = '1 month';
 export const three_month = '3 month';
 export const six_month = '6 month';

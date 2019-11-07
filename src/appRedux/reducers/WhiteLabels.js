@@ -13,7 +13,10 @@ import {
     GET_ALL_WHITE_LABELS,
     SAVE_BACKUP,
     START_BACKUP_LOADING,
-    SAVE_HARDWARE
+    SAVE_HARDWARE,
+    DELETE_PAKAGE,
+    DELETE_HARDWARE,
+    EDIT_HARDWARE
 } from "../../constants/ActionTypes";
 
 import { message, Modal } from 'antd';
@@ -110,6 +113,64 @@ export default (state = initialState, action) => {
             }
         }
 
+        case DELETE_PAKAGE: {
+            // console.log(state.packages, 'DELETE_PAKAGE reducer', action.response);
+            let copyPkgs = state.packages;
+            if (action.payload.status) {
+                Modal.success({ title: action.payload.msg })
+                copyPkgs = state.packages.filter((pkg) => pkg.id !== action.response)
+            }
+            else {
+                Modal.error({ title: action.payload.msg })
+            }
+
+            return {
+                ...state,
+                packages: copyPkgs,
+            }
+        }
+
+
+        case DELETE_HARDWARE: {
+            // console.log(state.hardwares, 'DELETE_HARDWARE reducer', action.response);
+            let copyHdw = state.hardwares;
+            if (action.payload.status) {
+                Modal.success({ title: action.payload.msg })
+                copyHdw = state.hardwares.filter((hd) => hd.id !== action.response)
+            }
+            else {
+                Modal.error({ title: action.payload.msg })
+            }
+
+            return {
+                ...state,
+                hardwares: copyHdw,
+            }
+        }
+
+        case EDIT_HARDWARE: {
+            console.log(state.hardwares, 'EDIT_HARDWARE reducer', action.response);
+            let copyHdw = state.hardwares;
+
+            if (action.payload.status) {
+                let updateData = action.response;
+                Modal.success({ title: action.payload.msg })
+
+                let index = copyHdw.findIndex((hd) => hd.id === updateData.id);
+                copyHdw[index] = updateData;
+                copyHdw[index].name = updateData.new_name;
+                copyHdw[index].price = updateData.new_price;
+                console.log("copyHdw ", copyHdw)
+            }
+            else {
+                Modal.error({ title: action.payload.msg })
+            }
+            return {
+                ...state,
+                hardwares: [...copyHdw],
+            }
+        }
+
         case SET_PRICE: {
             let copyPrices = state.prices;
             let price_for = action.payload.price_for;
@@ -158,7 +219,7 @@ export default (state = initialState, action) => {
         }
 
         case SAVE_PACKAGE: {
-            
+
             if (action.response.status) {
                 success({
                     title: action.response.msg
@@ -176,9 +237,9 @@ export default (state = initialState, action) => {
                 packages: [...state.packages]
             }
         }
-        
+
         case SAVE_HARDWARE: {
-            
+
             if (action.response.status) {
                 success({
                     title: action.response.msg

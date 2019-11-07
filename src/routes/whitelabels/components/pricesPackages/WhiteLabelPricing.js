@@ -97,12 +97,12 @@ export default class WhiteLabelPricing extends Component {
         } else if (this.state.outerTab === '2') {
 
             var isnum = /^\d+$/.test(this.state.pkgPrice);
-            if (this.state.packageFormErrors && !this.state.packageFormErrors.length && isnum && this.state.pkgPrice > 0 && this.state.pkg_features && this.state.pkgName && this.state.pkgTerms && this.state.pkgName != '' && this.state.pkgTerms != '') {
+            if (this.state.packageFormErrors && (!this.state.packageFormErrors.length || (this.state.packageFormErrors[0] === "pkgPrice" && this.state.pkgTerms === "trial")) && isnum && (this.state.pkgPrice > 0 || this.state.pkgTerms === "trial") && this.state.pkg_features && this.state.pkgName && this.state.pkgTerms && this.state.pkgName !== '' && this.state.pkgTerms !== '') {
                 // 
                 let data = {
                     pkgName: this.state.pkgName,
                     pkgTerm: this.state.pkgTerms,
-                    pkgPrice: this.state.pkgPrice,
+                    pkgPrice: this.state.pkgTerms === "trial" ? 0 : this.state.pkgPrice,
                     pkgFeatures: this.state.pkg_features,
                     whitelabel_id: this.props.whitelabel_id
                 }
@@ -140,11 +140,18 @@ export default class WhiteLabelPricing extends Component {
             }
 
         } else {
-            this.state[field] = value
+            // this.state[field] = value
+            if (field === "pkgTerms" && value === 'trial') {
+                this.setState({ pkgPrice: 0, [field]: value })
+            } else {
+                this.setState({
+                    [field]: value
+                })
+            }
         }
     }
     setHardwareDetail = (value, field) => {
-        
+
         this.state[field] = value
     }
 
@@ -165,7 +172,7 @@ export default class WhiteLabelPricing extends Component {
         })
     }
     restrictHardwareSubmit = (available, item) => {
-        
+
         if (!available) {
             if (!this.state.hardwareFormErrors.includes(item)) {
                 this.state.hardwareFormErrors.push(item)
@@ -176,7 +183,7 @@ export default class WhiteLabelPricing extends Component {
                 this.state.hardwareFormErrors.splice(index, 1)
             }
         }
-        
+
         this.setState({
             hardwareFormErrors: this.state.hardwareFormErrors
         })
@@ -208,7 +215,8 @@ export default class WhiteLabelPricing extends Component {
                 visible={this.props.pricing_modal}
                 onOk={this.handleSubmit}
                 okText='Save'
-                okButtonProps={{ disabled: this.state.outerTab == '1' ? (!this.props.isPriceChanged || !this.state.submitAvailable) ? true : false : this.state.outerTab == '3' ? (this.state.hardwareFormErrors && this.state.hardwareFormErrors.length) ? true : false : this.state.packageFormErrors && this.state.packageFormErrors.length ? true : false }}
+                // okButtonProps={{ disabled: this.state.outerTab == '1' ? (!this.props.isPriceChanged || !this.state.submitAvailable) ? true : false : this.state.outerTab == '3' ? (this.state.hardwareFormErrors && this.state.hardwareFormErrors.length) ? true : false : this.state.packageFormErrors && this.state.packageFormErrors.length ? true : false }}
+                okButtonProps={{ disabled: this.state.outerTab == '1' ? (!this.props.isPriceChanged || !this.state.submitAvailable) ? true : false : this.state.outerTab == '3' ? (this.state.hardwareFormErrors && this.state.hardwareFormErrors.length) ? true : false : this.state.packageFormErrors && this.state.packageFormErrors.length ? (this.state.packageFormErrors[0] === "pkgPrice" && this.state.pkgTerms === "trial") ? false : true : false }}
                 onCancel={() => {
                     this.props.showPricingModal(false);
                     this.props.resetPrice();
@@ -382,7 +390,7 @@ function showHardwareConfirm(_this, data) {
         </div>,
         onOk() {
             // 
-            
+
             _this.props.saveHardware(data);
             _this.props.showPricingModal(false);
             _this.setState({

@@ -168,13 +168,23 @@ const RestService = {
         return axios.get(USER_URL + 'get-Hardwares/' + whitelabel_id, RestService.getHeader());
     },
 
+    deletePakage: (id) => {
+        return axios.get(USER_URL + 'delete-package/' + id, RestService.getHeader());
+    },
+
     setPackage: (data) => {
 
         return axios.patch(USER_URL + 'save-package', { data }, RestService.getHeader());
     },
     saveHardware: (data) => {
-
         return axios.patch(USER_URL + 'save-hardware', { data }, RestService.getHeader());
+    },
+    deleteHardware: (id) => {
+        return axios.get(USER_URL + 'delete-hardware/' + id, RestService.getHeader());
+    },
+
+    editHardware: (data) => {
+        return axios.post(USER_URL + 'edit-hardware', { data }, RestService.getHeader());
     },
 
     checkPackageName: (name) => {
