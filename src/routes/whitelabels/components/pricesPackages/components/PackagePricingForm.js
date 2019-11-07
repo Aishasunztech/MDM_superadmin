@@ -5,7 +5,7 @@ import {
 } from "antd";
 import styles from '../../../whitelabels.css';
 import RestService from '../../../../../appRedux/services/RestServices';
-import { one_month, three_month, six_month, twelve_month, sim, chat, pgp, vpn, sim2 } from '../../../../../constants/Constants';
+import { one_month, three_month, six_month, twelve_month, sim, chat, pgp, vpn, sim2, trial } from '../../../../../constants/Constants';
 
 class PackagePricingForm extends Component {
     constructor(props) {
@@ -66,9 +66,17 @@ class PackagePricingForm extends Component {
                 }
                 // 
             } else {
-                this.setState({
-                    [fieldName]: value
-                })
+                if (fieldName === "pkgTerms" && value === 'trial') {
+                    this.setState({ pkgPrice: 0, [fieldName]: value })
+                    this.props.form.setFieldsValue({ pkgPrice: 0 })
+                } else {
+                    this.setState({
+                        [fieldName]: value
+                    })
+                }
+                // this.setState({
+                //     [fieldName]: value
+                // })
             }
 
 
@@ -93,12 +101,12 @@ class PackagePricingForm extends Component {
         if (response) {
             this.props.restrictPackageSubmit(true, 'pkgName')
             callback()
-            
+
         } else {
-             this.props.restrictPackageSubmit(false, 'pkgName')
+            this.props.restrictPackageSubmit(false, 'pkgName')
             callback("Package name already taken please use another name.")
         }
-        if(value == ''){
+        if (value == '') {
             this.props.restrictPackageSubmit(false, 'pkgName')
         }
     }
@@ -163,7 +171,7 @@ class PackagePricingForm extends Component {
                         <Form.Item label="Package Terms" labelCol={{ span: 11 }}
                             wrapperCol={{ span: 13 }}>
                             {getFieldDecorator('pkgTerms', {
-                                 initialValue: '1 month',
+                                initialValue: '1 month',
                                 rules: [
                                     {
                                         required: true,
@@ -184,6 +192,7 @@ class PackagePricingForm extends Component {
                                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                 }
                             >
+                                <Option value={trial}>{trial}</Option>
                                 <Option value={one_month}>{one_month}</Option>
                                 <Option value={three_month}>{three_month}</Option>
                                 <Option value={six_month}>{six_month}</Option>
@@ -202,8 +211,8 @@ class PackagePricingForm extends Component {
                 <Row>
                     <Col span={13}>
                         <Form.Item label="Package Price" labelCol={{ span: 11 }}
-                            validateStatus={this.state.validateStatus}
-                            help={this.state.help}
+                            validateStatus={this.state.pkgTerms === "trial" ? "success" : this.state.validateStatus}
+                            help={this.state.pkgTerms === "trial" ? '' : this.state.help}
                             wrapperCol={{ span: 13 }}>
                             {getFieldDecorator('pkgPrice', {
                                 rules: [
@@ -212,7 +221,7 @@ class PackagePricingForm extends Component {
                                         message: 'Please Input Package Price',
                                     }
                                 ],
-                            })(<Input placeholder="Package Price" onChange={(e => this.setPrice('pkgPrice', '', '', e.target.value))} type='number' min={1} />)}
+                            })(<Input disabled={this.state.pkgTerms === "trial" ? true : false} placeholder="Package Price" onChange={(e => this.setPrice('pkgPrice', '', '', e.target.value))} type='number' min={1} />)}
 
                         </Form.Item>
                     </Col>

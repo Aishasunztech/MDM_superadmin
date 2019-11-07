@@ -593,7 +593,7 @@ class Prices extends Component {
                                     expandIcon={(props) => this.customExpandIcon(props)}
                                     bordered
                                     expandIconAsCell={false}
-                                    expandIconColumnIndex={3}
+                                    expandIconColumnIndex={4}
                                     expandedRowRender={record => {
                                         if (Object.keys(record.pkg_features).length !== 0 && record.pkg_features.constructor === Object) {
                                             return (
