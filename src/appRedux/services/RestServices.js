@@ -318,5 +318,42 @@ const RestService = {
     saveBackup: (id) => {
         return axios.post(USER_URL + 'save_backup', { id }, RestService.getHeader());
     },
+
+    //***************************** Reporting  */
+
+    //product report
+    generateProductReport: (data) => {
+        return axios.post(BASE_URL + 'users/reports/product', data, RestService.getHeader());
+    },
+
+    //invoice report
+    generateInvoiceReport: (data) => {
+        return axios.post(BASE_URL + 'users/reports/invoice', data, RestService.getHeader());
+    },
+
+    //payment history report
+    generatePaymentHistoryReport: (data) => {
+        return axios.post(BASE_URL + 'users/reports/payment-history', data, RestService.getHeader());
+    },
+
+    //hardware report
+    generateHardwareReport: (data) => {
+        return axios.post(BASE_URL + 'users/reports/hardware', data, RestService.getHeader());
+    },
+
+    //sales report
+    generateSalesReport: (data) => {
+        return axios.post(BASE_URL + 'users/reports/sales', data, RestService.getHeader());
+    },
+
+    //get latest payment history
+    getLatestPaymentHistory: (data) => {
+        return axios.post(BASE_URL + 'users/get-latest-payment-history', data, RestService.getHeader());
+    },
+
+    //get overdue details
+    getOverdueDetails: () => {
+        return axios.get(BASE_URL + 'users/get-overdue-details', RestService.getHeader());
+    },
 }
 export default RestService;

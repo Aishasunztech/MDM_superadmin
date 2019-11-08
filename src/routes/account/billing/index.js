@@ -8,6 +8,7 @@ import { Card, Button, Row, Col, Select, Input, Checkbox, Icon, Tabs, Table, Inp
 import CircularProgress from "components/CircularProgress/index";
 import SalesList from "./components/SalesList";
 import Reports from "./components/Reports";
+import Reporting from "./components/Reporting";
 import styles from './billing.css'
 import {
     getSalesList,
@@ -440,11 +441,16 @@ class Billing extends Component {
                                     {/* <TabPane tab="INVENTORY" key="2" >
                                     </TabPane> */}
                                     <TabPane tab="REPORTS" key="3" >
-                                        <Reports
+                                        <Reporting
                                             whiteLabels={this.props.whiteLabels}
                                             dealerList={this.props.dealerList}
                                             getDealerList={this.props.getDealerList}
                                         />
+                                        {/* <Reports
+                                            whiteLabels={this.props.whiteLabels}
+                                            dealerList={this.props.dealerList}
+                                            getDealerList={this.props.getDealerList}
+                                        /> */}
                                     </TabPane>
                                     <TabPane tab="PROFIT AND LOSS" key="4" >
                                         <Reports

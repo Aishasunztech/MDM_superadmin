@@ -10,10 +10,11 @@
     "axios": "^0.18.0",
     "draftjs-to-html": "^0.8.4",
     "instantsearch.css": "^7.1.0",
+    "jspdf": "^1.5.3",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "less-vars-to-js": "^1.2.1",
-    "moment": "^2.22.2",
+    "moment": "^2.24.0",
     "nprogress": "^0.2.0",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
@@ -57,7 +58,7 @@
     "socket.io-client": "^2.2.0",
     "url-search-params": "^1.1.0",
     "victory": "^0.27.2",
-    "xlsx": "^0.14.1"
+    "xlsx": "^0.14.5"
   },
   "scripts": {
     "start": "react-app-rewired start",

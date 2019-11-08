@@ -1,3 +1,8 @@
+// import moment_timezone from "moment-timezone";
+import moment from 'moment';
+import jsPDF from 'jspdf';
+import XLSX from 'xlsx';
+
 import {
   DEVICE_ACTIVATED,
   DEVICE_EXPIRED,
@@ -146,6 +151,113 @@ export function getFormattedDate(value) {
   return formattedDate;
   // date.toLocaleDateString('%d-%b-%Y');
 }
+
+export function getDateFromTimestamp(value) {
+  function convert(str) {
+    var month, day, year;
+    var date  = new Date(str),
+      month   = ("0" + (date.getMonth() + 1)).slice(-2),
+      day     = ("0" + date.getDate()).slice(-2);
+
+
+    var formatedDate = [date.getFullYear(),month, day].join("/");
+    return formatedDate;
+  }
+
+  let date = new Date(value);
+  let formattedDate = convert(date)
+  return formattedDate;
+}
+
+export function generateExcel(rows, fileName) {
+  var wb          = XLSX.utils.book_new();
+  let ws          = XLSX.utils.json_to_sheet(rows);
+  let fileNameCSV = fileName + ".xlsx";
+
+  XLSX.utils.book_append_sheet(wb, ws, 'Devices');
+  console.log(wb);
+  XLSX.writeFile(wb, fileNameCSV)
+
+}
+
+export function generatePDF(columns, rows, title, fileName, formData) {
+
+  let y   = 15;
+  let x   = 20;
+  var doc = new jsPDF('p', 'pt');
+  doc.setFontSize(16);
+  doc.setTextColor(40);
+  doc.setFontStyle('normal');
+  doc.text(title, y, x);
+
+  if (formData.product){
+    doc.setFontSize(12);
+    doc.setTextColor(40);
+    doc.setFontStyle('normal');
+    doc.text('Product: ' + formData.product, y, x+=15);
+  }
+
+  if (formData.payment_status){
+    doc.setFontSize(12);
+    doc.setTextColor(40);
+    doc.setFontStyle('normal');
+    doc.text('Payment Status: ' + formData.payment_status, y, x+=15);
+  }
+
+  if (formData.type){
+    doc.setFontSize(12);
+    doc.setTextColor(40);
+    doc.setFontStyle('normal');
+    doc.text('Product Type: ' + formData.type, y, x+=15);
+  }
+
+  if (formData.transaction_type){
+    doc.setFontSize(12);
+    doc.setTextColor(40);
+    doc.setFontStyle('normal');
+    doc.text('Transaction Type: ' + formData.transaction_type, y, x+=15);
+  }
+
+  if (formData.from){
+    doc.setFontSize(12);
+    doc.setTextColor(40);
+    doc.setFontStyle('normal');
+    doc.text('From: ' + convertTimestampToDate(formData.from), y, x+=15);
+  }
+
+  if (formData.to){
+    doc.setFontSize(12);
+    doc.setTextColor(40);
+    doc.setFontStyle('normal');
+    doc.text('To: ' + convertTimestampToDate(formData.to), y, x+=15);
+  }
+
+  doc.setFontSize(12);
+  doc.setTextColor(40);
+  doc.setFontStyle('normal');
+  doc.text('Total Records: ' + rows.length, y, x+=15);
+
+
+  doc.autoTable(columns, rows, {
+    startY: doc.autoTableEndPosY() + x+15,
+    margin: { horizontal: 10 },
+    styles: { overflow: 'linebreak' },
+    bodyStyles: { valign: 'top' },
+    theme: "striped"
+  });
+
+  doc.save(fileName+'.pdf');
+}
+
+export function convertTimestampToDate(value) {
+  function convert(str) {
+    return moment(str).format('DD-MM-YYYY')
+  }
+
+  let formattedDate = convert(value)
+  return formattedDate;
+}
+
 
 export function initCap(str) {
   return str.replace(/^\w/, function (chr) { return chr.toUpperCase() })

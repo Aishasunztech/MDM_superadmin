@@ -9,6 +9,7 @@ import whiteLabels from './WhiteLabels';
 import Apk_List from "./Apk";
 import Devices from './Devices';
 import Tool from "./Tool";
+import Reporting from './Reports';
 
 
 const reducers = combineReducers({
@@ -20,7 +21,8 @@ const reducers = combineReducers({
   sidebarMenu: sidebarMenu,
   whiteLabels: whiteLabels,
   apk_list: Apk_List,
-  tool: Tool
+  tool: Tool,
+  reporting: Reporting
 });
 
 export default reducers;
