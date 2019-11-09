@@ -32,14 +32,22 @@
   float: right;
   width: 93.8%;
 }
+
 .m_d_table1 {
   height: auto;
   overflow: overlay;
-  float: right;
+  float: left;
+  right: 16px;
+  left: 82px;
+  position: absolute;
   width: auto;
-  left: 72px;
-  top: 45px;
 }
+
+.p_i_report {
+  float: left;
+  width: 67px;
+}
+
 .manage_data .ant-tabs-tab {
   margin-right: 0 !important;
 }
@@ -48,12 +56,10 @@
   .devices .ant-table-tbody>tr>.devices1 {
     padding-left: 5.5% !important;
   }
-
   .manage_data {
     float: left;
     width: 9.2%;
   }
-
   .m_d_table {
     width: 90.8%;
   }

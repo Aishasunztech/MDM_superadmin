@@ -58,6 +58,7 @@ class PaymentHistory extends Component {
 
     this.state = {
       reportCard: false,
+      isLabel: false
     };
   }
 
@@ -129,6 +130,20 @@ class PaymentHistory extends Component {
     }
   };
 
+  handleLabelChange = (e) => {
+    if (e == '') {
+      this.setState({
+        isLabel: false
+      })
+
+    } else {
+      this.props.getDealerList(e)
+      this.setState({
+        isLabel: true
+      })
+    }
+  }
+
   render() {
     return (
       <Row>
@@ -137,117 +152,130 @@ class PaymentHistory extends Component {
             <Form onSubmit={this.handleSubmit} autoComplete="new-password">
 
               <Form.Item
+                label="Label"
                 labelCol={{ span: 8 }}
                 wrapperCol={{ span: 14 }}
               >
-              </Form.Item>
-
-              <Form.Item
-                label="Hardware"
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 14 }}
-                width='100%'
-              >
-                {this.props.form.getFieldDecorator('hardware', {
+                {this.props.form.getFieldDecorator('label', {
                   initialValue: '',
-                  rules: [
-                    {
-                      required: false
-                    },
-                  ],
+                  rules: [{
+                    required: true, message: 'label is Required !',
+                  }],
                 })(
-                  <Select style={{ width: '100%' }}>
-                    <Select.Option value=''>ALL</Select.Option>
-                    <Select.Option value='CHAT'>CHAT</Select.Option>
-                    <Select.Option value='PGP'>PGP</Select.Option>
-                    <Select.Option value='SIM'>SIM</Select.Option>
-                    <Select.Option value='VPN'>VPN</Select.Option>
+                  <Select
+                    onChange={(e) => this.handleLabelChange(e)}
+                    style={{ width: '100%' }}
+                  >
+
+                    <Select.Option value=''>SELECT LABEL</Select.Option>
+                    {this.props.whiteLabels.map((label, index) => {
+                      return (<Select.Option key={index} value={label.id}>{label.name}</Select.Option>)
+                    })}
                   </Select>
                 )}
+
               </Form.Item>
 
-              {(this.props.user.type === 'sdealer') ?
+              {(this.state.isLabel) ?
+                <Fragment>
 
-                <Form.Item style={{ marginBottom: 0 }}
-                >
-                  {this.props.form.getFieldDecorator('dealer', {
-                    initialValue: this.props.user.dealerId,
-                  })(
+                  <Form.Item
+                    label="Hardware"
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 14 }}
+                    width='100%'
+                  >
+                    {this.props.form.getFieldDecorator('hardware', {
+                      initialValue: '',
+                      rules: [
+                        {
+                          required: false
+                        },
+                      ],
+                    })(
+                      <Select style={{ width: '100%' }}>
+                        <Select.Option value=''>ALL</Select.Option>
+                        <Select.Option value='CHAT'>CHAT</Select.Option>
+                        <Select.Option value='PGP'>PGP</Select.Option>
+                        <Select.Option value='SIM'>SIM</Select.Option>
+                        <Select.Option value='VPN'>VPN</Select.Option>
+                      </Select>
+                    )}
+                  </Form.Item>
 
-                    <Input type='hidden' disabled />
-                  )}
-                </Form.Item>
+                  <Form.Item
+                    label="Dealer/Sdealer"
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 14 }}
+                    width='100%'
+                  >
+                    {this.props.form.getFieldDecorator('dealer', {
+                      initialValue: '',
+                      rules: [
+                        {
+                          required: false,
+                        },
+                      ],
+                    })(
+                      <Select style={{ width: '100%' }}>
+                        <Select.Option value=''>ALL</Select.Option>
+                        {/* <Select.Option value={this.props.user.dealerId}>My Report</Select.Option> */}
+                        {this.props.dealerList.map((dealer, index) => {
+                          return (<Select.Option key={dealer.dealer_id} value={dealer.dealer_id}>{dealer.dealer_name} ({dealer.link_code})</Select.Option>)
+                        })}
+                      </Select>
+                    )}
+                  </Form.Item>
 
-                : <Form.Item
-                  label="Dealer/Sdealer"
-                  labelCol={{ span: 8 }}
-                  wrapperCol={{ span: 14 }}
-                  width='100%'
-                >
-                  {this.props.form.getFieldDecorator('dealer', {
-                    initialValue: '',
-                    rules: [
-                      {
-                        required: false,
-                      },
-                    ],
-                  })(
-                    <Select style={{ width: '100%' }}>
-                      <Select.Option value=''>ALL</Select.Option>
-                      <Select.Option value={this.props.user.dealerId}>My Report</Select.Option>
-                      {this.props.dealerList.map((dealer, index) => {
-                        return (<Select.Option key={dealer.dealer_id} value={dealer.dealer_id}>{dealer.dealer_name} ({dealer.link_code})</Select.Option>)
-                      })}
-                    </Select>
-                  )}
-                </Form.Item>
+
+                  <Form.Item
+                    label="FROM (DATE) "
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 14 }}
+                  >
+                    {this.props.form.getFieldDecorator('from', {
+                      rules: [
+                        {
+                          required: false
+                        }],
+                    })(
+                      <DatePicker
+                        format="DD-MM-YYYY"
+                        disabledDate={this.disabledDate}
+                      />
+                    )}
+                  </Form.Item>
+
+                  <Form.Item
+                    label="TO (DATE)"
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 14 }}
+                  >
+                    {this.props.form.getFieldDecorator('to', {
+                      rules: [
+                        {
+                          required: false,
+                        }],
+                    })(
+                      <DatePicker
+                        format="DD-MM-YYYY"
+                        onChange={this.saveExpiryDate}
+                        disabledDate={this.disabledDate}
+
+                      />
+                    )}
+                  </Form.Item>
+                  <Form.Item className="edit_ftr_btn"
+                    wrapperCol={{
+                      xs: { span: 22, offset: 0 },
+                    }}
+                  >
+                    <Button key="back" type="button" onClick={this.handleReset}>CANCEL</Button>
+                    <Button type="primary" htmlType="submit">GENERATE</Button>
+                  </Form.Item>
+                </Fragment>
+                : null
               }
-
-              <Form.Item
-                label="FROM (DATE) "
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 14 }}
-              >
-                {this.props.form.getFieldDecorator('from', {
-                  rules: [
-                    {
-                      required: false
-                    }],
-                })(
-                  <DatePicker
-                    format="DD-MM-YYYY"
-                    disabledDate={this.disabledDate}
-                  />
-                )}
-              </Form.Item>
-
-              <Form.Item
-                label="TO (DATE)"
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 14 }}
-              >
-                {this.props.form.getFieldDecorator('to', {
-                  rules: [
-                    {
-                      required: false,
-                    }],
-                })(
-                  <DatePicker
-                    format="DD-MM-YYYY"
-                    onChange={this.saveExpiryDate}
-                    disabledDate={this.disabledDate}
-
-                  />
-                )}
-              </Form.Item>
-              <Form.Item className="edit_ftr_btn"
-                wrapperCol={{
-                  xs: { span: 22, offset: 0 },
-                }}
-              >
-                <Button key="back" type="button" onClick={this.handleReset}>CANCEL</Button>
-                <Button type="primary" htmlType="submit">GENERATE</Button>
-              </Form.Item>
             </Form>
           </Card>
         </Col>

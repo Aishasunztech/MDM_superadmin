@@ -7,11 +7,11 @@ import {
 } from "../../constants/ActionTypes";
 
 const initialState = {
-  productData: {},
-  hardwareData: {},
-  invoiceData: {},
-  paymentHistoryData: {},
-  productType:""
+  productData: { CHAT: [], PGP: [], SIM: [], VPN: [] },
+  hardwareData: [],
+  invoiceData: [],
+  paymentHistoryData: [],
+  productType: ""
 };
 
 export default (state = initialState, action) => {
@@ -44,7 +44,7 @@ export default (state = initialState, action) => {
         ...state,
         paymentHistoryData: action.payload.data
       };
-    
+
     case HARDWARE_REPORT:
       return {
         ...state,

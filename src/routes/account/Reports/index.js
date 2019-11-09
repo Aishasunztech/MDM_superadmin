@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Input, Checkbox, Icon, Tabs, Table } from "antd";
 import Invoice from "./components/Invoice";
-import ProductInventory  from './components/ProductInventory';
-import HardwareInventory  from './components/HardwareInventory';
+import ProductInventory from './components/ProductInventory';
+import HardwareInventory from './components/HardwareInventory';
 import PaymentHistory from './components/PaymentHistory';
 import AppFilter from '../../../components/AppFilter';
 import { getDealerList, generateProductReport, generateInvoiceReport, generatePaymentHistoryReport, generateHardwareReport } from '../../../appRedux/actions';
@@ -34,7 +34,7 @@ class Reports extends Component {
   };
 
   componentDidMount() {
-    
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -49,64 +49,70 @@ class Reports extends Component {
 
   render() {
     const Search = Input.Search;
-      return (
+    return (
 
-        <div>
-          <AppFilter
-            pageHeading={"REPORTS"}
-          />
-          {
-          
-              <div>
-                <Tabs defaultActiveKey="1" type='card' className="dev_tabs" activeKey={this.state.tabselect} onChange={this.handleChangeTab}>
-                  <TabPane tab="PRODUCT INVENTORY" key="1">
-                    <ProductInventory
-                      whiteLabels={this.props.whiteLabels}
-                      dealerList={this.props.dealerList}
-                      getDealerList={this.props.getDealerList}
-                      translation={this.props.translation}
-                      productReport={this.props.productReport}
-                      productType={this.props.productType}
-                      generateProductReport={this.props.generateProductReport}
-                      user={this.props.user}
-                    />
-                  </TabPane>
+      <div>
+        <AppFilter
+          pageHeading={"REPORTS"}
+        />
+        {
 
-                  <TabPane tab="HARDWARE INVENTORY" key="2">
-                    <HardwareInventory
-                      getDealerList={this.props.getDealerList}
-                      translation={this.props.translation}
-                      generateHardwareReport={this.props.generateHardwareReport}
-                      hardwareReport={this.props.hardwareReport}
-                      user={this.props.user}
-                    />
-                  </TabPane>
+          <div>
+            <Tabs defaultActiveKey="1" type='card' className="dev_tabs" activeKey={this.state.tabselect} onChange={this.handleChangeTab}>
+              <TabPane tab="PRODUCT INVENTORY" key="1">
+                <ProductInventory
+                  whiteLabels={this.props.whiteLabels}
+                  dealerList={this.props.dealerList}
+                  getDealerList={this.props.getDealerList}
+                  translation={this.props.translation}
+                  productReport={this.props.productReport}
+                  productType={this.props.productType}
+                  generateProductReport={this.props.generateProductReport}
+                  user={this.props.user}
+                />
+              </TabPane>
 
-                  <TabPane tab="PAYMENT HISTORY" key="3">
-                    <PaymentHistory
-                      getDealerList={this.props.getDealerList}
-                      translation={this.props.translation}
-                      generatePaymentHistoryReport={this.props.generatePaymentHistoryReport}
-                      paymentHistoryReport={this.props.paymentHistoryReport}
-                      user={this.props.user}
-                    />
-                  </TabPane>
+              <TabPane tab="HARDWARE INVENTORY" key="2">
+                <HardwareInventory
+                  whiteLabels={this.props.whiteLabels}
+                  dealerList={this.props.dealerList}
+                  getDealerList={this.props.getDealerList}
+                  translation={this.props.translation}
+                  generateHardwareReport={this.props.generateHardwareReport}
+                  hardwareReport={this.props.hardwareReport}
+                  user={this.props.user}
+                />
+              </TabPane>
 
-                  <TabPane tab="INVOICES" key="4">
-                    <Invoice
-                      getDealerList={this.props.getDealerList}
-                      translation={this.props.translation}
-                      generateInvoiceReport={this.props.generateInvoiceReport}
-                      invoiceReport={this.props.invoiceReport}
-                      user={this.props.user}
-                    />
-                  </TabPane>
+              <TabPane tab="PAYMENT HISTORY" key="3">
+                <PaymentHistory
+                  whiteLabels={this.props.whiteLabels}
+                  dealerList={this.props.dealerList}
+                  getDealerList={this.props.getDealerList}
+                  translation={this.props.translation}
+                  generatePaymentHistoryReport={this.props.generatePaymentHistoryReport}
+                  paymentHistoryReport={this.props.paymentHistoryReport}
+                  user={this.props.user}
+                />
+              </TabPane>
 
-                </Tabs>
-              </div>
-          }
-        </div>
-      );
+              <TabPane tab="INVOICES" key="4">
+                <Invoice
+                  whiteLabels={this.props.whiteLabels}
+                  dealerList={this.props.dealerList}
+                  getDealerList={this.props.getDealerList}
+                  translation={this.props.translation}
+                  generateInvoiceReport={this.props.generateInvoiceReport}
+                  invoiceReport={this.props.invoiceReport}
+                  user={this.props.user}
+                />
+              </TabPane>
+
+            </Tabs>
+          </div>
+        }
+      </div>
+    );
   }
 
   handleSubmit = (e) => {
@@ -121,8 +127,7 @@ class Reports extends Component {
 
 
 
-var mapStateToProps = ({ settings, reports  , auth, account, sidebarMenu}) => {
-
+var mapStateToProps = ({ settings, reports, auth, account, sidebarMenu }) => {
   return {
     user: auth.authUser,
     productReport: reports.productData,

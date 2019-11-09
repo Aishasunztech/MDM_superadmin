@@ -2,12 +2,13 @@ import React, { Component, Fragment } from 'react'
 import { Table, Avatar, Switch, Button, Icon, Card, Modal, Tabs, Col, Input, Form, Row, DatePicker, Select } from "antd";
 import moment from 'moment';
 import styles from '../reporting.css'
-import { generatePDF, generateExcel} from "../../../utils/commonUtils";
+import { generatePDF, generateExcel } from "../../../utils/commonUtils";
 import {
   DEVICE_PRE_ACTIVATION, sim
 } from "../../../../constants/Constants";
 
-import { BASE_URL
+import {
+  BASE_URL
 } from "../../../../constants/Application";
 var columns;
 var rows;
@@ -25,7 +26,7 @@ class Invoice extends Component {
       },
 
       {
-        title:  "INVOICE ID",
+        title: "INVOICE ID",
         align: "center",
         className: '',
         dataIndex: 'invoice_id',
@@ -33,7 +34,7 @@ class Invoice extends Component {
       },
 
       {
-        title:  "DEVICE ID",
+        title: "DEVICE ID",
         align: "center",
         className: '',
         dataIndex: 'device_id',
@@ -41,7 +42,7 @@ class Invoice extends Component {
       },
 
       {
-        title:  "DEALER ID",
+        title: "DEALER ID",
         align: "center",
         className: '',
         dataIndex: 'dealer_id',
@@ -49,7 +50,7 @@ class Invoice extends Component {
       },
 
       {
-        title:  "USER PAYMENT STATUS",
+        title: "USER PAYMENT STATUS",
         align: "center",
         className: '',
         dataIndex: 'end_user_payment_status',
@@ -57,7 +58,7 @@ class Invoice extends Component {
       },
 
       {
-        title:  "GENERATED AT",
+        title: "GENERATED AT",
         align: "center",
         className: '',
         dataIndex: 'created_at',
@@ -65,7 +66,7 @@ class Invoice extends Component {
       },
 
       {
-        title:  "ACTION",
+        title: "ACTION",
         align: "center",
         className: '',
         dataIndex: 'file_name',
@@ -75,6 +76,7 @@ class Invoice extends Component {
 
     this.state = {
       reportCard: false,
+      isLabel: false
     };
   }
 
@@ -86,13 +88,13 @@ class Invoice extends Component {
   };
 
   componentDidMount() {
-    
+
   };
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.invoiceReport !== prevProps.invoiceReport){
+    if (this.props.invoiceReport !== prevProps.invoiceReport) {
       this.setState({
-        reportCard:  true,
+        reportCard: true,
         productType: this.props.productType
       })
 
@@ -105,7 +107,7 @@ class Invoice extends Component {
           created_at: item.created_at ? item.created_at : 'N/A',
           end_user_payment_status: item.end_user_payment_status ? item.end_user_payment_status : 'N/A',
         }
-      }); 
+      });
 
       columns = [
         { title: '#', dataKey: "count" },
@@ -138,13 +140,13 @@ class Invoice extends Component {
           'dealer_id': item.dealer_id ? item.dealer_id : 'N/A',
           'created_at': item.created_at ? item.created_at : 'N/A',
           'end_user_payment_status': item.end_user_payment_status ? item.end_user_payment_status : 'N/A',
-          'file_name': <a href={BASE_URL+'users/getFile/'+item.file_name} target="_blank" download><Button type="primary" size="small">Download</Button></a>,
+          'file_name': <a href={BASE_URL + 'users/getFile/' + item.file_name} target="_blank" download><Button type="primary" size="small">Download</Button></a>,
         })
       });
     }
     return data;
   };
-  
+
   createPDF = () => {
     var columns = [
       { title: '#', dataKey: "count" },
@@ -169,6 +171,20 @@ class Invoice extends Component {
     generatePDF(columns, rows, 'Invoice Report', fileName);
   }
 
+  handleLabelChange = (e) => {
+    if (e == '') {
+      this.setState({
+        isLabel: false
+      })
+
+    } else {
+      this.props.getDealerList(e)
+      this.setState({
+        isLabel: true
+      })
+    }
+  }
+
   render() {
     return (
       <Row>
@@ -177,115 +193,128 @@ class Invoice extends Component {
             <Form onSubmit={this.handleSubmit} autoComplete="new-password">
 
               <Form.Item
+                label="Label"
                 labelCol={{ span: 8 }}
                 wrapperCol={{ span: 14 }}
               >
-              </Form.Item>
-
-              {(this.props.user.type === 'sdealer') ?
-                
-                <Form.Item style={{ marginBottom: 0 }}
-                >
-                  {this.props.form.getFieldDecorator('dealer', {
-                    initialValue: this.props.user.dealerId,
-                  })(
-
-                    <Input type='hidden' disabled />
-                  )}
-                </Form.Item>
-
-                : <Form.Item
-                  label="Dealer/Sdealer"
-                  labelCol={{ span: 8 }}
-                  wrapperCol={{ span: 14 }}
-                  width='100%'
-                >
-                  {this.props.form.getFieldDecorator('dealer', {
-                    initialValue: '',
-                    rules: [
-                      {
-                        required: false,
-                      },
-                    ],
-                  })(
-                    <Select style={{ width: '100%' }}>
-                      <Select.Option value=''>ALL</Select.Option>
-                      <Select.Option value={this.props.user.dealerId}>My Report</Select.Option>
-                      {this.props.dealerList.map((dealer, index) => {
-                        return (<Select.Option key={dealer.dealer_id} value={dealer.dealer_id}>{dealer.dealer_name} ({dealer.link_code})</Select.Option>)
-                      })}
-                    </Select>
-                  )}
-                </Form.Item>
-              }
-
-              <Form.Item
-                label="Payment Status"
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 14 }}
-                width='100%'
-              >
-                {this.props.form.getFieldDecorator('payment_status', {
+                {this.props.form.getFieldDecorator('label', {
                   initialValue: '',
-                  rules: [
-                    {
-                      required: false
-                    },
-                  ],
+                  rules: [{
+                    required: true, message: 'label is Required !',
+                  }],
                 })(
-                  <Select style={{ width: '100%' }}>
-                    <Select.Option value=''>ALL</Select.Option>
-                    <Select.Option value='PAID'>PAID</Select.Option>
-                    <Select.Option value='PGP'>UNPAID</Select.Option>
+                  <Select
+                    onChange={(e) => this.handleLabelChange(e)}
+                    style={{ width: '100%' }}
+                  >
+
+                    <Select.Option value=''>SELECT LABEL</Select.Option>
+                    {this.props.whiteLabels.map((label, index) => {
+                      return (<Select.Option key={index} value={label.id}>{label.name}</Select.Option>)
+                    })}
                   </Select>
                 )}
+
               </Form.Item>
 
-              <Form.Item
-                label="FROM (DATE) "
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 14 }}
-              >
-                {this.props.form.getFieldDecorator('from', {
-                  rules: [
-                    {
-                      required: false
-                    }],
-                })(
-                  <DatePicker
-                    format="DD-MM-YYYY"
-                    disabledDate={this.disabledDate}
-                  />
-                )}
-              </Form.Item>
+              {(this.state.isLabel) ?
+                <Fragment>
 
-              <Form.Item
-                label="TO (DATE)"
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 14 }}
-              >
-                {this.props.form.getFieldDecorator('to', {
-                  rules: [
-                    {
-                      required: false
-                    }],
-                })(
-                  <DatePicker
-                    format="DD-MM-YYYY"
-                    onChange={this.saveExpiryDate}
-                    disabledDate={this.disabledDate}
+                  <Form.Item
+                    label="Dealer/Sdealer"
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 14 }}
+                    width='100%'
+                  >
+                    {this.props.form.getFieldDecorator('dealer', {
+                      initialValue: '',
+                      rules: [
+                        {
+                          required: false,
+                        },
+                      ],
+                    })(
+                      <Select style={{ width: '100%' }}>
+                        <Select.Option value=''>ALL</Select.Option>
+                        {/* <Select.Option value={this.props.user.dealerId}>My Report</Select.Option> */}
+                        {this.props.dealerList.map((dealer, index) => {
+                          return (<Select.Option key={dealer.dealer_id} value={dealer.dealer_id}>{dealer.dealer_name} ({dealer.link_code})</Select.Option>)
+                        })}
+                      </Select>
+                    )}
+                  </Form.Item>
 
-                  />
-                )}
-              </Form.Item>
-              <Form.Item className="edit_ftr_btn"
-                         wrapperCol={{
-                           xs: { span: 22, offset: 0 },
-                         }}
-              >
-                <Button key="back" type="button" onClick={this.handleReset}>CANCEL</Button>
-                <Button type="primary" htmlType="submit" onClick={this.handleSubmit}>GENERATE</Button>
-              </Form.Item>
+
+                  <Form.Item
+                    label="Payment Status"
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 14 }}
+                    width='100%'
+                  >
+                    {this.props.form.getFieldDecorator('payment_status', {
+                      initialValue: '',
+                      rules: [
+                        {
+                          required: false
+                        },
+                      ],
+                    })(
+                      <Select style={{ width: '100%' }}>
+                        <Select.Option value=''>ALL</Select.Option>
+                        <Select.Option value='PAID'>PAID</Select.Option>
+                        <Select.Option value='PGP'>UNPAID</Select.Option>
+                      </Select>
+                    )}
+                  </Form.Item>
+
+                  <Form.Item
+                    label="FROM (DATE) "
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 14 }}
+                  >
+                    {this.props.form.getFieldDecorator('from', {
+                      rules: [
+                        {
+                          required: false
+                        }],
+                    })(
+                      <DatePicker
+                        format="DD-MM-YYYY"
+                        disabledDate={this.disabledDate}
+                      />
+                    )}
+                  </Form.Item>
+
+                  <Form.Item
+                    label="TO (DATE)"
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 14 }}
+                  >
+                    {this.props.form.getFieldDecorator('to', {
+                      rules: [
+                        {
+                          required: false
+                        }],
+                    })(
+                      <DatePicker
+                        format="DD-MM-YYYY"
+                        onChange={this.saveExpiryDate}
+                        disabledDate={this.disabledDate}
+
+                      />
+                    )}
+                  </Form.Item>
+                  <Form.Item className="edit_ftr_btn"
+                    wrapperCol={{
+                      xs: { span: 22, offset: 0 },
+                    }}
+                  >
+                    <Button key="back" type="button" onClick={this.handleReset}>CANCEL</Button>
+                    <Button type="primary" htmlType="submit" onClick={this.handleSubmit}>GENERATE</Button>
+                  </Form.Item>
+                </Fragment>
+                : null
+              }
             </Form>
 
           </Card>
@@ -295,25 +324,25 @@ class Invoice extends Component {
           <Card style={{ height: '500px', overflow: 'scroll' }}>
             {(this.state.reportCard) ?
               <Fragment>
-              <Row>
-                <Col xs={12} sm={12} md={12} lg={12} xl={12}>
-                  <h3>Invoice Report</h3>
-                </Col>
+                <Row>
+                  <Col xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <h3>Invoice Report</h3>
+                  </Col>
                   <Col xs={12} sm={12} md={12} lg={12} xl={12}>
                     <div className="pull-right">
                       <Button type="dotted" icon="download" size="small" onClick={() => { generatePDF(columns, rows, 'Invoice Report', fileName) }}>Download PDF</Button>
-                    <Button type="primary" icon="download" size="small" onClick={() => { generateExcel(rows, fileName) }}>Download Excel</Button>
+                      <Button type="primary" icon="download" size="small" onClick={() => { generateExcel(rows, fileName) }}>Download Excel</Button>
                     </div>
-                </Col>
-              </Row>
-            <Table
-              columns={this.columns}
-              dataSource={this.renderList(this.props.invoiceReport)}
-              bordered
-              pagination={false}
+                  </Col>
+                </Row>
+                <Table
+                  columns={this.columns}
+                  dataSource={this.renderList(this.props.invoiceReport)}
+                  bordered
+                  pagination={false}
                 />
               </Fragment>
-            : null }
+              : null}
           </Card>
         </Col>
       </Row>

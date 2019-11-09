@@ -16,6 +16,7 @@ export function generateProductReport(data) {
       type: SPIN_lOADING,
     });
 
+    // RestService.generateReport(data, "product").then((response) => {
     RestService.generateProductReport(data).then((response) => {
       if (RestService.checkAuth(response.data)) {
         dispatch({
@@ -41,6 +42,7 @@ export function generateInvoiceReport(data) {
       type: SPIN_lOADING,
     });
 
+    // RestService.generateReport(data, "invoice").then((response) => {
     RestService.generateInvoiceReport(data).then((response) => {
       if (RestService.checkAuth(response.data)) {
         dispatch({
@@ -64,6 +66,7 @@ export function generatePaymentHistoryReport(data) {
       type: SPIN_lOADING,
     });
 
+    // RestService.generateReport(data, "payment-history").then((response) => {
     RestService.generatePaymentHistoryReport(data).then((response) => {
       if (RestService.checkAuth(response.data)) {
         dispatch({
@@ -88,6 +91,7 @@ export function generateHardwareReport(data) {
       spinloading: true
     });
 
+    // RestService.generateReport(data, "hardware").then((response) => {
     RestService.generateHardwareReport(data).then((response) => {
       if (RestService.checkAuth(response.data)) {
         dispatch({
