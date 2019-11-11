@@ -439,7 +439,7 @@ class Billing extends Component {
                                     </TabPane>
                                     {/* <TabPane tab="INVENTORY" key="2" >
                                     </TabPane> */}
-                                    <TabPane tab="REPORTS" key="3" >
+                                    {/* <TabPane tab="REPORTS" key="3" >
                                         <Reports
                                             whiteLabels={this.props.whiteLabels}
                                             dealerList={this.props.dealerList}
@@ -452,7 +452,7 @@ class Billing extends Component {
                                             dealerList={this.props.dealerList}
                                             getDealerList={this.props.getDealerList}
                                         />
-                                    </TabPane>
+                                    </TabPane> */}
                                 </Tabs>
 
 

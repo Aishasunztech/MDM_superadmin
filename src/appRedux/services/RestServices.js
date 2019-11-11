@@ -296,15 +296,15 @@ const RestService = {
     },
 
     //All report
-    generateReport: (data, reportName) => {
-        console.log('services: ',reportName)
-        return axios.get(USER_URL + 'billing/reports/' + reportName, data, RestService.getHeader());
-    },
+    // generateReport: (data, reportName) => {
+    //     console.log('services: ',reportName)
+    //     return axios.get(USER_URL + 'billing/reports/' + reportName, data, RestService.getHeader());
+    // },
 
     // product report
     generateProductReport: (data) => {
         return axios.post(USER_URL + 'billing/reports/product', data, RestService.getHeader());
-      },
+    },
 
     //invoice report
     generateInvoiceReport: (data) => {
@@ -319,6 +319,11 @@ const RestService = {
     //hardware report
     generateHardwareReport: (data) => {
         return axios.post(USER_URL + 'billing/reports/hardware', data, RestService.getHeader());
+    },
+
+    //sales report
+    generateSalesReport: (data) => {
+        return axios.post(USER_URL + 'billing/reports/sales', data, RestService.getHeader());
     },
 }
 export default RestService;

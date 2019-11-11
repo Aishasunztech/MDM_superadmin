@@ -6,8 +6,9 @@ import Invoice from "./components/Invoice";
 import ProductInventory from './components/ProductInventory';
 import HardwareInventory from './components/HardwareInventory';
 import PaymentHistory from './components/PaymentHistory';
+import Sales from './components/Sales';
 import AppFilter from '../../../components/AppFilter';
-import { getDealerList, generateProductReport, generateInvoiceReport, generatePaymentHistoryReport, generateHardwareReport } from '../../../appRedux/actions';
+import { getDealerList, generateProductReport, generateInvoiceReport, generateSalesReport, generatePaymentHistoryReport, generateHardwareReport } from '../../../appRedux/actions';
 
 import styles from './reporting.css'
 
@@ -107,6 +108,17 @@ class Reports extends Component {
                   user={this.props.user}
                 />
               </TabPane>
+              <TabPane tab="SALES" key="5">
+                <Sales
+                  whiteLabels={this.props.whiteLabels}
+                  dealerList={this.props.dealerList}
+                  getDealerList={this.props.getDealerList}
+                  translation={this.props.translation}
+                  generateSalesReport={this.props.generateSalesReport}
+                  salesReport={this.props.salesReport}
+                  user={this.props.user}
+                />
+              </TabPane>
 
             </Tabs>
           </div>
@@ -133,6 +145,7 @@ var mapStateToProps = ({ settings, reports, auth, account, sidebarMenu }) => {
     productReport: reports.productData,
     hardwareReport: reports.hardwareData,
     invoiceReport: reports.invoiceData,
+    salesReport: reports.salesData,
     paymentHistoryReport: reports.paymentHistoryData,
     productType: reports.productType,
     translation: settings.translation,
@@ -145,6 +158,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     generateProductReport: generateProductReport,
     generateInvoiceReport: generateInvoiceReport,
+    generateSalesReport: generateSalesReport,
     generatePaymentHistoryReport: generatePaymentHistoryReport,
     generateHardwareReport: generateHardwareReport,
     getDealerList: getDealerList

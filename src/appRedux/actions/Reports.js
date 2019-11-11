@@ -4,7 +4,8 @@ import {
   INVOICE_REPORT,
   PAYMENT_HISTORY_REPORT,
   INVALID_TOKEN,
-  SPIN_lOADING
+  SPIN_lOADING,
+  SALES_REPORT
 } from "../../constants/ActionTypes";
 
 import RestService from '../services/RestServices';
@@ -96,6 +97,28 @@ export function generateHardwareReport(data) {
       if (RestService.checkAuth(response.data)) {
         dispatch({
           type: HARDWARE_REPORT,
+          payload: response.data
+        });
+      } else {
+        dispatch({
+          type: INVALID_TOKEN
+        });
+      }
+    });
+
+  };
+}
+
+export function generateSalesReport(data) {
+  return (dispatch) => {
+    dispatch({
+      type: SPIN_lOADING,
+    });
+
+    RestService.generateSalesReport(data).then((response) => {
+      if (RestService.checkAuth(response.data)) {
+        dispatch({
+          type: SALES_REPORT,
           payload: response.data
         });
       } else {
