@@ -7,6 +7,7 @@ import {
 import ItemsTab from "../../../../components/ItemsTab";
 
 import PackagePricingForm from './components/PackagePricingForm';
+import HardwarePricingForm from './components/HardwarePricingForm';
 import { sim, chat, pgp, vpn, pkg_features } from '../../../../constants/Constants';
 
 const { TabPane } = Tabs;
@@ -22,8 +23,11 @@ export default class WhiteLabelPricing extends Component {
             pkg_features: JSON.parse(JSON.stringify(pkg_features)),
             outerTab: '1',
             pkgName: '',
+            hardwareName: '',
             pkgTerms: '1 month',
             pkgPrice: 0,
+            hardwarePrice: 0,
+            hardwareFormErrors: ["hardwarePrice", "hardwareName"],
             submitAvailable: true,
             pricesFormErrors: [],
             packageFormErrors: ['pkgName', 'pkgPrice', 'pkg_features'],
@@ -39,7 +43,7 @@ export default class WhiteLabelPricing extends Component {
     }
 
     restrictSubmit = (available, item) => {
-        // console.log(this.state.pricesFormErrors, 'restrictsubmit called', item, available)
+        // 
         if (!available) {
             if (!this.state.pricesFormErrors.includes(item)) {
                 this.state.pricesFormErrors.push(item)
@@ -70,11 +74,11 @@ export default class WhiteLabelPricing extends Component {
                         errors++;
                     }
                 })
-                if(Object.values(data[key]).length < 4){
+                if (Object.values(data[key]).length < 4) {
                     errors++;
                 }
             }
-            // console.log(errors, 'errors are')
+            // 
 
             if (errors === 0) {
                 this.props.saveIDPrices({ data: data, whitelabel_id: this.props.whitelabel_id })
@@ -93,17 +97,28 @@ export default class WhiteLabelPricing extends Component {
         } else if (this.state.outerTab === '2') {
 
             var isnum = /^\d+$/.test(this.state.pkgPrice);
-            if (this.state.packageFormErrors && !this.state.packageFormErrors.length && isnum && this.state.pkgPrice > 0 && this.state.pkg_features && this.state.pkgName && this.state.pkgTerms && this.state.pkgName != '' && this.state.pkgTerms != '') {
-                // console.log(this.state.pkg_features, pkg_features);
+            if (this.state.packageFormErrors && (!this.state.packageFormErrors.length || (this.state.packageFormErrors[0] === "pkgPrice" && this.state.pkgTerms === "trial")) && isnum && (this.state.pkgPrice > 0 || this.state.pkgTerms === "trial") && this.state.pkg_features && this.state.pkgName && this.state.pkgTerms && this.state.pkgName !== '' && this.state.pkgTerms !== '') {
+                // 
                 let data = {
                     pkgName: this.state.pkgName,
                     pkgTerm: this.state.pkgTerms,
-                    pkgPrice: this.state.pkgPrice,
+                    pkgPrice: this.state.pkgTerms === "trial" ? 0 : this.state.pkgPrice,
                     pkgFeatures: this.state.pkg_features,
                     whitelabel_id: this.props.whitelabel_id
                 }
 
                 showConfirm(this, data)
+            }
+        } else if (this.state.outerTab === '3') {
+            if (this.state.hardwareFormErrors && !this.state.hardwareFormErrors.length && this.state.hardwarePrice > 0 && this.state.hardwareName && this.state.hardwareName != '') {
+                // 
+                let data = {
+                    hardwareName: this.state.hardwareName,
+                    hardwarePrice: this.state.hardwarePrice,
+                    whitelabel_id: this.props.whitelabel_id
+                }
+
+                showHardwareConfirm(this, data)
             }
         }
     }
@@ -116,7 +131,7 @@ export default class WhiteLabelPricing extends Component {
                 let arr = Object.values(this.state.pkg_features);
                 if (!arr.includes(true)) {
                     this.restrictPackageSubmit(false, 'pkg_features');
-                    // console.log(this.state.packageFormErrors, 'error')
+                    // 
                 } else {
                     this.restrictPackageSubmit(true, 'pkg_features')
                 }
@@ -125,9 +140,19 @@ export default class WhiteLabelPricing extends Component {
             }
 
         } else {
-            this.state[field] = value
+            // this.state[field] = value
+            if (field === "pkgTerms" && value === 'trial') {
+                this.setState({ pkgPrice: 0, [field]: value })
+            } else {
+                this.setState({
+                    [field]: value
+                })
+            }
         }
+    }
+    setHardwareDetail = (value, field) => {
 
+        this.state[field] = value
     }
 
     restrictPackageSubmit = (available, item) => {
@@ -146,6 +171,23 @@ export default class WhiteLabelPricing extends Component {
             packageFormErrors: this.state.packageFormErrors
         })
     }
+    restrictHardwareSubmit = (available, item) => {
+
+        if (!available) {
+            if (!this.state.hardwareFormErrors.includes(item)) {
+                this.state.hardwareFormErrors.push(item)
+            }
+        } else {
+            let index = this.state.hardwareFormErrors.indexOf(item);
+            if (index > -1) {
+                this.state.hardwareFormErrors.splice(index, 1)
+            }
+        }
+
+        this.setState({
+            hardwareFormErrors: this.state.hardwareFormErrors
+        })
+    }
 
 
 
@@ -154,7 +196,7 @@ export default class WhiteLabelPricing extends Component {
         if (price >= 0 || price == '') {
             this.state[price_for][field] = price
         }
-        // console.log('price', price, 'field', field, 'price_for', price_for)
+        // 
     }
 
     innerTabChanged = (e) => {
@@ -164,7 +206,7 @@ export default class WhiteLabelPricing extends Component {
     }
 
     render() {
-      
+
         return (
             <Modal
                 maskClosable={false}
@@ -173,7 +215,8 @@ export default class WhiteLabelPricing extends Component {
                 visible={this.props.pricing_modal}
                 onOk={this.handleSubmit}
                 okText='Save'
-                okButtonProps={{ disabled: this.state.outerTab == '1' ? (!this.props.isPriceChanged || !this.state.submitAvailable) ? true : false : this.state.packageFormErrors && this.state.packageFormErrors.length ? true : false }}
+                // okButtonProps={{ disabled: this.state.outerTab == '1' ? (!this.props.isPriceChanged || !this.state.submitAvailable) ? true : false : this.state.outerTab == '3' ? (this.state.hardwareFormErrors && this.state.hardwareFormErrors.length) ? true : false : this.state.packageFormErrors && this.state.packageFormErrors.length ? true : false }}
+                okButtonProps={{ disabled: this.state.outerTab == '1' ? (!this.props.isPriceChanged || !this.state.submitAvailable) ? true : false : this.state.outerTab == '3' ? (this.state.hardwareFormErrors && this.state.hardwareFormErrors.length) ? true : false : this.state.packageFormErrors && this.state.packageFormErrors.length ? (this.state.packageFormErrors[0] === "pkgPrice" && this.state.pkgTerms === "trial") ? false : true : false }}
                 onCancel={() => {
                     this.props.showPricingModal(false);
                     this.props.resetPrice();
@@ -184,14 +227,17 @@ export default class WhiteLabelPricing extends Component {
                         pkgTerm: '1 month',
                         pkgName: '',
                         submitAvailable: true,
-                        packageFormErrors: ['pkgName', 'pkgPrice', 'pkg_features']
+                        packageFormErrors: ['pkgName', 'pkgPrice', 'pkg_features'],
+                        hardwareFormErrors: ["hardwarePrice", "hardwareName"],
+                        hardwareName: '',
+                        hardwarePrice: 0
                     })
                 }}
                 // footer={null}
                 width='650px'
             >
                 <Tabs
-                    className="set_price"
+                    // className="set_price"
                     type="card"
                     onChange={(e) => this.setState({ outerTab: e })}
                 >
@@ -215,6 +261,15 @@ export default class WhiteLabelPricing extends Component {
                             ref="packageForm"
                         />
 
+                    </TabPane>
+                    <TabPane tab="SET Hardware Prices" key="3">
+                        <HardwarePricingForm
+                            showPricingModal={this.props.showPricingModal}
+                            setHardwareDetail={this.setHardwareDetail}
+                            wrappedComponentRef={(form) => this.form = form}
+                            restrictHardwareSubmit={this.restrictHardwareSubmit}
+                            ref="packageForm"
+                        />
                     </TabPane>
                 </Tabs>
             </Modal>
@@ -293,7 +348,7 @@ function showConfirm(_this, data) {
             </Row>
         </div>,
         onOk() {
-            // console.log('OK');
+            // 
             _this.props.setPackage(data);
             _this.props.showPricingModal(false);
             _this.setState({
@@ -306,7 +361,46 @@ function showConfirm(_this, data) {
             })
         },
         onCancel() {
-            // console.log('Cancel');
+            // 
+        },
+    });
+}
+function showHardwareConfirm(_this, data) {
+    Modal.confirm({
+        title: 'Save Price for hardware ?',
+        cancelText: 'Cancel',
+        okText: 'Save',
+        content: <div>
+            <Row>
+                <Divider />
+                <Col span={12}><p>Hardware Name : </p>
+                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                </Col>
+                <Col span={12}>
+                    <p >{_this.state.hardwareName}</p>
+                </Col>
+
+                <Col span={12}><p>Package Price: </p>
+                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                </Col>
+                <Col span={12}>
+                    <p >{_this.state.hardwarePrice} Credits</p>
+                </Col>
+            </Row>
+        </div>,
+        onOk() {
+            // 
+
+            _this.props.saveHardware(data);
+            _this.props.showPricingModal(false);
+            _this.setState({
+                outerTab: '1',
+                hardwarePrice: 0,
+                hardwareFormErrors: ["hardwarePrice", "hardwareName"],
+            })
+        },
+        onCancel() {
+            // 
         },
     });
 }

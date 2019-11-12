@@ -44,7 +44,7 @@ const RestService = {
     },
 
     authLogIn: (data) => {
-        // console.log("authLogin", data);
+        // 
         localStorage.setItem('id', data.id);
         localStorage.setItem('email', data.email);
         localStorage.setItem('token', data.token);
@@ -57,7 +57,7 @@ const RestService = {
     },
     setUserData: (data) => {
 
-        // console.log("hello12312", data);
+        // 
         localStorage.setItem('email', data.email);
         localStorage.setItem('id', data.id);
         localStorage.setItem('name', data.name);
@@ -149,28 +149,52 @@ const RestService = {
     },
 
     saveIDPrices: (data) => {
-        console.log(data, 'data')
+
         return axios.patch(USER_URL + 'save-prices', data, RestService.getHeader());
     },
 
     getPrices: (whitelabel_id) => {
-        // console.log(whitelabel_id, 'whte label on get price')
+        // 
         return axios.get(USER_URL + 'get-prices/' + whitelabel_id, RestService.getHeader());
     },
 
     getPackages: (whitelabel_id) => {
-        // console.log(whitelabel_id, 'whte label on get price')
+        // 
         return axios.get(USER_URL + 'get-packages/' + whitelabel_id, RestService.getHeader());
     },
 
+    getHardwares: (whitelabel_id) => {
+        // 
+        return axios.get(USER_URL + 'get-Hardwares/' + whitelabel_id, RestService.getHeader());
+    },
+
+    deletePakage: (id) => {
+        return axios.get(USER_URL + 'delete-package/' + id, RestService.getHeader());
+    },
+
     setPackage: (data) => {
-        console.log(data, 'data')
+
         return axios.patch(USER_URL + 'save-package', { data }, RestService.getHeader());
+    },
+    saveHardware: (data) => {
+        return axios.patch(USER_URL + 'save-hardware', { data }, RestService.getHeader());
+    },
+    deleteHardware: (id) => {
+        return axios.get(USER_URL + 'delete-hardware/' + id, RestService.getHeader());
+    },
+
+    editHardware: (data) => {
+        return axios.post(USER_URL + 'edit-hardware', { data }, RestService.getHeader());
     },
 
     checkPackageName: (name) => {
-        console.log(name, 'data')
+
         return axios.patch(USER_URL + 'check-package-name', { name, name }, RestService.getHeader());
+    },
+
+    checkHardwareName: (name) => {
+
+        return axios.patch(USER_URL + 'check-hardware-name', { name, name }, RestService.getHeader());
     },
 
 
@@ -180,7 +204,7 @@ const RestService = {
     },
 
     getChatIDs: () => {
-        // console.log('hi')
+        // 
         return axios.get(BASE_URL + 'users/get_chat_ids', RestService.getHeader());
     },
     getPGPEmails: () => {
@@ -189,11 +213,11 @@ const RestService = {
 
     // get ids with label 
     getSimIDsLabel: (labelID) => {
-        // console.log('at serv lab id', labelID);
+        // 
         return axios.post(BASE_URL + 'users/get_label_sim_ids', { labelID }, RestService.getHeader());
     },
     getChatIDsLabel: (labelID) => {
-        // console.log('hi')
+        // 
         return axios.post(BASE_URL + 'users/get_label_chat_ids', { labelID }, RestService.getHeader());
     },
     getPGPEmailsLabel: (labelID) => {
@@ -221,7 +245,7 @@ const RestService = {
     },
     // Dealer and sdealers items apis
     getSelectedItems(pageName) {
-        // console.log('page name', pageName);
+        // 
         return axios.get(BASE_URL + 'users/dealer/gtdropdown/' + pageName, RestService.getHeader());
     },
 
@@ -257,7 +281,7 @@ const RestService = {
     //     return axios.put(USER_URL + 'device-status', { id: data }, RestService.getHeader());
     // },
     statusDevice: (data, requireStatus) => {
-        // console.log('at service file status is: ', requireStatus);
+        // 
         return axios.put(USER_URL + 'device-status', { data, requireStatus }, RestService.getHeader());
     },
     getNewCashRequests: () => {
@@ -266,11 +290,11 @@ const RestService = {
         )
     },
     rejectRequest: (request) => {
-        // console.log(device);
+        // 
         return axios.put(USER_URL + 'delete_request/' + request.id, request, RestService.getHeader());
     },
     acceptRequest: (request, pass, dealer_pin) => {
-        // console.log(device);
+        // 
         return axios.put(USER_URL + 'accept_request/' + request.id, { request, pass, dealer_pin }, RestService.getHeader());
     },
     checkPass: (user) => {
