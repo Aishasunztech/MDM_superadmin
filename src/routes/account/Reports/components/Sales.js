@@ -180,37 +180,37 @@ class Sales extends Component {
         })
       });
 
-      saList.map((item, index) => {
-        if(index===0 ){
-          if(lastIndex != 0){
+      // saList.map((item, index) => {
+      //   if(index===0 ){
+      //     if(lastIndex != 0){
 
-            lastIndex = lastIndex + 1
-          } 
-          // else {
-          // }
-        } else {
-          lastIndex = lastIndex + 1;
-        }
-        // else if (lastIndex===0){
+      //       lastIndex = lastIndex + 1
+      //     } 
+      //     // else {
+      //     // }
+      //   } else {
+      //     lastIndex = lastIndex + 1;
+      //   }
+      //   // else if (lastIndex===0){
 
-        // }
-        // lastIndex = (index ===0)? lastIndex +1: (lastIndex === 0): lastIndex + 1: lastIndex + 1;
-        console.log(item);
-        data.push({
-          key: lastIndex,
-          // count: lastIndex,
-          device_id: 'N/A',
-          dealer_pin: item.dealer_pin,
-          // 'device_id': item.device_id ? item.device_id : DEVICE_PRE_ACTIVATION,
-          // 'dealer_pin': item.dealer_pin ? item.dealer_pin : 'N/A',
-          type: 'credits',
-          name: 'credits',
-          // // 'cost_price': item.cost_price ? item.cost_price : 0,
-          sale_price: item.credits ? item.credits : 0, // cost price of admin is sale price of super admin
-          // // 'profit_loss': item.profit_loss ? item.profit_loss : 0,
-          created_at: item.created_at ? item.created_at : 'N/A',
-        })
-      })
+      //   // }
+      //   // lastIndex = (index ===0)? lastIndex +1: (lastIndex === 0): lastIndex + 1: lastIndex + 1;
+      //   console.log(item);
+      //   data.push({
+      //     key: lastIndex,
+      //     // count: lastIndex,
+      //     device_id: 'N/A',
+      //     dealer_pin: item.dealer_pin,
+      //     // 'device_id': item.device_id ? item.device_id : DEVICE_PRE_ACTIVATION,
+      //     // 'dealer_pin': item.dealer_pin ? item.dealer_pin : 'N/A',
+      //     type: 'credits',
+      //     name: 'credits',
+      //     // // 'cost_price': item.cost_price ? item.cost_price : 0,
+      //     sale_price: item.credits ? item.credits : 0, // cost price of admin is sale price of super admin
+      //     // // 'profit_loss': item.profit_loss ? item.profit_loss : 0,
+      //     created_at: item.created_at ? item.created_at : 'N/A',
+      //   })
+      // })
       console.log("data:", data);
     return data;
   };
@@ -307,6 +307,7 @@ class Sales extends Component {
                         <Select.Option value='PACKAGES'>PACKAGES</Select.Option>
                         <Select.Option value='PRODUCTS'>PRODUCTS</Select.Option>
                         <Select.Option value='HARDWARES'>HARDWARES</Select.Option>
+                        <Select.Option value='CREDITS'>CREDITS</Select.Option>
                       </Select>
                     )}
                   </Form.Item>
@@ -406,28 +407,11 @@ class Sales extends Component {
                 </Row>
                 <Table
                   columns={this.columns}
-                  dataSource={this.renderList(this.props.salesReport, this.props.sales_sa_data)}
+                  dataSource={this.renderList(this.props.salesReport)}
                   bordered
                   pagination={false}
                 />
-                {/* <br/> */}
-                {/* <Row>
-                  <Col xs={12} sm={12} md={12} lg={12} xl={12}>
-                    <h3>Sales Credits Report</h3>
-                  </Col>
-                  <Col xs={12} sm={12} md={12} lg={12} xl={12}>
-                    <div className="pull-right">
-                      <Button type="dotted" icon="download" size="small" onClick={() => { generatePDF(columns, rows, 'Sales Report', fileName, this.state.reportFormData) }}>Download PDF</Button>
-                      <Button type="primary" icon="download" size="small" onClick={() => { generateExcel(rows, fileName) }}>Download Excel</Button>
-                    </div>
-                  </Col>
-                </Row> */}
-                {/* <Table
-                  columns={this.columns}
-                  // dataSource={this.renderList(this.props.salesReport)}
-                  bordered
-                  pagination={false}
-                /> */}
+                
               </Fragment>
               : null}
           </Card>
