@@ -18,14 +18,16 @@ class Sales extends Component {
   constructor(props) {
     super(props);
     this.columns = [
+
       {
         title: '#',
         dataIndex: 'count',
         align: 'center',
         className: 'row',
         width: 50,
-        sorter: (a, b) => { return a.count - b.count },
+        // sorter: (a, b) => { return a.count - b.count },
         sortDirections: ['ascend', 'descend'],
+        render: (text, record, index) => ++index,
       },
 
       {
@@ -157,25 +159,59 @@ class Sales extends Component {
     return current && current > moment().endOf('day');
   };
 
-  renderList = (list) => {
+  renderList = (list, saList) => {
 
     let data = [];
-    if (list) {
+    
+      let lastIndex = 0;
       list.map((item, index) => {
+        lastIndex = index;
         data.push({
-          'key': index,
-          'count': ++index,
-          'device_id': item.device_id ? item.device_id : DEVICE_PRE_ACTIVATION,
-          'dealer_pin': item.dealer_pin ? item.dealer_pin : 'N/A',
-          'type': item.type ? item.type : 'N/A',
-          'name': item.name ? item.name : 'N/A',
+          key: index,
+          // count: ++index,
+          device_id: item.device_id ? item.device_id : DEVICE_PRE_ACTIVATION,
+          dealer_pin: item.dealer_pin ? item.dealer_pin : 'N/A',
+          type: item.type ? item.type : 'N/A',
+          name: item.name ? item.name : 'N/A',
           // 'cost_price': item.cost_price ? item.cost_price : 0,
           'sale_price': item.cost_price ? item.cost_price : 0, // cost price of admin is sale price of super admin
           // 'profit_loss': item.profit_loss ? item.profit_loss : 0,
-          'created_at': item.created_at ? item.created_at : 'N/A',
+          created_at: item.created_at ? item.created_at : 'N/A',
         })
       });
-    }
+
+      saList.map((item, index) => {
+        if(index===0 ){
+          if(lastIndex != 0){
+
+            lastIndex = lastIndex + 1
+          } 
+          // else {
+          // }
+        } else {
+          lastIndex = lastIndex + 1;
+        }
+        // else if (lastIndex===0){
+
+        // }
+        // lastIndex = (index ===0)? lastIndex +1: (lastIndex === 0): lastIndex + 1: lastIndex + 1;
+        console.log(item);
+        data.push({
+          key: lastIndex,
+          // count: lastIndex,
+          device_id: 'N/A',
+          dealer_pin: item.dealer_pin,
+          // 'device_id': item.device_id ? item.device_id : DEVICE_PRE_ACTIVATION,
+          // 'dealer_pin': item.dealer_pin ? item.dealer_pin : 'N/A',
+          type: 'credits',
+          name: 'credits',
+          // // 'cost_price': item.cost_price ? item.cost_price : 0,
+          sale_price: item.credits ? item.credits : 0, // cost price of admin is sale price of super admin
+          // // 'profit_loss': item.profit_loss ? item.profit_loss : 0,
+          created_at: item.created_at ? item.created_at : 'N/A',
+        })
+      })
+      console.log("data:", data);
     return data;
   };
 
@@ -370,7 +406,7 @@ class Sales extends Component {
                 </Row>
                 <Table
                   columns={this.columns}
-                  dataSource={this.renderList(this.props.salesReport)}
+                  dataSource={this.renderList(this.props.salesReport, this.props.sales_sa_data)}
                   bordered
                   pagination={false}
                 />
