@@ -12,7 +12,8 @@ const initialState = {
   hardwareData: [],
   invoiceData: [],
   paymentHistoryData: [],
-  salesData: {},
+  salesData: [],
+  sales_sa_data: [],
   productType: ""
 };
 
@@ -53,11 +54,15 @@ export default (state = initialState, action) => {
         hardwareData: action.payload.data
       };
 
-    case SALES_REPORT:
+    case SALES_REPORT:{
+      console.log(SALES_REPORT, action.payload);
       return {
         ...state,
-        salesData: action.payload.data
+        salesData: action.payload.data,
+        sales_sa_data: action.payload.sa_data
       };
+      
+    }
 
     default:
       return state;

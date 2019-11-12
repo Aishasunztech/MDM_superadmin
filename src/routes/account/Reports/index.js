@@ -85,7 +85,7 @@ class Reports extends Component {
                 />
               </TabPane>
 
-              <TabPane tab="PAYMENT HISTORY" key="3">
+              {/* <TabPane tab="PAYMENT HISTORY" key="3">
                 <PaymentHistory
                   whiteLabels={this.props.whiteLabels}
                   dealerList={this.props.dealerList}
@@ -107,7 +107,7 @@ class Reports extends Component {
                   invoiceReport={this.props.invoiceReport}
                   user={this.props.user}
                 />
-              </TabPane>
+              </TabPane> */}
               <TabPane tab="SALES" key="5">
                 <Sales
                   whiteLabels={this.props.whiteLabels}
@@ -116,6 +116,7 @@ class Reports extends Component {
                   translation={this.props.translation}
                   generateSalesReport={this.props.generateSalesReport}
                   salesReport={this.props.salesReport}
+                  sales_sa_data={this.props.sales_sa_data}
                   user={this.props.user}
                 />
               </TabPane>
@@ -146,6 +147,7 @@ var mapStateToProps = ({ settings, reports, auth, account, sidebarMenu }) => {
     hardwareReport: reports.hardwareData,
     invoiceReport: reports.invoiceData,
     salesReport: reports.salesData,
+    sales_sa_data: reports.sales_sa_data,
     paymentHistoryReport: reports.paymentHistoryData,
     productType: reports.productType,
     translation: settings.translation,

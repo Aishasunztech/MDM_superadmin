@@ -76,7 +76,8 @@ class Invoice extends Component {
 
     this.state = {
       reportCard: false,
-      isLabel: false
+      isLabel: false,
+      label: null,
     };
   }
 
@@ -128,10 +129,14 @@ class Invoice extends Component {
   };
 
   renderList = (list) => {
-
+    
     let data = [];
     if (list) {
       list.map((item, index) => {
+       
+        // let link = `${(this.state.label)? this.state.label.api_url: BASE_URL}/users/getFile/${item.file_name}`;
+        let link = `${(this.state.label)? this.state.label.api_url: BASE_URL}/users/getFile/${item.file_name}`;
+        // console.log(link);
         data.push({
           'key': index,
           'count': ++index,
@@ -140,7 +145,8 @@ class Invoice extends Component {
           'dealer_id': item.dealer_id ? item.dealer_id : 'N/A',
           'created_at': item.created_at ? item.created_at : 'N/A',
           'end_user_payment_status': item.end_user_payment_status ? item.end_user_payment_status : 'N/A',
-          'file_name': <a href={BASE_URL + 'users/getFile/' + item.file_name} target="_blank" download><Button type="primary" size="small">Download</Button></a>,
+          // (this.state.label) ? this.state.label.api_url:  + 'users/getFile/' + item.file_name
+          'file_name': <a href={link} target="_blank" download><Button type="primary" size="small">Download</Button></a>,
         })
       });
     }
@@ -174,18 +180,23 @@ class Invoice extends Component {
   handleLabelChange = (e) => {
     if (e == '') {
       this.setState({
-        isLabel: false
+        isLabel: false,
+        label: null
       })
 
     } else {
+      let label = this.props.whiteLabels.find((whiteLabel)=> whiteLabel.id === e);
       this.props.getDealerList(e)
       this.setState({
-        isLabel: true
+        isLabel: true,
+        label: label
       })
     }
   }
 
   render() {
+    console.log(this.props.whiteLabels);
+
     return (
       <Row>
         <Col xs={24} sm={24} md={9} lg={9} xl={9}>

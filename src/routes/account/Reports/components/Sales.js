@@ -68,15 +68,15 @@ class Sales extends Component {
         sortDirections: ['ascend', 'descend'],
       },
 
-      {
-        title: "COST PRICE (CREDITS)",
-        align: "center",
-        className: '',
-        dataIndex: 'cost_price',
-        key: 'cost_price',
-        sorter: (a, b) => { return a.cost_price - b.cost_price },
-        sortDirections: ['ascend', 'descend'],
-      },
+      // {
+      //   title: "COST PRICE (CREDITS)",
+      //   align: "center",
+      //   className: '',
+      //   dataIndex: 'cost_price',
+      //   key: 'cost_price',
+      //   sorter: (a, b) => { return a.cost_price - b.cost_price },
+      //   sortDirections: ['ascend', 'descend'],
+      // },
 
       {
         title: "SALE PRICE (CREDITS)",
@@ -88,15 +88,15 @@ class Sales extends Component {
         sortDirections: ['ascend', 'descend'],
       },
 
-      {
-        title: "PROFIT/LOSS (CREDITS)",
-        align: "center",
-        className: '',
-        dataIndex: 'profit_loss',
-        key: 'profit_loss',
-        sorter: (a, b) => { return a.profit_loss - b.profit_loss },
-        sortDirections: ['ascend', 'descend'],
-      },
+      // {
+      //   title: "PROFIT/LOSS (CREDITS)",
+      //   align: "center",
+      //   className: '',
+      //   dataIndex: 'profit_loss',
+      //   key: 'profit_loss',
+      //   sorter: (a, b) => { return a.profit_loss - b.profit_loss },
+      //   sortDirections: ['ascend', 'descend'],
+      // },
 
       {
         title: "CREATED AT",
@@ -169,9 +169,9 @@ class Sales extends Component {
           'dealer_pin': item.dealer_pin ? item.dealer_pin : 'N/A',
           'type': item.type ? item.type : 'N/A',
           'name': item.name ? item.name : 'N/A',
-          'cost_price': item.cost_price ? item.cost_price : 0,
-          'sale_price': item.sale_price ? item.sale_price : 0,
-          'profit_loss': item.profit_loss ? item.profit_loss : 0,
+          // 'cost_price': item.cost_price ? item.cost_price : 0,
+          'sale_price': item.cost_price ? item.cost_price : 0, // cost price of admin is sale price of super admin
+          // 'profit_loss': item.profit_loss ? item.profit_loss : 0,
           'created_at': item.created_at ? item.created_at : 'N/A',
         })
       });
@@ -374,6 +374,24 @@ class Sales extends Component {
                   bordered
                   pagination={false}
                 />
+                {/* <br/> */}
+                {/* <Row>
+                  <Col xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <h3>Sales Credits Report</h3>
+                  </Col>
+                  <Col xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <div className="pull-right">
+                      <Button type="dotted" icon="download" size="small" onClick={() => { generatePDF(columns, rows, 'Sales Report', fileName, this.state.reportFormData) }}>Download PDF</Button>
+                      <Button type="primary" icon="download" size="small" onClick={() => { generateExcel(rows, fileName) }}>Download Excel</Button>
+                    </div>
+                  </Col>
+                </Row> */}
+                {/* <Table
+                  columns={this.columns}
+                  // dataSource={this.renderList(this.props.salesReport)}
+                  bordered
+                  pagination={false}
+                /> */}
               </Fragment>
               : null}
           </Card>
