@@ -23,7 +23,9 @@ import {
 import React, { Component } from 'react';
 import { Input } from 'antd';
 import { DEVICE_DEALER_ID, DEVICE_DEALER_PIN, DEVICE_DEALER_NAME } from '../../constants/DeviceConstants';
-
+import jsPDF from 'jspdf';
+import XLSX from 'xlsx';
+require('jspdf-autotable')
 
 export function getStatus(status, account_status, unlink_status, device_status, activation_status) {
 
@@ -353,4 +355,36 @@ export function dealerColsWithSearch(searchBar = false, callBack = null) {
   } else {
     return child;
   }
+}
+
+
+export function generatePDF(columns, rows, title, fileName) {
+
+  var doc = new jsPDF('p', 'pt');
+  doc.setFontSize(20);
+  doc.setTextColor(40);
+  doc.setFontStyle('normal');
+  doc.text(title, 10, 20);
+
+  doc.autoTable(columns, rows, {
+    startY: doc.autoTableEndPosY() + 40,
+    margin: { horizontal: 10 },
+    styles: { overflow: 'linebreak' },
+    bodyStyles: { valign: 'top' },
+    columnStyles: { email: { columnWidth: 'wrap' } },
+    theme: "striped"
+  });
+
+  doc.save(fileName+'.pdf');
+}
+
+export function generateExcel(rows, fileName) {
+  var wb          = XLSX.utils.book_new();
+  let ws          = XLSX.utils.json_to_sheet(rows);
+  let fileNameCSV = fileName + ".xlsx";
+  
+  XLSX.utils.book_append_sheet(wb, ws, 'Devices');
+  console.log(wb);
+  XLSX.writeFile(wb, fileNameCSV)
+  
 }

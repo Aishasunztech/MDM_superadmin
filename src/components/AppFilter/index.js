@@ -100,13 +100,16 @@ class AppFilter extends Component {
         // console.log(" Current State", this.props)
         let fullScreenClass1 = "";
         let fullScreenClass2 = "";
+        let fullScreenClass3 = "";
 
         if (this.props.isAddButton === false) {
             fullScreenClass1 = "col-md-3";
             fullScreenClass2 = "col-md-3";
+            fullScreenClass3 = "col-md-3";
         } else {
             fullScreenClass1 = "col-md-3";
             fullScreenClass2 = "col-md-2";
+            fullScreenClass3 = "col-md-2";
         }
 
         // console.log(this.props.options);
@@ -116,6 +119,11 @@ class AppFilter extends Component {
             // className="gutter-example"
             <Card >
                 <Row gutter={16} className="filter_top">
+                    <Col className={`${fullScreenClass3} col-sm-12 col-xs-12 vertical_center`}>
+                        <span className="font_26_vw white_now">
+                            {(this.props.pageHeading) ? this.props.pageHeading : ""}
+                        </span>
+                    </Col>
                     <Col className={`${fullScreenClass1} col-sm-6 col-xs-12`}>
                         <div className="gutter-box">
                             {(this.props.options !== undefined && this.props.options !== null) ?
@@ -187,9 +195,9 @@ class AppFilter extends Component {
                                     />
                                 </Fragment>
                                 : this.props.pageTitle ?
-                                 <h2>{this.props.pageTitle}</h2> 
-                                :
-                                null
+                                    <h2>{this.props.pageTitle}</h2>
+                                    :
+                                    null
                             }
 
                         </div>
@@ -272,23 +280,23 @@ class AppFilter extends Component {
                                                         {this.props.addButtonText}
                                                     </Button>
                                                     : (this.props.setPrice) ?
-                                                    <Button
-                                                        type="primary"
-                                                        disabled={(this.props.disableAddButton === true) ? true : false}
-                                                        style={{ width: '100%' }}
-                                                        onClick={() => this.props.showPricingModal(true)}
-                                                    >
-                                                        {this.props.addButtonText}
-                                                    </Button>
-                                                    :
-                                                    <Button
-                                                        type="primary"
-                                                        disabled={(this.props.disableAddButton === true) ? true : false}
-                                                        style={{ width: '100%' }}
-                                                        onClick={() => this.props.handleUserModal()}
-                                                    >
-                                                        {this.props.addButtonText}
-                                                    </Button>
+                                                        <Button
+                                                            type="primary"
+                                                            disabled={(this.props.disableAddButton === true) ? true : false}
+                                                            style={{ width: '100%' }}
+                                                            onClick={() => this.props.showPricingModal(true)}
+                                                        >
+                                                            {this.props.addButtonText}
+                                                        </Button>
+                                                        :
+                                                        <Button
+                                                            type="primary"
+                                                            disabled={(this.props.disableAddButton === true) ? true : false}
+                                                            style={{ width: '100%' }}
+                                                            onClick={() => this.props.handleUserModal()}
+                                                        >
+                                                            {this.props.addButtonText}
+                                                        </Button>
                                     : null
                             }
                         </div>

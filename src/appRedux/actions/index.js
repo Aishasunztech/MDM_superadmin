@@ -5,4 +5,5 @@ export * from './Tool';
 export * from './Account';
 export * from './SidebarMenu';
 export * from './WhiteLabels';
-export * from './Common'
+export * from './Common';
+export * from './Reports';

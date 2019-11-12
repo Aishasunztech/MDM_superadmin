@@ -3,7 +3,6 @@
 .idea/
 yarn.lock
 node_modules/
-package-lock.json/
 /nbproject/private/
 npm-debug.log
 build/
@@ -13,3 +12,4 @@ build/static/js/runtime~main.fdfcfda2.js
 build/asset-manifest.json
 build/index.html
 build/service-worker.js
+package-lock.json
