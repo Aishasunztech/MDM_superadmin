@@ -64,7 +64,9 @@ class Reports extends Component {
                 <ProductInventory
                   whiteLabels={this.props.whiteLabels}
                   dealerList={this.props.dealerList}
+                  deviceList={this.props.deviceList}
                   getDealerList={this.props.getDealerList}
+                  getDeviceList={this.props.getDeviceList}
                   translation={this.props.translation}
                   productReport={this.props.productReport}
                   productType={this.props.productType}
@@ -77,7 +79,9 @@ class Reports extends Component {
                 <HardwareInventory
                   whiteLabels={this.props.whiteLabels}
                   dealerList={this.props.dealerList}
+                  deviceList={this.props.deviceList}
                   getDealerList={this.props.getDealerList}
+                  getDeviceList={this.props.getDeviceList}
                   translation={this.props.translation}
                   generateHardwareReport={this.props.generateHardwareReport}
                   hardwareReport={this.props.hardwareReport}

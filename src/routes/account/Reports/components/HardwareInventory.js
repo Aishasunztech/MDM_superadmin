@@ -58,7 +58,8 @@ class PaymentHistory extends Component {
 
     this.state = {
       reportCard: false,
-      isLabel: false
+      isLabel: false,
+      deviceList: props.deviceList,
     };
   }
 
@@ -72,6 +73,14 @@ class PaymentHistory extends Component {
   componentDidMount() {
 
   };
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.deviceList !== this.props.deviceList) {
+      this.setState({
+        deviceList: nextProps.deviceList
+      })
+    }
+  }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props.hardwareReport !== prevProps.hardwareReport) {
@@ -138,17 +147,31 @@ class PaymentHistory extends Component {
 
     } else {
       this.props.getDealerList(e)
+      this.props.getDeviceList(e);
       this.setState({
         isLabel: true
       })
     }
   }
 
+  handleDealerChange = (e) => {
+    let devices = [];
+
+    if (e == '') {
+      devices = this.props.deviceList;
+    } else {
+      devices = this.props.deviceList.filter(device => device.dealer_id == e);
+    }
+    this.setState({
+      deviceList: devices
+    })
+  }
+
   render() {
     return (
       <Row>
         <Col xs={24} sm={24} md={9} lg={9} xl={9}>
-          <Card style={{ height: '500px', paddingTop: '50px' }}>
+          <Card style={{ height: '600px', paddingTop: '40px' }}>
             <Form onSubmit={this.handleSubmit} autoComplete="new-password">
 
               <Form.Item
@@ -217,11 +240,38 @@ class PaymentHistory extends Component {
                         },
                       ],
                     })(
-                      <Select style={{ width: '100%' }}>
+                      <Select
+                        style={{ width: '100%' }}
+                        onChange={(e) => this.handleDealerChange(e)}
+                      >
                         <Select.Option value=''>ALL</Select.Option>
                         {/* <Select.Option value={this.props.user.dealerId}>My Report</Select.Option> */}
                         {this.props.dealerList.map((dealer, index) => {
                           return (<Select.Option key={dealer.dealer_id} value={dealer.dealer_id}>{dealer.dealer_name} ({dealer.link_code})</Select.Option>)
+                        })}
+                      </Select>
+                    )}
+                  </Form.Item>
+
+                  <Form.Item
+                    label="Devices"
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 14 }}
+                    width='100%'
+                  >
+                    {this.props.form.getFieldDecorator('device', {
+                      initialValue: '',
+                      rules: [
+                        {
+                          required: false,
+                        },
+                      ],
+                    })(
+                      <Select style={{ width: '100%' }}>
+                        <Select.Option value=''>ALL</Select.Option>
+                        <Select.Option value={DEVICE_PRE_ACTIVATION}>{DEVICE_PRE_ACTIVATION}</Select.Option>
+                        {this.state.deviceList.map((device, index) => {
+                          return (<Select.Option key={device.device_id} value={device.device_id}>{device.device_id}</Select.Option>)
                         })}
                       </Select>
                     )}
@@ -240,6 +290,7 @@ class PaymentHistory extends Component {
                         }],
                     })(
                       <DatePicker
+                        style={{ width: "100%" }}
                         format="DD-MM-YYYY"
                         disabledDate={this.disabledDate}
                       />
@@ -258,6 +309,7 @@ class PaymentHistory extends Component {
                         }],
                     })(
                       <DatePicker
+                        style={{ width: "100%" }}
                         format="DD-MM-YYYY"
                         onChange={this.saveExpiryDate}
                         disabledDate={this.disabledDate}
@@ -281,7 +333,7 @@ class PaymentHistory extends Component {
         </Col>
 
         <Col xs={24} sm={24} md={15} lg={15} xl={15}>
-          <Card style={{ height: '500px', overflow: 'scroll' }}>
+          <Card style={{ height: '600px', overflow: 'scroll' }}>
             {(this.state.reportCard) ?
               <Fragment>
                 <Row>
