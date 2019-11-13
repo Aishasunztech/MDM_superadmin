@@ -8,7 +8,7 @@ import HardwareInventory from './components/HardwareInventory';
 import PaymentHistory from './components/PaymentHistory';
 import Sales from './components/Sales';
 import AppFilter from '../../../components/AppFilter';
-import { getDealerList, generateProductReport, generateInvoiceReport, generateSalesReport, generatePaymentHistoryReport, generateHardwareReport } from '../../../appRedux/actions';
+import { getDealerList, getDeviceList, generateProductReport, generateInvoiceReport, generateSalesReport, generatePaymentHistoryReport, generateHardwareReport } from '../../../appRedux/actions';
 
 import styles from './reporting.css'
 
@@ -112,7 +112,9 @@ class Reports extends Component {
                 <Sales
                   whiteLabels={this.props.whiteLabels}
                   dealerList={this.props.dealerList}
+                  deviceList={this.props.deviceList}
                   getDealerList={this.props.getDealerList}
+                  getDeviceList={this.props.getDeviceList}
                   translation={this.props.translation}
                   generateSalesReport={this.props.generateSalesReport}
                   salesReport={this.props.salesReport}
@@ -152,7 +154,8 @@ var mapStateToProps = ({ settings, reports, auth, account, sidebarMenu }) => {
     productType: reports.productType,
     translation: settings.translation,
     whiteLabels: sidebarMenu.whiteLabels,
-    dealerList: account.dealerList
+    dealerList: account.dealerList,
+    deviceList: account.deviceList
   };
 };
 
@@ -163,7 +166,8 @@ function mapDispatchToProps(dispatch) {
     generateSalesReport: generateSalesReport,
     generatePaymentHistoryReport: generatePaymentHistoryReport,
     generateHardwareReport: generateHardwareReport,
-    getDealerList: getDealerList
+    getDealerList: getDealerList,
+    getDeviceList: getDeviceList
   }, dispatch);
 };
 

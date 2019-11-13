@@ -172,6 +172,7 @@ export const WRITE_IMEI = 'WRITE_IMEI';
 
 export const GET_SALE_LIST = 'GET_SALE_LIST';
 export const GET_DEALER_LIST = 'GET_DEALER_LIST';
+export const GET_DEVICE_LIST = 'GET_DEVICE_LIST';
 
 
 // Policy consts
