@@ -117,7 +117,7 @@ class Sales extends Component {
       reportFormData: {},
       isLabel: false,
       dealer: null,
-      deviceList: [],
+      deviceList: props.deviceList,
     };
   }
 
@@ -153,10 +153,8 @@ class Sales extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps){
-    // alert("hello");
-    // console.log(nextProps.deviceList.length, prevProps.deviceList.length);
-    if(nextProps.deviceList !== this.props.deviceList){
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.deviceList !== this.props.deviceList) {
       this.setState({
         deviceList: nextProps.deviceList
       })
@@ -232,26 +230,26 @@ class Sales extends Component {
       })
     }
   }
+
   handleDealerChange = (e) => {
-    if(e == ''){
-      // this.setState({
-      //   deviceList: this.props.deviceList
-      // })
+    let devices = [];
+
+    if (e == '') {
+      devices = this.props.deviceList;
     } else {
-      let devices = this.props.deviceList.filter(device=> device.dealer_id==e);
-      console.log(devices);
-      this.setState({
-        deviceList: devices
-      })
-      
+      devices = this.props.deviceList.filter(device => device.dealer_id == e);
     }
+    this.setState({
+      deviceList: devices
+    })
   }
+
   render() {
     console.log(this.state.deviceList);
     return (
       <Row>
         <Col xs={24} sm={24} md={9} lg={9} xl={9}>
-          <Card style={{ height: '500px', paddingTop: '50px' }}>
+          <Card style={{ height: '600px', paddingTop: '40px' }}>
             <Form onSubmit={this.handleSubmit} autoComplete="new-password">
 
               <Form.Item
@@ -369,6 +367,7 @@ class Sales extends Component {
                         }],
                     })(
                       <DatePicker
+                        style={{ width: "100%" }}
                         format="DD-MM-YYYY"
                         disabledDate={this.disabledDate}
                       />
@@ -387,6 +386,7 @@ class Sales extends Component {
                         }],
                     })(
                       <DatePicker
+                        style={{ width: "100%" }}
                         format="DD-MM-YYYY"
                         onChange={this.saveExpiryDate}
                         disabledDate={this.disabledDate}
@@ -411,7 +411,7 @@ class Sales extends Component {
 
         </Col>
         <Col xs={24} sm={24} md={15} lg={15} xl={15}>
-          <Card style={{ height: '500px', overflow: 'scroll' }}>
+          <Card style={{ height: '600px', overflow: 'scroll' }}>
             {(this.state.reportCard) ?
               <Fragment>
                 <Row>
