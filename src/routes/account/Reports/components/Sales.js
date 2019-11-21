@@ -12,7 +12,7 @@ import {
 } from "../../../../constants/Application";
 var columns;
 var rows;
-var fileName = 'sales_' + new Date().getTime()
+var fileName = 'sales_' + new Date().getTime();
 
 class Sales extends Component {
   constructor(props) {
@@ -70,16 +70,6 @@ class Sales extends Component {
         sortDirections: ['ascend', 'descend'],
       },
 
-      // {
-      //   title: "COST PRICE (CREDITS)",
-      //   align: "center",
-      //   className: '',
-      //   dataIndex: 'cost_price',
-      //   key: 'cost_price',
-      //   sorter: (a, b) => { return a.cost_price - b.cost_price },
-      //   sortDirections: ['ascend', 'descend'],
-      // },
-
       {
         title: "SALE PRICE (CREDITS)",
         align: "center",
@@ -89,16 +79,6 @@ class Sales extends Component {
         sorter: (a, b) => { return a.sale_price - b.sale_price },
         sortDirections: ['ascend', 'descend'],
       },
-
-      // {
-      //   title: "PROFIT/LOSS (CREDITS)",
-      //   align: "center",
-      //   className: '',
-      //   dataIndex: 'profit_loss',
-      //   key: 'profit_loss',
-      //   sorter: (a, b) => { return a.profit_loss - b.profit_loss },
-      //   sortDirections: ['ascend', 'descend'],
-      // },
 
       {
         title: "CREATED AT",
@@ -124,6 +104,10 @@ class Sales extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
+      values.dealerObject = this.props.dealerList.find((dealer, index) => dealer.dealer_id === values.dealer);
+      if (!values.dealerObject && values.dealer) {
+        values.dealerObject = { link_code: this.props.user.dealer_pin };
+      }
       this.state.reportFormData = values;
       this.props.generateSalesReport(values)
     });
@@ -133,22 +117,53 @@ class Sales extends Component {
     if (this.props.salesReport !== prevProps.salesReport) {
       this.setState({
         reportCard: true
-      })
+      });
 
       rows = this.props.salesReport.map((item, index) => {
         return {
-          count: ++index,
-          device_id: item.device_id ? item.device_id : DEVICE_PRE_ACTIVATION,
-          dealer_pin: item.dealer_pin ? item.dealer_pin : 'N/A',
-          created_at: item.created_at ? item.created_at : 'N/A',
+          'key': index,
+          'count': ++index,
+          'device_id': item.device_id ? item.device_id : DEVICE_PRE_ACTIVATION,
+          'dealer_pin': item.dealer_pin ? item.dealer_pin : 'N/A',
+          'type': item.type ? item.type : 'N/A',
+          'name': item.name ? item.name : 'N/A',
+          'cost_price': item.cost_price ? item.cost_price : 0,
+          'sale_price': item.sale_price ? item.sale_price : 0,
+          'profit_loss': item.profit_loss ? item.profit_loss : 0,
         }
       });
 
       columns = [
-        { title: '#', dataKey: "count" },
-        { title: "DEVICE ID", dataKey: "device_id" },
-        { title: "USER PAYMENT STATUS", dataKey: "end_user_payment_status" },
-        { title: "GENERATED AT", dataKey: "created_at" },
+        {
+          title: '#', dataKey: 'count',
+        },
+
+        {
+          title: "DEVICE ID", dataKey: 'device_id',
+        },
+
+        { title: "DEALER ID", dataKey: 'dealer_pin' },
+
+        {
+          title: "TYPE", dataKey: 'type',
+        },
+
+        {
+          title: "NAME", dataKey: 'name',
+        },
+
+        {
+          title: "COST PRICE (CREDITS)", dataKey: 'cost_price',
+        },
+
+        {
+          title: "SALE PRICE (CREDITS)", dataKey: 'sale_price',
+        },
+
+        {
+          title: "PROFIT/LOSS (CREDITS)", dataKey: 'profit_loss',
+        },
+
       ];
     }
   }
@@ -191,30 +206,6 @@ class Sales extends Component {
 
     return data;
   };
-
-  createPDF = () => {
-    var columns = [
-      { title: '#', dataKey: "count" },
-      { title: "INVOICE ID", dataKey: "invoice_id" },
-      { title: "DEVICE ID", dataKey: "device_id" },
-      { title: "USER PAYMENT STATUS", dataKey: "end_user_payment_status" },
-      { title: "GENERATED AT", dataKey: "created_at" },
-    ];
-
-    var rows = this.props.salesReport.map((item, index) => {
-      return {
-        count: ++index,
-        invoice_id: item.inv_no ? item.inv_no : 'N/A',
-        device_id: item.device_id ? item.device_id : DEVICE_PRE_ACTIVATION,
-        dealer_pin: item.dealer_pin ? item.dealer_pin : 'N/A',
-        created_at: item.created_at ? item.created_at : 'N/A',
-        end_user_payment_status: item.end_user_payment_status ? item.end_user_payment_status : 'N/A',
-      }
-    });
-
-    let fileName = 'invoice_' + new Date().getTime();
-
-  }
 
   handleLabelChange = (e) => {
     if (e == '') {
@@ -323,7 +314,6 @@ class Sales extends Component {
                         onChange={(e) => this.handleDealerChange(e)}
                       >
                         <Select.Option value=''>ALL</Select.Option>
-                        {/* <Select.Option value={this.props.user.dealerId}>My Report</Select.Option> */}
                         {this.props.dealerList.map((dealer, index) => {
                           return (<Select.Option key={dealer.dealer_id} value={dealer.dealer_id}>{dealer.dealer_name} ({dealer.link_code})</Select.Option>)
                         })}
@@ -395,9 +385,9 @@ class Sales extends Component {
                     )}
                   </Form.Item>
                   <Form.Item className="edit_ftr_btn"
-                    wrapperCol={{
-                      xs: { span: 22, offset: 0 },
-                    }}
+                             wrapperCol={{
+                               xs: { span: 22, offset: 0 },
+                             }}
                   >
                     <Button key="back" type="button" onClick={this.handleReset}>CANCEL</Button>
                     <Button type="primary" htmlType="submit" onClick={this.handleSubmit}>GENERATE</Button>

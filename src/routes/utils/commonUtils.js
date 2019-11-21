@@ -435,25 +435,25 @@ export function generatePDF(columns, rows, title, fileName, formData) {
 
   } else if (title === 'Sales Report') {
 
-    doc.setFontSize(12);
-    doc.setTextColor(40);
-    doc.setFontStyle('normal');
-    doc.text('Total Cost: ' + (formData.saleInfo.totalCost) ? 'Total Cost: ' + formData.saleInfo.totalCost : 'Total Cost: ' + 0, y, x += 15);
+    // doc.setFontSize(12);
+    // doc.setTextColor(40);
+    // doc.setFontStyle('normal');
+    // doc.text('Total Cost: ' + (formData.saleInfo.totalCost) ? 'Total Cost: ' + formData.saleInfo.totalCost : 'Total Cost: ' + 0, y, x += 15);
+
+    // doc.setFontSize(12);
+    // doc.setTextColor(40);
+    // doc.setFontStyle('normal');
+    // doc.text('Total Cost: ' + (formData.saleInfo.totalSale) ? 'Total Sale: ' + formData.saleInfo.totalSale : 'Total Sale: ' + 0, y, x += 15);
+
+    // doc.setFontSize(12);
+    // doc.setTextColor(40);
+    // doc.setFontStyle('normal');
+    // doc.text('Total Cost: ' + (formData.saleInfo.totalProfitLoss) ? 'Profit/Loss: ' + formData.saleInfo.totalProfitLoss : 'Profit/Loss: ' + 0, y, x += 15);
 
     doc.setFontSize(12);
     doc.setTextColor(40);
     doc.setFontStyle('normal');
-    doc.text('Total Cost: ' + (formData.saleInfo.totalSale) ? 'Total Sale: ' + formData.saleInfo.totalSale : 'Total Sale: ' + 0, y, x += 15);
-
-    doc.setFontSize(12);
-    doc.setTextColor(40);
-    doc.setFontStyle('normal');
-    doc.text('Total Cost: ' + (formData.saleInfo.totalProfitLoss) ? 'Profit/Loss: ' + formData.saleInfo.totalProfitLoss : 'Profit/Loss: ' + 0, y, x += 15);
-
-    doc.setFontSize(12);
-    doc.setTextColor(40);
-    doc.setFontStyle('normal');
-    doc.text((formData.saleInfo.product) ? 'Product Type(s): ' + formData.saleInfo.product : 'Product Type(s): All', y, x += 15);
+    doc.text((formData.product) ? 'Product Type(s): ' + formData.product : 'Product Type(s): All', y, x += 15);
 
   }
 

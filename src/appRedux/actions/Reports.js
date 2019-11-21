@@ -93,7 +93,6 @@ export function generateHardwareReport(data) {
       spinloading: true
     });
 
-    // RestService.generateReport(data, "hardware").then((response) => {
     RestService.generateHardwareReport(data).then((response) => {
       if (RestService.checkAuth(response.data)) {
         dispatch({

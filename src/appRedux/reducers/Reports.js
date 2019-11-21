@@ -57,7 +57,6 @@ export default (state = initialState, action) => {
       };
 
     case SALES_REPORT:{
-      console.log(SALES_REPORT, action.payload);
       return {
         ...state,
         salesData: action.payload.data,
