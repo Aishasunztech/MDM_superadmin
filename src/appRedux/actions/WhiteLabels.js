@@ -11,7 +11,12 @@ import {
     GET_PACKAGES,
     GET_ALL_WHITE_LABELS,
     SAVE_BACKUP,
-    START_BACKUP_LOADING
+    START_BACKUP_LOADING,
+    SAVE_HARDWARE,
+    GET_HARDWARES,
+    DELETE_PAKAGE,
+    DELETE_HARDWARE,
+    EDIT_HARDWARE
 } from "../../constants/ActionTypes"
 
 import RestService from '../services/RestServices';
@@ -37,7 +42,7 @@ export const getAllWhiteLabels = () => {
 }
 
 export const getWhiteLabelInfo = (id) => {
-    // console.log('id',id)
+    // 
     return (dispatch) => {
         RestService.getWhiteLabelInfo(id).then((response) => {
             if (RestService.checkAuth(response.data)) {
@@ -80,7 +85,7 @@ export const resetPrice = () => {
 
 
 export const getWhitelabelBackups = (id) => {
-    // console.log('id',id)
+    // 
     return (dispatch) => {
         RestService.whitelabelBackups(id).then((response) => {
             if (RestService.checkAuth(response.data)) {
@@ -133,6 +138,83 @@ export const getPackages = (data) => {
 
     }
 }
+export const getHardwares = (data) => {
+    return (dispatch) => {
+        RestService.getHardwares(data).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                dispatch({
+                    type: GET_HARDWARES,
+                    response: response.data
+                })
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+        });
+
+    }
+}
+
+export const editHardware = (data) => {
+    // console.log('edit record: ', data);
+    return (dispatch) => {
+        RestService.editHardware(data).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                dispatch({
+                    type: EDIT_HARDWARE,
+                    payload: response.data,
+                    response: data
+                })
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+        });
+
+    }
+}
+
+export const deletePakage = (data) => {
+    // console.log('deletePakage acion id :', data);
+    return (dispatch) => {
+        RestService.deletePakage(data).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                dispatch({
+                    type: DELETE_PAKAGE,
+                    payload: response.data,
+                    response: data
+                })
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+        });
+
+    }
+}
+
+export const deleteHardware = (data) => {
+    // console.log('deleteHardware acion id :', data);
+    return (dispatch) => {
+        RestService.deleteHardware(data).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                dispatch({
+                    type: DELETE_HARDWARE,
+                    payload: response.data,
+                    response: data
+                })
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+        });
+
+    }
+}
 
 export const editWhiteLabelInfo = (data) => {
     return (dispatch) => {
@@ -172,6 +254,23 @@ export const setPackage = (data) => {
 
     }
 }
+export const saveHardware = (data) => {
+    return (dispatch) => {
+        RestService.saveHardware(data).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                dispatch({
+                    type: SAVE_HARDWARE,
+                    response: response.data
+                })
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+        });
+
+    }
+}
 
 
 export const saveIDPrices = (data) => {
@@ -198,7 +297,7 @@ export const saveBackup = (id) => {
         })
         RestService.saveBackup(id).then((response) => {
             if (RestService.checkAuth(response.data)) {
-                console.log(response, 'response in backup save')
+
                 dispatch({
                     type: SAVE_BACKUP,
                     response: response.data

@@ -168,12 +168,12 @@ class EditApkForm extends Component {
                             logo = info.file.response.fileName;
                         }
                         successMessage({
-                            title: 'file added Successfully '
+                            title: info.file.response.msg
                         })
                     }
                     else {
                         errorMessage({
-                            title: 'Error While Uploading'
+                            title: info.file.response.msg
                         })
                         disableLogo = false;
                     }
@@ -214,12 +214,12 @@ class EditApkForm extends Component {
                             // console.log('apk name', apk);
                         }
                         successMessage({
-                            title: 'file added Successfully '
+                            title: info.file.response.msg
                         })
                     }
                     else {
                         errorMessage({
-                            title: 'Error While Uploading'
+                            title: info.file.response.msg
                         })
                         disableApk = false;
                     }

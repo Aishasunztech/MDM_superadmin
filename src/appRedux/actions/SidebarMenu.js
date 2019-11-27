@@ -66,10 +66,10 @@ export function rejectRequest(request) {
         });
     }
 }
-export function acceptRequest(request ,pass,dealer_pin) {
+export function acceptRequest(request, pass, dealer_pin) {
     return (dispatch) => {
         // console.log(device)
-        RestService.acceptRequest(request,pass,dealer_pin).then((response) => {
+        RestService.acceptRequest(request, pass, dealer_pin).then((response) => {
             if (RestService.checkAuth(response.data)) {
                 console.log("REsponse", response.data);
                 dispatch({

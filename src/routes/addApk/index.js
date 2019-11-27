@@ -220,7 +220,7 @@ class AddApk extends Component {
                             logo = info.file.response.fileName;
                         }
                         success({
-                            title: 'file added Successfully ',
+                            title: info.file.response.msg,
                         });
 
                         _this.setState({ disableLogo: true });
@@ -228,7 +228,7 @@ class AddApk extends Component {
                     }
                     else {
                         error({
-                            title: 'Error While Uploading',
+                            title: info.file.response.msg,
                         });
                         fileList = []
                         _this.setState({ disableLogo: false });
@@ -279,7 +279,7 @@ class AddApk extends Component {
 
                         }
                         success({
-                            title: 'file added Successfully ',
+                            title: info.file.response.msg,
                         });
                         // console.log(size);
                         _this.setState({ disableApk: true });
@@ -287,7 +287,7 @@ class AddApk extends Component {
                     }
                     else {
                         error({
-                            title: 'Error While Uploading',
+                            title: info.file.response.msg,
                         });
                         fileList2 = []
                         _this.setState({ disableApk: false });

@@ -7,7 +7,8 @@ import WhiteLabels from "./whitelabels/index";
 import Device from "./devices/index";
 import AutoUpdate from './autoUpdate/index';
 import SetPrices from './whitelabels/components/pricesPackages/index';
-import Billing from "./account/billing/index.js"
+import Billing from "./account/billing/index.js";
+import Reports from "./account/Reports/index.js";
 
 import FourOFour from "./404/";
 
@@ -62,6 +63,7 @@ const AppRoutes = ({ match, whiteLabels }) => {
                     <SetPrices
                       {...routeProps}
                       id={whiteLabel.id}
+                      whiteLabelName={whiteLabel.name}
                     />
                   )
                 }
@@ -89,6 +91,11 @@ const AppRoutes = ({ match, whiteLabels }) => {
           exact
           path={`${match.url}account/billing`}
           component={Billing}
+        />
+        <Route
+          exact
+          path={`${match.url}account/reports`}
+          component={Reports}
         />
         <Route
           exact

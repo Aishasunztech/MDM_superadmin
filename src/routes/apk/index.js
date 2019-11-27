@@ -11,7 +11,6 @@ import CircularProgress from "components/CircularProgress/index";
 
 import { getApkList, changeAppStatus, deleteApk, editApk } from "../../appRedux/actions/Apk";
 import { getDropdown, postDropdown, postPagination, getPagination } from '../../appRedux/actions/Common';
-// import {getDeviceList} from 
 
 import AppFilter from "../../components/AppFilter";
 

@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { Table, Avatar, Switch, Button, Icon, Card, Modal, Tabs } from "antd";
 import { checkValue } from '../../../utils/commonUtils';
 import styles from '../billing.css'
+import { ADMIN } from '../../../../constants/Constants';
 
 // import { Tabs } from 'antd';
 
@@ -17,6 +18,7 @@ export default class SalesList extends Component {
             searchText: '',
             columns: [],
             pagination: 10,
+            tabselect: '1'
         };
         this.renderList = this.renderList.bind(this);
     }
@@ -49,7 +51,7 @@ export default class SalesList extends Component {
                 'label': checkValue(item.label),
                 'name': checkValue(item.dealer_name),
                 'account_type': checkValue(item.account_type),
-                'dealer_pin': checkValue(item.dealer_pin),
+                'dealer_pin': (item.dealer_name === ADMIN) ? "N/A" : checkValue(item.dealer_pin),
                 'credits_purchased': checkValue(item.credits),
                 'inv_no': checkValue(item.inv_no),
                 'status': checkValue(item.status),
@@ -63,17 +65,24 @@ export default class SalesList extends Component {
     }
     render() {
         return (
-            <Table
-                size="middle"
-                className='devices'
-                bordered
-                scroll={{ x: 300 }}
-                columns={this.state.columns}
-                rowKey='row_key'
-                align='center'
-                pagination={{ pageSize: this.state.pagination, size: "midddle" }}
-                dataSource={this.renderList(this.props.salesList)}
-            />
+            <div>
+                {/* <Tabs defaultActiveKey="1" type='card' className="dev_tabs" activeKey={this.state.tabselect} onChange={this.handleChangeTab}>
+                    <TabPane tab="PRODUCT SALES" key="1" />
+                    <TabPane tab="HARDWARE SALES" key="2" />
+                    <TabPane tab="PACKAGE SALES" key="3" />
+                </Tabs> */}
+                <Table
+                    size="middle"
+                    className='devices'
+                    bordered
+                    scroll={{ x: 300 }}
+                    columns={this.state.columns}
+                    rowKey='row_key'
+                    align='center'
+                    pagination={{ pageSize: this.state.pagination, size: "midddle" }}
+                    dataSource={this.renderList(this.props.salesList)}
+                />
+            </div>
         )
     }
 }

@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Button, Tabs, Table, Card, Input, Icon } from 'antd';
+import { Button, Tabs, Table, Card, Input, Icon, Modal } from 'antd';
 import {
     getPrices, resetPrice, setPackage,
-    saveIDPrices, setPrice, getPackages
+    saveIDPrices, setPrice, getPackages, saveHardware, getHardwares, deletePakage, deleteHardware, editHardware
 } from '../../../../appRedux/actions/WhiteLabels';
 import { sim, chat, pgp, vpn } from '../../../../constants/Constants';
 import AppFilter from '../../../../components/AppFilter/index';
@@ -18,16 +18,27 @@ import {
 } from '../../../../constants/LabelConstants';
 import { isArray } from "util";
 import WhiteLabelPricing from './WhiteLabelPricing';
+import EditHardware from './components/EditHardware';
+const confirm = Modal.confirm
 let packagesCopy = [];
+let hardwaresCopy = [];
 class Prices extends Component {
     constructor(props) {
         super(props)
         this.columns = [
             {
-                title: "Sr.#",
+                title: "#",
                 dataIndex: 'sr',
                 key: 'sr',
                 align: "center",
+                render: (text, record, index) => ++index,
+            },
+            {
+                title: "ACTION",
+                dataIndex: 'action',
+                align: 'center',
+                className: 'row',
+                key: "action"
             },
             {
                 title: (
@@ -120,7 +131,8 @@ class Prices extends Component {
                         dataIndex: 'pkg_price',
                         key: 'pkg_price',
                         // ...this.getColumnSearchProps('status'),
-                        sorter: (a, b) => { return a.pkg_price - b.pkg_price },
+                        // sorter: (a, b) => { return a.pkg_price - b.pkg_price },
+                        sorter: (a, b) => { return a.pkg_price.localeCompare(b.pkg_price) },
 
                         sortDirections: ['ascend', 'descend'],
                     }
@@ -155,12 +167,90 @@ class Prices extends Component {
                 ]
             }
         ];
+        this.hardwareColumns = [
+            {
+                title: "#",
+                dataIndex: 'sr',
+                key: 'sr',
+                align: "center",
+                render: (text, record, index) => ++index,
+            },
+            {
+                title: "ACTION",
+                dataIndex: 'action',
+                align: 'center',
+                className: 'row',
+                // width: 800,
+            },
+            {
+                title: (
+                    <Input.Search
+                        name="name"
+                        key="name"
+                        id="name"
+                        className="search_heading"
+                        onKeyUp={this.handleHDWSearch}
+                        autoComplete="new-password"
+                        placeholder='HARDWARE NAME'
+                    />
+                ),
+                dataIndex: 'name',
+                className: '',
+                children: [
+                    {
+                        title: 'HARDWARE NAME',
+                        align: "center",
+                        className: '',
+                        dataIndex: 'name',
+                        key: 'name',
+                        sorter: (a, b) => { return a.name.localeCompare(b.name) },
+
+                        sortDirections: ['ascend', 'descend'],
+                    }
+                ]
+            },
+
+            {
+                title: (
+                    <Input.Search
+                        name="price"
+                        key="price"
+                        id="price"
+                        className="search_heading"
+                        onKeyUp={this.handleHDWSearch}
+                        autoComplete="new-password"
+                        placeholder='HADWARE PRICE (CREDITS)'
+                    />
+                ),
+                dataIndex: 'price',
+                className: '',
+                children: [
+                    {
+                        title: 'HADWARE PRICE (CREDITS)',
+                        align: "center",
+                        className: '',
+                        dataIndex: 'price',
+                        key: 'price',
+                        // ...this.getColumnSearchProps('status'),
+                        // sorter: (a, b) => { return a.price - b.price },
+                        sorter: (a, b) => { return a.price.localeCompare(b.price) },
+
+                        sortDirections: ['ascend', 'descend'],
+                    }
+                ]
+            }
+        ];
         this.state = {
             pricing_modal: false,
             innerTabData: this.props.prices ? this.props.prices[sim] : {},
             tabSelected: sim,
             packages: [],
-            copyStatus: true
+            copyStatus: true,
+            copyHDWStatus: true,
+            isPriceChanged: this.props.isPriceChanged,
+            hardwares: [],
+            visible: false,
+            editHardwareObj: {}
         }
     }
 
@@ -207,9 +297,53 @@ class Prices extends Component {
         }
     }
 
+    handleHDWSearch = (e) => {
+
+        let dumyHardwares = [];
+        if (this.state.copyHDWStatus) {
+            hardwaresCopy = this.state.hardwares;
+            this.state.copyHDWStatus = false;
+        }
+
+        if (e.target.value.length) {
+
+            hardwaresCopy.forEach((dealer) => {
+
+                if (dealer[e.target.name] !== undefined) {
+                    if ((typeof dealer[e.target.name]) === 'string') {
+                        if (dealer[e.target.name].toUpperCase().includes(e.target.value.toUpperCase())) {
+                            dumyHardwares.push(dealer);
+                        }
+                    } else if (dealer[e.target.name] != null) {
+                        if (dealer[e.target.name].toString().toUpperCase().includes(e.target.value.toUpperCase())) {
+                            dumyHardwares.push(dealer);
+                        }
+                        if (isArray(dealer[e.target.name])) {
+                            if (dealer[e.target.name][0]['total'].includes(e.target.value)) {
+                                dumyHardwares.push(dealer);
+                            }
+                        }
+                    } else {
+                    }
+                } else {
+                    dumyHardwares.push(dealer);
+                }
+            });
+
+            this.setState({
+                hardwares: dumyHardwares
+            })
+        } else {
+            this.setState({
+                hardwares: hardwaresCopy
+            })
+        }
+    }
+
     componentDidMount() {
         this.props.getPrices(this.props.id);
         this.props.getPackages(this.props.id)
+        this.props.getHardwares(this.props.id)
         this.setState({
             prices: this.props.prices,
             innerTabData: this.props.prices ? this.props.prices[sim] : {},
@@ -218,7 +352,7 @@ class Prices extends Component {
     }
 
     // componentDidUpdate(prevProps) {
-    //     console.log('did update', this.props.packages)
+    //     
     //     if (this.props !== prevProps) {
     //         this.setState({
     //             prices: this.props.prices,
@@ -234,6 +368,8 @@ class Prices extends Component {
             this.setState({
                 prices: nextProps.prices,
                 packages: nextProps.packages,
+                isPriceChanged: nextProps.isPriceChanged,
+                hardwares: nextProps.hardwares,
                 copyStatus: true
             })
         }
@@ -246,22 +382,74 @@ class Prices extends Component {
     }
 
 
-    renderList = () => {
-        // console.log('this.state.packages', this.state.packages)
-        if (this.state.packages) {
-            return this.state.packages.map((item, index) => {
-                return {
-                    key: item.id,
-                    sr: ++index,
-                    pkg_name: item.pkg_name,
-                    pkg_price: "$" + item.pkg_price,
-                    pkg_term: item.pkg_term,
-                    pkg_features: item.pkg_features ? JSON.parse(item.pkg_features) : {},
-                    pkg_expiry: item.pkg_expiry
-                }
-            })
+    editHardware = (hd) => {
+        this.setState({ visible: true, editHardwareObj: hd })
+    }
+
+    handleCancel = () => {
+        this.setState({ visible: false })
+    }
+
+    deleteHardware = (item) => {
+        let _this = this;
+
+        confirm({
+            title: <div>Are You Sure To Delete <span style={{ textDecoration: 'underline' }}>{item.name}</span> Hardware ?</div>,
+            onOk() {
+                _this.props.deleteHardware(item.id)
+            },
+            onCancel() {
+            },
+        })
+    }
+
+    deletePakage = (item) => {
+        let _this = this;
+
+        confirm({
+            title: <div>Are You Sure To Delete <span style={{ textDecoration: 'underline' }}>{item.pkg_name}</span> Package ?</div>,
+            onOk() {
+                _this.props.deletePakage(item.id)
+            },
+            onCancel() {
+            },
+        })
+    }
+
+
+    renderList = (type) => {
+        if (type === 'packages') {
+            // 
+            if (this.state.packages) {
+                return this.state.packages.map((item, index) => {
+                    return {
+                        key: item.id,
+                        action: <Button type="danger" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => { this.deletePakage(item) }}>DELETE </Button>,
+                        pkg_name: item.pkg_name,
+                        pkg_price: "$" + item.pkg_price,
+                        pkg_term: item.pkg_term,
+                        pkg_features: item.pkg_features ? JSON.parse(item.pkg_features) : {},
+                        pkg_expiry: item.pkg_expiry
+                    }
+                })
+            }
+        } else if (type === "hardware") {
+            if (this.state.hardwares) {
+
+                return this.state.hardwares.map((item, index) => {
+                    return {
+                        key: item.id,
+                        action: <Fragment>
+                            <Button type="primary" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => this.editHardware(item)} >EDIT</Button>
+                            <Button type="danger" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => { this.deleteHardware(item) }}>DELETE </Button>
+                        </Fragment>,
+                        name: item.name,
+                        price: item.price
+                    }
+                })
+            }
         }
-        // console.log(this.props.packages, 'packages are')
+        // 
     }
 
     customExpandIcon(props) {
@@ -283,20 +471,20 @@ class Prices extends Component {
 
             for (var key in data) {
                 if (data.hasOwnProperty(key)) {
-                    // console.log(key + " -> " + data[key]);
-                    let name=  key;
-                   name = name.charAt(0).toUpperCase() + name.slice(1);
+                    // 
+                    let name = key;
+                    name = name.charAt(0).toUpperCase() + name.slice(1);
                     let dump = {
-                        name: name.replace(/_/g,' '), 
+                        name: name.replace(/_/g, ' '),
                         f_value: data[key] ? "yes" : 'No',
-                        rowKey: key
+                        rowKey: name
                     }
 
                     features.push(dump)
                 }
             }
         }
-        console.log(features, 'featues arte')
+        // 
         return features
     }
 
@@ -337,7 +525,7 @@ class Prices extends Component {
         })
     }
     render() {
-        console.log(this.props.packages, 'comoing prop are')
+        // 
         return (
             <div>
                 <div>
@@ -357,6 +545,7 @@ class Prices extends Component {
                         // handleCheckChange={this.handleCheckChange}
                         // handlePagination={this.handlePagination}
                         handleComponentSearch={this.handleComponentSearch}
+                        pageTitle={this.props.whiteLabelName}
 
                     />
 
@@ -400,11 +589,11 @@ class Prices extends Component {
                             <Tabs.TabPane tab="Packages" key="2">
                                 <Table
                                     columns={this.columns}
-                                    dataSource={this.renderList()}
+                                    dataSource={this.renderList("packages")}
                                     expandIcon={(props) => this.customExpandIcon(props)}
                                     bordered
                                     expandIconAsCell={false}
-                                    expandIconColumnIndex={3}
+                                    expandIconColumnIndex={4}
                                     expandedRowRender={record => {
                                         if (Object.keys(record.pkg_features).length !== 0 && record.pkg_features.constructor === Object) {
                                             return (
@@ -431,6 +620,14 @@ class Prices extends Component {
 
                                 />
                             </Tabs.TabPane>
+                            <Tabs.TabPane tab="Hardware" key="3">
+                                <Table
+                                    columns={this.hardwareColumns}
+                                    dataSource={this.renderList("hardware")}
+                                    bordered
+                                    pagination={false}
+                                />
+                            </Tabs.TabPane>
                         </Tabs>
 
                     </Card>
@@ -439,16 +636,30 @@ class Prices extends Component {
                 <WhiteLabelPricing
                     showPricingModal={this.showPricingModal}
                     pricing_modal={this.state.pricing_modal}
-                    // LabelName={this.props.whiteLabelInfo.name}
+                    LabelName={this.props.whiteLabelName}
                     saveIDPrices={this.props.saveIDPrices}
                     // whitelabel_id={this.props.whiteLabelInfo.id}
                     setPackage={this.props.setPackage}
                     prices={this.props.prices}
                     setPrice={this.props.setPrice}
-                    isPriceChanged={this.props.isPriceChanged}
+                    saveHardware={this.props.saveHardware}
+                    isPriceChanged={this.state.isPriceChanged}
                     resetPrice={this.props.resetPrice}
                     whitelabel_id={this.props.id}
                 />
+
+                <Modal
+                    title="Edit Hardware"
+                    visible={this.state.visible}
+                    maskClosable={false}
+                    footer={false}
+                >
+                    <EditHardware
+                        editHardwareObj={this.state.editHardwareObj}
+                        editHardwareFunc={this.props.editHardware}
+                        handleCancel={this.handleCancel}
+                    />
+                </Modal>
             </div>
         )
     }
@@ -461,18 +672,23 @@ function mapDispatchToProps(dispatch) {
         setPackage: setPackage,
         resetPrice: resetPrice,
         setPrice: setPrice,
-        getPackages: getPackages
+        getPackages: getPackages,
+        saveHardware: saveHardware,
+        getHardwares: getHardwares,
+        deletePakage: deletePakage,
+        deleteHardware: deleteHardware,
+        editHardware: editHardware
     }, dispatch)
 }
 
 
 var mapStateToProps = ({ whiteLabels }, otherprops) => {
-    // console.log(whiteLabels.packages, 'props are for packages')
+    // 
     return {
         prices: whiteLabels.prices,
         packages: whiteLabels.packages,
         isPriceChanged: whiteLabels.isPriceChanged,
-
+        hardwares: whiteLabels.hardwares
     }
 }
 

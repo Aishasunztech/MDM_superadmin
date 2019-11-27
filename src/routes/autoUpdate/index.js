@@ -9,11 +9,11 @@ import { Redirect } from 'react-router-dom'
 // import {Route, Switch} from "react-router-dom";
 // import Apk from "../../containers/ApkList"
 import CircularProgress from "components/CircularProgress/index";
-//import {getDevicesList} from '../../appRedux/actions/Devices';
+
 
 import { getApkList, changeAppStatus, deleteApk, editApk, addApk, resetUploadForm } from "../../appRedux/actions/Apk";
 import { getDropdown, postDropdown, postPagination, getPagination } from '../../appRedux/actions/Common';
-// import {getDeviceList} from 
+
 
 import AppFilter from "../../components/AppFilter";
 import AddApk from '../addApk/index'

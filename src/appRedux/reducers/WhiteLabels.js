@@ -9,9 +9,14 @@ import {
     SET_PRICE,
     RESET_PRICE,
     GET_PACKAGES,
+    GET_HARDWARES,
     GET_ALL_WHITE_LABELS,
     SAVE_BACKUP,
-    START_BACKUP_LOADING
+    START_BACKUP_LOADING,
+    SAVE_HARDWARE,
+    DELETE_PAKAGE,
+    DELETE_HARDWARE,
+    EDIT_HARDWARE
 } from "../../constants/ActionTypes";
 
 import { message, Modal } from 'antd';
@@ -38,6 +43,7 @@ const initialState = {
         vpn: {}
     },
     packages: [],
+    hardwares: [],
     packagesCopy: [],
     backupLoading: false,
 };
@@ -53,7 +59,7 @@ export default (state = initialState, action) => {
             }
         }
         case GET_WHITE_LABEL_INFO: {
-            // console.log('get labels',action.payload);
+            // 
             return {
                 ...state,
                 whiteLabel: action.payload
@@ -72,14 +78,14 @@ export default (state = initialState, action) => {
         }
 
         case WHITE_LABEL_BACKUPS: {
-            // console.log('reducer is called', action.payload.data)
+            // 
             return {
                 ...state,
                 whitelabelBackups: action.payload.data
             }
         }
         case GET_PRICES: {
-            // console.log(action.response, 'response of get prices')
+            // 
 
             return {
                 ...state,
@@ -90,7 +96,7 @@ export default (state = initialState, action) => {
         }
 
         case GET_PACKAGES: {
-            // console.log(action.response, 'response of get prices')
+            // 
 
             return {
                 ...state,
@@ -100,12 +106,81 @@ export default (state = initialState, action) => {
             }
         }
 
+        case GET_HARDWARES: {
+            return {
+                ...state,
+                hardwares: action.response.data,
+            }
+        }
+
+        case DELETE_PAKAGE: {
+            // console.log(state.packages, 'DELETE_PAKAGE reducer', action.response);
+            let copyPkgs = state.packages;
+            if (action.payload.status) {
+                Modal.success({ title: action.payload.msg })
+                copyPkgs = state.packages.filter((pkg) => pkg.id !== action.response)
+            }
+            else {
+                Modal.error({ title: action.payload.msg })
+            }
+
+            return {
+                ...state,
+                packages: copyPkgs,
+            }
+        }
+
+
+        case DELETE_HARDWARE: {
+            // console.log(state.hardwares, 'DELETE_HARDWARE reducer', action.response);
+            let copyHdw = state.hardwares;
+            if (action.payload.status) {
+                Modal.success({ title: action.payload.msg })
+                copyHdw = state.hardwares.filter((hd) => hd.id !== action.response)
+            }
+            else {
+                Modal.error({ title: action.payload.msg })
+            }
+
+            return {
+                ...state,
+                hardwares: copyHdw,
+            }
+        }
+
+        case EDIT_HARDWARE: {
+            console.log(state.hardwares, 'EDIT_HARDWARE reducer', action.response);
+            let copyHdw = state.hardwares;
+
+            if (action.payload.status) {
+                let updateData = action.response;
+                Modal.success({ title: action.payload.msg })
+
+                let index = copyHdw.findIndex((hd) => hd.id === updateData.id);
+                copyHdw[index] = updateData;
+                copyHdw[index].name = updateData.new_name;
+                copyHdw[index].price = updateData.new_price;
+                console.log("copyHdw ", copyHdw)
+            }
+            else {
+                Modal.error({ title: action.payload.msg })
+            }
+            return {
+                ...state,
+                hardwares: [...copyHdw],
+            }
+        }
+
         case SET_PRICE: {
             let copyPrices = state.prices;
             let price_for = action.payload.price_for;
             let field = action.payload.field;
+            let value = action.payload.value;
+
+            // 
+            value = +value;
             if (price_for && price_for !== '') {
-                copyPrices[price_for][field] = action.payload.value;
+                copyPrices[price_for][field] = value.toString();
             }
             return {
                 ...state,
@@ -116,7 +191,7 @@ export default (state = initialState, action) => {
         }
 
         case SAVE_ID_PRICES: {
-            // console.log(action.response, 'response form save id prices')
+            // 
             if (action.response.status) {
                 success({
                     title: action.response.msg
@@ -135,7 +210,7 @@ export default (state = initialState, action) => {
         }
 
         case RESET_PRICE: {
-            // console.log('reset prices')
+            // 
             return {
                 ...state,
                 prices: JSON.parse(JSON.stringify(state.pricesCopy)),
@@ -144,7 +219,7 @@ export default (state = initialState, action) => {
         }
 
         case SAVE_PACKAGE: {
-            console.log(action.response, 'response form save id prices')
+
             if (action.response.status) {
                 success({
                     title: action.response.msg
@@ -163,6 +238,26 @@ export default (state = initialState, action) => {
             }
         }
 
+        case SAVE_HARDWARE: {
+
+            if (action.response.status) {
+                success({
+                    title: action.response.msg
+                })
+                if (action.response.data.length) {
+                    state.hardwares.push(action.response.data[0])
+                }
+            } else {
+                error({
+                    title: action.response.msg
+                })
+            }
+            return {
+                ...state,
+                hardwares: [...state.hardwares]
+            }
+        }
+
 
         case EDIT_WHITE_LABEL_INFO: {
             if (action.payload.status) {
@@ -175,11 +270,11 @@ export default (state = initialState, action) => {
                 });
             }
 
-            return{
+            return {
                 ...state,
             }
         }
-        
+
 
         case SAVE_BACKUP: {
             let backups = state.whitelabelBackups
