@@ -48,13 +48,18 @@ export const WHITE_LABEL_BACKUPS = 'WHITE_LABEL_BACKUPS';
 export const GET_FILE = 'GET_FILE';
 export const SAVE_ID_PRICES = 'SAVE_ID_PRICES';
 export const SAVE_PACKAGE = 'SAVE_PACKAGE';
+export const SAVE_HARDWARE = 'SAVE_HARDWARE';
 export const GET_PRICES = 'GET_PRICES';
 export const SET_PRICE = 'SET_PRICE';
 export const RESET_PRICE = 'RESET_PRICE';
 export const SAVE_BACKUP = 'SAVE_BACKUP';
 export const START_BACKUP_LOADING = 'START_BACKUP_LOADING';
 
+export const DELETE_PAKAGE = 'DELETE_PAKAGE'
+export const DELETE_HARDWARE = 'DELETE_HARDWARE'
 export const GET_PACKAGES = 'GET_PACKAGES'
+export const GET_HARDWARES = 'GET_HARDWARES'
+export const EDIT_HARDWARE = 'EDIT_HARDWARE'
 export const REJECT_REQUEST = 'REJECT_REQUEST'
 export const ACCEPT_REQUEST = 'ACCEPT_REQUEST'
 export const RESTART_WHITELABEL = 'RESTART_WHITELABEL';
@@ -167,6 +172,7 @@ export const WRITE_IMEI = 'WRITE_IMEI';
 
 export const GET_SALE_LIST = 'GET_SALE_LIST';
 export const GET_DEALER_LIST = 'GET_DEALER_LIST';
+export const GET_DEVICE_LIST = 'GET_DEVICE_LIST';
 
 
 // Policy consts
@@ -199,3 +205,13 @@ export const IN_PROCESS = 'IN_PROCESS';
 // WHITE LABELS CONST
 
 export const GET_WHITE_LABEL_INFO = 'GET_WHITE_LABEL_INFO';
+
+//Reporting
+export const PRODUCT_REPORT         = 'PRODUCT_REPORT';
+export const INVOICE_REPORT         = 'INVOICE_REPORT';
+export const PAYMENT_HISTORY_REPORT = 'PAYMENT_HISTORY_REPORT';
+export const HARDWARE_REPORT        = 'HARDWARE_REPORT';
+export const SALES_REPORT           = 'SALES_REPORT';
+
+export const LATEST_PAYMENT_HISTORY = 'LATEST_PAYMENT_HISTORY';
+export const GET_OVERDUE_DETAILS    = 'GET_OVERDUE_DETAILS';

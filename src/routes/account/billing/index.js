@@ -13,7 +13,7 @@ import {
     getSalesList,
     getDealerList
 } from '../../../appRedux/actions/';
-import {Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import { componentSearch, getDealerStatus, titleCase } from '../../utils/commonUtils';
 
@@ -437,9 +437,9 @@ class Billing extends Component {
                                             columns={this.state.salesColumns}
                                         />
                                     </TabPane>
-                                    <TabPane tab="INVENTORY" key="2" >
-                                    </TabPane>
-                                    <TabPane tab="REPORTS" key="3" >
+                                    {/* <TabPane tab="INVENTORY" key="2" >
+                                    </TabPane> */}
+                                    {/* <TabPane tab="REPORTS" key="3" >
                                         <Reports
                                             whiteLabels={this.props.whiteLabels}
                                             dealerList={this.props.dealerList}
@@ -452,7 +452,7 @@ class Billing extends Component {
                                             dealerList={this.props.dealerList}
                                             getDealerList={this.props.getDealerList}
                                         />
-                                    </TabPane>
+                                    </TabPane> */}
                                 </Tabs>
 
 
@@ -522,7 +522,7 @@ class Billing extends Component {
 
 
 var mapStateToProps = ({ account, sidebarMenu }) => {
-    // console.log(account.dealerList);
+    console.log(account.dealerList);
     return {
         salesList: account.salesList,
         whiteLabels: sidebarMenu.whiteLabels,

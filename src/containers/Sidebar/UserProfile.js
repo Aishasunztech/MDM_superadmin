@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { logout, } from "appRedux/actions/Auth";
 import socketIOClient from "socket.io-client";
 import { BASE_URL } from "../../constants/Application"
+import { ADMIN } from "../../constants/Constants";
 const confirm = Modal.confirm;
 const columns = [
   { title: 'Action', dataIndex: 'action', key: 'action', align: "center" },
@@ -89,7 +90,7 @@ class AcceptPasswordForm extends Component {
                 sm: { span: 24, offset: 0 },
               }}
             >
-              <h4>PLEASE ENTER PASSWORD <br />THAT WE SENT TO<br />YOUR EMAIL.</h4>
+              <h4>VERIFICATION PASS <br /> HAS BEEN SENT <br />TO YOUR EMAIL</h4>
             </Form.Item>
 
             <Form.Item
@@ -213,7 +214,7 @@ class UserProfile extends Component {
             onClick={() => { this.acceptRequest(request) }}>
             ACCEPT
                 </Button></div>,
-        dealer_pin: request.dealer_pin !== '' ? request.dealer_pin : "N/A",
+        dealer_pin: (request.dealer_pin !== '' && request.dealer_name !== ADMIN) ? request.dealer_pin : "N/A",
         dealer_name: request.dealer_name ? `${request.dealer_name}` : "N/A",
         label: request.label ? `${request.label}` : "N/A",
         credits: request.credits ? `${request.credits}` : "N/A",

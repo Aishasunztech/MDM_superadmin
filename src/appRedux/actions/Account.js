@@ -16,7 +16,8 @@ import {
     DELETE_IDS,
     SYNC_IDS,
     GET_SALE_LIST,
-    GET_DEALER_LIST
+    GET_DEALER_LIST,
+    GET_DEVICE_LIST
 } from "../../constants/ActionTypes"
 
 
@@ -266,6 +267,7 @@ export function getSalesList() {
         });
     }
 }
+
 export function getDealerList(labelId) {
     return (dispatch) => {
         // alert("hello");
@@ -274,6 +276,26 @@ export function getDealerList(labelId) {
                 // console.log('response', response.data);
                 dispatch({
                     type: GET_DEALER_LIST,
+                    payload: response.data.data
+                });
+
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                });
+            }
+        });
+    }
+}
+
+export function getDeviceList(labelId) {
+    return (dispatch) => {
+        // alert("hello");
+        RestService.getDeviceList(labelId).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                console.log('response', response.data);
+                dispatch({
+                    type: GET_DEVICE_LIST,
                     payload: response.data.data
                 });
 

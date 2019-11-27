@@ -13,7 +13,8 @@ import {
     DELETE_IDS,
     SYNC_IDS,
     GET_SALE_LIST,
-    GET_DEALER_LIST
+    GET_DEALER_LIST,
+    GET_DEVICE_LIST
 } from "../../constants/ActionTypes";
 import { message, Modal } from "antd";
 
@@ -34,7 +35,8 @@ const initialState = {
     duplicate_data_type: '',
     newData: [],
     salesList: [],
-    dealerList: []
+    dealerList: [],
+    deviceList: []
 };
 
 export default (state = initialState, action) => {
@@ -207,6 +209,12 @@ export default (state = initialState, action) => {
             }
         }
 
+        case GET_DEVICE_LIST: {
+            return {
+                ...state,
+                deviceList: action.payload
+            }
+        }
         default:
             return state;
     }

@@ -68,7 +68,7 @@ class Account extends Component {
 
         if (this.props.password_verified) {
             this.props.reset_password_varified();
-            this.props.history.push({pathname:"/account/billing", state: { id: this.props.user.id }})
+            this.props.history.push({ pathname: "/account/billing", state: { id: this.props.user.id } })
             return (
                 null
             )
@@ -108,10 +108,10 @@ class Account extends Component {
                             <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                                 <div>
                                     {/* <Link to="/account/billing"> */}
-                                    <a 
-                                    // onClick={() => 
-                                    //     this.toggleLockModal()} 
-                                        >
+                                    <a
+                                        onClick={() =>
+                                            this.toggleLockModal()}
+                                    >
                                         <Card className="manage_ac" style={{ borderRadius: 12 }}>
                                             <div>
                                                 <h2 style={{ textAlign: "center" }}>Billing</h2>
@@ -170,6 +170,41 @@ class Account extends Component {
                                         />
 
                                     </div>
+                                </div>
+                            </Col>
+
+                            <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+                                <div>
+                                    <Link to={"/account/reports"}>
+                                        <Card style={{ borderRadius: 12 }} className="manage_ac">
+                                            <div className="profile_table image_1">
+                                                <Fragment>
+                                                    <Row>
+                                                        <div className="col-md-12 ac_card">
+                                                            <h2 style={{ textAlign: "center" }}> Reports</h2>
+                                                            <Divider className="mb-0" />
+                                                            <Row style={{ padding: '12px 0 0px' }}>
+                                                                <Col span={8} className="" style={{ textAlign: "center" }}>
+                                                                    <Icon type="dollar" className="and_icon" />
+
+                                                                </Col>
+                                                                <Col span={16} style={{ paddingLeft: 0 }} className="crd_txt">
+                                                                    <div className="crd_txt">
+                                                                        <h5><span className="diamond_icon">&#9670;</span>Run Reports on Sales, Inventory, Profit/loss, Payment history, etc...</h5>
+                                                                        <h5><span className="diamond_icon">&#9670;</span>Ability to select date range for each reports</h5>
+                                                                        <h5><span className="diamond_icon">&#9670;</span>Run reports on individual Dealers/SDealers</h5>
+                                                                        <h5><span className="diamond_icon">&#9670;</span>Export Reports in PDF format</h5>
+                                                                        <h5 className="more_txt">and more...</h5>
+                                                                    </div>
+                                                                </Col>
+                                                            </Row>
+                                                        </div>
+                                                    </Row>
+                                                </Fragment>
+                                            </div>
+                                        </Card>
+                                        <Button type="primary" size="small" className="open_btn">Open</Button>
+                                    </Link>
                                 </div>
                             </Col>
                         </Row>
