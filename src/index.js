@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 
 import NextApp from './NextApp';
 
+import {style} from './consoleStyle.js';
+
 import registerServiceWorker from './registerServiceWorker';
 // Add this import:
 import {AppContainer} from 'react-hot-loader';
