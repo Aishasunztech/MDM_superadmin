@@ -95,12 +95,13 @@ class PaymentHistory extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
+      values.dealerObject = this.props.dealerList.find((dealer, index) => dealer.dealer_id === values.dealer);
+      if (!values.dealerObject && values.dealer) {
+        values.dealerObject = { link_code: this.props.user.dealer_pin };
+      }
+      this.state.reportFormData = values;
       this.props.generatePaymentHistoryReport(values)
     });
-  };
-
-  componentDidMount() {
-
   };
 
   componentWillReceiveProps(nextProps) {
@@ -252,7 +253,6 @@ class PaymentHistory extends Component {
                         onChange={(e) => this.handleDealerChange(e)}
                       >
                         <Select.Option value=''>ALL</Select.Option>
-                        {/* <Select.Option value={this.props.user.dealerId}>My Report</Select.Option> */}
                         {this.props.dealerList.map((dealer, index) => {
                           return (<Select.Option key={dealer.dealer_id} value={dealer.dealer_id}>{dealer.dealer_name} ({dealer.link_code})</Select.Option>)
                         })}
@@ -370,9 +370,9 @@ class PaymentHistory extends Component {
                     )}
                   </Form.Item>
                   <Form.Item className="edit_ftr_btn"
-                    wrapperCol={{
-                      xs: { span: 22, offset: 0 },
-                    }}
+                             wrapperCol={{
+                               xs: { span: 22, offset: 0 },
+                             }}
                   >
                     <Button key="back" type="button" onClick={this.handleReset}>CANCEL</Button>
                     <Button type="primary" htmlType="submit">GENERATE</Button>
@@ -395,7 +395,7 @@ class PaymentHistory extends Component {
                   </Col>
                   <Col xs={12} sm={12} md={12} lg={12} xl={12}>
                     <div className="pull-right">
-                      <Button type="dotted" icon="download" size="small" onClick={() => { generatePDF(columns, rows, 'Payment History Report', fileName) }}>Download PDF</Button>
+                      <Button type="dotted" icon="download" size="small" onClick={() => { generatePDF(columns, rows, 'Payment History Report', fileName, this.state.reportFormData) }}>Download PDF</Button>
                       <Button type="primary" icon="download" size="small" onClick={() => { generateExcel(rows, fileName) }}>Download Excel</Button>
                     </div>
                   </Col>

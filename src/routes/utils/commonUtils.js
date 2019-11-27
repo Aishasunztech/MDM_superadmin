@@ -22,6 +22,7 @@ import {
 
 import React, { Component } from 'react';
 import { Input } from 'antd';
+import moment from 'moment';
 import { DEVICE_DEALER_ID, DEVICE_DEALER_PIN, DEVICE_DEALER_NAME } from '../../constants/DeviceConstants';
 import jsPDF from 'jspdf';
 import XLSX from 'xlsx';
@@ -357,34 +358,159 @@ export function dealerColsWithSearch(searchBar = false, callBack = null) {
   }
 }
 
+export function getDateFromTimestamp(value) {
+  function convert(str) {
+    var month, day, year;
+    var date = new Date(str),
+      month = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
 
-export function generatePDF(columns, rows, title, fileName) {
 
-  var doc = new jsPDF('p', 'pt');
-  doc.setFontSize(20);
+    var formatedDate = [date.getFullYear(), month, day].join("/");
+    return formatedDate;
+  }
+
+  let date = new Date(value);
+  let formattedDate = convert(date)
+  return moment(formattedDate).format('DD-MMM-YYYY');
+}
+
+export function convertTimestampToDate(value) {
+  function convert(str) {
+    return moment(str).format('DD-MM-YYYY')
+  }
+
+  let formattedDate = convert(value)
+  return formattedDate;
+}
+
+export function generatePDF(columns, rows, title, fileName, formData) {
+
+  let y = 15;
+  let x = 20;
+  var doc = new jsPDF('p', 'pt', [610, 842]);
+  doc.setFontSize(16);
   doc.setTextColor(40);
   doc.setFontStyle('normal');
-  doc.text(title, 10, 20);
+  doc.text(title, y, x);
+
+  if (title === 'Product Inventory Report') {
+
+    doc.setFontSize(12);
+    doc.setTextColor(40);
+    doc.setFontStyle('normal');
+    doc.text((formData.productType) ? 'Product: ' + formData.productType : 'Product: All', y, x += 15);
+
+    doc.setFontSize(12);
+    doc.setTextColor(40);
+    doc.setFontStyle('normal');
+    doc.text((formData.type) ? 'Type: ' + formData.type : 'Type: All', y, x += 15);
+
+  } else if (title === 'Hardware Inventory Report') {
+
+    doc.setFontSize(12);
+    doc.setTextColor(40);
+    doc.setFontStyle('normal');
+    doc.text((formData.hardware) ? 'Hardware: ' + formData.hardware : 'Hardware: All', y, x += 15);
+
+  } else if (title === 'Payment History Report') {
+
+    doc.setFontSize(12);
+    doc.setTextColor(40);
+    doc.setFontStyle('normal');
+    doc.text((formData.type) ? formData.type : 'Product Type: All', y, x += 15);
+
+    doc.setFontSize(12);
+    doc.setTextColor(40);
+    doc.setFontStyle('normal');
+    doc.text((formData.transaction_type) ? 'Transaction Type: ' + formData.transaction_type : 'Transaction Type: All', y, x += 15);
+
+
+  } else if (title === 'Invoice Report') {
+
+    doc.setFontSize(12);
+    doc.setTextColor(40);
+    doc.setFontStyle('normal');
+    doc.text((formData.payment_status) ? 'Payment Status: ' + formData.payment_status : 'Payment Status: All', y, x += 15);
+
+  } else if (title === 'Sales Report') {
+
+    // doc.setFontSize(12);
+    // doc.setTextColor(40);
+    // doc.setFontStyle('normal');
+    // doc.text('Total Cost: ' + (formData.saleInfo.totalCost) ? 'Total Cost: ' + formData.saleInfo.totalCost : 'Total Cost: ' + 0, y, x += 15);
+
+    // doc.setFontSize(12);
+    // doc.setTextColor(40);
+    // doc.setFontStyle('normal');
+    // doc.text('Total Cost: ' + (formData.saleInfo.totalSale) ? 'Total Sale: ' + formData.saleInfo.totalSale : 'Total Sale: ' + 0, y, x += 15);
+
+    // doc.setFontSize(12);
+    // doc.setTextColor(40);
+    // doc.setFontStyle('normal');
+    // doc.text('Total Cost: ' + (formData.saleInfo.totalProfitLoss) ? 'Profit/Loss: ' + formData.saleInfo.totalProfitLoss : 'Profit/Loss: ' + 0, y, x += 15);
+
+    doc.setFontSize(12);
+    doc.setTextColor(40);
+    doc.setFontStyle('normal');
+    doc.text((formData.product) ? 'Product Type(s): ' + formData.product : 'Product Type(s): All', y, x += 15);
+
+  }
+
+  doc.setFontSize(12);
+  doc.setTextColor(40);
+  doc.setFontStyle('normal');
+  doc.text((formData.dealerObject) ? 'Dealer(s): ' + formData.dealerObject.link_code : 'Dealer(s): All', y, x += 15);
+
+
+  doc.setFontSize(12);
+  doc.setTextColor(40);
+  doc.setFontStyle('normal');
+  doc.text((formData.device) ? 'Device(s): ' + formData.device : 'Device(s): All', y, x += 15);
+
+
+  if (!formData.from && !formData.to) {
+    doc.text('Duration: All', y, x += 15);
+  } else {
+    if (formData.from) {
+      doc.setFontSize(12);
+      doc.setTextColor(40);
+      doc.setFontStyle('normal');
+      doc.text('From: ' + convertTimestampToDate(formData.from), y, x += 15);
+    }
+
+    if (formData.to) {
+      doc.setFontSize(12);
+      doc.setTextColor(40);
+      doc.setFontStyle('normal');
+      doc.text('To: ' + convertTimestampToDate(formData.to), y, x += 15);
+    }
+  }
+
+  doc.setFontSize(12);
+  doc.setTextColor(40);
+  doc.setFontStyle('normal');
+  doc.text('Total Records: ' + rows.length, y, x += 15);
+
 
   doc.autoTable(columns, rows, {
-    startY: doc.autoTableEndPosY() + 40,
+    startY: doc.autoTableEndPosY() + x + 15,
     margin: { horizontal: 10 },
     styles: { overflow: 'linebreak' },
     bodyStyles: { valign: 'top' },
-    columnStyles: { email: { columnWidth: 'wrap' } },
     theme: "striped"
   });
 
-  doc.save(fileName+'.pdf');
+  doc.save(fileName + '.pdf');
 }
 
 export function generateExcel(rows, fileName) {
   var wb          = XLSX.utils.book_new();
   let ws          = XLSX.utils.json_to_sheet(rows);
   let fileNameCSV = fileName + ".xlsx";
-  
+
   XLSX.utils.book_append_sheet(wb, ws, 'Devices');
   console.log(wb);
   XLSX.writeFile(wb, fileNameCSV)
-  
+
 }

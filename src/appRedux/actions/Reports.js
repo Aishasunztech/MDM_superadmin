@@ -5,7 +5,8 @@ import {
   PAYMENT_HISTORY_REPORT,
   INVALID_TOKEN,
   SPIN_lOADING,
-  SALES_REPORT
+  SALES_REPORT,
+  GRACE_DAYS_REPORT,
 } from "../../constants/ActionTypes";
 
 import RestService from '../services/RestServices';
@@ -92,7 +93,6 @@ export function generateHardwareReport(data) {
       spinloading: true
     });
 
-    // RestService.generateReport(data, "hardware").then((response) => {
     RestService.generateHardwareReport(data).then((response) => {
       if (RestService.checkAuth(response.data)) {
         dispatch({
@@ -119,6 +119,28 @@ export function generateSalesReport(data) {
       if (RestService.checkAuth(response.data)) {
         dispatch({
           type: SALES_REPORT,
+          payload: response.data
+        });
+      } else {
+        dispatch({
+          type: INVALID_TOKEN
+        });
+      }
+    });
+
+  };
+}
+
+export function generateGraceDaysReport(data) {
+  return (dispatch) => {
+    dispatch({
+      type: SPIN_lOADING,
+    });
+
+    RestService.generateGraceDaysReport(data).then((response) => {
+      if (RestService.checkAuth(response.data)) {
+        dispatch({
+          type: GRACE_DAYS_REPORT,
           payload: response.data
         });
       } else {
