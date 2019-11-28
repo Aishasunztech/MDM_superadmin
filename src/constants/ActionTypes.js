@@ -100,7 +100,7 @@ export const PERMSSION_SAVED = 'PERMSSION_SAVED';
 export const RESET_UPLOAD_FORM = 'RESET_UPLOAD_FORM';
 
 
-// Connect Device 
+// Connect Device
 export const DELETE_IDS = 'DELETE_IDS';
 export const SYNC_IDS = 'SYNC_IDS';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
@@ -212,6 +212,7 @@ export const INVOICE_REPORT         = 'INVOICE_REPORT';
 export const PAYMENT_HISTORY_REPORT = 'PAYMENT_HISTORY_REPORT';
 export const HARDWARE_REPORT        = 'HARDWARE_REPORT';
 export const SALES_REPORT           = 'SALES_REPORT';
+export const GRACE_DAYS_REPORT      = 'GRACE_DAYS_REPORT';
 
 export const LATEST_PAYMENT_HISTORY = 'LATEST_PAYMENT_HISTORY';
 export const GET_OVERDUE_DETAILS    = 'GET_OVERDUE_DETAILS';

@@ -44,7 +44,7 @@ const RestService = {
     },
 
     authLogIn: (data) => {
-        // 
+        //
         localStorage.setItem('id', data.id);
         localStorage.setItem('email', data.email);
         localStorage.setItem('token', data.token);
@@ -57,7 +57,7 @@ const RestService = {
     },
     setUserData: (data) => {
 
-        // 
+        //
         localStorage.setItem('email', data.email);
         localStorage.setItem('id', data.id);
         localStorage.setItem('name', data.name);
@@ -65,7 +65,7 @@ const RestService = {
         localStorage.setItem('firstName', data.first_name);
         localStorage.setItem('lastName', data.last_name);
 
-        // localStorage.setItem('type', data.user.user_type);        
+        // localStorage.setItem('type', data.user.user_type);
         localStorage.setItem('two_factor_auth', data.two_factor_auth);
 
 
@@ -100,7 +100,7 @@ const RestService = {
     checkApkName: (name, apk_id = '') => {
         return axios.post(BASE_URL + 'users/checkApkName', { name, apk_id }, RestService.getHeader());
     },
-    // 
+    //
     getAllowedComponents: () => {
 
     },
@@ -154,17 +154,17 @@ const RestService = {
     },
 
     getPrices: (whitelabel_id) => {
-        // 
+        //
         return axios.get(USER_URL + 'get-prices/' + whitelabel_id, RestService.getHeader());
     },
 
     getPackages: (whitelabel_id) => {
-        // 
+        //
         return axios.get(USER_URL + 'get-packages/' + whitelabel_id, RestService.getHeader());
     },
 
     getHardwares: (whitelabel_id) => {
-        // 
+        //
         return axios.get(USER_URL + 'get-Hardwares/' + whitelabel_id, RestService.getHeader());
     },
 
@@ -204,20 +204,20 @@ const RestService = {
     },
 
     getChatIDs: () => {
-        // 
+        //
         return axios.get(BASE_URL + 'users/get_chat_ids', RestService.getHeader());
     },
     getPGPEmails: () => {
         return axios.get(BASE_URL + 'users/get_pgp_emails', RestService.getHeader());
     },
 
-    // get ids with label 
+    // get ids with label
     getSimIDsLabel: (labelID) => {
-        // 
+        //
         return axios.post(BASE_URL + 'users/get_label_sim_ids', { labelID }, RestService.getHeader());
     },
     getChatIDsLabel: (labelID) => {
-        // 
+        //
         return axios.post(BASE_URL + 'users/get_label_chat_ids', { labelID }, RestService.getHeader());
     },
     getPGPEmailsLabel: (labelID) => {
@@ -245,7 +245,7 @@ const RestService = {
     },
     // Dealer and sdealers items apis
     getSelectedItems(pageName) {
-        // 
+        //
         return axios.get(BASE_URL + 'users/dealer/gtdropdown/' + pageName, RestService.getHeader());
     },
 
@@ -281,7 +281,7 @@ const RestService = {
     //     return axios.put(USER_URL + 'device-status', { id: data }, RestService.getHeader());
     // },
     statusDevice: (data, requireStatus) => {
-        // 
+        //
         return axios.put(USER_URL + 'device-status', { data, requireStatus }, RestService.getHeader());
     },
     getNewCashRequests: () => {
@@ -290,11 +290,11 @@ const RestService = {
         )
     },
     rejectRequest: (request) => {
-        // 
+        //
         return axios.put(USER_URL + 'delete_request/' + request.id, request, RestService.getHeader());
     },
     acceptRequest: (request, pass, dealer_pin) => {
-        // 
+        //
         return axios.put(USER_URL + 'accept_request/' + request.id, { request, pass, dealer_pin }, RestService.getHeader());
     },
     checkPass: (user) => {
@@ -351,6 +351,11 @@ const RestService = {
     //sales report
     generateSalesReport: (data) => {
         return axios.post(USER_URL + 'billing/reports/sales', data, RestService.getHeader());
+    },
+
+    //Grace Days report
+    generateGraceDaysReport: (data) => {
+      return axios.post(USER_URL + 'billing/reports/grace-days', data, RestService.getHeader());
     },
 }
 export default RestService;

@@ -1,33 +1,29 @@
 import React, { Component, Fragment } from 'react'
 import { Table, Avatar, Switch, Button, Icon, Card, Modal, Tabs, Col, Input, Form, Row, DatePicker, Select } from "antd";
 import moment from 'moment';
-import styles from '../reporting.css'
-import { generatePDF, generateExcel } from "../../../utils/commonUtils";
 import {
   DEVICE_PRE_ACTIVATION
 } from "../../../../constants/Constants";
-
-import {
-  BASE_URL
-} from "../../../../constants/Application";
+import styles from '../reporting.css'
+import { generateExcel, generatePDF, getDateFromTimestamp } from "../../../utils/commonUtils";
+var fileName = 'grace_days_' + new Date().getTime();
 var columns;
 var rows;
-var fileName = 'sales_' + new Date().getTime();
 
-class Sales extends Component {
+
+class PaymentHistory extends Component {
   constructor(props) {
     super(props);
-    this.columns = [
 
+    this.columns = [
       {
         title: '#',
         dataIndex: 'count',
         align: 'center',
         className: 'row',
         width: 50,
-        // sorter: (a, b) => { return a.count - b.count },
+        sorter: (a, b) => { return a.count - b.count },
         sortDirections: ['ascend', 'descend'],
-        render: (text, record, index) => ++index,
       },
 
       {
@@ -41,7 +37,7 @@ class Sales extends Component {
       },
 
       {
-        title: "DEALER ID",
+        title: "DEALER PIN",
         align: "center",
         className: '',
         dataIndex: 'dealer_pin',
@@ -51,32 +47,32 @@ class Sales extends Component {
       },
 
       {
-        title: "TYPE",
+        title: "GRACE DAYS",
         align: "center",
         className: '',
-        dataIndex: 'type',
-        key: 'type',
-        sorter: (a, b) => { return a.type.localeCompare(b.type) },
+        dataIndex: 'grace_days',
+        key: 'grace_days',
+        sorter: (a, b) => { return a.grace_days - b.grace_days },
         sortDirections: ['ascend', 'descend'],
       },
 
       {
-        title: "NAME",
+        title: "FROM",
         align: "center",
         className: '',
-        dataIndex: 'name',
-        key: 'name',
-        sorter: (a, b) => { return a.name.localeCompare(b.name) },
+        dataIndex: 'from_date',
+        key: 'from_date',
+        sorter: (a, b) => { return a.from_date.localeCompare(b.from_date) },
         sortDirections: ['ascend', 'descend'],
       },
 
       {
-        title: "SALE PRICE (CREDITS)",
+        title: "TO",
         align: "center",
         className: '',
-        dataIndex: 'sale_price',
-        key: 'sale_price',
-        sorter: (a, b) => { return a.sale_price - b.sale_price },
+        dataIndex: 'to_date',
+        key: 'to_date',
+        sorter: (a, b) => { return a.to_date.localeCompare(b.to_date) },
         sortDirections: ['ascend', 'descend'],
       },
 
@@ -88,15 +84,14 @@ class Sales extends Component {
         key: 'created_at',
         sorter: (a, b) => { return a.created_at.localeCompare(b.created_at) },
         sortDirections: ['ascend', 'descend'],
-        defaultSortOrder: 'descend'
       },
+
     ];
 
     this.state = {
       reportCard: false,
-      reportFormData: {},
       isLabel: false,
-      dealer: null,
+      reportFormData: '',
       deviceList: props.deviceList,
     };
   }
@@ -109,64 +104,9 @@ class Sales extends Component {
         values.dealerObject = { link_code: this.props.user.dealer_pin };
       }
       this.state.reportFormData = values;
-      this.props.generateSalesReport(values)
+      this.props.generateGraceDaysReport(values)
     });
   };
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.salesReport !== prevProps.salesReport) {
-      this.setState({
-        reportCard: true
-      });
-
-      rows = this.props.salesReport.map((item, index) => {
-        return {
-          'key': index,
-          'count': ++index,
-          'device_id': item.device_id ? item.device_id : DEVICE_PRE_ACTIVATION,
-          'dealer_pin': item.dealer_pin ? item.dealer_pin : 'N/A',
-          'type': item.type ? item.type : 'N/A',
-          'name': item.name ? item.name : 'N/A',
-          'cost_price': item.cost_price ? item.cost_price : 0,
-          'sale_price': item.sale_price ? item.sale_price : 0,
-          'profit_loss': item.profit_loss ? item.profit_loss : 0,
-        }
-      });
-
-      columns = [
-        {
-          title: '#', dataKey: 'count',
-        },
-
-        {
-          title: "DEVICE ID", dataKey: 'device_id',
-        },
-
-        { title: "DEALER ID", dataKey: 'dealer_pin' },
-
-        {
-          title: "TYPE", dataKey: 'type',
-        },
-
-        {
-          title: "NAME", dataKey: 'name',
-        },
-
-        {
-          title: "COST PRICE (CREDITS)", dataKey: 'cost_price',
-        },
-
-        {
-          title: "SALE PRICE (CREDITS)", dataKey: 'sale_price',
-        },
-
-        {
-          title: "PROFIT/LOSS (CREDITS)", dataKey: 'profit_loss',
-        },
-
-      ];
-    }
-  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.deviceList !== this.props.deviceList) {
@@ -175,6 +115,37 @@ class Sales extends Component {
       })
     }
   }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.graceDaysReport !== prevProps.graceDaysReport) {
+      this.setState({
+        reportCard: true
+      });
+
+      columns = [
+        { title: '#', dataKey: "count" },
+        { title: "DEVICE ID", dataKey: "device_id" },
+        { title: "DEALER PIN", dataKey: "dealer_pin" },
+        { title: "DAYS", dataKey: "grace_days" },
+        { title: "FROM DATE", dataKey: "from_date" },
+        { title: "TO DATE", dataKey: "to_date" },
+        { title: "CREATED AT", dataKey: "created_at" },
+      ];
+
+      rows = this.props.graceDaysReport.map((item, index) => {
+        return {
+          count: ++index,
+          device_id: item.device_id ? item.device_id : DEVICE_PRE_ACTIVATION,
+          dealer_pin: item.dealer_pin ? item.dealer_pin : 'N/A',
+          grace_days: item.grace_days ? item.grace_days : 'N/A',
+          from_date: item.from_date ? getDateFromTimestamp(item.from_date) : 'N/A',
+          to_date: item.to_date ? getDateFromTimestamp(item.to_date) : 'N/A',
+          created_at: item.created_at ? getDateFromTimestamp(item.created_at) : 'N/A',
+        }
+      });
+    }
+  }
+
   handleReset = () => {
     this.props.form.resetFields();
   };
@@ -183,28 +154,22 @@ class Sales extends Component {
     return current && current > moment().endOf('day');
   };
 
-  renderList = (list, saList) => {
-
-    let data = [];
-
-    let lastIndex = 0;
-    list.map((item, index) => {
-      lastIndex = index;
-      data.push({
-        key: index,
-        // count: ++index,
-        device_id: item.device_id ? item.device_id : DEVICE_PRE_ACTIVATION,
-        dealer_pin: item.dealer_pin ? item.dealer_pin : 'N/A',
-        type: item.type ? item.type : 'N/A',
-        name: item.name ? item.name : 'N/A',
-        // 'cost_price': item.cost_price ? item.cost_price : 0,
-        'sale_price': item.cost_price ? item.cost_price : 0, // cost price of admin is sale price of super admin
-        // 'profit_loss': item.profit_loss ? item.profit_loss : 0,
-        created_at: item.created_at ? item.created_at : 'N/A',
+  renderList = (list) => {
+    if (list) {
+      return list.map((item, index) => {
+        return {
+          rowKey: index,
+          key: item.id,
+          sr: ++index,
+          device_id: item.device_id ? item.device_id : DEVICE_PRE_ACTIVATION,
+          dealer_pin: item.dealer_pin ? item.dealer_pin : 'N/A',
+          grace_days: item.grace_days ? item.grace_days : 'N/A',
+          from_date: item.from_date ? getDateFromTimestamp(item.from_date) : 'N/A',
+          to_date: item.to_date ? getDateFromTimestamp(item.to_date) : 'N/A',
+          created_at: item.created_at ? getDateFromTimestamp(item.created_at) : 'N/A',
+        }
       })
-    });
-
-    return data;
+    }
   };
 
   handleLabelChange = (e) => {
@@ -214,7 +179,7 @@ class Sales extends Component {
       })
 
     } else {
-      this.props.getDealerList(e)
+      this.props.getDealerList(e);
       this.props.getDeviceList(e);
       this.setState({
         isLabel: true
@@ -233,10 +198,9 @@ class Sales extends Component {
     this.setState({
       deviceList: devices
     })
-  }
+  };
 
   render() {
-    console.log(this.state.deviceList);
     return (
       <Row>
         <Col xs={24} sm={24} md={9} lg={9} xl={9}>
@@ -270,30 +234,6 @@ class Sales extends Component {
 
               {(this.state.isLabel) ?
                 <Fragment>
-
-                  <Form.Item
-                    label="Product Type"
-                    labelCol={{ span: 8 }}
-                    wrapperCol={{ span: 14 }}
-                    width='100%'
-                  >
-                    {this.props.form.getFieldDecorator('product_type', {
-                      initialValue: 'ALL',
-                      rules: [
-                        {
-                          required: false
-                        },
-                      ],
-                    })(
-                      <Select style={{ width: '100%' }}>
-                        <Select.Option value='ALL'>ALL</Select.Option>
-                        <Select.Option value='PACKAGES'>PACKAGES</Select.Option>
-                        <Select.Option value='PRODUCTS'>PRODUCTS</Select.Option>
-                        <Select.Option value='HARDWARES'>HARDWARES</Select.Option>
-                        <Select.Option value='CREDITS'>CREDITS</Select.Option>
-                      </Select>
-                    )}
-                  </Form.Item>
 
                   <Form.Item
                     label="Dealer/Sdealer"
@@ -345,6 +285,7 @@ class Sales extends Component {
                     )}
                   </Form.Item>
 
+
                   <Form.Item
                     label="FROM (DATE) "
                     labelCol={{ span: 8 }}
@@ -390,7 +331,7 @@ class Sales extends Component {
                              }}
                   >
                     <Button key="back" type="button" onClick={this.handleReset}>CANCEL</Button>
-                    <Button type="primary" htmlType="submit" onClick={this.handleSubmit}>GENERATE</Button>
+                    <Button type="primary" htmlType="submit">GENERATE</Button>
                   </Form.Item>
                 </Fragment>
                 : null
@@ -401,27 +342,27 @@ class Sales extends Component {
 
         </Col>
         <Col xs={24} sm={24} md={15} lg={15} xl={15}>
-          <Card style={{ height: '600px', overflow: 'scroll' }}>
+          <Card style={{ height: '500px', overflow: 'overlay' }}>
             {(this.state.reportCard) ?
               <Fragment>
                 <Row>
                   <Col xs={12} sm={12} md={12} lg={12} xl={12}>
-                    <h3>Sales Report</h3>
+                    <h3>Grace Days Report</h3>
                   </Col>
                   <Col xs={12} sm={12} md={12} lg={12} xl={12}>
                     <div className="pull-right">
-                      <Button type="dotted" icon="download" size="small" onClick={() => { generatePDF(columns, rows, 'Sales Report', fileName, this.state.reportFormData) }}>Download PDF</Button>
+                      <Button type="dotted" icon="download" size="small" onClick={() => { generatePDF(columns, rows, 'Grace Days Report', fileName, this.state.reportFormData) }}>Download PDF</Button>
                       <Button type="primary" icon="download" size="small" onClick={() => { generateExcel(rows, fileName) }}>Download Excel</Button>
                     </div>
                   </Col>
                 </Row>
                 <Table
                   columns={this.columns}
-                  dataSource={this.renderList(this.props.salesReport)}
+                  dataSource={this.renderList(this.props.graceDaysReport)}
                   bordered
                   pagination={false}
+                  scroll={{ x: true }}
                 />
-
               </Fragment>
               : null}
           </Card>
@@ -431,5 +372,5 @@ class Sales extends Component {
   }
 }
 
-const WrappedAddDeviceForm = Form.create()(Sales);
+const WrappedAddDeviceForm = Form.create()(PaymentHistory);
 export default WrappedAddDeviceForm;

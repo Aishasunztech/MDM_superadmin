@@ -6,9 +6,10 @@ import Invoice from "./components/Invoice";
 import ProductInventory from './components/ProductInventory';
 import HardwareInventory from './components/HardwareInventory';
 import PaymentHistory from './components/PaymentHistory';
+import GraceDays from './components/GraceDays';
 import Sales from './components/Sales';
 import AppFilter from '../../../components/AppFilter';
-import { getDealerList, getDeviceList, generateProductReport, generateInvoiceReport, generateSalesReport, generatePaymentHistoryReport, generateHardwareReport } from '../../../appRedux/actions';
+import { getDealerList, getDeviceList, generateProductReport,generateGraceDaysReport, generateInvoiceReport, generateSalesReport, generatePaymentHistoryReport, generateHardwareReport } from '../../../appRedux/actions';
 
 import styles from './reporting.css'
 
@@ -33,13 +34,6 @@ class Reports extends Component {
       visible: true,
     });
   };
-
-  componentDidMount() {
-
-  }
-
-  componentWillReceiveProps(nextProps) {
-  }
 
   handleChangeTab = (value) => {
     this.setState({
@@ -127,6 +121,19 @@ class Reports extends Component {
                 />
               </TabPane>
 
+              <TabPane tab="GRACE DAYS" key="6">
+                <GraceDays
+                  whiteLabels={this.props.whiteLabels}
+                  dealerList={this.props.dealerList}
+                  deviceList={this.props.deviceList}
+                  getDealerList={this.props.getDealerList}
+                  getDeviceList={this.props.getDeviceList}
+                  translation={this.props.translation}
+                  generateGraceDaysReport={this.props.generateGraceDaysReport}
+                  graceDaysReport={this.props.graceDaysReport}
+                  user={this.props.user}
+                />
+              </TabPane>
             </Tabs>
           </div>
         }
@@ -153,6 +160,7 @@ var mapStateToProps = ({ settings, reports, auth, account, sidebarMenu }) => {
     hardwareReport: reports.hardwareData,
     invoiceReport: reports.invoiceData,
     salesReport: reports.salesData,
+    graceDaysReport: reports.graceDaysData,
     sales_sa_data: reports.sales_sa_data,
     paymentHistoryReport: reports.paymentHistoryData,
     productType: reports.productType,
@@ -170,6 +178,7 @@ function mapDispatchToProps(dispatch) {
     generateSalesReport: generateSalesReport,
     generatePaymentHistoryReport: generatePaymentHistoryReport,
     generateHardwareReport: generateHardwareReport,
+    generateGraceDaysReport: generateGraceDaysReport,
     getDealerList: getDealerList,
     getDeviceList: getDeviceList
   }, dispatch);
