@@ -160,7 +160,7 @@ class PaymentHistory extends Component {
         return {
           rowKey: index,
           key: item.id,
-          sr: ++index,
+          count: ++index,
           device_id: item.device_id ? item.device_id : DEVICE_PRE_ACTIVATION,
           dealer_pin: item.dealer_pin ? item.dealer_pin : 'N/A',
           grace_days: item.grace_days ? item.grace_days : 'N/A',

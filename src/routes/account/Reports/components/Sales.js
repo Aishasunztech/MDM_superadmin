@@ -1,19 +1,12 @@
-import React, { Component, Fragment } from 'react'
-import { Table, Avatar, Switch, Button, Icon, Card, Modal, Tabs, Col, Input, Form, Row, DatePicker, Select } from "antd";
+import React, {Component, Fragment} from 'react'
+import {Button, Card, Col, DatePicker, Form, Row, Select, Table} from "antd";
 import moment from 'moment';
-import styles from '../reporting.css'
-import { generatePDF, generateExcel } from "../../../utils/commonUtils";
-import {
-  DEVICE_PRE_ACTIVATION
-} from "../../../../constants/Constants";
+import {generateExcel, generatePDF, getDateFromTimestamp} from "../../../utils/commonUtils";
+import {DEVICE_PRE_ACTIVATION} from "../../../../constants/Constants";
 
-import {
-  BASE_URL
-} from "../../../../constants/Application";
 var columns;
 var rows;
 var fileName = 'sales_' + new Date().getTime();
-
 class Sales extends Component {
   constructor(props) {
     super(props);
@@ -25,7 +18,7 @@ class Sales extends Component {
         align: 'center',
         className: 'row',
         width: 50,
-        // sorter: (a, b) => { return a.count - b.count },
+        sorter: (a, b) => { return a.count - b.count },
         sortDirections: ['ascend', 'descend'],
         render: (text, record, index) => ++index,
       },
@@ -92,11 +85,28 @@ class Sales extends Component {
       },
     ];
 
+    this.saleInfoColumn = [
+      {
+        title: '',
+        dataIndex: 'key',
+        key: 'key',
+      },
+
+      {
+        title: '',
+        dataIndex: 'value',
+        key: 'value',
+      },
+    ];
+
     this.state = {
       reportCard: false,
       reportFormData: {},
       isLabel: false,
       dealer: null,
+      totalCreditSale: null,
+      totalHardwareSale: null,
+      totalPackageSale: null,
       deviceList: props.deviceList,
     };
   }
@@ -127,9 +137,7 @@ class Sales extends Component {
           'dealer_pin': item.dealer_pin ? item.dealer_pin : 'N/A',
           'type': item.type ? item.type : 'N/A',
           'name': item.name ? item.name : 'N/A',
-          'cost_price': item.cost_price ? item.cost_price : 0,
-          'sale_price': item.sale_price ? item.sale_price : 0,
-          'profit_loss': item.profit_loss ? item.profit_loss : 0,
+          'sale_price': item.cost_price ? item.cost_price : 0,
         }
       });
 
@@ -153,17 +161,8 @@ class Sales extends Component {
         },
 
         {
-          title: "COST PRICE (CREDITS)", dataKey: 'cost_price',
-        },
-
-        {
           title: "SALE PRICE (CREDITS)", dataKey: 'sale_price',
         },
-
-        {
-          title: "PROFIT/LOSS (CREDITS)", dataKey: 'profit_loss',
-        },
-
       ];
     }
   }
@@ -175,6 +174,7 @@ class Sales extends Component {
       })
     }
   }
+
   handleReset = () => {
     this.props.form.resetFields();
   };
@@ -185,22 +185,20 @@ class Sales extends Component {
 
   renderList = (list, saList) => {
 
-    let data = [];
+    let data                = [];
+    let lastIndex           = 0;
 
-    let lastIndex = 0;
     list.map((item, index) => {
       lastIndex = index;
       data.push({
-        key: index,
-        // count: ++index,
+        key: ++index,
+        count: ++index,
         device_id: item.device_id ? item.device_id : DEVICE_PRE_ACTIVATION,
         dealer_pin: item.dealer_pin ? item.dealer_pin : 'N/A',
         type: item.type ? item.type : 'N/A',
         name: item.name ? item.name : 'N/A',
-        // 'cost_price': item.cost_price ? item.cost_price : 0,
-        'sale_price': item.cost_price ? item.cost_price : 0, // cost price of admin is sale price of super admin
-        // 'profit_loss': item.profit_loss ? item.profit_loss : 0,
-        created_at: item.created_at ? item.created_at : 'N/A',
+        sale_price: item.cost_price ? item.cost_price : 0, // cost price of admin is sale price of super admin
+        created_at: item.created_at ? getDateFromTimestamp(item.created_at) : 'N/A',
       })
     });
 
@@ -214,13 +212,55 @@ class Sales extends Component {
       })
 
     } else {
-      this.props.getDealerList(e)
+      this.props.getDealerList(e);
       this.props.getDeviceList(e);
       this.setState({
         isLabel: true
       })
     }
-  }
+  };
+
+  renderSaleInfo = () => {
+    let totalCreditSale     = 0;
+    let totalHardwareSale   = 0;
+    let totalPackageSale    = 0;
+    let totalSale    = 0;
+
+    this.props.salesReport.map((item, index) => {
+      if (item.type === 'Package'){
+        totalPackageSale += item.cost_price;
+      }else if(item.type === 'Hardware'){
+        totalHardwareSale += item.cost_price;
+      }else if(item.type === 'Credits'){
+        totalCreditSale += item.cost_price;
+      }
+      totalSale += item.cost_price;
+    });
+
+    return [
+
+      {
+        key: <h6 className="weight_600 mb-0 p-5"> Package Sale</h6>,
+        value: <h6 className="weight_600 mb-0 p-5"> {totalPackageSale}</h6>,
+      },
+      {
+        key: <h6 className="weight_600 mb-0 p-5"> Hardware Sale</h6>,
+        value: <h6 className="weight_600 mb-0 p-5"> {totalHardwareSale}</h6>,
+      },
+      {
+        key: <h6 className="weight_600 mb-0 p-5"> Credits Sale</h6>,
+        value: <h6 className="weight_600 mb-0 p-5"> {totalCreditSale}</h6>,
+      },
+      {
+        key: <h6 className="weight_600 mb-0 p-5"> Total Sale</h6>,
+        value: <h6 className="weight_600 mb-0 p-5"> {totalSale}</h6>,
+      },
+    ];
+  };
+
+  saleInfoTitle = () => {
+    return <h4 className="saleTable weight_600">{"SALE INFO"}</h4>
+  };
 
   handleDealerChange = (e) => {
     let devices = [];
@@ -236,7 +276,6 @@ class Sales extends Component {
   }
 
   render() {
-    console.log(this.state.deviceList);
     return (
       <Row>
         <Col xs={24} sm={24} md={9} lg={9} xl={9}>
@@ -288,7 +327,7 @@ class Sales extends Component {
                       <Select style={{ width: '100%' }}>
                         <Select.Option value='ALL'>ALL</Select.Option>
                         <Select.Option value='PACKAGES'>PACKAGES</Select.Option>
-                        <Select.Option value='PRODUCTS'>PRODUCTS</Select.Option>
+                        {/*<Select.Option value='PRODUCTS'>PRODUCTS</Select.Option>*/}
                         <Select.Option value='HARDWARES'>HARDWARES</Select.Option>
                         <Select.Option value='CREDITS'>CREDITS</Select.Option>
                       </Select>
@@ -415,6 +454,15 @@ class Sales extends Component {
                     </div>
                   </Col>
                 </Row>
+                <Table
+                  className="sale_info_table"
+                  dataSource={this.renderSaleInfo()}
+                  columns={this.saleInfoColumn}
+                  pagination={false}
+                  showHeader={false}
+                  title={this.saleInfoTitle}
+                  bordered
+                />
                 <Table
                   columns={this.columns}
                   dataSource={this.renderList(this.props.salesReport)}
