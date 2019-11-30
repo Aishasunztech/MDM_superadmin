@@ -6,7 +6,7 @@ import {
 } from "../../../../constants/Constants";
 import styles from '../reporting.css'
 import { generatePDF, generateExcel, getDateFromTimestamp } from "../../../utils/commonUtils";
-let fileName = 'hardware_report_' + new Date().getTime()
+let fileName = 'hardware_report_' + new Date().getTime();
 var columns;
 var rows;
 
@@ -149,13 +149,15 @@ class PaymentHistory extends Component {
   };
 
   handleLabelChange = (e) => {
+
     if (e == '') {
       this.setState({
         isLabel: false
       })
 
     } else {
-      this.props.getDealerList(e)
+      this.props.getDealerList(e);
+      this.props.getHardwares(e);
       this.props.getDeviceList(e);
       this.setState({
         isLabel: true
@@ -227,10 +229,9 @@ class PaymentHistory extends Component {
                     })(
                       <Select style={{ width: '100%' }}>
                         <Select.Option value=''>ALL</Select.Option>
-                        <Select.Option value='CHAT'>CHAT</Select.Option>
-                        <Select.Option value='PGP'>PGP</Select.Option>
-                        <Select.Option value='SIM'>SIM</Select.Option>
-                        <Select.Option value='VPN'>VPN</Select.Option>
+                        {this.props.hardwareList.map((hardware, index) => {
+                          return (<Select.Option key={hardware.id} value={hardware.name}>{hardware.name}</Select.Option>)
+                        })}
                       </Select>
                     )}
                   </Form.Item>

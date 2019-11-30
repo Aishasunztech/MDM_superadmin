@@ -51,7 +51,23 @@
 .manage_data .ant-tabs-tab {
   margin-right: 0 !important;
 }
+.sale_info_table .ant-table-title {
+  padding: 0 !important;
+}
+.sale_info_table .ant-table-tbody>tr>td,
+.sale_info_table .ant-table-thead>tr>th {
+  padding: 0 !important;
+  text-align: center;
+}
 
+.saleTable {
+  background: #ddebf7;
+  padding: 2px 2px;
+  margin-bottom: 0;
+}
+.p-5{
+  padding: 5px;
+}
 @media screen and (max-width: 768px) {
   .devices .ant-table-tbody>tr>.devices1 {
     padding-left: 5.5% !important;
