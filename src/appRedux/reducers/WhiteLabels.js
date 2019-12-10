@@ -16,7 +16,8 @@ import {
     SAVE_HARDWARE,
     DELETE_PAKAGE,
     DELETE_HARDWARE,
-    EDIT_HARDWARE
+    EDIT_HARDWARE,
+    GET_DOMAINS
 } from "../../constants/ActionTypes";
 
 import { message, Modal } from 'antd';
@@ -46,6 +47,7 @@ const initialState = {
     hardwares: [],
     packagesCopy: [],
     backupLoading: false,
+    domains: []
 };
 
 export default (state = initialState, action) => {
@@ -299,6 +301,13 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 backupLoading: true
+            }
+        }
+
+        case GET_DOMAINS: {
+            return {
+                ...state,
+                domains: action.response.data
             }
         }
 

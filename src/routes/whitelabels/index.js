@@ -746,6 +746,24 @@ class WhiteLabels extends Component {
                                 </div>
                             </div>
                         </Col>
+                        <Col xs={24} sm={24} md={6} lg={6} xl={6}>
+                            <div>
+                                <div className="contenar">
+                                    {/* <a href="javascript:void(0)" onClick={(e) => { this.showPricingModal(true) }} > */}
+                                    <Link to={"/manage-domains" + this.props.whiteLabelInfo.route_uri}>
+                                        <Card className="manage_sec" style={{ borderRadius: 12 }}>
+                                            <div>
+                                                <h2 style={{ textAlign: "center" }}>Manage Domains</h2>
+                                                <Divider className="mb-0" />
+
+                                            </div>
+                                            <Button type="primary" size="small" className="open_btn1">Open</Button>
+                                        </Card>
+                                    </Link>
+                                </div>
+                            </div>
+
+                        </Col>
                     </Row>
                     <LoadIDsModal ref="loadidsofModal" />
                     <EditByodApk
@@ -759,6 +777,7 @@ class WhiteLabels extends Component {
                         type={this.state.byod_type}
                     />
                 </div>
+
             </div>
 
         );

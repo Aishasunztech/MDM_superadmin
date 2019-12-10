@@ -16,11 +16,11 @@ import {
     GET_HARDWARES,
     DELETE_PAKAGE,
     DELETE_HARDWARE,
-    EDIT_HARDWARE
+    EDIT_HARDWARE,
+    GET_DOMAINS
 } from "../../constants/ActionTypes"
 
 import RestService from '../services/RestServices';
-
 
 export const getAllWhiteLabels = () => {
     return (dispatch) => {
@@ -81,8 +81,6 @@ export const resetPrice = () => {
         })
     }
 }
-
-
 
 export const getWhitelabelBackups = (id) => {
     // 
@@ -234,9 +232,6 @@ export const editWhiteLabelInfo = (data) => {
     }
 }
 
-
-
-
 export const setPackage = (data) => {
     return (dispatch) => {
         RestService.setPackage(data).then((response) => {
@@ -254,6 +249,7 @@ export const setPackage = (data) => {
 
     }
 }
+
 export const saveHardware = (data) => {
     return (dispatch) => {
         RestService.saveHardware(data).then((response) => {
@@ -272,7 +268,6 @@ export const saveHardware = (data) => {
     }
 }
 
-
 export const saveIDPrices = (data) => {
     return (dispatch) => {
         RestService.saveIDPrices(data).then((response) => {
@@ -290,6 +285,7 @@ export const saveIDPrices = (data) => {
 
     }
 }
+
 export const saveBackup = (id) => {
     return (dispatch) => {
         dispatch({
@@ -312,7 +308,6 @@ export const saveBackup = (id) => {
     }
 }
 
-
 export const getFile = (data) => {
     return (dispatch) => {
         RestService.getFile(data)
@@ -328,5 +323,41 @@ export const getFile = (data) => {
         //         })                
         //     }
         // });
+    }
+}
+
+export const getDomains = (whitelabel_id) => {
+    return (dispatch) => {
+        RestService.getDomains(whitelabel_id).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                dispatch({
+                    type: GET_DOMAINS,
+                    response: response.data
+                })
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+        });
+
+    }
+}
+
+export const deleteDomains = (domain_id) => {
+    return (dispatch) => {
+        RestService.deleteDomains(domain_id).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                dispatch({
+                    type: GET_DOMAINS,
+                    response: response.data
+                })
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+        });
+
     }
 }

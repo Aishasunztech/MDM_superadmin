@@ -168,6 +168,15 @@ const RestService = {
         return axios.get(USER_URL + 'get-Hardwares/' + whitelabel_id, RestService.getHeader());
     },
 
+    getDomains: (whitelabel_id) => {
+        //
+        return axios.get(USER_URL + 'get-domains/' + whitelabel_id, RestService.getHeader());
+    },
+
+    deleteDomains: (domain_id) => {
+        return axios.delete(USER_URL + 'delete-domains/' + domain_id, RestService.getHeader());
+    },
+
     deletePakage: (id) => {
         return axios.get(USER_URL + 'delete-package/' + id, RestService.getHeader());
     },
@@ -355,7 +364,7 @@ const RestService = {
 
     //Grace Days report
     generateGraceDaysReport: (data) => {
-      return axios.post(USER_URL + 'billing/reports/grace-days', data, RestService.getHeader());
+        return axios.post(USER_URL + 'billing/reports/grace-days', data, RestService.getHeader());
     },
 }
 export default RestService;
