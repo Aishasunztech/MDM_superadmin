@@ -64,6 +64,9 @@ export const REJECT_REQUEST = 'REJECT_REQUEST'
 export const ACCEPT_REQUEST = 'ACCEPT_REQUEST'
 export const RESTART_WHITELABEL = 'RESTART_WHITELABEL';
 export const GET_DOMAINS = 'GET_DOMAINS'
+export const DELETE_DOMAINS = 'DELETE_DOMAINS'
+export const ADD_DOMAIN = 'ADD_DOMAIN'
+export const EDIT_DOMAIN = 'EDIT_DOMAIN'
 
 //Device const
 export const DEVICES_LIST = 'DEVICES_LIST';

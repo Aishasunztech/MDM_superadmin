@@ -173,6 +173,14 @@ const RestService = {
         return axios.get(USER_URL + 'get-domains/' + whitelabel_id, RestService.getHeader());
     },
 
+    addDomain: (data) => {
+        return axios.post(USER_URL + 'add-domain', data, RestService.getHeader());
+    },
+
+    editDomain: (data) => {
+        return axios.put(USER_URL + 'edit-domain', data, RestService.getHeader());
+    },
+
     deleteDomains: (domain_id) => {
         return axios.delete(USER_URL + 'delete-domains/' + domain_id, RestService.getHeader());
     },

@@ -4,11 +4,13 @@ import { bindActionCreators } from 'redux';
 import { Button, Tabs, Table, Card, Input, Icon, Modal } from 'antd';
 import {
     getDomains,
-    deleteDomains
+    deleteDomains,
+    addDomain,
+    editDomain
 } from '../../../../appRedux/actions/WhiteLabels';
 import AppFilter from '../../../../components/AppFilter/index';
 import { componentSearch, getDealerStatus, titleCase } from '../../../utils/commonUtils';
-
+import DomainsModal from './DomainForm'
 import { isArray } from "util";
 const confirm = Modal.confirm
 let domainsCopy = []
@@ -89,7 +91,8 @@ class ManageDomains extends Component {
             visible: false,
             domains: [],
             domains_modal: false,
-            copyStatus: true
+            copyStatus: true,
+
         }
     }
 
@@ -148,16 +151,13 @@ class ManageDomains extends Component {
         }
     }
 
-    showDomainsModal = (visible) => {
-        this.setState({
-            domains_modal: visible
-        })
+    showDomainModal = () => {
+        this.AddDomains.showModal(this.props.addDomain, true)
     }
 
     handleCancel = () => {
         this.setState({ visible: false })
     }
-
 
     deleteDomain = (item) => {
         let _this = this;
@@ -173,7 +173,7 @@ class ManageDomains extends Component {
     }
 
     editDomain = (item) => {
-
+        this.AddDomains.showModal(this.props.editDomain, true, "Edit Domain", item)
     }
 
     renderList = (type) => {
@@ -185,10 +185,11 @@ class ManageDomains extends Component {
                     action:
                         <Fragment>
                             <Button type="danger" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => { this.deleteDomain(item) }}>DELETE </Button>
-                            <Button type="danger" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => { this.editDomain(item) }}>EDIT </Button>
+                            <Button type="primary" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => { this.editDomain(item) }}>EDIT </Button>
                         </Fragment>
                     ,
                     domain_name: item.domain_name,
+                    created_at: item.created_at
                 }
             })
         }
@@ -244,10 +245,10 @@ class ManageDomains extends Component {
                         // selectedOptions={this.props.selectedOptions}
                         // options={this.state.options}
                         isAddButton={true}
-                        setPrice={true}
+                        addDomain={true}
                         // handlePolicyModal={this.handlePolicyModal2}
 
-                        showDomainsModal={this.showDomainModal}
+                        showDomainModal={this.showDomainModal}
 
                         // handleCheckChange={this.handleCheckChange}
                         // handlePagination={this.handlePagination}
@@ -265,6 +266,10 @@ class ManageDomains extends Component {
                     />
 
                 </div>
+                <DomainsModal
+                    wrappedComponentRef={(AddDomains) => this.AddDomains = AddDomains}
+                    whitelabel_id={this.props.id}
+                />
 
             </div>
         )
@@ -274,7 +279,9 @@ class ManageDomains extends Component {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getDomains,
-        deleteDomains
+        deleteDomains,
+        addDomain,
+        editDomain
     }, dispatch)
 }
 

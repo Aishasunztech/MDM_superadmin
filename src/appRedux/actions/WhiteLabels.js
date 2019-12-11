@@ -17,7 +17,10 @@ import {
     DELETE_PAKAGE,
     DELETE_HARDWARE,
     EDIT_HARDWARE,
-    GET_DOMAINS
+    GET_DOMAINS,
+    DELETE_DOMAINS,
+    ADD_DOMAIN,
+    EDIT_DOMAIN
 } from "../../constants/ActionTypes"
 
 import RestService from '../services/RestServices';
@@ -332,7 +335,45 @@ export const getDomains = (whitelabel_id) => {
             if (RestService.checkAuth(response.data)) {
                 dispatch({
                     type: GET_DOMAINS,
+                    response: response.data,
+
+                })
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+        });
+
+    }
+}
+
+export const addDomain = (data) => {
+    return (dispatch) => {
+        RestService.addDomain(data).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                dispatch({
+                    type: ADD_DOMAIN,
                     response: response.data
+                })
+            } else {
+                dispatch({
+                    type: INVALID_TOKEN
+                })
+            }
+        });
+
+    }
+}
+
+export const editDomain = (data) => {
+    return (dispatch) => {
+        RestService.editDomain(data).then((response) => {
+            if (RestService.checkAuth(response.data)) {
+                dispatch({
+                    type: EDIT_DOMAIN,
+                    response: response.data,
+                    data: data
                 })
             } else {
                 dispatch({
@@ -349,8 +390,9 @@ export const deleteDomains = (domain_id) => {
         RestService.deleteDomains(domain_id).then((response) => {
             if (RestService.checkAuth(response.data)) {
                 dispatch({
-                    type: GET_DOMAINS,
-                    response: response.data
+                    type: DELETE_DOMAINS,
+                    response: response.data,
+                    id: domain_id
                 })
             } else {
                 dispatch({
