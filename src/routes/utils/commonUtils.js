@@ -26,6 +26,8 @@ import moment from 'moment';
 import { DEVICE_DEALER_ID, DEVICE_DEALER_PIN, DEVICE_DEALER_NAME } from '../../constants/DeviceConstants';
 import jsPDF from 'jspdf';
 import XLSX from 'xlsx';
+import axios from 'axios';
+import {BASE_URL} from "../../constants/Application";
 require('jspdf-autotable')
 
 export function getStatus(status, account_status, unlink_status, device_status, activation_status) {
@@ -501,7 +503,27 @@ export function generatePDF(columns, rows, title, fileName, formData) {
     theme: "striped"
   });
 
-  doc.save(fileName + '.pdf');
+  var pdf = doc.output('blob');
+  var blobToBase64 = function(blob, cb) {
+    var reader = new FileReader();
+    reader.onload = function() {
+      var dataUrl = reader.result;
+      var base64 = dataUrl.split(',')[1];
+      cb(base64);
+    };
+    reader.readAsDataURL(blob);
+  };
+console.log(BASE_URL)
+  var FileNameToOpen = fileName+'.pdf';
+  blobToBase64(pdf, function(base64){
+    var update = {'blob': base64, 'fileName': FileNameToOpen};
+    axios.post(BASE_URL+'pub/show-pdf-file', update).then( res => {
+      if (res.status){
+        window.open(BASE_URL + 'pub/getFileWithFolder/report/'+ FileNameToOpen, '_blank');
+      }
+    });
+
+  });
 }
 
 export function generateExcel(rows, fileName) {
