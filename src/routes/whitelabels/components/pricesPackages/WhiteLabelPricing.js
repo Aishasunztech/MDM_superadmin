@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 
 import {
     Button, Modal, Tabs, Col, Row, Divider
@@ -25,6 +25,7 @@ export default class WhiteLabelPricing extends Component {
             pkgName: '',
             hardwareName: '',
             pkgTerms: '1 month',
+            data_limit: 0,
             pkgPrice: 0,
             hardwarePrice: 0,
             hardwareFormErrors: ["hardwarePrice", "hardwareName"],
@@ -64,6 +65,7 @@ export default class WhiteLabelPricing extends Component {
 
     handleSubmit = () => {
 
+        // prices
         if (this.state.outerTab === '1') {
             let data = this.props.prices;
             let errors = 0;
@@ -94,18 +96,40 @@ export default class WhiteLabelPricing extends Component {
                 })
             }
 
-        } else if (this.state.outerTab === '2') {
+        }
 
-            var isnum = /^\d+$/.test(this.state.pkgPrice);
-            if (this.state.packageFormErrors && (!this.state.packageFormErrors.length || (this.state.packageFormErrors[0] === "pkgPrice" && this.state.pkgTerms === "trial")) && isnum && (this.state.pkgPrice > 0 || this.state.pkgTerms === "trial") && this.state.pkg_features && this.state.pkgName && this.state.pkgTerms && this.state.pkgName !== '' && this.state.pkgTerms !== '') {
+        // packages
+        else if (this.state.outerTab === '2') {
+
+            var isNum = /^\d+$/.test(this.state.pkgPrice);
+            if (
+                this.state.packageFormErrors &&
+                (
+                    !this.state.packageFormErrors.length ||
+                    (this.state.packageFormErrors[0] === "pkgPrice" && this.state.pkgTerms === "trial")
+                ) && isNum &&
+                (this.state.pkgPrice > 0 || this.state.pkgTerms === "trial") &&
+                this.state.pkg_features &&
+                this.state.pkgName &&
+                this.state.pkgTerms &&
+                this.state.pkgName !== '' &&
+                this.state.pkgTerms !== ''
+            ) {
                 // 
                 let data = {
                     pkgName: this.state.pkgName,
                     pkgTerm: this.state.pkgTerms,
                     pkgPrice: this.state.pkgTerms === "trial" ? 0 : this.state.pkgPrice,
-                    pkgFeatures: this.state.pkg_features,
-                    whitelabel_id: this.props.whitelabel_id
+                    whitelabel_id: this.props.whitelabel_id,
+
                 }
+
+                if (this.state.data_limit) {
+                    data.data_limit = this.state.data_limit;
+                } else {
+                    data.pkgFeatures = this.state.pkg_features;
+                }
+
 
                 showConfirm(this, data)
             }
@@ -150,6 +174,7 @@ export default class WhiteLabelPricing extends Component {
             }
         }
     }
+
     setHardwareDetail = (value, field) => {
 
         this.state[field] = value
@@ -171,6 +196,7 @@ export default class WhiteLabelPricing extends Component {
             packageFormErrors: this.state.packageFormErrors
         })
     }
+
     restrictHardwareSubmit = (available, item) => {
 
         if (!available) {
@@ -188,8 +214,6 @@ export default class WhiteLabelPricing extends Component {
             hardwareFormErrors: this.state.hardwareFormErrors
         })
     }
-
-
 
     setPrice = (price, field, price_for) => {
 
@@ -283,8 +307,8 @@ function showConfirm(_this, data) {
         title: 'Save Package ?',
         cancelText: 'Cancel',
         okText: 'Save',
-        content: <div>
-            <Row>
+        content:
+            (<Row>
                 <Divider />
                 <Col span={12}><p>Package Name</p>
                     {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
@@ -309,44 +333,53 @@ function showConfirm(_this, data) {
                     <p >${_this.state.pkgPrice}</p>
                 </Col>
 
+                {(_this.state.data_limit) ?
+                    <Col span={12}>
+                        <p >{_this.state.data_limit}</p>
+                    </Col>
+                    :
+                    <Fragment>
+                        <Col span={12}><p>Sim id</p>
+                            {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                        </Col>
+                        <Col span={12}>
+                            <p >{_this.state.pkg_features.sim_id ? 'yes' : 'No'}</p>
+                        </Col>
 
-                <Col span={12}><p>Sim id</p>
-                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
-                </Col>
-                <Col span={12}>
-                    <p >{_this.state.pkg_features.sim_id ? 'yes' : 'No'}</p>
-                </Col>
-
-                <Col span={12}><p>Sim id 2</p>
-                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
-                </Col>
-                <Col span={12}>
-                    <p >{_this.state.pkg_features.sim_id2 ? 'yes' : 'No'}</p>
-                </Col>
+                        <Col span={12}><p>Sim id 2</p>
+                            {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                        </Col>
+                        <Col span={12}>
+                            <p >{_this.state.pkg_features.sim_id2 ? 'yes' : 'No'}</p>
+                        </Col>
 
 
-                <Col span={12}><p>Chat id</p>
-                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
-                </Col>
-                <Col span={12}>
-                    <p >{_this.state.pkg_features.chat_id ? 'yes' : 'No'}</p>
-                </Col>
+                        <Col span={12}><p>Chat id</p>
+                            {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                        </Col>
+                        <Col span={12}>
+                            <p >{_this.state.pkg_features.chat_id ? 'yes' : 'No'}</p>
+                        </Col>
 
-                <Col span={12}><p>Pgp Email</p>
-                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
-                </Col>
-                <Col span={12}>
-                    <p >{_this.state.pkg_features.pgp_email ? 'yes' : 'No'}</p>
-                </Col>
+                        <Col span={12}><p>Pgp Email</p>
+                            {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                        </Col>
+                        <Col span={12}>
+                            <p >{_this.state.pkg_features.pgp_email ? 'yes' : 'No'}</p>
+                        </Col>
 
-                <Col span={12}><p>Vpn</p>
-                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
-                </Col>
-                <Col span={12}>
-                    <p >{_this.state.pkg_features.vpn ? 'yes' : 'No'}</p>
-                </Col>
-            </Row>
-        </div>,
+                        <Col span={12}><p>Vpn</p>
+                            {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                        </Col>
+                        <Col span={12}>
+                            <p >{_this.state.pkg_features.vpn ? 'yes' : 'No'}</p>
+                        </Col>
+                    </Fragment>
+                }
+
+
+            </Row>)
+        ,
         onOk() {
             // 
             _this.props.setPackage(data);

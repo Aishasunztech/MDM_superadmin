@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 
 import {
-    Form, Input, Row, Col, Button, Select,
+    Form, Input, Row, Col, Button, Select, Tabs, InputNumber
 } from "antd";
 import styles from '../../../whitelabels.css';
 import RestService from '../../../../../appRedux/services/RestServices';
@@ -19,12 +19,13 @@ class PackagePricingForm extends Component {
             vpn: false,
             help: '',
             validateStatus: 'success',
-            pkgTerms: '1 month'
+            pkgTerms: '1 month',
+            selectedTab: '1',
         }
     }
 
 
-    setPrice = (fieldName, is_pkg_feature = false, pkg_feature_value = '', e) => {
+    setField = (fieldName, pkg_feature_value = '', is_pkg_feature = false, e) => {
         // let value = e.target.value;
         let value = ''
         if (fieldName) {
@@ -48,8 +49,8 @@ class PackagePricingForm extends Component {
             }
 
             if (fieldName == 'pkgPrice') {
-                var isnum = /^\d+$/.test(value);
-                if (!isnum || e <= 0) {
+                var isNum = /^\d+$/.test(value);
+                if (!isNum || e <= 0) {
                     this.props.restrictPackageSubmit(false, fieldName)
                     this.setState({
                         validateStatus: 'error',
@@ -74,9 +75,6 @@ class PackagePricingForm extends Component {
                         [fieldName]: value
                     })
                 }
-                // this.setState({
-                //     [fieldName]: value
-                // })
             }
 
 
@@ -124,180 +122,275 @@ class PackagePricingForm extends Component {
     // resetState = ()=>{
 
     // }
+    tabChanged = (e) => {
+        this.setState({
+            'selectedTab': e
+        })
+    }
 
     render() {
 
-        const formItemLayout = {
-            labelCol: {
-                xs: { span: 24, offset: 2 },
-                sm: { span: 10, offset: 2 },
-            },
-            wrapperCol: {
-                xs: { span: 24 },
-                sm: { span: 10 },
-            },
-        };
+        // const formItemLayout = {
+        //     labelCol: {
+        //         xs: { span: 24, offset: 2 },
+        //         sm: { span: 10, offset: 2 },
+        //     },
+        //     wrapperCol: {
+        //         xs: { span: 24 },
+        //         sm: { span: 10 },
+        //     },
+        // };
         const { getFieldDecorator } = this.props.form;
         const { Option } = Select;
         return (
-            <Form onSubmit={this.handleSubmit}>
-                <Row>
-                    <Col span={13}>
-                        <Form.Item label="Package Name"
-                            labelCol={{ span: 11 }}
-                            wrapperCol={{ span: 13 }}>
-                            {getFieldDecorator('pkgName', {
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: 'Please input Package Name!',
-                                    },
-                                    {
-                                        validator: this.PackageNameChange,
+            <Fragment>
+                <Tabs
+                    tabPosition={'left'}
+                    type="card"
+                    onChange={(e) => this.tabChanged(e)}
+                    style={{ width: '27%', float: 'left' }}
+                >
+                    <Tabs.TabPane tab={'Service Package'} key='1' >
+
+                    </Tabs.TabPane>
+                    <Tabs.TabPane tab={'Data Plan'} key='2' >
+
+                    </Tabs.TabPane>
+                </Tabs>
+                <Form style={{ float: 'left', width: '73%' }}>
+
+                    {/* Package Name */}
+                    <Row>
+                        <Col span={13}>
+                            <Form.Item label="Package Name"
+                                labelCol={{ span: 11 }}
+                                wrapperCol={{ span: 13 }}>
+                                {getFieldDecorator('pkgName', {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: 'Please input Package Name!',
+                                        },
+                                        {
+                                            validator: this.PackageNameChange,
+                                        }
+                                    ],
+                                })(
+                                    <Input placeholder="Package Name" onChange={(e => this.setField('pkgName', '', '', e.target.value))} />
+                                )}
+                            </Form.Item>
+                        </Col>
+                        <Col span={4}>
+                        </Col>
+                        <Col span={6}>
+                            <h4 className='priceText'>{this.state.pkgName}</h4>
+                        </Col>
+                    </Row>
+
+                    {/* Package Term */}
+                    <Row>
+                        <Col span={13}>
+
+                            <Form.Item
+                                label="Package Terms"
+                                labelCol={{ span: 11 }}
+                                wrapperCol={{ span: 13 }}>
+
+                                {getFieldDecorator('pkgTerms', {
+                                    initialValue: '1 month',
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: 'Please Select Package Terms',
+                                        },
+                                    ],
+                                })(<Select
+                                    showSearch
+                                    style={{ width: "100%" }}
+                                    placeholder="Select a Term"
+                                    optionFilterProp="children"
+                                    onChange={(pkgTerms => this.setField('pkgTerms', '', '', pkgTerms))}
+                                    // onChange={onChange}
+                                    // onFocus={onFocus}
+                                    // onBlur={onBlur}
+                                    // onSearch={onSearch}
+                                    filterOption={(input, option) =>
+                                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                     }
-                                ],
-                            })(<Input placeholder="Package Name" onChange={(e => this.setPrice('pkgName', '', '', e.target.value))} />)}
-                        </Form.Item>
-                    </Col>
-                    <Col span={4}>
-                        {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}>Set</Button> */}
-                    </Col>
-                    <Col span={6}>
-                        <h4 className='priceText'>{this.state.pkgName}</h4>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span={13}>
-                        <Form.Item label="Package Terms" labelCol={{ span: 11 }}
-                            wrapperCol={{ span: 13 }}>
-                            {getFieldDecorator('pkgTerms', {
-                                initialValue: '1 month',
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: 'Please Select Package Terms',
-                                    },
-                                ],
-                            })(<Select
-                                showSearch
-                                style={{ width: "100%" }}
-                                placeholder="Select a Term"
-                                optionFilterProp="children"
-                                onChange={(pkgTerms => this.setPrice('pkgTerms', '', '', pkgTerms))}
-                                // onChange={onChange}
-                                // onFocus={onFocus}
-                                // onBlur={onBlur}
-                                // onSearch={onSearch}
-                                filterOption={(input, option) =>
-                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                }
-                            >
-                                <Option value={trial}>{trial}</Option>
-                                <Option value={one_month}>{one_month}</Option>
-                                <Option value={three_month}>{three_month}</Option>
-                                <Option value={six_month}>{six_month}</Option>
-                                <Option value={twelve_month}>{twelve_month}</Option>
-                            </Select>)}
+                                >
+                                    <Option value={trial}>{trial}</Option>
+                                    <Option value={one_month}>{one_month}</Option>
+                                    <Option value={three_month}>{three_month}</Option>
+                                    <Option value={six_month}>{six_month}</Option>
+                                    <Option value={twelve_month}>{twelve_month}</Option>
+                                </Select>)}
 
-                        </Form.Item>
-                    </Col>
-                    <Col span={4}>
-                        {/* <Button type="primary" onClick={() => this.setPrice('pkgTerms')}>Set</Button> */}
-                    </Col>
-                    <Col span={7}>
-                        <h4 className='priceText'>{this.state.pkgTerms}</h4>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span={13}>
-                        <Form.Item label="Package Price" labelCol={{ span: 11 }}
-                            validateStatus={this.state.pkgTerms === "trial" ? "success" : this.state.validateStatus}
-                            help={this.state.pkgTerms === "trial" ? '' : this.state.help}
-                            wrapperCol={{ span: 13 }}>
-                            {getFieldDecorator('pkgPrice', {
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: 'Please Input Package Price',
-                                    }
-                                ],
-                            })(<Input disabled={this.state.pkgTerms === "trial" ? true : false} placeholder="Package Price" onChange={(e => this.setPrice('pkgPrice', '', '', e.target.value))} type='number' min={1} />)}
+                            </Form.Item>
+                        </Col>
+                        <Col span={4}>
+                            {/* <Button type="primary" onClick={() => this.setField('pkgTerms')}>Set</Button> */}
+                        </Col>
+                        <Col span={7}>
+                            <h4 className='priceText'>{this.state.pkgTerms}</h4>
+                        </Col>
+                    </Row>
 
-                        </Form.Item>
-                    </Col>
-                    <Col span={4}>
-                        {/* <Button type="primary" onClick={() => this.setPrice('pkgPrice')} >Set</Button> */}
-                    </Col>
-                    <Col span={7}>
-                        <h4 className='priceText'>Price: ${this.state.pkgPrice}</h4>
-                    </Col>
-                </Row>
+                    {/* Package Price */}
+                    <Row>
+                        <Col span={13}>
+                            <Form.Item label="Package Price" labelCol={{ span: 11 }}
+                                validateStatus={this.state.pkgTerms === "trial" ? "success" : this.state.validateStatus}
+                                help={this.state.pkgTerms === "trial" ? '' : this.state.help}
+                                wrapperCol={{ span: 13 }}>
+                                {getFieldDecorator('pkgPrice', {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: 'Please Input Package Price',
+                                        }
+                                    ],
+                                })(<Input disabled={this.state.pkgTerms === "trial" ? true : false} placeholder="Package Price" onChange={(e => this.setField('pkgPrice', '', '', e.target.value))} type='number' min={1} />)}
 
-                <Row>
-                    <Col span={13}>
-                        <h4 className="labelTypeText">Sim ID:</h4>
-                    </Col>
-                    <Col span={4}>
-                        <Button type="primary" onClick={() => this.setPrice(sim, true, !this.state[sim])} >{this.state[sim] ? 'Unset' : 'Set'}</Button>
-                    </Col>
-                    <Col span={7}>
-                        <span className='priceText' >Sim ID: </span><span style={{ fontWeight: 'bold' }}>{this.state[sim] ? 'Yes' : 'No'}</span>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span={13}>
-                        <h4 className="labelTypeText">Sim ID 2:</h4>
-                    </Col>
-                    <Col span={4}>
-                        <Button type="primary" onClick={() => this.setPrice(sim2, true, !this.state[sim2])} >{this.state[sim2] ? 'Unset' : 'Set'}</Button>
-                    </Col>
-                    <Col span={7}>
-                        <span className='priceText' >Sim ID 2: </span><span style={{ fontWeight: 'bold' }}>{this.state[sim2] ? 'Yes' : 'No'}</span>
-                    </Col>
-                </Row>
+                            </Form.Item>
+                        </Col>
+                        <Col span={4}>
+                        </Col>
+                        <Col span={7}>
+                            <h4 className='priceText'>Price: ${this.state.pkgPrice}</h4>
+                        </Col>
+                    </Row>
+                    {(this.state.selectedTab === '1') ?
+                        <Fragment>
+                            {/* Sim ID */}
+                            <Row>
+                                <Col span={13}>
+                                    <h4 className="labelTypeText">Sim ID:</h4>
+                                </Col>
+                                <Col span={4}>
+                                    <Button type="primary" onClick={() => this.setField(sim, !this.state[sim], true)} >{this.state[sim] ? 'Unset' : 'Set'}</Button>
+                                </Col>
+                                <Col span={7}>
+                                    <span className='priceText' >Sim ID: </span><span style={{ fontWeight: 'bold' }}>{this.state[sim] ? 'Yes' : 'No'}</span>
+                                </Col>
+                            </Row>
 
-                <Row>
-                    <Col span={13}>
-                        <h4 className="labelTypeText">Chat ID:</h4>
-                    </Col>
-                    <Col span={4}>
-                        <Button type="primary" onClick={() => this.setPrice(chat, true, !this.state[chat])}>{this.state[chat] ? 'Unset' : 'Set'}</Button>
-                    </Col>
-                    <Col span={7}>
-                        <span className='priceText' > Chat ID: </span><span style={{ fontWeight: 'bold' }}>{this.state[chat] ? 'Yes' : 'No'}</span>
-                    </Col>
-                </Row>
+                            {/* Sim ID 2 */}
+                            <Row>
+                                <Col span={13}>
+                                    <h4 className="labelTypeText">Sim ID 2:</h4>
+                                </Col>
+                                <Col span={4}>
+                                    <Button type="primary" onClick={() => this.setField(sim2, true, !this.state[sim2])} >{this.state[sim2] ? 'Unset' : 'Set'}</Button>
+                                </Col>
+                                <Col span={7}>
+                                    <span className='priceText' >Sim ID 2: </span><span style={{ fontWeight: 'bold' }}>{this.state[sim2] ? 'Yes' : 'No'}</span>
+                                </Col>
+                            </Row>
 
-                <Row>
-                    <Col span={13}>
-                        <h4 className="labelTypeText">Pgp ID:</h4>
-                    </Col>
-                    <Col span={4}>
-                        <Button type="primary" onClick={() => this.setPrice(pgp, true, !this.state[pgp])}>{this.state[pgp] ? 'Unset' : 'Set'}</Button>
-                    </Col>
-                    <Col span={7}>
-                        <span className='priceText' >Pgp ID: </span><span style={{ fontWeight: 'bold' }}>{this.state[pgp] ? 'Yes' : 'No'}</span>
-                    </Col>
-                </Row>
+                            {/* Chat ID */}
+                            <Row>
+                                <Col span={13}>
+                                    <h4 className="labelTypeText">Chat ID:</h4>
+                                </Col>
+                                <Col span={4}>
+                                    <Button type="primary" onClick={() => this.setField(chat, !this.state[chat], true)}>{this.state[chat] ? 'Unset' : 'Set'}</Button>
+                                </Col>
+                                <Col span={7}>
+                                    <span className='priceText' > Chat ID: </span><span style={{ fontWeight: 'bold' }}>{this.state[chat] ? 'Yes' : 'No'}</span>
+                                </Col>
+                            </Row>
 
-                <Row>
-                    <Col span={13}>
-                        <h4 className="labelTypeText">VPN ID:</h4>
-                    </Col>
-                    <Col span={4}>
-                        <Button type="primary" onClick={() => this.setPrice(vpn, true, !this.state[vpn])}>{this.state[vpn] ? 'Unset' : 'Set'}</Button>
-                    </Col>
-                    <Col span={7}>
-                        <span className='priceText' >VPN ID: </span><span style={{ fontWeight: 'bold' }}>{this.state[vpn] ? 'Yes' : 'No'}</span>
-                    </Col>
-                </Row>
+                            {/* Pgp ID */}
+                            <Row>
+                                <Col span={13}>
+                                    <h4 className="labelTypeText">Pgp ID:</h4>
+                                </Col>
+                                <Col span={4}>
+                                    <Button type="primary" onClick={() => this.setField(pgp,!this.state[pgp], true, )}>{this.state[pgp] ? 'Unset' : 'Set'}</Button>
+                                </Col>
+                                <Col span={7}>
+                                    <span className='priceText' >Pgp ID: </span><span style={{ fontWeight: 'bold' }}>{this.state[pgp] ? 'Yes' : 'No'}</span>
+                                </Col>
+                            </Row>
+
+                            {/* VPN ID */}
+                            <Row>
+                                <Col span={13}>
+                                    <h4 className="labelTypeText">VPN ID:</h4>
+                                </Col>
+                                <Col span={4}>
+                                    <Button type="primary" onClick={() => this.setField(vpn, !this.state[vpn], true )}>{this.state[vpn] ? 'Unset' : 'Set'}</Button>
+                                </Col>
+                                <Col span={7}>
+                                    <span className='priceText' >VPN ID: </span><span style={{ fontWeight: 'bold' }}>{this.state[vpn] ? 'Yes' : 'No'}</span>
+                                </Col>
+                            </Row>
 
 
-                {/* <div style={{float: 'right', marginTop: 20}} > 
-                    <Button onClick={()=> this.props.showPricingModal(false)}>Cancel</Button>
-                    <Button type="primary" htmlType="submit" >Submit</Button>
-                </div>  */}
-            </Form>
+                        </Fragment>
+                        :
+                        <Fragment>
+                            {/* Package Term */}
+                            <Row>
+                                <Col span={13}>
+
+                                    <Form.Item
+                                        label="Data Limit"
+                                        labelCol={{ span: 11 }}
+                                        wrapperCol={{ span: 13 }}>
+
+                                        {getFieldDecorator('data_limit', {
+                                            // initialValue: '1 month',
+                                            type: 'number',
+                                            rules: [
+                                                {
+                                                    // min: 1,
+                                                    // max: 10,
+                                                    required: true,
+                                                    message: 'Please Select Data Limit',
+                                                },
+                                                {
+                                                    validator: (rule, value, callback) => {
+                                                        if (value <= 0) {
+                                                            callback('Data Limit should be greater than 0 ')
+                                                        }
+                                                    }
+                                                }
+                                            ],
+                                        })(
+                                            <Input
+                                                type="number"
+                                                // min={1}
+                                                // max={10}
+                                                // addonAfter={<span>MB</span>}
+                                                suffix={<span>MB</span>}
+                                                // formatter={value => `${value}-MB`}
+                                                // parser={value => value.replace('-MB', '')}
+                                                style={{ width: "100%" }}
+                                                onChange={(data_limit => this.setField('data_limit', data_limit, true, data_limit))}
+                                            />
+                                        )}
+
+                                    </Form.Item>
+                                </Col>
+                                <Col span={4}>
+                                    {/* <Button type="primary" onClick={() => this.setField('pkgTerms')}>Set</Button> */}
+                                </Col>
+                                <Col span={7}>
+                                    <h4 className='priceText'>N/A</h4>
+                                </Col>
+                            </Row>
+                        </Fragment>
+                    }
+
+
+                    {/* <div style={{float: 'right', marginTop: 20}} > 
+                        <Button onClick={()=> this.props.showPricingModal(false)}>Cancel</Button>
+                        <Button type="primary" htmlType="submit" >Submit</Button>
+                    </div>  */}
+                </Form>
+            </Fragment>
+
         )
     }
 }

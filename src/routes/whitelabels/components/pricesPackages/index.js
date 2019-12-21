@@ -5,7 +5,7 @@ import { Button, Tabs, Table, Card, Input, Icon, Modal } from 'antd';
 import {
     getPrices, resetPrice, setPackage,
     saveIDPrices, setPrice, getPackages, saveHardware, getHardwares, deletePakage, deleteHardware, editHardware
-} from '../../../../appRedux/actions/WhiteLabels';
+} from '../../../../appRedux/actions';
 import { sim, chat, pgp, vpn } from '../../../../constants/Constants';
 import AppFilter from '../../../../components/AppFilter/index';
 import PricesList from './components/pricesList';
@@ -403,7 +403,7 @@ class Prices extends Component {
         })
     }
 
-    deletePakage = (item) => {
+    deletePackage = (item) => {
         let _this = this;
 
         confirm({
@@ -424,7 +424,7 @@ class Prices extends Component {
                 return this.state.packages.map((item, index) => {
                     return {
                         key: item.id,
-                        action: <Button type="danger" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => { this.deletePakage(item) }}>DELETE </Button>,
+                        action: <Button type="danger" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => { this.deletePackage(item) }}>DELETE </Button>,
                         pkg_name: item.pkg_name,
                         pkg_price: "$" + item.pkg_price,
                         pkg_term: item.pkg_term,
@@ -517,7 +517,7 @@ class Prices extends Component {
         }
     }
 
-    tabChaged = (e) => {
+    tabChanged = (e) => {
         // this.props.innerTabChanged(e)
         this.setState({
             tabSelected: e,
@@ -551,6 +551,7 @@ class Prices extends Component {
 
                     <Card>
 
+                        {/* Prices */}
                         <Tabs
                             // className="set_price"
                             type="card"
@@ -561,7 +562,7 @@ class Prices extends Component {
                                     <Tabs
                                         tabPosition={'left'}
                                         type="card"
-                                        onChange={(e) => this.tabChaged(e)}
+                                        onChange={(e) => this.tabChanged(e)}
                                         style={{ width: '10%', float: 'left' }}
                                     >
                                         <Tabs.TabPane tab={TAB_SIM_ID} key={sim} >
@@ -586,18 +587,34 @@ class Prices extends Component {
                                     </div>
                                 </div>
                             </Tabs.TabPane>
+
+                            {/* Packages */}
                             <Tabs.TabPane tab="Packages" key="2">
-                                <Table
-                                    columns={this.columns}
-                                    dataSource={this.renderList("packages")}
-                                    expandIcon={(props) => this.customExpandIcon(props)}
-                                    bordered
-                                    expandIconAsCell={false}
-                                    expandIconColumnIndex={4}
-                                    expandedRowRender={record => {
-                                        if (Object.keys(record.pkg_features).length !== 0 && record.pkg_features.constructor === Object) {
-                                            return (
-                                                <div>
+                                <Tabs
+                                    tabPosition={'left'}
+                                    type="card"
+                                    // onChange={(e) => this.tabChanged(e)}
+                                    style={{ width: '10%', float: 'left' }}
+                                >
+                                    <Tabs.TabPane tab={'Service Packages'} key='1' >
+
+                                    </Tabs.TabPane>
+                                    <Tabs.TabPane tab={'Data Packages'} key='2' >
+
+                                    </Tabs.TabPane>
+                                </Tabs>
+                                
+                                <div style={{ width: '90%', float: 'right' }}>
+                                    <Table
+                                        columns={this.columns}
+                                        dataSource={this.renderList("packages")}
+                                        expandIcon={(props) => this.customExpandIcon(props)}
+                                        bordered
+                                        expandIconAsCell={false}
+                                        expandIconColumnIndex={4}
+                                        expandedRowRender={record => {
+                                            if (Object.keys(record.pkg_features).length !== 0 && record.pkg_features.constructor === Object) {
+                                                return (
                                                     <Table
                                                         columns={[
                                                             { title: 'Service Name', dataIndex: 'name', key: 'name', align: 'center' },
@@ -605,21 +622,21 @@ class Prices extends Component {
                                                         dataSource={this.renderFeatures(record.pkg_features)}
                                                         pagination={false}
                                                     />
-                                                </div>)
-                                        } else {
-                                            return (
-                                                <div>
-
-                                                </div>
-                                            )
-                                        }
+                                                )
+                                            } else {
+                                                return null
+                                            }
 
 
-                                    }}
-                                    pagination={false}
+                                        }}
+                                        pagination={false}
 
-                                />
+                                    />
+                                </div>
+
                             </Tabs.TabPane>
+
+                            {/* Hardware */}
                             <Tabs.TabPane tab="Hardware" key="3">
                                 <Table
                                     columns={this.hardwareColumns}
@@ -682,7 +699,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-var mapStateToProps = ({ whiteLabels }, otherprops) => {
+var mapStateToProps = ({ whiteLabels }, otherProps) => {
     // 
     return {
         prices: whiteLabels.prices,
