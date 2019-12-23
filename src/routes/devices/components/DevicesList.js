@@ -80,9 +80,7 @@ class DevicesList extends Component {
         // console.log('list of dec', list)
         return list.map((device, index) => {
 
-            console.log('device is: ', device);
             var status = device.finalStatus;
-            console.log('status is : ', status);
             // const button_type = (status === DEVICE_ACTIVATED || status === DEVICE_TRIAL) ? "danger" : "dashed";
 
             // const flagged = device.flagged;

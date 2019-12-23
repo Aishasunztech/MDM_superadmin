@@ -21,6 +21,8 @@ class PackagePricingForm extends Component {
             validateStatus: 'success',
             pkgTerms: '1 month',
             selectedTab: '1',
+            packageType: 'services',
+            data_limit: 0,
         }
     }
 
@@ -31,6 +33,7 @@ class PackagePricingForm extends Component {
         if (fieldName) {
 
             if (is_pkg_feature) {
+                console.log("testing feature:", fieldName, pkg_feature_value, is_pkg_feature, e)
                 if (pkg_feature_value !== '' && fieldName) {
                     value = pkg_feature_value;
                     this.props.setPkgDetail(pkg_feature_value, fieldName, is_pkg_feature);
@@ -108,6 +111,7 @@ class PackagePricingForm extends Component {
             this.props.restrictPackageSubmit(false, 'pkgName')
         }
     }
+
     componentDidMount() {
         // 
         this.setState({
@@ -119,31 +123,33 @@ class PackagePricingForm extends Component {
             vpn: false
         })
     }
-    // resetState = ()=>{
-
-    // }
+    
+    
     tabChanged = (e) => {
+        let selectedTab = e;
+        let packageType = 'services';
+        if (e === '1') {
+            packageType= 'services'
+
+        } else if (e === '2') {
+            packageType = 'data_plan'
+        }
+
         this.setState({
-            'selectedTab': e
+            selectedTab: selectedTab,
+            packageType: packageType
         })
+        this.props.packageTypeTabHandler(packageType);
     }
 
     render() {
 
-        // const formItemLayout = {
-        //     labelCol: {
-        //         xs: { span: 24, offset: 2 },
-        //         sm: { span: 10, offset: 2 },
-        //     },
-        //     wrapperCol: {
-        //         xs: { span: 24 },
-        //         sm: { span: 10 },
-        //     },
-        // };
-        const { getFieldDecorator } = this.props.form;
+    
         const { Option } = Select;
         return (
             <Fragment>
+
+                {/* Form tabs */}
                 <Tabs
                     tabPosition={'left'}
                     type="card"
@@ -157,6 +163,7 @@ class PackagePricingForm extends Component {
 
                     </Tabs.TabPane>
                 </Tabs>
+
                 <Form style={{ float: 'left', width: '73%' }}>
 
                     {/* Package Name */}
@@ -165,7 +172,7 @@ class PackagePricingForm extends Component {
                             <Form.Item label="Package Name"
                                 labelCol={{ span: 11 }}
                                 wrapperCol={{ span: 13 }}>
-                                {getFieldDecorator('pkgName', {
+                                {this.props.form.getFieldDecorator('pkgName', {
                                     rules: [
                                         {
                                             required: true,
@@ -196,7 +203,7 @@ class PackagePricingForm extends Component {
                                 labelCol={{ span: 11 }}
                                 wrapperCol={{ span: 13 }}>
 
-                                {getFieldDecorator('pkgTerms', {
+                                {this.props.form.getFieldDecorator('pkgTerms', {
                                     initialValue: '1 month',
                                     rules: [
                                         {
@@ -242,7 +249,7 @@ class PackagePricingForm extends Component {
                                 validateStatus={this.state.pkgTerms === "trial" ? "success" : this.state.validateStatus}
                                 help={this.state.pkgTerms === "trial" ? '' : this.state.help}
                                 wrapperCol={{ span: 13 }}>
-                                {getFieldDecorator('pkgPrice', {
+                                {this.props.form.getFieldDecorator('pkgPrice', {
                                     rules: [
                                         {
                                             required: true,
@@ -306,7 +313,7 @@ class PackagePricingForm extends Component {
                                     <h4 className="labelTypeText">Pgp ID:</h4>
                                 </Col>
                                 <Col span={4}>
-                                    <Button type="primary" onClick={() => this.setField(pgp,!this.state[pgp], true, )}>{this.state[pgp] ? 'Unset' : 'Set'}</Button>
+                                    <Button type="primary" onClick={() => this.setField(pgp, !this.state[pgp], true)}>{this.state[pgp] ? 'Unset' : 'Set'}</Button>
                                 </Col>
                                 <Col span={7}>
                                     <span className='priceText' >Pgp ID: </span><span style={{ fontWeight: 'bold' }}>{this.state[pgp] ? 'Yes' : 'No'}</span>
@@ -319,7 +326,7 @@ class PackagePricingForm extends Component {
                                     <h4 className="labelTypeText">VPN ID:</h4>
                                 </Col>
                                 <Col span={4}>
-                                    <Button type="primary" onClick={() => this.setField(vpn, !this.state[vpn], true )}>{this.state[vpn] ? 'Unset' : 'Set'}</Button>
+                                    <Button type="primary" onClick={() => this.setField(vpn, !this.state[vpn], true)}>{this.state[vpn] ? 'Unset' : 'Set'}</Button>
                                 </Col>
                                 <Col span={7}>
                                     <span className='priceText' >VPN ID: </span><span style={{ fontWeight: 'bold' }}>{this.state[vpn] ? 'Yes' : 'No'}</span>
@@ -339,7 +346,7 @@ class PackagePricingForm extends Component {
                                         labelCol={{ span: 11 }}
                                         wrapperCol={{ span: 13 }}>
 
-                                        {getFieldDecorator('data_limit', {
+                                        {this.props.form.getFieldDecorator('data_limit', {
                                             // initialValue: '1 month',
                                             type: 'number',
                                             rules: [
@@ -367,7 +374,7 @@ class PackagePricingForm extends Component {
                                                 // formatter={value => `${value}-MB`}
                                                 // parser={value => value.replace('-MB', '')}
                                                 style={{ width: "100%" }}
-                                                onChange={(data_limit => this.setField('data_limit', data_limit, true, data_limit))}
+                                                onChange={(data_limit) => this.setField('data_limit', '', false, data_limit.target.value)}
                                             />
                                         )}
 
@@ -377,7 +384,7 @@ class PackagePricingForm extends Component {
                                     {/* <Button type="primary" onClick={() => this.setField('pkgTerms')}>Set</Button> */}
                                 </Col>
                                 <Col span={7}>
-                                    <h4 className='priceText'>N/A</h4>
+                                    <h4 className='priceText'>{this.state.data_limit}</h4>
                                 </Col>
                             </Row>
                         </Fragment>

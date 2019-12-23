@@ -32,6 +32,7 @@ export default class WhiteLabelPricing extends Component {
             submitAvailable: true,
             pricesFormErrors: [],
             packageFormErrors: ['pkgName', 'pkgPrice', 'pkg_features'],
+            package_type: 'services'
         }
     }
 
@@ -121,6 +122,7 @@ export default class WhiteLabelPricing extends Component {
                     pkgTerm: this.state.pkgTerms,
                     pkgPrice: this.state.pkgTerms === "trial" ? 0 : this.state.pkgPrice,
                     whitelabel_id: this.props.whitelabel_id,
+                    package_type: this.state.package_type
 
                 }
 
@@ -168,6 +170,10 @@ export default class WhiteLabelPricing extends Component {
             if (field === "pkgTerms" && value === 'trial') {
                 this.setState({ pkgPrice: 0, [field]: value })
             } else {
+
+                if (field === 'data_limit') {
+                    this.restrictPackageSubmit(true, 'pkg_features')
+                }
                 this.setState({
                     [field]: value
                 })
@@ -229,6 +235,12 @@ export default class WhiteLabelPricing extends Component {
         })
     }
 
+    packageTypeTabHandler = (e) => {
+
+        this.setState({
+            package_type: e
+        })
+    }
     render() {
 
         return (
@@ -282,6 +294,7 @@ export default class WhiteLabelPricing extends Component {
                             setPkgDetail={this.setPkgDetail}
                             wrappedComponentRef={(form) => this.form = form}
                             restrictPackageSubmit={this.restrictPackageSubmit}
+                            packageTypeTabHandler={this.packageTypeTabHandler}
                             ref="packageForm"
                         />
 
@@ -308,77 +321,106 @@ function showConfirm(_this, data) {
         cancelText: 'Cancel',
         okText: 'Save',
         content:
-            (<Row>
+            (<>
                 <Divider />
-                <Col span={12}><p>Package Name</p>
-                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
-                </Col>
-                <Col span={12}>
-                    <p >{_this.state.pkgName}</p>
-                </Col>
-
-
-                <Col span={12}><p>Package Term</p>
-                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
-                </Col>
-                <Col span={12}>
-                    <p >{_this.state.pkgTerms}</p>
-                </Col>
-
-
-                <Col span={12}><p>Package Price</p>
-                    {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
-                </Col>
-                <Col span={12}>
-                    <p >${_this.state.pkgPrice}</p>
-                </Col>
-
-                {(_this.state.data_limit) ?
-                    <Col span={12}>
-                        <p >{_this.state.data_limit}</p>
+                <Row>
+                    <Col span={12}><p>Package Name</p>
+                        {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
                     </Col>
+
+                    <Col span={12}>
+                        <p >{_this.state.pkgName}</p>
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col span={12}><p>Package Term</p>
+                        {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                    </Col>
+
+                    <Col span={12}>
+                        <p >{_this.state.pkgTerms}</p>
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col span={12}><p>Package Price</p>
+                        {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                    </Col>
+                    <Col span={12}>
+                        <p >${_this.state.pkgPrice}</p>
+                    </Col>
+                </Row>
+                
+                <Row>
+                    <Col span={12}><p>Package Type</p>
+                        {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                    </Col>
+                    <Col span={12}>
+                        <p >{data.package_type}</p>
+                    </Col>
+                </Row>
+
+
+                {(data.package_type && data.package_type === 'data_plan') ?
+                    <Row>
+                        <Col span={12}>
+                            <p >Data Limit</p>
+                        </Col>
+                        <Col span={12}>
+                            <p >{_this.state.data_limit} MB</p>
+                        </Col>
+                    </Row>
                     :
                     <Fragment>
-                        <Col span={12}><p>Sim id</p>
-                            {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
-                        </Col>
-                        <Col span={12}>
-                            <p >{_this.state.pkg_features.sim_id ? 'yes' : 'No'}</p>
-                        </Col>
+                        <Row>
+                            <Col span={12}><p>Sim id</p>
+                                {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                            </Col>
+                            <Col span={12}>
+                                <p >{_this.state.pkg_features.sim_id ? 'yes' : 'No'}</p>
+                            </Col>
+                        </Row>
 
-                        <Col span={12}><p>Sim id 2</p>
-                            {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
-                        </Col>
-                        <Col span={12}>
-                            <p >{_this.state.pkg_features.sim_id2 ? 'yes' : 'No'}</p>
-                        </Col>
+                        <Row>
+                            <Col span={12}><p>Sim id 2</p>
+                                {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                            </Col>
+                            <Col span={12}>
+                                <p >{_this.state.pkg_features.sim_id2 ? 'yes' : 'No'}</p>
+                            </Col>
+                        </Row>
 
+                        <Row>
+                            <Col span={12}><p>Chat id</p>
+                                {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                            </Col>
+                            <Col span={12}>
+                                <p >{_this.state.pkg_features.chat_id ? 'yes' : 'No'}</p>
+                            </Col>
+                        </Row>
 
-                        <Col span={12}><p>Chat id</p>
-                            {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
-                        </Col>
-                        <Col span={12}>
-                            <p >{_this.state.pkg_features.chat_id ? 'yes' : 'No'}</p>
-                        </Col>
+                        <Row>
+                            <Col span={12}><p>Pgp Email</p>
+                                {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                            </Col>
+                            <Col span={12}>
+                                <p >{_this.state.pkg_features.pgp_email ? 'yes' : 'No'}</p>
+                            </Col>
+                        </Row>
 
-                        <Col span={12}><p>Pgp Email</p>
-                            {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
-                        </Col>
-                        <Col span={12}>
-                            <p >{_this.state.pkg_features.pgp_email ? 'yes' : 'No'}</p>
-                        </Col>
-
-                        <Col span={12}><p>Vpn</p>
-                            {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
-                        </Col>
-                        <Col span={12}>
-                            <p >{_this.state.pkg_features.vpn ? 'yes' : 'No'}</p>
-                        </Col>
+                        <Row>
+                            <Col span={12}><p>Vpn</p>
+                                {/* <Button type="primary" onClick={() => this.setPrice('pkgName')}> {convertToLang(this.props.translation[Button_SET], "SET")} </Button> */}
+                            </Col>
+                            <Col span={12}>
+                                <p >{_this.state.pkg_features.vpn ? 'yes' : 'No'}</p>
+                            </Col>
+                        </Row>
                     </Fragment>
                 }
-
-
-            </Row>)
+            </>
+            )
         ,
         onOk() {
             // 
