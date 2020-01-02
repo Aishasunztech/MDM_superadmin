@@ -25,6 +25,7 @@ let hardwaresCopy = [];
 class Prices extends Component {
     constructor(props) {
         super(props)
+        
         this.columns = [
             {
                 title: "#",
@@ -167,6 +168,7 @@ class Prices extends Component {
                 ]
             }
         ];
+
         this.hardwareColumns = [
             {
                 title: "#",
@@ -226,7 +228,7 @@ class Prices extends Component {
                 className: '',
                 children: [
                     {
-                        title: 'HADWARE PRICE (CREDITS)',
+                        title: 'HARDWARE PRICE (CREDITS)',
                         align: "center",
                         className: '',
                         dataIndex: 'price',
@@ -240,6 +242,7 @@ class Prices extends Component {
                 ]
             }
         ];
+
         this.state = {
             pricing_modal: false,
             innerTabData: this.props.prices ? this.props.prices[sim] : {},
@@ -250,13 +253,14 @@ class Prices extends Component {
             isPriceChanged: this.props.isPriceChanged,
             hardwares: [],
             visible: false,
-            editHardwareObj: {}
+            editHardwareObj: {},
+            packageListTab:'1'
         }
     }
 
     handleSearch = (e) => {
 
-        let dumyPackages = [];
+        let dummyPackages = [];
         if (this.state.copyStatus) {
             packagesCopy = this.state.packages;
             this.state.copyStatus = false;
@@ -269,26 +273,26 @@ class Prices extends Component {
                 if (dealer[e.target.name] !== undefined) {
                     if ((typeof dealer[e.target.name]) === 'string') {
                         if (dealer[e.target.name].toUpperCase().includes(e.target.value.toUpperCase())) {
-                            dumyPackages.push(dealer);
+                            dummyPackages.push(dealer);
                         }
                     } else if (dealer[e.target.name] != null) {
                         if (dealer[e.target.name].toString().toUpperCase().includes(e.target.value.toUpperCase())) {
-                            dumyPackages.push(dealer);
+                            dummyPackages.push(dealer);
                         }
                         if (isArray(dealer[e.target.name])) {
                             if (dealer[e.target.name][0]['total'].includes(e.target.value)) {
-                                dumyPackages.push(dealer);
+                                dummyPackages.push(dealer);
                             }
                         }
                     } else {
                     }
                 } else {
-                    dumyPackages.push(dealer);
+                    dummyPackages.push(dealer);
                 }
             });
 
             this.setState({
-                packages: dumyPackages
+                packages: dummyPackages
             })
         } else {
             this.setState({
@@ -351,18 +355,6 @@ class Prices extends Component {
         })
     }
 
-    // componentDidUpdate(prevProps) {
-    //     
-    //     if (this.props !== prevProps) {
-    //         this.setState({
-    //             prices: this.props.prices,
-    //             packages: this.props.packages,
-    //             packagesCopy: this.props.packages
-    //             // innerTabData: this.props.prices ? this.props.prices[this.state.tabSelected] : {},
-    //         })
-    //     }
-    // }
-
     componentWillReceiveProps(nextProps) {
         if (this.props !== nextProps) {
             this.setState({
@@ -421,7 +413,14 @@ class Prices extends Component {
         if (type === 'packages') {
             // 
             if (this.state.packages) {
-                return this.state.packages.map((item, index) => {
+                let packages_type = 'services';
+                if(this.state.packageListTab==='1'){
+                    packages_type = 'services';
+                } else if (this.state.packageListTab === '2') {
+                    packages_type = 'data_plan';
+                }
+                let packages = this.state.packages.filter(packageItem => packageItem.package_type === packages_type);
+                return packages.map((item, index) => {
                     return {
                         key: item.id,
                         action: <Button type="danger" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => { this.deletePackage(item) }}>DELETE </Button>,
@@ -524,6 +523,13 @@ class Prices extends Component {
             innerTabData: this.state.prices ? this.state.prices[e] : {}
         })
     }
+
+    packagesFilterHandler= (e) => {
+        this.setState({
+            packageListTab: e
+        })
+
+    }
     render() {
         // 
         return (
@@ -593,13 +599,13 @@ class Prices extends Component {
                                 <Tabs
                                     tabPosition={'left'}
                                     type="card"
-                                    // onChange={(e) => this.tabChanged(e)}
+                                    onChange={(e) => this.packagesFilterHandler(e)}
                                     style={{ width: '10%', float: 'left' }}
                                 >
                                     <Tabs.TabPane tab={'Service Packages'} key='1' >
 
                                     </Tabs.TabPane>
-                                    <Tabs.TabPane tab={'Data Packages'} key='2' >
+                                    <Tabs.TabPane tab={'Data Plan Packages'} key='2' >
 
                                     </Tabs.TabPane>
                                 </Tabs>
