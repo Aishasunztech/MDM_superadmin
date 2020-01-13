@@ -5,7 +5,7 @@ import { Button, Tabs, Table, Card, Input, Icon, Modal } from 'antd';
 import {
     getPrices, resetPrice, setPackage,
     saveIDPrices, setPrice, getPackages, saveHardware, getHardwares, deletePakage, deleteHardware, editHardware
-} from '../../../../appRedux/actions/WhiteLabels';
+} from '../../../../appRedux/actions';
 import { sim, chat, pgp, vpn } from '../../../../constants/Constants';
 import AppFilter from '../../../../components/AppFilter/index';
 import PricesList from './components/pricesList';
@@ -25,6 +25,7 @@ let hardwaresCopy = [];
 class Prices extends Component {
     constructor(props) {
         super(props)
+        
         this.columns = [
             {
                 title: "#",
@@ -167,6 +168,7 @@ class Prices extends Component {
                 ]
             }
         ];
+
         this.hardwareColumns = [
             {
                 title: "#",
@@ -226,7 +228,7 @@ class Prices extends Component {
                 className: '',
                 children: [
                     {
-                        title: 'HADWARE PRICE (CREDITS)',
+                        title: 'HARDWARE PRICE (CREDITS)',
                         align: "center",
                         className: '',
                         dataIndex: 'price',
@@ -240,6 +242,7 @@ class Prices extends Component {
                 ]
             }
         ];
+
         this.state = {
             pricing_modal: false,
             innerTabData: this.props.prices ? this.props.prices[sim] : {},
@@ -250,13 +253,14 @@ class Prices extends Component {
             isPriceChanged: this.props.isPriceChanged,
             hardwares: [],
             visible: false,
-            editHardwareObj: {}
+            editHardwareObj: {},
+            packageListTab:'1'
         }
     }
 
     handleSearch = (e) => {
 
-        let dumyPackages = [];
+        let dummyPackages = [];
         if (this.state.copyStatus) {
             packagesCopy = this.state.packages;
             this.state.copyStatus = false;
@@ -269,26 +273,26 @@ class Prices extends Component {
                 if (dealer[e.target.name] !== undefined) {
                     if ((typeof dealer[e.target.name]) === 'string') {
                         if (dealer[e.target.name].toUpperCase().includes(e.target.value.toUpperCase())) {
-                            dumyPackages.push(dealer);
+                            dummyPackages.push(dealer);
                         }
                     } else if (dealer[e.target.name] != null) {
                         if (dealer[e.target.name].toString().toUpperCase().includes(e.target.value.toUpperCase())) {
-                            dumyPackages.push(dealer);
+                            dummyPackages.push(dealer);
                         }
                         if (isArray(dealer[e.target.name])) {
                             if (dealer[e.target.name][0]['total'].includes(e.target.value)) {
-                                dumyPackages.push(dealer);
+                                dummyPackages.push(dealer);
                             }
                         }
                     } else {
                     }
                 } else {
-                    dumyPackages.push(dealer);
+                    dummyPackages.push(dealer);
                 }
             });
 
             this.setState({
-                packages: dumyPackages
+                packages: dummyPackages
             })
         } else {
             this.setState({
@@ -351,18 +355,6 @@ class Prices extends Component {
         })
     }
 
-    // componentDidUpdate(prevProps) {
-    //     
-    //     if (this.props !== prevProps) {
-    //         this.setState({
-    //             prices: this.props.prices,
-    //             packages: this.props.packages,
-    //             packagesCopy: this.props.packages
-    //             // innerTabData: this.props.prices ? this.props.prices[this.state.tabSelected] : {},
-    //         })
-    //     }
-    // }
-
     componentWillReceiveProps(nextProps) {
         if (this.props !== nextProps) {
             this.setState({
@@ -403,7 +395,7 @@ class Prices extends Component {
         })
     }
 
-    deletePakage = (item) => {
+    deletePackage = (item) => {
         let _this = this;
 
         confirm({
@@ -421,10 +413,17 @@ class Prices extends Component {
         if (type === 'packages') {
             // 
             if (this.state.packages) {
-                return this.state.packages.map((item, index) => {
+                let packages_type = 'services';
+                if(this.state.packageListTab==='1'){
+                    packages_type = 'services';
+                } else if (this.state.packageListTab === '2') {
+                    packages_type = 'data_plan';
+                }
+                let packages = this.state.packages.filter(packageItem => packageItem.package_type === packages_type);
+                return packages.map((item, index) => {
                     return {
                         key: item.id,
-                        action: <Button type="danger" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => { this.deletePakage(item) }}>DELETE </Button>,
+                        action: <Button type="danger" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => { this.deletePackage(item) }}>DELETE </Button>,
                         pkg_name: item.pkg_name,
                         pkg_price: "$" + item.pkg_price,
                         pkg_term: item.pkg_term,
@@ -517,12 +516,19 @@ class Prices extends Component {
         }
     }
 
-    tabChaged = (e) => {
+    tabChanged = (e) => {
         // this.props.innerTabChanged(e)
         this.setState({
             tabSelected: e,
             innerTabData: this.state.prices ? this.state.prices[e] : {}
         })
+    }
+
+    packagesFilterHandler= (e) => {
+        this.setState({
+            packageListTab: e
+        })
+
     }
     render() {
         // 
@@ -551,6 +557,7 @@ class Prices extends Component {
 
                     <Card>
 
+                        {/* Prices */}
                         <Tabs
                             // className="set_price"
                             type="card"
@@ -561,7 +568,7 @@ class Prices extends Component {
                                     <Tabs
                                         tabPosition={'left'}
                                         type="card"
-                                        onChange={(e) => this.tabChaged(e)}
+                                        onChange={(e) => this.tabChanged(e)}
                                         style={{ width: '10%', float: 'left' }}
                                     >
                                         <Tabs.TabPane tab={TAB_SIM_ID} key={sim} >
@@ -586,18 +593,34 @@ class Prices extends Component {
                                     </div>
                                 </div>
                             </Tabs.TabPane>
+
+                            {/* Packages */}
                             <Tabs.TabPane tab="Packages" key="2">
-                                <Table
-                                    columns={this.columns}
-                                    dataSource={this.renderList("packages")}
-                                    expandIcon={(props) => this.customExpandIcon(props)}
-                                    bordered
-                                    expandIconAsCell={false}
-                                    expandIconColumnIndex={4}
-                                    expandedRowRender={record => {
-                                        if (Object.keys(record.pkg_features).length !== 0 && record.pkg_features.constructor === Object) {
-                                            return (
-                                                <div>
+                                <Tabs
+                                    tabPosition={'left'}
+                                    type="card"
+                                    onChange={(e) => this.packagesFilterHandler(e)}
+                                    style={{ width: '10%', float: 'left' }}
+                                >
+                                    <Tabs.TabPane tab={'Service Packages'} key='1' >
+
+                                    </Tabs.TabPane>
+                                    <Tabs.TabPane tab={'Data Plan Packages'} key='2' >
+
+                                    </Tabs.TabPane>
+                                </Tabs>
+                                
+                                <div style={{ width: '90%', float: 'right' }}>
+                                    <Table
+                                        columns={this.columns}
+                                        dataSource={this.renderList("packages")}
+                                        expandIcon={(props) => this.customExpandIcon(props)}
+                                        bordered
+                                        expandIconAsCell={false}
+                                        expandIconColumnIndex={4}
+                                        expandedRowRender={record => {
+                                            if (Object.keys(record.pkg_features).length !== 0 && record.pkg_features.constructor === Object) {
+                                                return (
                                                     <Table
                                                         columns={[
                                                             { title: 'Service Name', dataIndex: 'name', key: 'name', align: 'center' },
@@ -605,21 +628,21 @@ class Prices extends Component {
                                                         dataSource={this.renderFeatures(record.pkg_features)}
                                                         pagination={false}
                                                     />
-                                                </div>)
-                                        } else {
-                                            return (
-                                                <div>
-
-                                                </div>
-                                            )
-                                        }
+                                                )
+                                            } else {
+                                                return null
+                                            }
 
 
-                                    }}
-                                    pagination={false}
+                                        }}
+                                        pagination={false}
 
-                                />
+                                    />
+                                </div>
+
                             </Tabs.TabPane>
+
+                            {/* Hardware */}
                             <Tabs.TabPane tab="Hardware" key="3">
                                 <Table
                                     columns={this.hardwareColumns}
@@ -682,7 +705,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-var mapStateToProps = ({ whiteLabels }, otherprops) => {
+var mapStateToProps = ({ whiteLabels }, otherProps) => {
     // 
     return {
         prices: whiteLabels.prices,
