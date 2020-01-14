@@ -758,7 +758,7 @@ class Prices extends Component {
                                     pagination={false}
                                 />
                             </Tabs.TabPane>
-                            <Tabs.TabPane tab="Stand Alone Sims Packages" key="4">
+                            <Tabs.TabPane tab="Stand Alone Sims" key="4">
                                 <Table
                                     columns={this.standaloneColumns}
                                     dataSource={this.renderList("packages", '4')}
