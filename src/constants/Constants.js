@@ -77,5 +77,4 @@ export const pkg_features = {
     sim_id2: false,
     pgp_email: false,
     vpn: false
-
 }

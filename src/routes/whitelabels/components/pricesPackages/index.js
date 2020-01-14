@@ -25,7 +25,7 @@ let hardwaresCopy = [];
 class Prices extends Component {
     constructor(props) {
         super(props)
-        
+
         this.columns = [
             {
                 title: "#",
@@ -242,6 +242,108 @@ class Prices extends Component {
                 ]
             }
         ];
+        this.standaloneColumns = [
+            {
+                title: "#",
+                dataIndex: 'sr',
+                key: 'sr',
+                align: "center",
+                render: (text, record, index) => ++index,
+            },
+            {
+                title: "ACTION",
+                dataIndex: 'action',
+                align: 'center',
+                className: 'row',
+                // width: 800,
+            },
+            {
+                title: (
+                    <Input.Search
+                        name="pkg_name"
+                        key="pkg_name"
+                        id="pkg_name"
+                        className="search_heading"
+                        onKeyUp={this.handleHDWSearch}
+                        autoComplete="new-password"
+                        placeholder='NAME'
+                    />
+                ),
+                dataIndex: 'pkg_name',
+                className: '',
+                children: [
+                    {
+                        title: 'NAME',
+                        align: "center",
+                        className: '',
+                        dataIndex: 'pkg_name',
+                        key: 'pkg_name',
+                        sorter: (a, b) => { return a.name.localeCompare(b.name) },
+
+                        sortDirections: ['ascend', 'descend'],
+                    }
+                ]
+            },
+
+            {
+                title: (
+                    <Input.Search
+                        name="pkg_price"
+                        key="pkg_price"
+                        id="pkg_price"
+                        className="search_heading"
+                        onKeyUp={this.handleHDWSearch}
+                        autoComplete="new-password"
+                        placeholder='PRICE (CREDITS)'
+                    />
+                ),
+                dataIndex: 'pkg_price',
+                className: '',
+                children: [
+                    {
+                        title: 'PRICE (CREDITS)',
+                        align: "center",
+                        className: '',
+                        dataIndex: 'pkg_price',
+                        key: 'pkg_price',
+                        // ...this.getColumnSearchProps('status'),
+                        // sorter: (a, b) => { return a.price - b.price },
+                        sorter: (a, b) => { return a.price.localeCompare(b.price) },
+
+                        sortDirections: ['ascend', 'descend'],
+                    }
+                ]
+            },
+            {
+                title: (
+                    <Input.Search
+                        name="pkg_term"
+                        key="pkg_term"
+                        id="pkg_term"
+                        className="search_heading"
+                        onKeyUp={this.handleHDWSearch}
+                        autoComplete="new-password"
+                        placeholder='TERM'
+                    />
+                ),
+                dataIndex: 'pkg_term',
+                className: '',
+                children: [
+                    {
+                        title: 'TERM',
+                        align: "center",
+                        className: '',
+                        dataIndex: 'pkg_term',
+                        key: 'pkg_term',
+                        // ...this.getColumnSearchProps('status'),
+                        // sorter: (a, b) => { return a.price - b.price },
+                        sorter: (a, b) => { return a.price.localeCompare(b.price) },
+
+                        sortDirections: ['ascend', 'descend'],
+                    }
+                ]
+            }
+        ];
 
         this.state = {
             pricing_modal: false,
@@ -254,7 +356,7 @@ class Prices extends Component {
             hardwares: [],
             visible: false,
             editHardwareObj: {},
-            packageListTab:'1'
+            packageListTab: '1'
         }
     }
 
@@ -409,14 +511,19 @@ class Prices extends Component {
     }
 
 
-    renderList = (type) => {
+    renderList = (type, tab) => {
         if (type === 'packages') {
             // 
             if (this.state.packages) {
                 let packages_type = 'services';
-                if(this.state.packageListTab==='1'){
+                // console.log(this.state.tabSelected);
+                if (tab === '4') {
+                    packages_type = 'standalone_sim';
+                }
+                else if (this.state.packageListTab === '1') {
                     packages_type = 'services';
-                } else if (this.state.packageListTab === '2') {
+                }
+                else if (this.state.packageListTab === '2') {
                     packages_type = 'data_plan';
                 }
                 let packages = this.state.packages.filter(packageItem => packageItem.package_type === packages_type);
@@ -425,7 +532,7 @@ class Prices extends Component {
                         key: item.id,
                         action: <Button type="danger" size="small" style={{ margin: '0 8px 0 8px', textTransform: 'uppercase' }} onClick={() => { this.deletePackage(item) }}>DELETE </Button>,
                         pkg_name: item.pkg_name,
-                        pkg_price: "$" + item.pkg_price,
+                        pkg_price: item.pkg_price,
                         pkg_term: item.pkg_term,
                         pkg_features: item.pkg_features ? JSON.parse(item.pkg_features) : {},
                         pkg_expiry: item.pkg_expiry
@@ -524,7 +631,7 @@ class Prices extends Component {
         })
     }
 
-    packagesFilterHandler= (e) => {
+    packagesFilterHandler = (e) => {
         this.setState({
             packageListTab: e
         })
@@ -609,7 +716,7 @@ class Prices extends Component {
 
                                     </Tabs.TabPane>
                                 </Tabs>
-                                
+
                                 <div style={{ width: '90%', float: 'right' }}>
                                     <Table
                                         columns={this.columns}
@@ -647,6 +754,14 @@ class Prices extends Component {
                                 <Table
                                     columns={this.hardwareColumns}
                                     dataSource={this.renderList("hardware")}
+                                    bordered
+                                    pagination={false}
+                                />
+                            </Tabs.TabPane>
+                            <Tabs.TabPane tab="Stand Alone Sims Packages" key="4">
+                                <Table
+                                    columns={this.standaloneColumns}
+                                    dataSource={this.renderList("packages", '4')}
                                     bordered
                                     pagination={false}
                                 />
