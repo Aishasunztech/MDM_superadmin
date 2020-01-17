@@ -165,7 +165,7 @@ class ManageDomains extends Component {
         confirm({
             title: <div>Are You Sure To Delete <span style={{ textDecoration: 'underline' }}>{item.domain_name}</span> Domain ?</div>,
             onOk() {
-                _this.props.deleteDomains(item.id)
+                _this.props.deleteDomains(item.id, _this.props.id)
             },
             onCancel() {
             },
