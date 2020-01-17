@@ -181,8 +181,8 @@ const RestService = {
         return axios.put(USER_URL + 'edit-domain', data, RestService.getHeader());
     },
 
-    deleteDomains: (domain_id) => {
-        return axios.delete(USER_URL + 'delete-domains/' + domain_id, RestService.getHeader());
+    deleteDomains: (domain_id, wl_id) => {
+        return axios.delete(USER_URL + 'delete-domains/' + domain_id + '/' + wl_id, RestService.getHeader());
     },
 
     deletePakage: (id) => {

@@ -385,9 +385,9 @@ export const editDomain = (data) => {
     }
 }
 
-export const deleteDomains = (domain_id) => {
+export const deleteDomains = (domain_id, wl_id) => {
     return (dispatch) => {
-        RestService.deleteDomains(domain_id).then((response) => {
+        RestService.deleteDomains(domain_id, wl_id).then((response) => {
             if (RestService.checkAuth(response.data)) {
                 dispatch({
                     type: DELETE_DOMAINS,
