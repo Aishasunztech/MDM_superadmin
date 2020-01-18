@@ -7,6 +7,7 @@ import WhiteLabels from "./whitelabels/index";
 import Device from "./devices/index";
 import AutoUpdate from './autoUpdate/index';
 import SetPrices from './whitelabels/components/pricesPackages/index';
+import ManageDomains from './whitelabels/components/ManageDomains/index';
 import Billing from "./account/billing/index.js";
 import Reports from "./account/Reports/index.js";
 
@@ -61,6 +62,27 @@ const AppRoutes = ({ match, whiteLabels }) => {
                 render={
                   (routeProps) => (
                     <SetPrices
+                      {...routeProps}
+                      id={whiteLabel.id}
+                      whiteLabelName={whiteLabel.name}
+                    />
+                  )
+                }
+              />
+            );
+          })
+        }
+        {
+          whiteLabels.map((whiteLabel, index) => {
+            return (
+              <Route
+                exact
+                path={'/manage-domains' + whiteLabel.route_uri}
+                id={whiteLabel.id}
+                key={index}
+                render={
+                  (routeProps) => (
+                    <ManageDomains
                       {...routeProps}
                       id={whiteLabel.id}
                       whiteLabelName={whiteLabel.name}

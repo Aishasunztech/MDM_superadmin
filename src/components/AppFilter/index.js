@@ -288,15 +288,24 @@ class AppFilter extends Component {
                                                         >
                                                             {this.props.addButtonText}
                                                         </Button>
-                                                        :
-                                                        <Button
-                                                            type="primary"
-                                                            disabled={(this.props.disableAddButton === true) ? true : false}
-                                                            style={{ width: '100%' }}
-                                                            onClick={() => this.props.handleUserModal()}
-                                                        >
-                                                            {this.props.addButtonText}
-                                                        </Button>
+                                                        : (this.props.addDomain) ?
+                                                            <Button
+                                                                type="primary"
+                                                                disabled={(this.props.disableAddButton === true) ? true : false}
+                                                                style={{ width: '100%' }}
+                                                                onClick={() => this.props.showDomainModal(true)}
+                                                            >
+                                                                {this.props.addButtonText}
+                                                            </Button>
+                                                            :
+                                                            <Button
+                                                                type="primary"
+                                                                disabled={(this.props.disableAddButton === true) ? true : false}
+                                                                style={{ width: '100%' }}
+                                                                onClick={() => this.props.handleUserModal()}
+                                                            >
+                                                                {this.props.addButtonText}
+                                                            </Button>
                                     : null
                             }
                         </div>

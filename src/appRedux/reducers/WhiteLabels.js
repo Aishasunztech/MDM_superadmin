@@ -16,7 +16,11 @@ import {
     SAVE_HARDWARE,
     DELETE_PAKAGE,
     DELETE_HARDWARE,
-    EDIT_HARDWARE
+    EDIT_HARDWARE,
+    GET_DOMAINS,
+    DELETE_DOMAINS,
+    ADD_DOMAIN,
+    EDIT_DOMAIN
 } from "../../constants/ActionTypes";
 
 import { message, Modal } from 'antd';
@@ -46,6 +50,7 @@ const initialState = {
     hardwares: [],
     packagesCopy: [],
     backupLoading: false,
+    domains: []
 };
 
 export default (state = initialState, action) => {
@@ -299,6 +304,81 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 backupLoading: true
+            }
+        }
+
+        case GET_DOMAINS: {
+            return {
+                ...state,
+                domains: action.response.data
+            }
+        }
+
+        case ADD_DOMAIN: {
+            if (action.response.status) {
+                success({
+                    title: action.response.msg
+                })
+                state.domains.push(action.response.data)
+                return {
+                    ...state,
+                    domains: [...state.domains]
+                }
+            } else {
+
+                error({
+                    title: action.response.msg
+                })
+
+                return {
+                    ...state,
+                }
+            }
+        }
+
+        case EDIT_DOMAIN: {
+            if (action.response.status) {
+                success({
+                    title: action.response.msg
+                })
+                let index = state.domains.findIndex(item => item.id === action.data.id)
+                if (index != -1) {
+                    state.domains[index].domain_name = action.data.domain_name
+                }
+                return {
+                    ...state,
+                    domains: [...state.domains]
+                }
+            } else {
+                error({
+                    title: action.response.msg
+                })
+
+                return {
+                    ...state,
+                }
+            }
+        }
+
+        case DELETE_DOMAINS: {
+            if (action.response.status) {
+                success({
+                    title: action.response.msg
+                })
+                let domains = state.domains.filter((item) => item.id !== action.id)
+                return {
+                    ...state,
+                    domains: domains
+                }
+            } else {
+
+                error({
+                    title: action.response.msg
+                })
+
+                return {
+                    ...state,
+                }
             }
         }
 

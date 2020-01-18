@@ -9,7 +9,7 @@ import PaymentHistory from './components/PaymentHistory';
 import GraceDays from './components/GraceDays';
 import Sales from './components/Sales';
 import AppFilter from '../../../components/AppFilter';
-import { getDealerList, getDeviceList, generateProductReport,generateGraceDaysReport, generateInvoiceReport, generateSalesReport, generatePaymentHistoryReport, generateHardwareReport } from '../../../appRedux/actions';
+import { getHardwares, getDealerList, getDeviceList, generateProductReport,generateGraceDaysReport, generateInvoiceReport, generateSalesReport, generatePaymentHistoryReport, generateHardwareReport } from '../../../appRedux/actions';
 
 import styles from './reporting.css'
 
@@ -80,6 +80,8 @@ class Reports extends Component {
                   generateHardwareReport={this.props.generateHardwareReport}
                   hardwareReport={this.props.hardwareReport}
                   user={this.props.user}
+                  getHardwares={this.props.getHardwares}
+                  hardwareList={this.props.hardwareList}
                 />
               </TabPane>
 
@@ -153,7 +155,7 @@ class Reports extends Component {
 
 
 
-var mapStateToProps = ({ settings, reports, auth, account, sidebarMenu }) => {
+var mapStateToProps = ({ settings, reports, auth, account, sidebarMenu, whiteLabels }) => {
   return {
     user: auth.authUser,
     productReport: reports.productData,
@@ -167,7 +169,8 @@ var mapStateToProps = ({ settings, reports, auth, account, sidebarMenu }) => {
     translation: settings.translation,
     whiteLabels: sidebarMenu.whiteLabels,
     dealerList: account.dealerList,
-    deviceList: account.deviceList
+    deviceList: account.deviceList,
+    hardwareList: whiteLabels.hardwares,
   };
 };
 
@@ -180,6 +183,7 @@ function mapDispatchToProps(dispatch) {
     generateHardwareReport: generateHardwareReport,
     generateGraceDaysReport: generateGraceDaysReport,
     getDealerList: getDealerList,
+    getHardwares: getHardwares,
     getDeviceList: getDeviceList
   }, dispatch);
 };

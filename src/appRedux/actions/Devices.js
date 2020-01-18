@@ -218,7 +218,7 @@ export function statusDevice(device, requireStatus) {
     return (dispatch) => {
 
         RestService.statusDevice(device, requireStatus).then((response) => {
-console.log('statusDevice response at action is: ', response.data);
+            console.log('statusDevice response at action is: ', response.data);
             if (RestService.checkAuth(response.data)) {
                 if (response.data.status) {
                     dispatch({
