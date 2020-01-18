@@ -731,7 +731,7 @@ class WhiteLabels extends Component {
                             </div>
 
                         </Col>
-                        <Col xs={24} sm={24} md={6} lg={6} xl={6} onClick={() => this.refs.loadidsofModal.getWrappedInstance().showModal(this.props.whiteLabelInfo)}>
+                        {/* <Col xs={24} sm={24} md={6} lg={6} xl={6} onClick={() => this.refs.loadidsofModal.getWrappedInstance().showModal(this.props.whiteLabelInfo)}>
                             <div>
                                 <div>
                                     <a href="javascript:void(0)">
@@ -745,7 +745,7 @@ class WhiteLabels extends Component {
                                     </a>
                                 </div>
                             </div>
-                        </Col>
+                        </Col> */}
                         <Col xs={24} sm={24} md={6} lg={6} xl={6}>
                             <div>
                                 <div className="contenar">
