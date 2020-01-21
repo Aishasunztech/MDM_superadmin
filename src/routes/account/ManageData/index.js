@@ -329,8 +329,6 @@ class ManageData extends Component {
 			},
 
 		];
-		
-
 		this.state = {
 			dealers: [],
 			loading: false,
@@ -347,7 +345,7 @@ class ManageData extends Component {
 			columnsVpn: columnsVpn,
 			options: this.props.options,
 			pagination: 10,
-			tabselect: 'all',
+			tabSelect: 'all',
 			innerTabSelect: '1',
 			whiteLables: []
 		};
