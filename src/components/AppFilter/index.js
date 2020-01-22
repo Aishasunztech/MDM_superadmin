@@ -119,11 +119,11 @@ class AppFilter extends Component {
             // className="gutter-example"
             <Card >
                 <Row gutter={16} className="filter_top">
-                    <Col className={`${fullScreenClass3} col-sm-12 col-xs-12 vertical_center`}>
+                    {/* <Col className={`${fullScreenClass3} col-sm-12 col-xs-12 vertical_center`}>
                         <span className="font_26_vw white_now">
                             {(this.props.pageHeading) ? this.props.pageHeading : ""}
                         </span>
-                    </Col>
+                    </Col> */}
                     <Col className={`${fullScreenClass1} col-sm-6 col-xs-12`}>
                         <div className="gutter-box">
                             {(this.props.options !== undefined && this.props.options !== null) ?
