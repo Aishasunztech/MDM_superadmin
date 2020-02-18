@@ -123,13 +123,13 @@ class PackagePricingForm extends Component {
             vpn: false
         })
     }
-    
-    
+
+
     tabChanged = (e) => {
         let selectedTab = e;
         let packageType = 'services';
         if (e === '1') {
-            packageType= 'services'
+            packageType = 'services'
 
         } else if (e === '2') {
             packageType = 'data_plan'
@@ -142,9 +142,27 @@ class PackagePricingForm extends Component {
         this.props.packageTypeTabHandler(packageType);
     }
 
+    handleCancel = () => {
+        this.props.form.resetFields();
+        this.setState({
+            pkgPrice: 0,
+            sim: false,
+            sim_id2: false,
+            chat: false,
+            pgp: false,
+            vpn: false,
+            help: '',
+            validateStatus: 'success',
+            pkgTerms: '1 month',
+            selectedTab: '1',
+            packageType: 'services',
+            data_limit: 0,
+        })
+    }
+
     render() {
 
-    
+
         const { Option } = Select;
         return (
             <Fragment>
