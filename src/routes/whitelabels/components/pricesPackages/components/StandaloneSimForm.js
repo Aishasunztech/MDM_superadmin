@@ -14,7 +14,8 @@ class StandaloneSimForm extends Component {
             pkgPrice: 0,
             pkgTerms: '1 month',
             selectedTab: '1',
-            packageType: 'Standalone Sim'
+            packageType: 'Standalone Sim',
+            data_limit: '2000'
         }
     }
 
@@ -23,56 +24,50 @@ class StandaloneSimForm extends Component {
         // let value = e.target.value;
         let value = ''
         if (fieldName) {
-
-            if (is_pkg_feature) {
-                console.log("testing feature:", fieldName, pkg_feature_value, is_pkg_feature, e)
-                if (pkg_feature_value !== '' && fieldName) {
-                    value = pkg_feature_value;
-                    this.props.setPkgDetail(pkg_feature_value, fieldName, is_pkg_feature);
-                }
-            } else {
-                // value = this.props.form.getFieldValue(fieldName)
-                // 
-                if (fieldName) {
-                    value = e;
-                    if (fieldName == 'pkgPrice') {
-                        e = +e;
-                        e = e.toString();
-                    }
-                    this.props.setPkgDetail(e, fieldName, is_pkg_feature);
-                }
-            }
-
-            if (fieldName == 'pkgPrice') {
+            if (fieldName == 'pkgPrice' || fieldName == 'data_limit') {
+                value = e;
+                e = +e;
+                e = e.toString();
+                this.props.setPkgDetail(e, fieldName, is_pkg_feature);
                 var isNum = /^\d+$/.test(value);
                 if (!isNum || e <= 0) {
                     this.props.restrictPackageSubmit(false, fieldName)
-                    this.setState({
-                        validateStatus: 'error',
-                        help: value === '' ? 'Please Input Package Price' : 'Price must be in Numbers and greater than zero',
-                        [fieldName]: e
-                    })
+                    if (fieldName == 'pkgPrice') {
+                        this.setState({
+                            validateStatus: 'error',
+                            help: value === '' ? 'Please Input Package Price' : 'Price must be in Numbers and greater than zero',
+                            [fieldName]: e,
+                        })
+                    } else {
+                        this.setState({
+                            dataLimitValidateStatus: 'error',
+                            dataLimitHelp: value === '' ? 'Please Input Data Limit' : 'Data Limit must be in Numbers and greater than zero',
+                            [fieldName]: e,
+                        })
+                    }
                 } else {
                     this.props.restrictPackageSubmit(true, fieldName)
-                    this.setState({
-                        validateStatus: 'success',
-                        help: '',
-                        [fieldName]: e
-                    })
+                    if (fieldName == 'pkgPrice') {
+
+                        this.setState({
+                            validateStatus: 'success',
+                            help: '',
+                            [fieldName]: e
+                        })
+                    } else {
+                        this.setState({
+                            dataLimitValidateStatus: 'success',
+                            dataLimitHelp: '',
+                            [fieldName]: e
+                        })
+                    }
                 }
-                // 
             } else {
-                if (fieldName === "pkgTerms" && value === 'trial') {
-                    this.setState({ pkgPrice: 0, [fieldName]: value })
-                    this.props.form.setFieldsValue({ pkgPrice: 0 })
-                } else {
-                    this.setState({
-                        [fieldName]: value
-                    })
-                }
+                this.props.setPkgDetail(e, fieldName, is_pkg_feature);
+                this.setState({
+                    [fieldName]: value
+                })
             }
-
-
         }
     }
 
@@ -147,7 +142,7 @@ class StandaloneSimForm extends Component {
                                 )}
                             </Form.Item>
                         </Col>
-                        <Col span={4}>
+                        <Col span={2}>
                         </Col>
                         <Col span={6}>
                             <h4 className='priceText'>{this.state.pkgName}</h4>
@@ -193,7 +188,7 @@ class StandaloneSimForm extends Component {
 
                             </Form.Item>
                         </Col>
-                        <Col span={4}>
+                        <Col span={2}>
                             {/* <Button type="primary" onClick={() => this.setField('pkgTerms')}>Set</Button> */}
                         </Col>
                         <Col span={7}>
@@ -205,8 +200,8 @@ class StandaloneSimForm extends Component {
                     <Row>
                         <Col span={13}>
                             <Form.Item label="Price" labelCol={{ span: 11 }}
-                                validateStatus={this.state.pkgTerms === "trial" ? "success" : this.state.validateStatus}
-                                help={this.state.pkgTerms === "trial" ? '' : this.state.help}
+                                validateStatus={this.state.validateStatus}
+                                help={this.state.help}
                                 wrapperCol={{ span: 13 }}>
                                 {this.props.form.getFieldDecorator('pkgPrice', {
                                     rules: [
@@ -215,14 +210,40 @@ class StandaloneSimForm extends Component {
                                             message: 'Please Input Price',
                                         }
                                     ],
-                                })(<Input disabled={this.state.pkgTerms === "trial" ? true : false} placeholder="Price" onChange={(e => this.setField('pkgPrice', '', '', e.target.value))} type='number' min={1} />)}
+                                })(<Input placeholder="Price" onChange={(e => this.setField('pkgPrice', '', '', e.target.value))} type='number' min={1} />)}
 
                             </Form.Item>
                         </Col>
-                        <Col span={4}>
+                        <Col span={2}>
                         </Col>
                         <Col span={7}>
                             <h4 className='priceText'>Price: ${this.state.pkgPrice}</h4>
+                        </Col>
+                    </Row>
+
+                    {/* Package DATA LIMIT */}
+                    <Row>
+                        <Col span={13}>
+                            <Form.Item label="Data Limit" labelCol={{ span: 11 }}
+                                validateStatus={this.state.dataLimitValidateStatus}
+                                help={this.state.dataLimitHelp}
+                                wrapperCol={{ span: 13 }}>
+                                {this.props.form.getFieldDecorator('data_limit', {
+                                    initialValue: this.state.data_limit,
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: 'Please Input Data limit',
+                                        }
+                                    ],
+                                })(<Input placeholder="Data Limit" onChange={(e => { this.setField('data_limit', '', '', e.target.value); this.setField('data_limit', '', '', e.target.value) })} type='number' min={1} />)}
+
+                            </Form.Item>
+                        </Col>
+                        <Col span={2}>
+                        </Col>
+                        <Col span={7}>
+                            <h4 className='priceText'>Data Limit: {this.state.data_limit} MB</h4>
                         </Col>
                     </Row>
 
