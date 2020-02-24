@@ -102,38 +102,50 @@ export default class WhiteLabelPricing extends Component {
 
         // packages
         else if (this.state.outerTab === '2' || this.state.outerTab === '4') {
-
+            console.log("dasdasd");
             var isNum = /^\d+$/.test(this.state.pkgPrice);
-            if (
-                this.state.packageFormErrors &&
-                (
-                    !this.state.packageFormErrors.length ||
-                    (this.state.packageFormErrors[0] === "pkgPrice" && this.state.pkgTerms === "trial")
-                ) && isNum &&
-                (this.state.pkgPrice > 0 || this.state.pkgTerms === "trial") &&
-                this.state.pkg_features &&
-                this.state.pkgName &&
-                this.state.pkgTerms &&
-                this.state.pkgName !== '' &&
-                this.state.pkgTerms !== ''
-            ) {
-                // 
+            if (this.state.outerTab === '2') {
+                if (
+                    this.state.packageFormErrors &&
+                    (
+                        !this.state.packageFormErrors.length ||
+                        (this.state.packageFormErrors[0] === "pkgPrice" && this.state.pkgTerms === "trial")
+                    ) && isNum &&
+                    (this.state.pkgPrice > 0 || this.state.pkgTerms === "trial") &&
+                    this.state.pkg_features &&
+                    this.state.pkgName &&
+                    this.state.pkgTerms &&
+                    this.state.pkgName !== '' &&
+                    this.state.pkgTerms !== ''
+                ) {
+                    // 
+                    let data = {
+                        pkgName: this.state.pkgName,
+                        pkgTerm: this.state.pkgTerms,
+                        pkgPrice: this.state.pkgTerms === "trial" ? 0 : this.state.pkgPrice,
+                        whitelabel_id: this.props.whitelabel_id,
+                        package_type: this.state.package_type
+                    }
+
+                    if (this.state.data_limit) {
+                        data.data_limit = this.state.data_limit;
+                    } else {
+                        data.pkgFeatures = this.state.pkg_features;
+                    }
+                    console.log(data);
+
+                    showConfirm(this, data)
+                }
+            } else {
                 let data = {
                     pkgName: this.state.pkgName,
                     pkgTerm: this.state.pkgTerms,
-                    pkgPrice: this.state.pkgTerms === "trial" ? 0 : this.state.pkgPrice,
+                    pkgPrice: this.state.pkgPrice,
                     whitelabel_id: this.props.whitelabel_id,
-                    package_type: this.state.package_type
-
-                }
-
-                if (this.state.data_limit) {
-                    data.data_limit = this.state.data_limit;
-                } else {
-                    data.pkgFeatures = this.state.pkg_features;
+                    package_type: this.state.package_type,
+                    data_limit: this.state.data_limit ? this.state.data_limit : 2000
                 }
                 console.log(data);
-
                 showConfirm(this, data)
             }
         } else if (this.state.outerTab === '3') {
@@ -447,7 +459,15 @@ function showConfirm(_this, data) {
                                 </Col>
                             </Row>
                         </Fragment>
-                    : null}
+                    : <Row>
+                        <Col span={12}>
+                            <p >Data Limit</p>
+                        </Col>
+                        <Col span={12}>
+                            <p >{data.data_limit} MB</p>
+                        </Col>
+                    </Row>
+                }
             </>
             )
         ,
