@@ -7,27 +7,22 @@ export const FIRMWARE_URL = 'http://cdn.meshguard.co/';
 
 
 switch (hostName) {
-    case "localhost":
-        break;
 
     // Meshguard Live
     case "meshguard.co":
-        URL = "https://api.meshguard.co/api/v1/"
+    case "www.meshguard.co":
+    case "http://www.meshguard.co":
+    case "https://www.meshguard.co":
+        // URL = "https://api.meshguard.co/api/v1/"
+        URL = "https://meshguard.co/api/v1/"
         break;
 
-    case "www.meshguard.co":
-        URL = "https://api.meshguard.co/api/v1/"
-        break;
-    case "http://www.meshguard.co":
-        URL = "https://api.meshguard.co/api/v1/"
-        break;
-    case "https://www.meshguard.co":
-        URL = "https://api.meshguard.co/api/v1/"
-        break;
-    
     // Meshguard Dev
     case "dev.meshguard.co":
-        URL = "https://devapi.meshguard.co/api/v1/"
+    case "http://dev.meshguard.co":
+    case "https://dev.meshguard.co":
+        // URL = "https://devapi.meshguard.co/api/v1/"
+        URL = "https://dev.meshguard.co/api/v1/"
         break;
     default:
         break;
