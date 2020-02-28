@@ -23,7 +23,7 @@ switch (hostName) {
     case "http://devsa.lockmesh.com":
     case "https://devsa.lockmesh.com":
         // URL = "https://devapi.meshguard.co/api/v1/"
-        URL = "https://dev.meshguard.co/api/v1/"
+        URL = "https://devsa.lockmesh.com/api/v1/"
         break;
     // // MeshGuard Live
 
