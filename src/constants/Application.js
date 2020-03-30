@@ -17,6 +17,13 @@ switch (hostName) {
         URL = "https://sa.lockmesh.com/api/v1/"
         break;
 
+    // MeshGuard Live
+    case "mdm-sa.sunztech.com":
+    case "http://mdm-sa.sunztech.com":
+    case "https://mdm-sa.sunztech.com":
+        URL = "https://mdm-sa.sunztech.com/api/v1/"
+        break;
+
 
     // MeshGuard Dev
     case "devsa.lockmesh.com":
